@@ -15,12 +15,13 @@ import Result from '../screens/Result';
 import ProfileBackground from '../components/background/ProfileBackground';
 import Profile from '../screens/Profile';
 import SplashScreen from '../screens/SplashScreen';
-import Createlocation from '../screens/admin/Createlocation';
+
 import UpdateProfile from '../screens/UpdateProfile';
 import HomeLoading from '../components/background/HomeLoading';
 import AllResult from '../screens/AllResult';
 import ResultDetails from '../screens/ResultDetails';
 import WalletBalance from '../screens/WalletBalance';
+import Notification from '../screens/Notification';
 
 
 const Stack = createNativeStackNavigator()
@@ -49,12 +50,13 @@ const Main = () => {
                 <Stack.Screen  name="ProfileBackground" component={ProfileBackground}/>
                 <Stack.Screen  name="Profile" component={Profile}/>
                 <Stack.Screen  name="SplashScreen" component={SplashScreen}/>
-                <Stack.Screen  name="Createlocation" component={Createlocation}/>
+               
                 <Stack.Screen  name="UpdateProfile" component={UpdateProfile}/>
                 <Stack.Screen  name="AllResult" component={AllResult}/>
                 <Stack.Screen  name="ResultDetails" component={ResultDetails}/>
                 <Stack.Screen  name="WalletBalance" component={WalletBalance}/>
                 <Stack.Screen  name="HomeLoading" component={HomeLoading}/>
+                <Stack.Screen  name="Notification" component={Notification}/>
             </Stack.Group>
         </Stack.Navigator>
 

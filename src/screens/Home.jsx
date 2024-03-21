@@ -9,8 +9,10 @@ import {
   Platform,
   Alert,
   BackHandler,
+  FlatList,
+  Dimensions,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {COLORS, FONT} from '../../assets/constants';
 import {
   heightPercentageToDP,
@@ -28,6 +30,8 @@ import HomeLoading from '../components/background/HomeLoading';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 import {getAllResult} from '../redux/actions/resultAction';
 import BigResult from '../components/home/BigResult';
+import {HOVER} from 'nativewind/dist/utils/selector';
+const {height, width} = Dimensions.get('window');
 
 const Home = () => {
   const {user, accesstoken, loading} = useSelector(state => state.user);
@@ -36,11 +40,11 @@ const Home = () => {
 
   const navigation = useNavigation();
 
-  const [data, setData] = useState([
-    {id: '1', result: '7894', location: 'Pune', time: '01:00 PM'},
-    {id: '2', result: '1839', location: 'Sikkim', time: '01:00 PM'},
-    {id: '3', result: '7456', location: 'Bhopal', time: '01:00 PM'},
-  ]);
+  // const [data, setData] = useState([
+  //   {id: '1', result: '7894', location: 'Pune', time: '01:00 PM'},
+  //   {id: '2', result: '1839', location: 'Sikkim', time: '01:00 PM'},
+  //   {id: '3', result: '7456', location: 'Bhopal', time: '01:00 PM'},
+  // ]);
 
   // Getting User Profile
 
@@ -91,6 +95,34 @@ const Home = () => {
   console.log('Welcome :: ' + JSON.stringify(user));
   console.log('Welcome Access token :: ' + accesstoken);
 
+  const promotiondata = [1, 1, 1, 1, 1, 1, 1];
+  const [data, SetData] = useState([1,2,3,4,5]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const ref = useRef(null);
+
+  // to Handel automatic scrolling of the Promotion container
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(currentIndex === data.length-1)
+      {
+        setCurrentIndex(0);
+       
+      }else{
+        if (currentIndex >= 0 && currentIndex < data.length) {
+
+          setCurrentIndex(currentIndex + 1);
+        ref.current.scrollToIndex({
+          animated: true,
+          index: parseInt(currentIndex)+1
+        })
+        }
+        
+      }
+      
+    }, 2000);
+  }, [focused,currentIndex]);
+
   return (
     <SafeAreaView
       className="flex-1"
@@ -128,7 +160,7 @@ const Home = () => {
                   }}>
                   <Image
                     // source={{ uri: 'https://imgs.search.brave.com/bNjuaYsTPw2b4yerAkKyk82fwZ9sNFwkwb3JMnX7qBg/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE1/NDU5OTYxMjQtMDUw/MWViYWU4NGQwP3E9/ODAmdz0xMDAwJmF1/dG89Zm9ybWF0JmZp/dD1jcm9wJml4bGli/PXJiLTQuMC4zJml4/aWQ9TTN3eE1qQTNm/REI4TUh4elpXRnlZ/Mmg4TWpCOGZHWmhZ/MlY4Wlc1OE1IeDhN/SHg4ZkRBPQ.jpeg' }}
-                    source={require('../../assets/image/dummy_user.jpeg')}
+                    source={require('../../assets/image/dark_user.png')}
                     resizeMode="cover"
                     style={{
                       height: 70,
@@ -164,11 +196,9 @@ const Home = () => {
                   flexDirection: 'row',
                   alignItems: 'center',
                   gap: heightPercentageToDP(2),
-                 
                 }}>
-
                 <TouchableOpacity
-                  >
+                  onPress={() => navigation.navigate('Notification')}>
                   <Ionicons
                     name={'notifications'}
                     size={heightPercentageToDP(3)}
@@ -214,9 +244,9 @@ const Home = () => {
               </Text>
             </TouchableOpacity>
 
-                        {/** BIG RESULT  */}
+            {/** BIG RESULT  */}
 
-                        {results.length === 0 ? (
+            {results.length === 0 ? (
               <NoDataFound data={'No Result Available'} />
             ) : (
               <BigResult data={results[0]} />
@@ -346,7 +376,72 @@ const Home = () => {
 
             {/** PROMOTION CONTAINER */}
 
-            <NoDataFound data={'Promotions'} />
+            <View
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              <View
+                style={{
+                  height: height / 4,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <FlatList
+                ref={ref}
+                  data={data}
+                  showsHorizontalScrollIndicator={false}
+                  pagingEnabled
+                  onScroll={e => {
+                    const x = e.nativeEvent.contentOffset.x;
+                    setCurrentIndex((x / width).toFixed(0));
+                  }}
+                  horizontal
+                  renderItem={({item, index}) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          width: width - 50,
+                          height: height / 4,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <TouchableOpacity
+                          disabled={true}
+                          style={{
+                            width: '90%',
+                            height: '90%',
+                            backgroundColor: COLORS.grayHalfBg,
+                            borderRadius: 10,
+                          }}>
+                            <Text>{item}</Text>
+                          </TouchableOpacity>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: width,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                {data.map((item, index) => {
+                  return (
+                    <View
+                    key={index}
+                      style={{
+                        width: currentIndex == index ? 50 : 8,
+                        height: currentIndex == index ? 10 : 8,
+                        borderRadius: currentIndex == index ? 5 : 4,
+                        backgroundColor:
+                          currentIndex == index ? COLORS.darkGray : COLORS.grayHalfBg,
+                        marginLeft: 5,
+                      }}></View>
+                  );
+                })}
+              </View>
+            </View>
 
             {/** WALLET CONTAINER */}
             <ScrollView
@@ -359,19 +454,13 @@ const Home = () => {
                 <Wallet wallet={user.walletOne} />
               </TouchableOpacity>
 
-                <TouchableOpacity
+              <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('WalletBalance', {data: user.walletTwo})
                 }>
                 <Wallet wallet={user.walletTwo} />
-                </TouchableOpacity>
-              
+              </TouchableOpacity>
             </ScrollView>
-
-            
-
-
-
           </ScrollView>
         )
       )}
@@ -380,6 +469,39 @@ const Home = () => {
 };
 
 export default Home;
+
+// <View>
+// <ScrollView
+//   horizontal={true}
+//   showsHorizontalScrollIndicator={false}>
+//   {promotiondata.map((item, index) => (
+//     <TouchableOpacity
+//       key={index}
+//       style={{marginEnd: heightPercentageToDP(2)}}>
+//       <View
+//         style={{
+//           height: heightPercentageToDP(25),
+//           width: widthPercentageToDP(90),
+//           backgroundColor: COLORS.grayHalfBg,
+//           marginTop: heightPercentageToDP(2),
+//           borderRadius: heightPercentageToDP(1),
+//           flexDirection: 'row',
+//           justifyContent: 'center',
+//           alignItems: 'center',
+//           gap: heightPercentageToDP(2),
+//         }}>
+//         <GradientText
+//           style={{
+//             fontSize: heightPercentageToDP(4),
+//             fontFamily: FONT.Montserrat_Bold,
+//           }}>
+//           Promotions
+//         </GradientText>
+//       </View>
+//     </TouchableOpacity>
+//   ))}
+// </ScrollView>
+// </View>
 
 const styles = StyleSheet.create({
   resultContentContainer: {
