@@ -28,7 +28,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
 import Loading from '../components/helpercComponent/Loading';
-import {HOVER} from 'nativewind/dist/utils/selector';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = () => {
@@ -128,7 +128,7 @@ const Profile = () => {
 
       <View
         style={{
-          height: heightPercentageToDP(36),
+          height: heightPercentageToDP(30),
           width: widthPercentageToDP(100),
           backgroundColor: COLORS.white_s,
           borderTopLeftRadius: heightPercentageToDP(5),
@@ -197,7 +197,7 @@ const Profile = () => {
             </TouchableOpacity>
 
             {/** Change Password container */}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={ChangePasswordHandler}
               style={{
                 height: heightPercentageToDP(7),
@@ -227,7 +227,7 @@ const Profile = () => {
                 size={heightPercentageToDP(3)}
                 color={COLORS.white}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/** Logout container */}
             <TouchableOpacity

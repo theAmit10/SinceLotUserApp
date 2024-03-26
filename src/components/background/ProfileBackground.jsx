@@ -1,26 +1,30 @@
 import { Image, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import { COLORS, FONT } from '../../../assets/constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import GradientText from '../helpercComponent/GradientText';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Toast from 'react-native-toast-message';
 import DocumentPicker from 'react-native-document-picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
+import { loadProfile } from '../../redux/actions/userAction';
 
 const ProfileBackground = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch()
 
   const { user, accesstoken, loading } = useSelector(state => state.user);
 
+ 
+
   const source = require('../../../assets/image/dummy_user.jpeg');
-  const [imageSource, setImageSource] = useState(require('../../../assets/image/dummy_user.jpeg'));
+  const [imageSource, setImageSource] = useState(require('../../../assets/image/dark_user.png'));
 
   const [showProgressBar, setProgressBar] = useState(false);
 

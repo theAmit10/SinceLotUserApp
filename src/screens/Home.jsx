@@ -220,7 +220,7 @@ const Home = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('Profile')}>
+                  onPress={() => navigation.navigate('Setting')}>
                   <Entypo
                     name={'menu'}
                     size={heightPercentageToDP(3)}

@@ -15,7 +15,6 @@ import Result from '../screens/Result';
 import ProfileBackground from '../components/background/ProfileBackground';
 import Profile from '../screens/Profile';
 import SplashScreen from '../screens/SplashScreen';
-
 import UpdateProfile from '../screens/UpdateProfile';
 import HomeLoading from '../components/background/HomeLoading';
 import AllResult from '../screens/AllResult';

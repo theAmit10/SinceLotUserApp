@@ -1,4 +1,5 @@
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -17,6 +18,9 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Setting = () => {
   const navigation = useNavigation();
@@ -39,7 +43,7 @@ const Setting = () => {
 
       <View
         style={{
-          height: heightPercentageToDP(75),
+          height: heightPercentageToDP(70),
           width: widthPercentageToDP(100),
           backgroundColor: COLORS.white_s,
           borderTopLeftRadius: heightPercentageToDP(5),
@@ -62,67 +66,220 @@ const Setting = () => {
             }}></View>
         </View>
 
-        {/** Login Main Container */}
+        {/** Setting Main Container */}
+
         <View
           style={{
             flex: 1,
             margin: heightPercentageToDP(2),
           }}>
-          <GradientText style={styles.textStyle}>Search</GradientText>
+          <GradientText style={{...styles.textStyle,marginBottom: heightPercentageToDP(2)}}>Setting</GradientText>
 
-          <View
-            style={{
-              height: heightPercentageToDP(7),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              marginTop: heightPercentageToDP(2),
-            }}>
-            <Fontisto
-              name={'search'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.white}
-            />
-            <TextInput
-              style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.SF_PRO_REGULAR,
-              }}
-              placeholder="Search for location"
-              label="Search"
-              value={searchData}
-              onChangeText={text => setSearchData(text)}
-            />
-          </View>
-
-          <View
-            style={{
-              marginTop: heightPercentageToDP(3),
-              paddingVertical: heightPercentageToDP(2),
-              gap: heightPercentageToDP(2),
-            }}>
-            {/** Email container */}
-
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {/** Update Profile container */}
             <TouchableOpacity
-              onPress={submitHandler}
+            onPress={() => navigation.navigate("UpdateProfile")}
               style={{
-                backgroundColor: COLORS.blue,
-                padding: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
                 alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                marginTop: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
               }}>
+              <MaterialCommunityIcons
+                name={'account'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
               <Text
                 style={{
-                  color: COLORS.white,
-                  fontFamily: FONT.Montserrat_Regular,
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.darkGray,
                 }}>
-                Submit
+                Update Profile
               </Text>
+
+              <Ionicons
+                name={'chevron-forward-outline'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
             </TouchableOpacity>
-          </View>
+
+            {/** Add  Game Setting */}
+            <TouchableOpacity
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                marginTop: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+              }}>
+              <MaterialCommunityIcons
+                name={'account'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.darkGray,
+                }}>
+                Game Description
+              </Text>
+
+              <Ionicons
+                name={'chevron-forward-outline'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+            </TouchableOpacity>
+
+            {/** About us container */}
+            <TouchableOpacity
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                marginTop: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+              }}>
+              <MaterialCommunityIcons
+                name={'account'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.darkGray,
+                }}>
+                About Us
+              </Text>
+
+              <Ionicons
+                name={'chevron-forward-outline'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+            </TouchableOpacity>
+
+            {/** Change Password */}
+            <TouchableOpacity
+             
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                marginTop: heightPercentageToDP(2),
+              }}>
+              <Entypo
+                name={'lock'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.darkGray,
+                }}>
+                Change Password
+              </Text>
+
+              <Ionicons
+                name={'chevron-forward-outline'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+            </TouchableOpacity>
+
+            {/** Update Email */}
+            <TouchableOpacity
+           
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                marginTop: heightPercentageToDP(2),
+              }}>
+              <Fontisto
+                name={'email'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.darkGray,
+                }}>
+                Update Email
+              </Text>
+
+              <Ionicons
+                name={'chevron-forward-outline'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+            </TouchableOpacity>
+
+            
+
+            {/** Logout container */}
+            <TouchableOpacity
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                marginTop: heightPercentageToDP(2),
+              }}>
+              <AntDesign
+                name={'logout'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.darkGray,
+                }}>
+                Logout
+              </Text>
+
+              <Ionicons
+                name={'chevron-forward-outline'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+            </TouchableOpacity>
+
+          </ScrollView>
         </View>
       </View>
     </View>

@@ -6,9 +6,9 @@ import {
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../../assets/constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Toast from 'react-native-toast-message';
-import {HOVER} from 'nativewind/dist/utils/selector';
+
 import GradientText from '../helpercComponent/GradientText';
+import { HOVER } from 'nativewind/dist/utils/selector';
 
 const BigResult = ({data}) => {
   const [showDate, setShowDate] = useState(true);
@@ -51,7 +51,7 @@ const BigResult = ({data}) => {
               }}>
               <Text
                 style={{
-                  fontFamily: FONT.Montserrat_Regular,
+                  fontFamily: FONT.Montserrat_SemiBold,
                   fontSize: heightPercentageToDP(3),
                   marginTop: heightPercentageToDP(2),
                 }}
@@ -145,6 +145,7 @@ const BigResult = ({data}) => {
               flexDirection: 'row',
               gap: heightPercentageToDP(1),
               zIndex: 2,
+              borderRadius: heightPercentageToDP(1)
             }}>
             <View
               style={{
@@ -256,6 +257,7 @@ const BigResult = ({data}) => {
                   flex: 4,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  borderRadius: heightPercentageToDP(1)
                 }}>
                 {/** All Date for a specific location */}
 
@@ -369,6 +371,7 @@ const BigResult = ({data}) => {
               flexDirection: 'row',
               gap: heightPercentageToDP(1),
               zIndex: 2,
+              borderRadius: heightPercentageToDP(1)
             }}>
             <Text
               style={{

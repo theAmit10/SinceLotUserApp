@@ -12,6 +12,9 @@ const DATE_API = server + 'result/searchdate';
 const ALL_RESULT_API = server + 'result/allresult';
 const RESULT_API = server + 'result/searchresult';
 
+// For Updating User Profile
+const UPDATE_USER_PROFILE_API = server + 'user/updateprofile';
+
 export default {
   LOGIN_API,
   USER_PROFILE_API,
@@ -23,5 +26,6 @@ export default {
   ALL_RESULT_API,
   TIME_API,
   DATE_API,
-  RESULT_API
+  RESULT_API,
+  UPDATE_USER_PROFILE_API
 };
