@@ -21,7 +21,11 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import GradientText from '../components/helpercComponent/GradientText';
 import Wallet from '../components/home/Wallet';
 import {useDispatch, useSelector} from 'react-redux';
@@ -54,19 +58,26 @@ const Home = () => {
     dispatch(loadProfile(accesstoken));
   }, [dispatch]);
 
-  // for backPress handling
+  const [currentScreen, setCurrentScreen] = useState('');
+
   useEffect(() => {
     const backAction = () => {
-      Alert.alert('Hold on!', 'Are you sure you want to exit?', [
-        {
-          text: 'Cancel',
-          onPress: () => null,
-          style: 'cancel',
-        },
-        {text: 'YES', onPress: () => BackHandler.exitApp()},
-      ]);
+      if (currentScreen === 'Home') {
+        Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          {text: 'YES', onPress: () => BackHandler.exitApp()},
+        ]);
 
-      return true;
+        // BackHandler.exitApp();
+        return true;
+      } else {
+        navigation.goBack();
+        return true;
+      }
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -75,7 +86,14 @@ const Home = () => {
     );
 
     return () => backHandler.remove();
-  }, []);
+  }, [currentScreen, navigation]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setCurrentScreen('Home'); // Set the current screen to 'HomeScreen' when this screen is focused
+      return () => setCurrentScreen(''); // Reset the current screen when the screen is blurred
+    }, []),
+  );
 
   const {results} = useSelector(state => state.result);
   const [filteredData, setFilteredData] = useState([]);
@@ -96,32 +114,27 @@ const Home = () => {
   console.log('Welcome Access token :: ' + accesstoken);
 
   const promotiondata = [1, 1, 1, 1, 1, 1, 1];
-  const [data, SetData] = useState([1,2,3,4,5]);
+  const [data, SetData] = useState([1, 2, 3, 4, 5]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const ref = useRef(null);
 
   // to Handel automatic scrolling of the Promotion container
 
-  useEffect(() => {
-    setTimeout(() => {
-      if(currentIndex === data.length-1)
-      {
-        setCurrentIndex(0);
-       
-      }else{
-        if (currentIndex >= 0 && currentIndex < data.length) {
-
-          setCurrentIndex(currentIndex + 1);
-        ref.current.scrollToIndex({
-          animated: true,
-          index: parseInt(currentIndex)+1
-        })
-        }
-        
-      }
-      
-    }, 2000);
-  }, [focused,currentIndex]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (currentIndex === data.length - 1) {
+  //       setCurrentIndex(0);
+  //     } else {
+  //       if (currentIndex >= 0 && currentIndex < data.length) {
+  //         setCurrentIndex(currentIndex + 1);
+  //         ref.current?.scrollToIndex({
+  //           animated: true,
+  //           index: parseInt(currentIndex) + 1,
+  //         });
+  //       }
+  //     }
+  //   }, 2000);
+  // }, [focused, currentIndex]);
 
   return (
     <SafeAreaView
@@ -385,7 +398,7 @@ const Home = () => {
                   alignItems: 'center',
                 }}>
                 <FlatList
-                ref={ref}
+                  ref={ref}
                   data={data}
                   showsHorizontalScrollIndicator={false}
                   pagingEnabled
@@ -412,8 +425,18 @@ const Home = () => {
                             backgroundColor: COLORS.grayHalfBg,
                             borderRadius: 10,
                           }}>
-                            <Text>{item}</Text>
-                          </TouchableOpacity>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems : 'center'}}>
+                            <GradientText
+                            style={{
+                              fontSize: heightPercentageToDP(4),
+                              fontFamily: FONT.Montserrat_Bold,
+                            }}>
+                            Promotion {item}
+                          </GradientText>
+
+                            </View>
+                         
+                        </TouchableOpacity>
                       </View>
                     );
                   }}
@@ -429,13 +452,15 @@ const Home = () => {
                 {data.map((item, index) => {
                   return (
                     <View
-                    key={index}
+                      key={index}
                       style={{
-                        width: currentIndex == index ? 50 : 8,
+                        width: currentIndex == index ? 10 : 8,
                         height: currentIndex == index ? 10 : 8,
                         borderRadius: currentIndex == index ? 5 : 4,
                         backgroundColor:
-                          currentIndex == index ? COLORS.darkGray : COLORS.grayHalfBg,
+                          currentIndex == index
+                            ? COLORS.darkGray
+                            : COLORS.grayHalfBg,
                         marginLeft: 5,
                       }}></View>
                   );

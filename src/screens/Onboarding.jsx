@@ -26,26 +26,25 @@ const {width, height} = Dimensions.get('window');
 const slides = [
   {
     id: '1',
-    image: require('../../assets/image/wallet.png'),
+    image: require('../../assets/image/dark_user.png'),
     title: 'Welcome to Wallet',
     subtitle: "Manage all your crypto assets! It's Simple and easy! ",
   },
   {
     id: '2',
-    image: require('../../assets/image/wallet_two.png'),
+    image: require('../../assets/image/dark_user.png'),
     title: 'Receive and Send Money to frends!',
     subtitle: 'Keep BTC ETC,XRP and many other ERC-20 based tokens',
   },
   {
     id: '3',
-    image: require('../../assets/image/shield.png'),
+    image: require('../../assets/image/dark_user.png'),
     title: 'Your Safety is Our Top Priority',
     subtitle: 'Our top-notch security features will keep you completely safe',
   },
 ];
 
 const Slide = ({item}) => {
-  const THEME = useSelector(state => state.theme);
   return (
     <View
       style={{
@@ -56,8 +55,8 @@ const Slide = ({item}) => {
       <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
         <LinearGradient
           colors={[
-            THEME.data === 'DARK' ? COLORS.purple : COLORS.gray2,
-            THEME.data === 'DARK' ? COLORS.purpleDark : COLORS.white,
+            COLORS.gray2,
+            COLORS.white,
           ]}
           className="rounded-full p-10">
           <Image

@@ -1,16 +1,29 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-import {heightPercentageToDP} from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../../assets/constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
+import {HOVER} from 'nativewind/dist/utils/selector';
+import GradientText from '../helpercComponent/GradientText';
 
 const BigResult = ({data}) => {
   const [showDate, setShowDate] = useState(true);
   const toogleView = () => {
     setShowDate(false);
-    
   };
+
+  const dataa = [
+    {date: '06-07-2018', time: '08-00 AM', result: '890'},
+    {date: '06-07-2018', time: '09-00 PM', result: '899'},
+    {date: '06-07-2018', time: '01-00 PM', result: '010'},
+    {date: '06-07-2018', time: '03-00 PM', result: '900'},
+    {date: '06-07-2018', time: '05-00 PM', result: '690'},
+    {date: '06-07-2018', time: '07-00 PM', result: '090'},
+  ];
 
   return (
     <>
@@ -63,7 +76,13 @@ const BigResult = ({data}) => {
                 flex: 1,
                 justifyContent: 'center',
               }}>
-              <View style={{position: 'absolute', top: 2, zIndex: 1}}>
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 2,
+                  zIndex: 1,
+                  borderRadius: heightPercentageToDP(2),
+                }}>
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                   <Text
                     style={{
@@ -92,16 +111,22 @@ const BigResult = ({data}) => {
                 </View>
               </View>
 
-              <View style={{flex: 1, justifyContent: 'flex-end'}}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'flex-end',
+                  borderRadius: heightPercentageToDP(2),
+                }}>
                 <Text
                   style={{
                     transform: [{rotate: '90deg'}],
                     color: COLORS.black,
                     fontFamily: FONT.Montserrat_SemiBold,
-                    fontSize: heightPercentageToDP(1.5),
+                    fontSize: heightPercentageToDP(2),
                     paddingHorizontal: heightPercentageToDP(1),
+                    marginStart: heightPercentageToDP(-4),
                   }}>
-                  {data.lottime.lottime}
+                  03:20
                 </Text>
               </View>
             </View>
@@ -202,26 +227,25 @@ const BigResult = ({data}) => {
                   justifyContent: 'space-between',
                   gap: heightPercentageToDP(1),
                 }}>
-                <Text
+                <GradientText
                   style={{
-                    fontFamily: FONT.Montserrat_SemiBold,
                     fontSize: heightPercentageToDP(3),
-                    marginTop: heightPercentageToDP(2),
-                  }}
-                  numberOfLines={1}>
+                    fontFamily: FONT.Montserrat_Bold,
+                  }}>
                   {data.lotlocation.lotlocation}
-                </Text>
+                </GradientText>
 
-                <Text
+                <GradientText
                   style={{
-                    fontFamily: FONT.Montserrat_SemiBold,
                     fontSize: heightPercentageToDP(3),
-                    marginTop: heightPercentageToDP(2),
+                    fontFamily: FONT.Montserrat_Bold,
+                   
                     marginEnd: heightPercentageToDP(1),
-                  }}
-                  numberOfLines={1}>
+                  }}>
                   {data.resultNumber}
-                </Text>
+                </GradientText>
+
+               
               </View>
 
               {/** List of result in flatlist */}
@@ -233,67 +257,44 @@ const BigResult = ({data}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                  {/** All Date for a specific location */}
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    gap: heightPercentageToDP(2),
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                    }}>
-                    {data.lotdate.lotdate}
-                  </Text>
+                {/** All Date for a specific location */}
 
-                  <Text
+                {dataa.map((item, index) => (
+                  <View
+                    key={index}
                     style={{
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
+                      flexDirection: 'row',
+                      justifyContent: 'space-evenly',
+                      alignItems: 'stretch',
+                      gap: heightPercentageToDP(2),
                     }}>
-                    {data.lottime.lottime}
-                  </Text>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        textAlign: 'left',
+                      }}>
+                      {item.date}
+                    </Text>
 
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                    }}>
-                    {data.resultNumber}
-                  </Text>
-                </View>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                      }}>
+                      {item.time}
+                    </Text>
 
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    gap: heightPercentageToDP(2),
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                    }}>
-                    {data.lotdate.lotdate}
-                  </Text>
-
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                    }}>
-                    {data.lottime.lottime}
-                  </Text>
-
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                    }}>
-                    {data.resultNumber}
-                  </Text>
-                </View>
-                
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        textAlign: 'right',
+                      }}>
+                      {item.result}
+                    </Text>
+                  </View>
+                ))}
               </View>
             </View>
 
@@ -333,16 +334,23 @@ const BigResult = ({data}) => {
                 </View>
               </View>
 
-              <View style={{flex: 1, justifyContent: 'flex-end'}}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
                 <Text
                   style={{
                     transform: [{rotate: '90deg'}],
                     color: COLORS.black,
                     fontFamily: FONT.Montserrat_SemiBold,
-                    fontSize: heightPercentageToDP(1.5),
+                    fontSize: heightPercentageToDP(2.5),
                     paddingHorizontal: heightPercentageToDP(1),
+
+                    marginStart: heightPercentageToDP(-3),
                   }}>
-                  {data.lottime.lottime}
+                  03:20
                 </Text>
               </View>
             </View>
