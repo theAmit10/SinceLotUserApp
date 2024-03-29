@@ -11,6 +11,8 @@ const ALL_DATE_API = server + 'result/alllotdate';
 const DATE_API = server + 'result/searchdate';
 const ALL_RESULT_API = server + 'result/allresult';
 const RESULT_API = server + 'result/searchresult';
+const RESULT_ACCORDING_TO_LOCATION_API = server + 'result/allresultlocation';
+const GET_ALL_PROMOTIONS = server + 'user/getallpromotion';
 
 // For Updating User Profile
 const UPDATE_USER_PROFILE_API = server + 'user/updateprofile';
@@ -27,5 +29,7 @@ export default {
   TIME_API,
   DATE_API,
   RESULT_API,
-  UPDATE_USER_PROFILE_API
+  UPDATE_USER_PROFILE_API,
+  RESULT_ACCORDING_TO_LOCATION_API,
+  GET_ALL_PROMOTIONS
 };

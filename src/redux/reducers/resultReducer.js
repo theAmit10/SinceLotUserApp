@@ -1,43 +1,58 @@
-import { createReducer } from "@reduxjs/toolkit";
+import {createReducer} from '@reduxjs/toolkit';
 
-
-export const resultReducer = createReducer({
-    loadingResult:false,
+export const resultReducer = createReducer(
+  {
+    loadingResult: false,
     results: [],
-    result: {}
-},(builder)=>{
-    
-    builder.addCase("getAllResultRequest",(state) => {
+    result: {},
+    resultAccordingLocation: [],
+    loadingForResultAccordingLocation: false,
+  },
+  builder => {
+    builder
+      .addCase('getAllResultRequest', state => {
         state.loadingResult = true;
-    })
-    .addCase("getResultRequest",(state) => {
+      })
+      .addCase('getResultRequest', state => {
         state.loadingResult = true;
-    })
-    
-    builder.addCase("getAllResultSuccess",(state,action) => {
+      })
+      .addCase('getAllResultAccordingLocationRequest', state => {
+        state.loadingForResultAccordingLocation = true;
+      });
+
+    builder
+      .addCase('getAllResultSuccess', (state, action) => {
         state.loadingResult = false;
         state.results = action.payload;
-    })
-    .addCase("getResultSuccess",(state,action) => {
+      })
+      .addCase('getResultSuccess', (state, action) => {
         state.loadingResult = false;
         state.result = action.payload;
-    })
-    
-    builder.addCase("getAllResultFail",(state,action) => {
-        state.loadingResult = false;
-        state.error = action.payload;
-    })
-    .addCase("getResultFail",(state,action) => {
-        state.loadingResult = false;
-        state.error = action.payload;
-    })
-   
-    
-    builder.addCase("clearError",(state) => { 
-        state.error = null
-    });
-    builder.addCase("clearMessage",(state) => { 
-        state.results = []
-    });
+      })
+      .addCase('getAllResultAccordingLocationSuccess', (state, action) => {
+        state.loadingForResultAccordingLocation = false;
+        state.resultAccordingLocation = action.payload;
+      });
 
-})
+    builder
+      .addCase('getAllResultFail', (state, action) => {
+        state.loadingResult = false;
+        state.error = action.payload;
+      })
+      .addCase('getResultFail', (state, action) => {
+        state.loadingResult = false;
+        state.error = action.payload;
+      })
+      .addCase('getAllResultAccordingLocationFail', (state, action) => {
+        state.loadingForResultAccordingLocation = false;
+        state.error = action.payload;
+      });
+
+    builder.addCase('clearError', state => {
+      state.error = null;
+    });
+    builder.addCase('clearMessage', state => {
+      state.results = [];
+    });
+  },
+);

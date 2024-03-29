@@ -21,6 +21,7 @@ import {useNavigation} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Background from '../components/background/Background';
 
 const Setting = () => {
   const navigation = useNavigation();
@@ -37,7 +38,7 @@ const Setting = () => {
 
   return (
     <View style={{flex: 1}}>
-      <LoginBackground />
+      <Background/>
 
       {/** Login Cointainer */}
 
@@ -99,6 +100,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
                   color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2)
                 }}>
                 Update Profile
               </Text>
@@ -112,6 +114,7 @@ const Setting = () => {
 
             {/** Add  Game Setting */}
             <TouchableOpacity
+            onPress={() => navigation.navigate("GameDescription")}
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
@@ -132,6 +135,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
                   color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2)
                 }}>
                 Game Description
               </Text>
@@ -145,6 +149,7 @@ const Setting = () => {
 
             {/** About us container */}
             <TouchableOpacity
+            onPress={() => navigation.navigate("AboutUs")}
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
@@ -165,6 +170,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
                   color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2)
                 }}>
                 About Us
               </Text>
@@ -178,7 +184,7 @@ const Setting = () => {
 
             {/** Change Password */}
             <TouchableOpacity
-             
+              onPress={() => navigation.navigate("ChangePassword")}
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
@@ -199,6 +205,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
                   color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2)
                 }}>
                 Change Password
               </Text>
@@ -233,6 +240,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
                   color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2)
                 }}>
                 Update Email
               </Text>
@@ -268,6 +276,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
                   color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2)
                 }}>
                 Logout
               </Text>

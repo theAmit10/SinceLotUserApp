@@ -4,6 +4,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform
 } from 'react-native';
 import React, {useState} from 'react';
 
@@ -18,12 +19,14 @@ import {useNavigation} from '@react-navigation/native';
 import ProfileBackground from '../components/background/ProfileBackground';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import DocumentPicker from 'react-native-document-picker';
+import ImageResizer from '@bam.tech/react-native-image-resizer';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadProfile, updateProfile} from '../redux/actions/userAction';
 import Loading from '../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../helper/UrlHelper';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 const UpdateProfile = () => {
   const navigation = useNavigation();
@@ -37,28 +40,6 @@ const UpdateProfile = () => {
     state => state.user,
   );
 
-  // let loading = false;
-
-  // const updateProfileHandler = () => {
-  //   if (!name) {
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: 'Enter Your Name',
-  //     });
-  //   } else {
-  //     Toast.show({
-  //       type: 'info',
-  //       text1: 'Updating Profile',
-  //     });
-
-
-  //     setLoading(useUserProfileUpdate(name, navigation, dispatch, 'Profile'))
-
-  //     // dispatch(updateProfile(name, accesstoken));
-  //   }
-  // };
-
-  // for uploading Profile content
  
   const updateProfileHandler  = async () => {
     if (!name) {
@@ -137,6 +118,56 @@ const UpdateProfile = () => {
      }
    }
  };
+
+//  const source = require('../../../assets/image/dummy_user.jpeg');
+//  const [imageSource, setImageSource] = useState(require('../../../assets/image/dark_user.png'));
+ const [imageSource, setImageSource] = useState(null);
+
+ const checkAndRequestPermission = async () => {
+   const result = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+
+   if (result === RESULTS.DENIED) {
+     if (Platform.OS === 'android' && Platform.Version <= 29) { // Target Android 10 and above
+       const permissionResult = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+       if (permissionResult !== RESULTS.GRANTED) {
+         console.log('Permission not granted!');
+         Toast.show({
+           type: 'info',
+           text1: 'Permission not granted!'
+         })
+         return;
+       }
+
+     }
+   }
+   // Call your DocumentPicker.pick() function here
+   selectDoc();
+ };
+
+ // For Opening PhoneStorage
+ const selectDoc = async () => {
+   try {
+     const doc = await DocumentPicker.pick({
+       type: [DocumentPicker.types.images],
+       allowMultiSelection: true,
+     });
+     // const doc = await DocumentPicker.pickSingle()
+     // const doc = await DocumentPicker.pickMultiple({
+     //   type: [ DocumentPicker.types.images]
+     // })
+     if (doc) {
+       console.log(doc);
+       console.log(doc[0].uri);
+       setImageSource({ uri: doc[0].uri });
+     }
+
+   } catch (err) {
+     if (DocumentPicker.isCancel(err))
+       console.log('User cancelled the upload', err);
+     else console.log(err);
+   }
+ };
+
 
   return (
     <View style={{flex: 1}}>

@@ -8,23 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* SinceLotUserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SinceLotUserTests.m */; };
+		049270AF1D2240168A625153 /* Helvetica.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB881E37BC34482D8EEE655F /* Helvetica.ttf */; };
+		096D06604AEE402C9FAAC651 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC098421A44144E6A865034B /* Montserrat-Regular.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-SinceLotUser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-SinceLotUser.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-SinceLotUser-SinceLotUserTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-SinceLotUser-SinceLotUserTests.a */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		A81D27FEA1AB4E25A9D6A72F /* Helvetica-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C75C2CF74ABF42398DE03600 /* Helvetica-Bold.ttf */; };
-		049270AF1D2240168A625153 /* Helvetica.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB881E37BC34482D8EEE655F /* Helvetica.ttf */; };
-		C72D079817BB485083AA4770 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1355EE2E22664CE8AFDC3223 /* Montserrat-Bold.ttf */; };
-		096D06604AEE402C9FAAC651 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC098421A44144E6A865034B /* Montserrat-Regular.ttf */; };
-		F5C68438D52B4D75AC4BE9B5 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */; };
+		1F2A59DA674F4B74B06BBF68 /* dummy_user.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 7AA7B8109E274503A050D9A5 /* dummy_user.jpeg */; };
+		3303E6453D50462DBCEBE540 /* SFPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */; };
 		520C77EA857442A6AF3D190F /* ZCOOL-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */; };
 		6F2C488BA24F4A63B390AFC3 /* SFPRO-MEDIUM.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 46ACC0214E6949EB9C86A259 /* SFPRO-MEDIUM.OTF */; };
-		3303E6453D50462DBCEBE540 /* SFPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */; };
-		1F2A59DA674F4B74B06BBF68 /* dummy_user.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 7AA7B8109E274503A050D9A5 /* dummy_user.jpeg */; };
-		AAEC659F3B3346A5A9517557 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F5363302D00347A98EDEAFA8 /* logo.png */; };
+		7699B88040F8A987B510C191 /* libPods-SinceLotUser-SinceLotUserTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-SinceLotUser-SinceLotUserTests.a */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		83FD2889146045F0B2DA311F /* profileplaceholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C8E5C98B2A78453DB2170445 /* profileplaceholder.jpg */; };
+		A81D27FEA1AB4E25A9D6A72F /* Helvetica-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C75C2CF74ABF42398DE03600 /* Helvetica-Bold.ttf */; };
+		AAEC659F3B3346A5A9517557 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F5363302D00347A98EDEAFA8 /* logo.png */; };
+		C72D079817BB485083AA4770 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1355EE2E22664CE8AFDC3223 /* Montserrat-Bold.ttf */; };
+		F5C68438D52B4D75AC4BE9B5 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +41,7 @@
 		00E356EE1AD99517003FC87E /* SinceLotUserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SinceLotUserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* SinceLotUserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SinceLotUserTests.m; sourceTree = "<group>"; };
+		1355EE2E22664CE8AFDC3223 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* SinceLotUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SinceLotUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = SinceLotUser/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = SinceLotUser/AppDelegate.mm; sourceTree = "<group>"; };
@@ -48,24 +49,23 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SinceLotUser/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SinceLotUser/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-SinceLotUser-SinceLotUserTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SinceLotUser-SinceLotUserTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-REGULAR.OTF"; path = "../assets/fonts/SFPRO-REGULAR.OTF"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-SinceLotUser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser.debug.xcconfig"; path = "Target Support Files/Pods-SinceLotUser/Pods-SinceLotUser.debug.xcconfig"; sourceTree = "<group>"; };
+		46ACC0214E6949EB9C86A259 /* SFPRO-MEDIUM.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-MEDIUM.OTF"; path = "../assets/fonts/SFPRO-MEDIUM.OTF"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-SinceLotUser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser.release.xcconfig"; path = "Target Support Files/Pods-SinceLotUser/Pods-SinceLotUser.release.xcconfig"; sourceTree = "<group>"; };
+		5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig"; path = "Target Support Files/Pods-SinceLotUser-SinceLotUserTests/Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-SinceLotUser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SinceLotUser.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AA7B8109E274503A050D9A5 /* dummy_user.jpeg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = dummy_user.jpeg; path = ../assets/image/dummy_user.jpeg; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SinceLotUser/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-SinceLotUser-SinceLotUserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser-SinceLotUserTests.release.xcconfig"; path = "Target Support Files/Pods-SinceLotUser-SinceLotUserTests/Pods-SinceLotUser-SinceLotUserTests.release.xcconfig"; sourceTree = "<group>"; };
+		BB881E37BC34482D8EEE655F /* Helvetica.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Helvetica.ttf; path = ../assets/fonts/Helvetica.ttf; sourceTree = "<group>"; };
+		C75C2CF74ABF42398DE03600 /* Helvetica-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Helvetica-Bold.ttf"; path = "../assets/fonts/Helvetica-Bold.ttf"; sourceTree = "<group>"; };
+		C8E5C98B2A78453DB2170445 /* profileplaceholder.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = profileplaceholder.jpg; path = ../assets/image/profileplaceholder.jpg; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		C75C2CF74ABF42398DE03600 /* Helvetica-Bold.ttf */ = {isa = PBXFileReference; name = "Helvetica-Bold.ttf"; path = "../assets/fonts/Helvetica-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		BB881E37BC34482D8EEE655F /* Helvetica.ttf */ = {isa = PBXFileReference; name = "Helvetica.ttf"; path = "../assets/fonts/Helvetica.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		1355EE2E22664CE8AFDC3223 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		FC098421A44144E6A865034B /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */ = {isa = PBXFileReference; name = "ZCOOL-Regular.ttf"; path = "../assets/fonts/ZCOOL-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		46ACC0214E6949EB9C86A259 /* SFPRO-MEDIUM.OTF */ = {isa = PBXFileReference; name = "SFPRO-MEDIUM.OTF"; path = "../assets/fonts/SFPRO-MEDIUM.OTF"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */ = {isa = PBXFileReference; name = "SFPRO-REGULAR.OTF"; path = "../assets/fonts/SFPRO-REGULAR.OTF"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7AA7B8109E274503A050D9A5 /* dummy_user.jpeg */ = {isa = PBXFileReference; name = "dummy_user.jpeg"; path = "../assets/image/dummy_user.jpeg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F5363302D00347A98EDEAFA8 /* logo.png */ = {isa = PBXFileReference; name = "logo.png"; path = "../assets/image/logo.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		C8E5C98B2A78453DB2170445 /* profileplaceholder.jpg */ = {isa = PBXFileReference; name = "profileplaceholder.jpg"; path = "../assets/image/profileplaceholder.jpg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "ZCOOL-Regular.ttf"; path = "../assets/fonts/ZCOOL-Regular.ttf"; sourceTree = "<group>"; };
+		F5363302D00347A98EDEAFA8 /* logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = logo.png; path = ../assets/image/logo.png; sourceTree = "<group>"; };
+		FC098421A44144E6A865034B /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,7 +172,7 @@
 			sourceTree = "<group>";
 		};
 		E461E1D3A0F7475A81658AF2 /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
 				C75C2CF74ABF42398DE03600 /* Helvetica-Bold.ttf */,
 				BB881E37BC34482D8EEE655F /* Helvetica.ttf */,
@@ -187,8 +187,8 @@
 				C8E5C98B2A78453DB2170445 /* profileplaceholder.jpg */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
 			path = "";
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -597,7 +597,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -625,6 +625,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -632,7 +633,13 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 			};
 			name = Debug;
 		};
@@ -669,7 +676,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -689,6 +696,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -696,7 +704,13 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

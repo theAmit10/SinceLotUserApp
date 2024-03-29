@@ -56,7 +56,7 @@ const BigResult = ({data}) => {
                   marginTop: heightPercentageToDP(2),
                 }}
                 numberOfLines={1}>
-                {data.lotlocation.lotlocation}
+                {data?.lotlocation?.lotlocation}
               </Text>
               <Text
                 style={{
@@ -66,7 +66,7 @@ const BigResult = ({data}) => {
                   marginTop: heightPercentageToDP(-2),
                 }}
                 numberOfLines={1}>
-                {data.resultNumber}
+                {data?.resultNumber}
               </Text>
             </View>
 
@@ -166,7 +166,7 @@ const BigResult = ({data}) => {
                 fontFamily: FONT.Montserrat_Regular,
                 fontSize: heightPercentageToDP(2),
               }}>
-              {data.lotdate.lotdate}
+              {data?.lotdate?.lotdate}
             </Text>
 
             <Text
@@ -174,7 +174,7 @@ const BigResult = ({data}) => {
                 fontFamily: FONT.Montserrat_Regular,
                 fontSize: heightPercentageToDP(2),
               }}>
-              {data.lottime.lottime}
+              {data?.lottime?.lottime}
             </Text>
 
             <Text
@@ -182,7 +182,7 @@ const BigResult = ({data}) => {
                 fontFamily: FONT.Montserrat_Regular,
                 fontSize: heightPercentageToDP(2),
               }}>
-              {data.resultNumber}
+              {data?.resultNumber}
             </Text>
 
             <View
@@ -233,7 +233,7 @@ const BigResult = ({data}) => {
                     fontSize: heightPercentageToDP(3),
                     fontFamily: FONT.Montserrat_Bold,
                   }}>
-                  {data.lotlocation.lotlocation}
+                  {data?.lotlocation?.lotlocation}
                 </GradientText>
 
                 <GradientText
@@ -243,7 +243,7 @@ const BigResult = ({data}) => {
                    
                     marginEnd: heightPercentageToDP(1),
                   }}>
-                  {data.resultNumber}
+                  {data?.resultNumber}
                 </GradientText>
 
                

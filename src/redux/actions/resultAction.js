@@ -96,3 +96,35 @@ export const getResultDetails = (accesstoken,id) => async dispatch => {
       });
     }
   };
+
+
+  export const getAllResultAccordingToLocation = (accesstoken,locationid) => async dispatch => {
+    try {
+      dispatch({
+        type: 'getAllResultAccordingLocationRequest',
+      });
+  
+      const {data} = await axios.get(UrlHelper.RESULT_ACCORDING_TO_LOCATION_API+"?locationid="+`${locationid}`, {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      });
+  
+      console.log("ACTION result accoding to location :: "+data.results)
+  
+      dispatch({
+        type: 'getAllResultAccordingLocationSuccess',
+        payload: data.results,
+      });
+  
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.message);
+  
+      dispatch({
+        type: 'getAllResultAccordingLocationFail',
+        payload: error.response.data.message,
+      });
+    } 
+  };
+  

@@ -21,14 +21,16 @@ import AllResult from '../screens/AllResult';
 import ResultDetails from '../screens/ResultDetails';
 import WalletBalance from '../screens/WalletBalance';
 import Notification from '../screens/Notification';
+import Test from '../screens/Test';
+import ChangePassword from '../screens/ChangePassword';
+import AboutUs from '../screens/AboutUs';
+import GameDescription from '../screens/GameDescription';
+import GameDescritptionDetails from '../screens/GameDescritptionDetails';
 
 
 const Stack = createNativeStackNavigator()
 
 const Main = () => {
-
-  
-
 
   return (
     <NavigationContainer>
@@ -56,6 +58,11 @@ const Main = () => {
                 <Stack.Screen  name="WalletBalance" component={WalletBalance}/>
                 <Stack.Screen  name="HomeLoading" component={HomeLoading}/>
                 <Stack.Screen  name="Notification" component={Notification}/>
+                <Stack.Screen  name="ChangePassword" component={ChangePassword}/>
+                <Stack.Screen  name="AboutUs" component={AboutUs}/>
+                <Stack.Screen  name="GameDescription" component={GameDescription}/>
+                <Stack.Screen  name="GameDescritptionDetails" component={GameDescritptionDetails}/>
+                <Stack.Screen  name="Test" component={Test}/>
             </Stack.Group>
         </Stack.Navigator>
 
