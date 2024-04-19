@@ -126,7 +126,7 @@ const Result = ({route}) => {
                   style={{
                     height: heightPercentageToDP(35),
                     backgroundColor: COLORS.grayHalfBg,
-                    marginTop: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(-4),
                     borderRadius: heightPercentageToDP(1),
                   }}>
                   <View
@@ -138,7 +138,7 @@ const Result = ({route}) => {
                     {/** Top view left container */}
                     <View
                       style={{
-                        flex: 5,
+                        flex: 4,
                         justifyContent: 'center',
                         alignItems: 'center',
                       }}>
@@ -147,6 +147,7 @@ const Result = ({route}) => {
                           fontFamily: FONT.Montserrat_Regular,
                           fontSize: heightPercentageToDP(3),
                           marginTop: heightPercentageToDP(1),
+                          color: COLORS.black
                         }}>
                         {filteredData[0].lotlocation.lotlocation}
                       </Text>
@@ -160,8 +161,8 @@ const Result = ({route}) => {
                       </GradientText>
                     </View>
   
-                    {/** Top view right container */}
-                    <View
+                     {/** Top view right container */}
+                     <View
                       style={{
                         flex: 1,
                         backgroundColor: COLORS.gray2,
@@ -172,7 +173,8 @@ const Result = ({route}) => {
                           transform: [{rotate: '90deg'}],
                           color: COLORS.black,
                           fontFamily: FONT.Montserrat_SemiBold,
-                          fontSize: heightPercentageToDP(1.5),
+                          fontSize: heightPercentageToDP(2),
+                        
                         }}>
                         {filteredData[0].lottime.lottime}
                       </Text>
@@ -209,6 +211,7 @@ const Result = ({route}) => {
                       style={{
                         fontFamily: FONT.Montserrat_Regular,
                         fontSize: heightPercentageToDP(2),
+                        color: COLORS.black
                       }}>
                       {filteredData[0].lotdate.lotdate}
                     </Text>
@@ -247,5 +250,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color:COLORS.black
   },
 });

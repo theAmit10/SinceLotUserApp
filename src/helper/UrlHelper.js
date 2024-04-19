@@ -12,10 +12,20 @@ const DATE_API = server + 'result/searchdate';
 const ALL_RESULT_API = server + 'result/allresult';
 const RESULT_API = server + 'result/searchresult';
 const RESULT_ACCORDING_TO_LOCATION_API = server + 'result/allresultlocation';
+const NEXT_RESULT_API = server + 'result/nextresult';
 const GET_ALL_PROMOTIONS = server + 'user/getallpromotion';
+
+
 
 // For Updating User Profile
 const UPDATE_USER_PROFILE_API = server + 'user/updateprofile';
+const USER_PROFILE_PIC_API = server + 'user/updateprofilepic';
+
+const CHANGE_PASSWORD_API = server + 'user/changepassword';
+
+// For All Promtion 
+const ALL_PROMOTIONS_API = server + 'user/getallpromotion';
+const ALL_ABOUT_API = server + 'user/getallabout';
 
 export default {
   LOGIN_API,
@@ -31,5 +41,10 @@ export default {
   RESULT_API,
   UPDATE_USER_PROFILE_API,
   RESULT_ACCORDING_TO_LOCATION_API,
-  GET_ALL_PROMOTIONS
+  GET_ALL_PROMOTIONS,
+  NEXT_RESULT_API,
+  ALL_PROMOTIONS_API,
+  USER_PROFILE_PIC_API,
+  CHANGE_PASSWORD_API,
+  ALL_ABOUT_API
 };

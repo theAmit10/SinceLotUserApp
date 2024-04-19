@@ -26,6 +26,10 @@ import ChangePassword from '../screens/ChangePassword';
 import AboutUs from '../screens/AboutUs';
 import GameDescription from '../screens/GameDescription';
 import GameDescritptionDetails from '../screens/GameDescritptionDetails';
+import UploadProfilePicture from '../screens/UploadProfilePicture';
+import ForgotPassword from '../screens/ForgotPassword';
+import ChangeEmail from '../screens/ChangeEmail';
+import SignUp from '../screens/SignUp';
 
 
 const Stack = createNativeStackNavigator()
@@ -39,6 +43,7 @@ const Main = () => {
         initialRouteName="SplashScreen"
         >
             <Stack.Group>
+                <Stack.Screen  name="UploadProfilePicture" component={UploadProfilePicture}/>
                 <Stack.Screen  name="Home" component={Home}/>
                 <Stack.Screen  name="Login" component={Login}/>
                 <Stack.Screen  name="Register" component={Register}/>
@@ -63,6 +68,9 @@ const Main = () => {
                 <Stack.Screen  name="GameDescription" component={GameDescription}/>
                 <Stack.Screen  name="GameDescritptionDetails" component={GameDescritptionDetails}/>
                 <Stack.Screen  name="Test" component={Test}/>
+                <Stack.Screen  name="ForgotPassword" component={ForgotPassword}/>
+                <Stack.Screen  name="ChangeEmail" component={ChangeEmail}/>
+                <Stack.Screen  name="SignUp" component={SignUp}/>
             </Stack.Group>
         </Stack.Navigator>
 

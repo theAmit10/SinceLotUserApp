@@ -113,16 +113,18 @@ const Search = () => {
             <Fontisto
               name={'search'}
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
-                fontFamily: FONT.SF_PRO_REGULAR,
-                fontSize: heightPercentageToDP(2)
+                fontFamily: FONT.Montserrat_Regular,
+                fontSize: heightPercentageToDP(2.5),
+                color: COLORS.black
               }}
               placeholder="Search for location"
+              placeholderTextColor={COLORS.black}
               label="Search"
               onChangeText={handleSearch}
             />
@@ -148,14 +150,24 @@ const Search = () => {
                           ...styles.item,
                           backgroundColor:
                             index % 2 === 0 ? COLORS.lightDarkGray : COLORS.grayHalfBg,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between'
                         }}>
                         <Text
                           style={{
                             color: COLORS.black,
-                            fontFamily: FONT.HELVETICA_BOLD,
-                            fontSize: heightPercentageToDP(2),
+                            fontFamily: FONT.Montserrat_SemiBold,
+                            fontSize: heightPercentageToDP(2.5),
                           }}>
                           {item.lotlocation}
+                        </Text>
+                        <Text
+                          style={{
+                            color: COLORS.black,
+                            fontFamily: FONT.Montserrat_Regular,
+                            fontSize: heightPercentageToDP(2),
+                          }}>
+                          Max {item.maximumRange}
                         </Text>
                       </TouchableOpacity>
                     )}
@@ -186,6 +198,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color:COLORS.black
   },
   container: {
     justifyContent: 'center',

@@ -14,6 +14,7 @@ import Toast from 'react-native-toast-message';
 import DocumentPicker from 'react-native-document-picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
 import { loadProfile } from '../../redux/actions/userAction';
+import { serverName } from '../../redux/store';
 
 const ProfileBackground = () => {
   const navigation = useNavigation();
@@ -189,18 +190,31 @@ const ProfileBackground = () => {
             height: heightPercentageToDP(20),
             zIndex: 2,
             position: 'absolute',
-            top: heightPercentageToDP(-2),
+            top: heightPercentageToDP(-3),
             left: heightPercentageToDP(4),
           }}>
-          <Image
-            // source={{ uri: 'https://imgs.search.brave.com/bNjuaYsTPw2b4yerAkKyk82fwZ9sNFwkwb3JMnX7qBg/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE1/NDU5OTYxMjQtMDUw/MWViYWU4NGQwP3E9/ODAmdz0xMDAwJmF1/dG89Zm9ybWF0JmZp/dD1jcm9wJml4bGli/PXJiLTQuMC4zJml4/aWQ9TTN3eE1qQTNm/REI4TUh4elpXRnlZ/Mmg4TWpCOGZHWmhZ/MlY4Wlc1OE1IeDhN/SHg4ZkRBPQ.jpeg' }}
-            source={imageSource}
-            resizeMode="cover"
-            style={{
-              height: heightPercentageToDP(20),
+          
+
+          {user?.avatar?.url ? (
+            <Image
+              source={{uri: `${serverName}/uploads/${user?.avatar.url}`}}
+              resizeMode="cover"
+              style={{
+                height: heightPercentageToDP(20),
               width: heightPercentageToDP(20),
-            }}
-          />
+              }}
+            />
+          ) : (
+            <Image
+              source={imageSource}
+              resizeMode="cover"
+              style={{
+                height: heightPercentageToDP(20),
+                width: heightPercentageToDP(20),
+              }}
+            />
+          )}
+
         </TouchableOpacity>
 
         <View
@@ -216,6 +230,9 @@ const ProfileBackground = () => {
           <GradientText style={{...styles.textStyle}}>{user? user.name: ""}</GradientText>
           <GradientText style={styles.textStyleEmail}>
           {user? user.email: ""}
+          </GradientText>
+          <GradientText style={styles.textStyleEmail}>
+            User ID - {user ? user.userId : ''}
           </GradientText>
         </View>
 
@@ -277,9 +294,11 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color:COLORS.darkGray,
   },
   textStyleEmail: {
     fontSize: heightPercentageToDP(2),
     fontFamily: FONT.Montserrat_Bold,
+    color:COLORS.darkGray,
   },
 });

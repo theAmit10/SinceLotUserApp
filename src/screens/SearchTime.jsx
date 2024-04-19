@@ -141,16 +141,18 @@ const SearchTime = ({ route }) => {
             <Fontisto
               name={'search'}
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
-                fontFamily: FONT.SF_PRO_REGULAR,
-                fontSize: heightPercentageToDP(2)
+                fontFamily: FONT.Montserrat_Regular,
+                fontSize: heightPercentageToDP(2.5),
+                color: COLORS.black
               }}
               placeholder="Search for time"
+              placeholderTextColor={COLORS.black}
               label="Search"
               onChangeText={handleSearch}
             />
@@ -182,8 +184,8 @@ const SearchTime = ({ route }) => {
                   <Text
                     style={{
                       color: COLORS.black,
-                      fontFamily: FONT.HELVETICA_BOLD,
-                      fontSize: heightPercentageToDP(2),
+                      fontFamily: FONT.Montserrat_SemiBold,
+                      fontSize: heightPercentageToDP(2.5),
                     }}>
                     {item.lottime}
                   </Text>
@@ -214,6 +216,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color:COLORS.black
   },
   container: {
     justifyContent: 'center',

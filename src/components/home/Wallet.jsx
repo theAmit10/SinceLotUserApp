@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {heightPercentageToDP} from 'react-native-responsive-screen';
+import {heightPercentageToDP, widthPercentageToDP} from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../../assets/constants';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,6 +11,7 @@ const Wallet = ({wallet}) => {
     <View
       style={{
         height: heightPercentageToDP(15),
+        width: widthPercentageToDP(90),
         backgroundColor: COLORS.grayHalfBg,
         marginTop: heightPercentageToDP(2),
         borderRadius: heightPercentageToDP(1),
@@ -52,6 +53,7 @@ const Wallet = ({wallet}) => {
           padding: heightPercentageToDP(1.5),
           borderRadius: heightPercentageToDP(1),
           marginStart: heightPercentageToDP(-3),
+          
         }}>
         <Ionicons
           name={'wallet'}
@@ -64,6 +66,7 @@ const Wallet = ({wallet}) => {
           fontSize: heightPercentageToDP(3),
           fontFamily: FONT.Montserrat_Bold,
           paddingEnd: heightPercentageToDP(2),
+          minWidth: heightPercentageToDP(15)
         }}>
         ₹ {wallet.balance}
       </GradientText>

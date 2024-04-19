@@ -47,7 +47,7 @@ export const login = (email, password) => async dispatch => {
     console.log(error.response);
 
     dispatch({
-      type: 'loginError',
+      type: 'loginFail',
       payload: error.response.data.message,
     });
   }
@@ -116,9 +116,10 @@ export const logout = accesstoken => async dispatch => {
   }
 };
 
+
 // Getting Registered
-export const register = (name, email, password) => async dispatch => {
-  console.log('Registering User');
+export const register = (name,email,password) => async dispatch => {
+  console.log("Registering User")
   try {
     dispatch({
       type: 'registerRequest',
@@ -126,10 +127,12 @@ export const register = (name, email, password) => async dispatch => {
     const {data} = await axios.post(
       UrlHelper.REGISTER_API,
       {
-        name,
-        email,
-        password,
-      },
+          name,
+          email,
+          password,
+          role: 'admin'
+      }
+  ,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +140,13 @@ export const register = (name, email, password) => async dispatch => {
       },
     );
 
-    console.log('register data :: ' + data);
+    AsyncStorage.setItem("accesstoken",data.token)
+    dispatch({
+      type: 'getaccesstoken',
+      payload: data.token,
+    });
+
+    console.log("register data :: "+JSON.stringify(data))
 
     dispatch({
       type: 'registerSuccess',
@@ -153,6 +162,44 @@ export const register = (name, email, password) => async dispatch => {
     });
   }
 };
+
+// // Getting Registered
+// export const register = (name, email, password) => async dispatch => {
+//   console.log('Registering User');
+//   try {
+//     dispatch({
+//       type: 'registerRequest',
+//     });
+//     const {data} = await axios.post(
+//       UrlHelper.REGISTER_API,
+//       {
+//         name,
+//         email,
+//         password,
+//       },
+//       {
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       },
+//     );
+
+//     console.log('register data :: ' + data);
+
+//     dispatch({
+//       type: 'registerSuccess',
+//       payload: data.message,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     console.log(error.response.data.message);
+
+//     dispatch({
+//       type: 'registerFail',
+//       payload: error.response.data.message,
+//     });
+//   }
+// };
 
 // Getting Accesstoken
 export const getUserAccessToken = token => async dispatch => {
@@ -203,3 +250,61 @@ export const updateProfile = (name, accesstoken) => async dispatch => {
     });
   }
 };
+
+// Load All PROMOTION
+export const loadAllPromotion = (accesstoken) => async dispatch => {
+  try {
+    dispatch({
+      type: 'getAllPromotionRequest',
+  });
+  
+    const {data} = await axios.get(UrlHelper.ALL_PROMOTIONS_API, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+  
+    dispatch({
+      type: 'getAllPromotionSuccess',
+      payload: data.promotions,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response);
+  
+    dispatch({
+      type: 'getAllPromotionFail',
+      payload: error.response.data.message,
+    });
+  }
+  };
+
+
+
+  // Load All About Us
+export const loadAllAboutUs = (accesstoken) => async dispatch => {
+  try {
+    dispatch({
+      type: 'getAllAboutRequest',
+  });
+  
+    const {data} = await axios.get(UrlHelper.ALL_ABOUT_API, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+  
+    dispatch({
+      type: 'getAllAboutSuccess',
+      payload: data.aboutus,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response);
+  
+    dispatch({
+      type: 'getAllAboutFail',
+      payload: error.response.data.message,
+    });
+  }
+  };

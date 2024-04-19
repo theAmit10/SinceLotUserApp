@@ -7,6 +7,8 @@ export const resultReducer = createReducer(
     result: {},
     resultAccordingLocation: [],
     loadingForResultAccordingLocation: false,
+    loaderForNextResult: false,
+    nextResult: [],
   },
   builder => {
     builder
@@ -18,6 +20,9 @@ export const resultReducer = createReducer(
       })
       .addCase('getAllResultAccordingLocationRequest', state => {
         state.loadingForResultAccordingLocation = true;
+      })
+      .addCase('getNextResultRequest', state => {
+        state.loaderForNextResult = true;
       });
 
     builder
@@ -32,6 +37,10 @@ export const resultReducer = createReducer(
       .addCase('getAllResultAccordingLocationSuccess', (state, action) => {
         state.loadingForResultAccordingLocation = false;
         state.resultAccordingLocation = action.payload;
+      })
+      .addCase('getNextResultSuccess', (state, action) => {
+        state.loaderForNextResult = false;
+        state.nextResult = action.payload;
       });
 
     builder
@@ -45,6 +54,10 @@ export const resultReducer = createReducer(
       })
       .addCase('getAllResultAccordingLocationFail', (state, action) => {
         state.loadingForResultAccordingLocation = false;
+        state.error = action.payload;
+      })
+      .addCase('getNextResultFail', (state, action) => {
+        state.loaderForNextResult = false;
         state.error = action.payload;
       });
 
