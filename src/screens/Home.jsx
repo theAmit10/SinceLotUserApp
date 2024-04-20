@@ -310,12 +310,14 @@ const Home = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><span>${homeResult?.lotlocation?.lotlocation}</span></td>
-                    <td><span>${homeResult?.lotdate?.lotdate}</span></td>
-                    <td><span>${homeResult?.lottime?.lottime}</span></td>
-                    <td><span>${homeResult?.resultNumber}</span></td>
-                  </tr>
+                ${resultAccordingLocation?.map(item => `
+                <tr>
+                  <td><span>${item.lotlocation?.lotlocation}</span></td>
+                  <td><span>${item.lotdate?.lotdate}</span></td>
+                  <td><span>${item.lottime?.lottime}</span></td>
+                  <td><span>${item.resultNumber}</span></td>
+                </tr>
+              `).join('')}
                 </tbody>
               </table>
               
