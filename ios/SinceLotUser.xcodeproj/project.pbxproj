@@ -10,7 +10,6 @@
 		00E356F31AD99517003FC87E /* SinceLotUserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SinceLotUserTests.m */; };
 		049270AF1D2240168A625153 /* Helvetica.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB881E37BC34482D8EEE655F /* Helvetica.ttf */; };
 		096D06604AEE402C9FAAC651 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC098421A44144E6A865034B /* Montserrat-Regular.ttf */; };
-		0C80B921A6F3F58F76C31292 /* libPods-SinceLotUser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-SinceLotUser.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -18,12 +17,13 @@
 		3303E6453D50462DBCEBE540 /* SFPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */; };
 		520C77EA857442A6AF3D190F /* ZCOOL-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */; };
 		6F2C488BA24F4A63B390AFC3 /* SFPRO-MEDIUM.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 46ACC0214E6949EB9C86A259 /* SFPRO-MEDIUM.OTF */; };
-		7699B88040F8A987B510C191 /* libPods-SinceLotUser-SinceLotUserTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-SinceLotUser-SinceLotUserTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		83FD2889146045F0B2DA311F /* profileplaceholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C8E5C98B2A78453DB2170445 /* profileplaceholder.jpg */; };
 		A81D27FEA1AB4E25A9D6A72F /* Helvetica-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C75C2CF74ABF42398DE03600 /* Helvetica-Bold.ttf */; };
 		AAEC659F3B3346A5A9517557 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F5363302D00347A98EDEAFA8 /* logo.png */; };
+		AE6DA2273D619A7EE0F576D2 /* Pods_SinceLotUser_SinceLotUserTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA158DF48A2B27B7C876AA6 /* Pods_SinceLotUser_SinceLotUserTests.framework */; };
 		C72D079817BB485083AA4770 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1355EE2E22664CE8AFDC3223 /* Montserrat-Bold.ttf */; };
+		E4919C467CCC0B36268C9013 /* Pods_SinceLotUser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 624956F02C1206A6A7EAF73C /* Pods_SinceLotUser.framework */; };
 		F5C68438D52B4D75AC4BE9B5 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
@@ -48,14 +48,14 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SinceLotUser/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SinceLotUser/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SinceLotUser/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-SinceLotUser-SinceLotUserTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SinceLotUser-SinceLotUserTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-REGULAR.OTF"; path = "../assets/fonts/SFPRO-REGULAR.OTF"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-SinceLotUser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser.debug.xcconfig"; path = "Target Support Files/Pods-SinceLotUser/Pods-SinceLotUser.debug.xcconfig"; sourceTree = "<group>"; };
 		46ACC0214E6949EB9C86A259 /* SFPRO-MEDIUM.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-MEDIUM.OTF"; path = "../assets/fonts/SFPRO-MEDIUM.OTF"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-SinceLotUser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser.release.xcconfig"; path = "Target Support Files/Pods-SinceLotUser/Pods-SinceLotUser.release.xcconfig"; sourceTree = "<group>"; };
 		5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig"; path = "Target Support Files/Pods-SinceLotUser-SinceLotUserTests/Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-SinceLotUser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SinceLotUser.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		624956F02C1206A6A7EAF73C /* Pods_SinceLotUser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SinceLotUser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DA158DF48A2B27B7C876AA6 /* Pods_SinceLotUser_SinceLotUserTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SinceLotUser_SinceLotUserTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AA7B8109E274503A050D9A5 /* dummy_user.jpeg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = dummy_user.jpeg; path = ../assets/image/dummy_user.jpeg; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SinceLotUser/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-SinceLotUser-SinceLotUserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser-SinceLotUserTests.release.xcconfig"; path = "Target Support Files/Pods-SinceLotUser-SinceLotUserTests/Pods-SinceLotUser-SinceLotUserTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-SinceLotUser-SinceLotUserTests.a in Frameworks */,
+				AE6DA2273D619A7EE0F576D2 /* Pods_SinceLotUser_SinceLotUserTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,7 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-SinceLotUser.a in Frameworks */,
+				E4919C467CCC0B36268C9013 /* Pods_SinceLotUser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,8 +122,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-SinceLotUser.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-SinceLotUser-SinceLotUserTests.a */,
+				624956F02C1206A6A7EAF73C /* Pods_SinceLotUser.framework */,
+				6DA158DF48A2B27B7C876AA6 /* Pods_SinceLotUser_SinceLotUserTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -613,6 +613,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
@@ -685,6 +696,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,

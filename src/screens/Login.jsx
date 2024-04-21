@@ -1,5 +1,6 @@
 
 import {
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -123,7 +124,7 @@ const Login = () => {
 
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
 
       <LoginBackground />
 
@@ -190,7 +191,7 @@ const Login = () => {
                   fontFamily: FONT.SF_PRO_REGULAR,
                   color:COLORS.black
                 }}
-                placeholder="Email"
+                placeholder="Email or Phone Number"
                 label="Email"
                 placeholderTextColor={COLORS.black}
                 value={email}
@@ -303,7 +304,7 @@ const Login = () => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

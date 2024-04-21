@@ -27,6 +27,10 @@ const CHANGE_PASSWORD_API = server + 'user/changepassword';
 const ALL_PROMOTIONS_API = server + 'user/getallpromotion';
 const ALL_ABOUT_API = server + 'user/getallabout';
 
+// For Reset and Forgot password
+const FORGOT_PASSWORD_API = server + 'user/forgetpassword';
+
+
 export default {
   LOGIN_API,
   USER_PROFILE_API,
@@ -46,5 +50,6 @@ export default {
   ALL_PROMOTIONS_API,
   USER_PROFILE_PIC_API,
   CHANGE_PASSWORD_API,
-  ALL_ABOUT_API
+  ALL_ABOUT_API,
+  FORGOT_PASSWORD_API
 };

@@ -21,92 +21,79 @@ import axios from 'axios';
 import UrlHelper from '../helper/UrlHelper';
 import Loading from '../components/helpercComponent/Loading';
 
-const OtpVerification = () => {
-  const navigation = useNavigation();
+const ResetPassword = ({route}) => {
 
-  const inputs = Array(6)
-    .fill(0)
-    .map((_, index) => useRef(null));
-  const [otp, setOtp] = useState('');
+    const {otp} = route.params
+
+  const navigation = useNavigation();
+  const [password, setPassword] = useState('');
+
   const [showProgressBar, setProgressBar] = useState(false);
 
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const handleChangeText = (text, index) => {
-    const newOtp = otp.slice(0, index) + text + otp.slice(index + 1);
-    setOtp(newOtp);
-    if (text.length === 1 && index < inputs.length - 1) {
-      inputs[index + 1].current.focus();
-    }
-  };
-
-  const handleCheckOtp = () => {
-    if (otp.length === 6) {
-      submitHandler();
-      // Alert.alert('Success', 'OTP Entered Successfully :: ' + otp);
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Please enter all six digits of the OTP',
-      });
-    }
+  // For Password Visibility
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   const submitHandler = async () => {
-    console.log('Working on OTP verifcation ');
-    
-    Toast.show({
-      type: 'info',
-      text1: 'Processing',
-    });
-   setProgressBar(true);
+    console.log('Working on Reset Password ');
 
-   try {
-
-    console.log("OTP :: "+otp)
-
-     const {data} = await axios.put(
-      UrlHelper.FORGOT_PASSWORD_API,
-      {
-        otp: parseInt(otp),
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-
-    console.log("datat :: "+data)
-  
-    setProgressBar(false);
-     
-     
-   } catch (error) {
-    console.log(error)
-    console.log(error.response.data.message)
-    setProgressBar(false);
-  
-    if(error.response.data.message === "Please enter new password ")
-    {
-      navigation.navigate("ResetPassword",{
-        otp: otp
-      })
-    }else if(error.response.data.message === "Incorrect OTP or OTP has been expired"){
+    if (!password) {
       Toast.show({
         type: 'error',
-        text1: error.response.data.message,
+        text1: 'Enter password',
       });
-    } 
-    else{
+    } else if (password.length < 6) {
       Toast.show({
         type: 'error',
-        text1: 'Something went wrong',
+        text1: 'Password must be atleast 6 characters long',
       });
-    } 
-   }
+    } else {
+      Toast.show({
+        type: 'info',
+        text1: 'Processing',
+      });
+      setProgressBar(true);
 
+      try {
+        const {data} = await axios.put(
+          UrlHelper.FORGOT_PASSWORD_API,
+          {
+            otp: otp,
+            password: password,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
 
-    
+        console.log('datat :: ' + data);
+
+        Toast.show({
+          type: 'success',
+          text1: 'OTP sent to mail',
+          text2: data.message,
+        });
+        setProgressBar(false);
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Login'}],
+        });
+      } catch (error) {
+        setProgressBar(false);
+        console.log(error)
+        console.log(error.response.data.message)
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+        });
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -146,7 +133,7 @@ const OtpVerification = () => {
             flex: 1,
             margin: heightPercentageToDP(2),
           }}>
-          <GradientText style={styles.textStyle}>Otp Verification</GradientText>
+          <GradientText style={styles.textStyle}>Reset Password</GradientText>
 
           <View
             style={{
@@ -154,45 +141,58 @@ const OtpVerification = () => {
               paddingVertical: heightPercentageToDP(2),
               gap: heightPercentageToDP(2),
             }}>
-
             <View
               style={{
                 padding: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
-                alignItems: 'center',
-                justifyContent: 'center'
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
               }}>
               <Text
                 style={{
                   color: COLORS.black,
                   fontFamily: FONT.Montserrat_Regular,
-                  textAlign: 'center'
                 }}>
-                Enter the One time password sent to your Account
+                Please enter a new password
               </Text>
             </View>
             {/** Otp container */}
 
-            <View style={styles.otpContainer}>
-              {inputs.map((input, index) => (
-                <TextInput
-                  key={index}
-                  style={{
-                    color: COLORS.darkGrays,
-                    borderColor: COLORS.gray2,
-                    backgroundColor: COLORS.white,
-                    ...styles.userOtpInput,
-                  }}
-                  maxLength={1}
-                  keyboardType="numeric"
-                  onChangeText={text => handleChangeText(text, index)}
-                  ref={input}
-                  autoFocus={index === 0}
-                />
-              ))}
+            {/** Password container */}
+            <View
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+              }}>
+              <Entypo
+                name={'lock'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+              />
+              <TextInput
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.black,
+                }}
+                placeholder="Password"
+                placeholderTextColor={COLORS.black}
+                value={password}
+                onChangeText={text => setPassword(text)}
+                secureTextEntry={!passwordVisible}
+              />
+              <Entypo
+                onPress={togglePasswordVisibility}
+                name={passwordVisible ? 'eye' : 'eye-with-line'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+              />
             </View>
-
-          
 
             {showProgressBar ? (
               <View
@@ -205,7 +205,7 @@ const OtpVerification = () => {
               </View>
             ) : (
               <TouchableOpacity
-              onPress={handleCheckOtp}
+                onPress={submitHandler}
                 style={{
                   backgroundColor: COLORS.blue,
                   padding: heightPercentageToDP(2),
@@ -222,8 +222,6 @@ const OtpVerification = () => {
                 </Text>
               </TouchableOpacity>
             )}
-
-            
           </View>
         </View>
       </View>
@@ -231,13 +229,13 @@ const OtpVerification = () => {
   );
 };
 
-export default OtpVerification;
+export default ResetPassword;
 
 const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
-    color: COLORS.black
+    color: COLORS.black,
   },
   userOtpInput: {
     fontFamily: FONT.Montserrat_Bold,

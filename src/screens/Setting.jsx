@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -72,14 +73,14 @@ const Setting = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background/>
 
       {/** Login Cointainer */}
 
       <View
         style={{
-          height: heightPercentageToDP(70),
+          height: heightPercentageToDP(65),
           width: widthPercentageToDP(100),
           backgroundColor: COLORS.white_s,
           borderTopLeftRadius: heightPercentageToDP(5),
@@ -278,7 +279,8 @@ const Setting = () => {
             {/** Update Email */}
            
 
-            <TouchableOpacity
+
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate('ChangeEmail')}
               style={{
                 height: heightPercentageToDP(7),
@@ -314,7 +316,7 @@ const Setting = () => {
                 size={heightPercentageToDP(3)}
                 color={COLORS.darkGray}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             
 
@@ -361,7 +363,7 @@ const Setting = () => {
           </ScrollView>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

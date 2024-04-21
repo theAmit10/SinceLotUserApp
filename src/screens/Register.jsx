@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -141,14 +142,14 @@ const Register = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <LoginBackground />
 
       {/** Login Cointainer */}
 
       <View
         style={{
-          height: heightPercentageToDP(80),
+          height: heightPercentageToDP(75),
           width: widthPercentageToDP(100),
           backgroundColor: COLORS.white_s,
           borderTopLeftRadius: heightPercentageToDP(5),
@@ -406,7 +407,7 @@ const Register = ({route}) => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

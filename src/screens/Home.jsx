@@ -45,6 +45,7 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {serverName} from '../redux/store';
+import LinearGradient from 'react-native-linear-gradient';
 
 const images = [
   'https://imgs.search.brave.com/PvhNVIxs9m8r1whelc9RPX2dMQ371Xcsk3Lf2dCiVHQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvYmlnLXNhbGUt/YmFubmVyLWRlc2ln/bi1zcGVjaWFsLW9m/ZmVyLXVwLTUwLW9m/Zi1yZWFkeS1wcm9t/b3Rpb24tdGVtcGxh/dGUtdXNlLXdlYi1w/cmludC1kZXNpZ25f/MTEwNDY0LTU3MC5q/cGc_c2l6ZT02MjYm/ZXh0PWpwZw',
@@ -54,6 +55,10 @@ const images = [
 
 const Home = () => {
   const {user, accesstoken, loading} = useSelector(state => state.user);
+
+  const [nextResultTime, setNextResultTime] = useState(10);
+  const [timeDifference, setTimeDifference] = useState(3);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -148,6 +153,7 @@ const Home = () => {
     loaderForNextResult,
     filteredData,
     nextResultTime,
+    timeDifference,
   ]);
 
   const [showDate, setShowDate] = useState(true);
@@ -161,11 +167,14 @@ const Home = () => {
     console.log('Mine time');
     console.log(extractTime(item.nextresulttime));
 
-    const {hour, minute} = extractTime(item.nextresulttime);
+    const {hour, minute, period} = extractTime(item.nextresulttime);
     console.log(hour);
     console.log(minute);
+    console.log(period);
     // setNextResultTime(hour);
-    settingTimerForNextResult(hour, minute);
+    const hour_time = hour + ' ' + period;
+    console.log('Hour_time :: ' + hour_time);
+    settingTimerForNextResult(hour, minute, period);
 
     dispatch(
       getAllResultAccordingToLocation(accesstoken, item.lotlocation._id),
@@ -194,8 +203,8 @@ const Home = () => {
     setCurrentPage(page);
   };
 
-  console.log('Promotion :: ' + promotions.length);
-  console.log('Next result  :: ' + nextResult.length);
+  // console.log('Promotion :: ' + promotions.length);
+  // console.log('Next result  :: ' + nextResult.length);
 
   // For Countdown Timer
 
@@ -231,6 +240,8 @@ const Home = () => {
     };
   }
 
+  //
+
   //   // Example usage:
   // const timeString1 = "09-00 AM";
   // const timeString2 = "09:00 AM";
@@ -238,9 +249,6 @@ const Home = () => {
   //  console.log(extractTime(timeString1)); // { hour: "09", minute: "00", period: "AM" }
   // console.log(extractTime(timeString2)); // { hour: "09", minute: "00", period: "AM" }
 
-  const [nextResultTime, setNextResultTime] = useState(9);
-  const [timeDifference, setTimeDifference] = useState(3);
-  const [currentTime, setCurrentTime] = useState(new Date());
   useEffect(() => {
     // Update current time every second
     const interval = setInterval(() => {
@@ -249,7 +257,7 @@ const Home = () => {
 
     // Clear interval on component unmount
     return () => clearInterval(interval);
-  }, [homeResult]);
+  }, [homeResult, currentTime, timeDifference]);
 
   // Current time
   // const [currentTime, setCurrentTime] = useState(new Date());
@@ -272,14 +280,64 @@ const Home = () => {
   // // Calculate time difference between current time and lot time
   // const timeDifference = lotTime.getTime() - currentTime.getTime();
 
-  const settingTimerForNextResult = (hour, minute) => {
+  // const settingTimerForNextResult = (hour, minute,period) => {
+  //   const lotTime = new Date();
+
+  //   lotTime.setHours(hour); // Set lot time hours (example: 8 AM)
+  //   lotTime.setMinutes(minute); // Set lot time minutes (example: 00)
+  //   lotTime.setSeconds(0); // Set lot time seconds (example: 00)
+
+  //   console.log("Setting timer")
+  //   console.log("lottime :: "+lotTime.getTime())
+  //   console.log("currenttime :: "+currentTime.getTime())
+  //   console.log("Both Difference :: ",lotTime.getTime() - currentTime.getTime())
+
+  //   // Calculate time difference between current time and lot time
+  //   setTimeDifference(lotTime.getTime() - currentTime.getTime());
+  // };
+
+  const settingTimerForNextResult = async (hour, minute, period) => {
+    let hour24 = parseInt(hour);
+
+    if (period.toLowerCase() === 'pm' && hour24 < 12) {
+      hour24 += 12;
+    } else if (period.toLowerCase() === 'am' && hour24 === 12) {
+      hour24 = 0;
+    }
+
     const lotTime = new Date();
-    lotTime.setHours(hour); // Set lot time hours (example: 8 AM)
-    lotTime.setMinutes(minute); // Set lot time minutes (example: 00)
-    lotTime.setSeconds(0); // Set lot time seconds (example: 00)
+    lotTime.setHours(hour24);
+    lotTime.setMinutes(parseInt(minute));
+    lotTime.setSeconds(0);
+
+    setTimeDifference(lotTime.getTime() - currentTime.getTime());
+
+    // const lotTime = new Date();
+
+    // lotTime.setHours(hour); // Set lot time hours (example: 8 AM)
+    // lotTime.setMinutes(minute); // Set lot time minutes (example: 00)
+    // lotTime.setSeconds(0); // Set lot time seconds (example: 00)
+
+    console.log('Setting timer');
+    console.log('lottime :: ' + lotTime.getTime());
+    console.log('currenttime :: ' + currentTime.getTime());
+    console.log(
+      'Both Difference :: ',
+      lotTime.getTime() - currentTime.getTime(),
+    );
 
     // Calculate time difference between current time and lot time
     setTimeDifference(lotTime.getTime() - currentTime.getTime());
+
+    // Ensure that data is loaded before setting the timer
+    await dispatch(getAllResult(accesstoken));
+    await dispatch(
+      getAllResultAccordingToLocation(
+        accesstoken,
+        homeResult?.lotlocation?._id,
+      ),
+    );
+    await dispatch(getNextResult(accesstoken, homeResult?.lotlocation?._id));
   };
 
   // FOR DOWNLOAD PDF
@@ -310,14 +368,18 @@ const Home = () => {
                   </tr>
                 </thead>
                 <tbody>
-                ${resultAccordingLocation?.map(item => `
+                ${resultAccordingLocation
+                  ?.map(
+                    item => `
                 <tr>
                   <td><span>${item.lotlocation?.lotlocation}</span></td>
                   <td><span>${item.lotdate?.lotdate}</span></td>
                   <td><span>${item.lottime?.lottime}</span></td>
                   <td><span>${item.resultNumber}</span></td>
                 </tr>
-              `).join('')}
+              `,
+                  )
+                  .join('')}
                 </tbody>
               </table>
               
@@ -456,13 +518,11 @@ const Home = () => {
 
                 {/** Profile name Container */}
                 <View>
-                  
-
                   <GradientText
                     style={{
                       fontSize: heightPercentageToDP(2),
                       fontFamily: FONT.Montserrat_Bold,
-                      color: COLORS.darkGray
+                      color: COLORS.darkGray,
                     }}>
                     User ID - {user ? user.userId : ''}
                   </GradientText>
@@ -567,25 +627,24 @@ const Home = () => {
                       flex: 5,
                       justifyContent: 'center',
                       alignItems: 'center',
-                    
                     }}>
-                      <View style={{
-                      alignSelf: 'flex-start',
-                      paddingStart: heightPercentageToDP(2)
-                      }}>
-                        <Text
+                    <View
                       style={{
-                        fontFamily: FONT.Montserrat_SemiBold,
-                        fontSize: heightPercentageToDP(4),
-                        marginTop: heightPercentageToDP(2),
-                        color: COLORS.black,
-                      }}
-                      numberOfLines={1}>
-                      {homeResult?.lotlocation?.lotlocation}
-                    </Text>
+                        alignSelf: 'flex-start',
+                        paddingStart: heightPercentageToDP(2),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          fontSize: heightPercentageToDP(4),
+                          marginTop: heightPercentageToDP(2),
+                          color: COLORS.black,
+                        }}
+                        numberOfLines={1}>
+                        {homeResult?.lotlocation?.lotlocation}
+                      </Text>
+                    </View>
 
-                      </View>
-                    
                     <Text
                       style={{
                         fontFamily: FONT.SF_PRO_REGULAR,
@@ -684,10 +743,9 @@ const Home = () => {
                               color: COLORS.grayHalfBg,
                               fontWeight: 'bold',
                             }}
-                            separatorStyle={{color: COLORS.black,
-                            marginTop: heightPercentageToDP(-2),
-                            
-                            
+                            separatorStyle={{
+                              color: COLORS.black,
+                              marginTop: heightPercentageToDP(-2),
                             }}
                             timeLabels={{
                               h: 'Hours',
@@ -701,7 +759,7 @@ const Home = () => {
                               color: COLORS.black,
                               fontFamily: FONT.Montserrat_SemiBold,
                               fontSize: heightPercentageToDP(4),
-                             
+
                               marginStart: heightPercentageToDP(-4),
                               marginBottom: heightPercentageToDP(8),
                             }}
@@ -768,28 +826,25 @@ const Home = () => {
                     {homeResult?.resultNumber}
                   </Text>
 
-                  <View style={{
-                    flex: 1,
-                    paddingEnd: heightPercentageToDP(2)
-                  }}>
-                      <View
+                  <View
                     style={{
-                      backgroundColor: COLORS.grayHalfBg,
-                      padding: heightPercentageToDP(0.5),
-                      borderRadius: heightPercentageToDP(1),
-                      alignSelf: 'flex-end',
-                      
+                      flex: 1,
+                      paddingEnd: heightPercentageToDP(2),
                     }}>
-                    <Ionicons
-                      name={'caret-down-circle-sharp'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
+                    <View
+                      style={{
+                        backgroundColor: COLORS.grayHalfBg,
+                        padding: heightPercentageToDP(0.5),
+                        borderRadius: heightPercentageToDP(1),
+                        alignSelf: 'flex-end',
+                      }}>
+                      <Ionicons
+                        name={'caret-down-circle-sharp'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </View>
                   </View>
-
-                  </View>
-
-                
                 </TouchableOpacity>
               </View>
             ) : (
@@ -845,7 +900,11 @@ const Home = () => {
                     {/** List of result in flatlist */}
 
                     <ScrollView nestedScrollEnabled={true}>
-                      <View
+                      <LinearGradient
+                        colors={[
+                            COLORS.white_s,
+                            COLORS.grayHalfBg,
+                        ]}
                         style={{
                           backgroundColor: COLORS.white,
                           height: heightPercentageToDP(27),
@@ -912,7 +971,7 @@ const Home = () => {
                             </TouchableOpacity>
                           ))
                         )}
-                      </View>
+                      </LinearGradient>
                     </ScrollView>
                   </View>
 
@@ -933,7 +992,7 @@ const Home = () => {
 
                         justifyContent: 'center',
                       }}>
-                      <View style={{position: 'absolute', top: 10, zIndex: 1}}>
+                         {hasTimePassed(homeResult?.nextresulttime) ? null : (<View style={{position: 'absolute', top: 10, zIndex: 1}}>
                         <View
                           style={{
                             justifyContent: 'center',
@@ -964,81 +1023,132 @@ const Home = () => {
                             {homeResult?.nextresulttime}
                           </Text>
                         </View>
-                      </View>
+                      </View>)}
 
-                      <View
+                      
+
+                      {hasTimePassed(homeResult?.nextresulttime) ? null : (<View
                         style={{
                           flex: 1,
                           justifyContent: 'flex-end',
                           borderRadius: heightPercentageToDP(2),
                         }}>
-                         <Countdown
-                            until={timeDifference / 1000} // Pass time difference in seconds
-                            onFinish={() => console.log('Timer Completed...')} // Callback when countdown finishes
-                            size={14}
-                            timeToShow={['H', 'M', 'S']}
-                            digitStyle={{
-                              backgroundColor: COLORS.grayHalfBg,
-                              borderWidth: 1,
-                              borderColor: COLORS.grayHalfBg,
-                            }}
-                            digitTxtStyle={{color: COLORS.black}}
-                            timeLabelStyle={{
-                              color: COLORS.grayHalfBg,
-                              fontWeight: 'bold',
-                            }}
-                            separatorStyle={{color: COLORS.black,
+                        <Countdown
+                          until={timeDifference / 1000} // Pass time difference in seconds
+                          onFinish={() => console.log('Timer Completed...')} // Callback when countdown finishes
+                          size={14}
+                          timeToShow={['H', 'M', 'S']}
+                          digitStyle={{
+                            backgroundColor: COLORS.grayHalfBg,
+                            borderWidth: 1,
+                            borderColor: COLORS.grayHalfBg,
+                          }}
+                          digitTxtStyle={{color: COLORS.black}}
+                          timeLabelStyle={{
+                            color: COLORS.grayHalfBg,
+                            fontWeight: 'bold',
+                          }}
+                          separatorStyle={{
+                            color: COLORS.black,
                             marginTop: heightPercentageToDP(-2),
-                            
-                            
-                            }}
-                            timeLabels={{
-                              h: 'Hours',
-                              m: 'Minutes',
-                              s: 'Seconds',
-                            }}
-                            showSeparator
-                            style={{
-                              flexDirection: 'row',
-                              transform: [{rotate: '90deg'}],
-                              color: COLORS.black,
-                              fontFamily: FONT.Montserrat_SemiBold,
-                              fontSize: heightPercentageToDP(4),
-                             
-                              marginStart: heightPercentageToDP(-4),
-                              marginBottom: heightPercentageToDP(10),
-                            }}
-                          />
-                      </View>
+                          }}
+                          timeLabels={{
+                            h: 'Hours',
+                            m: 'Minutes',
+                            s: 'Seconds',
+                          }}
+                          showSeparator
+                          style={{
+                            flexDirection: 'row',
+                            transform: [{rotate: '90deg'}],
+                            color: COLORS.black,
+                            fontFamily: FONT.Montserrat_SemiBold,
+                            fontSize: heightPercentageToDP(4),
+
+                            marginStart: heightPercentageToDP(-4),
+                            marginBottom: heightPercentageToDP(10),
+                          }}
+                        />
+                      </View>)}
+
+                      
                     </View>
                   )}
                 </View>
 
                 {/** Big Result bottom container */}
 
-                <TouchableOpacity
-                  onPress={checkAndRequestPermission}
+                <View
                   style={{
-                    backgroundColor: COLORS.blue,
-                    justifyContent: 'center',
-                    alignItems: 'center',
                     flexDirection: 'row',
-                    gap: heightPercentageToDP(1),
-                    zIndex: 2,
-                    borderRadius: heightPercentageToDP(1),
-                    height: heightPercentageToDP(5),
-                    marginBottom: heightPercentageToDP(2),
-                    marginHorizontal: heightPercentageToDP(2),
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+               
                   }}>
-                  <Text
+                  <TouchableOpacity
+                    onPress={() => setShowDate(true)}
+                    className="rounded-md p-2"
                     style={{
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.white_s,
+                      backgroundColor: COLORS.white_s,
+                      marginBottom: heightPercentageToDP(2),
+                      marginHorizontal: heightPercentageToDP(2),
+
                     }}>
-                    Download
-                  </Text>
-                </TouchableOpacity>
+                    <Ionicons
+                      name={'chevron-back'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.black}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={checkAndRequestPermission}
+                    style={{
+                      backgroundColor: COLORS.blue,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      gap: heightPercentageToDP(1),
+                      zIndex: 2,
+                      borderRadius: heightPercentageToDP(1),
+                      height: heightPercentageToDP(5),
+                      marginBottom: heightPercentageToDP(2),
+                      marginHorizontal: heightPercentageToDP(2),
+                      flex: 1,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.white_s,
+                      }}>
+                      Download
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                 {/* <TouchableOpacity
+                    onPress={checkAndRequestPermission}
+                    style={{
+                      backgroundColor: COLORS.blue,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      gap: heightPercentageToDP(1),
+                      zIndex: 2,
+                      borderRadius: heightPercentageToDP(1),
+                      height: heightPercentageToDP(5),
+                      marginBottom: heightPercentageToDP(2),
+                      marginHorizontal: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.white_s,
+                      }}>
+                      Download
+                    </Text>
+                  </TouchableOpacity> */}
               </View>
             )}
 

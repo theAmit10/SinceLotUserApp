@@ -1,11 +1,12 @@
 import {
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import LoginBackground from '../components/login/LoginBackground';
 import {
   heightPercentageToDP,
@@ -22,6 +23,11 @@ import {useDispatch} from 'react-redux';
 import {register} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
 import Loading from '../components/helpercComponent/Loading';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+
 
 const SignUp = () => {
   const [name, setName] = useState('');
@@ -31,7 +37,53 @@ const SignUp = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
+  const [firstNameVal, setFirstName] = useState('');
+  const [secondNameVal, setSecondName] = useState('');
+  const [profileImage, setProfileImage] = useState('');
+
   const navigation = useNavigation();
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '626784428402-26qav5d8c6gm9l6e8jri81ofdtvtqlie.apps.googleusercontent.com',
+       
+      // androidClientId: '191145196270-ru4ac3nj22665k2ldtvqjvd0c4361qiu.apps.googleusercontent.com',
+      // offlineAccess: true
+    });
+  }, []);
+
+  const GoogleSingUp = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signIn().then(result => {
+        console.log(result);
+
+
+        setEmail(result.user.email);
+        setFirstName(result.user.givenName);
+        setSecondName(result.user.familyName);
+        setProfileImage(result.user.photo);
+
+        navigation.navigate('GoogleAuthPassword', { data: result });
+      });
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        alert('User cancelled the login flow !');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert('Signin in progress');
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('Google play services not available or outdated !');
+        // play services not available or outdated
+      } else {
+        console.log(error);
+      }
+    }
+  };
+
+
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -144,7 +196,7 @@ const SignUp = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <LoginBackground />
 
       {/** Login Cointainer */}
@@ -255,7 +307,7 @@ const SignUp = () => {
             {/** Confirm Password container */}
 
             <TouchableOpacity
-              onPress={submitHandler}
+                onPress={GoogleSingUp}
               style={{
                 padding: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
@@ -309,7 +361,7 @@ const SignUp = () => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

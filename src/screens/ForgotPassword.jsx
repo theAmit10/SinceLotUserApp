@@ -29,12 +29,7 @@ import axios from 'axios';
   
   const ForgotPassword = () => {
     const [enterValue, setEnterValue] = useState('');
-    const {accesstoken} = useSelector(state => state.user);
-  
     const navigation = useNavigation();
-    
-    const dispatch = useDispatch();
-  
     const [showProgressBar,setProgressBar] = useState(false); 
 
   const updateProfileHandler  = async () => {
@@ -49,43 +44,44 @@ import axios from 'axios';
         type: 'info',
         text1: 'Processing',
       });
-    //  setProgressBar(true);
+     setProgressBar(true);
 
-    //  try {
+     try {
   
-    //    const {data} = await axios.put(
-    //     UrlHelper.UPDATE_USER_PROFILE_API,
-    //     {
-    //       email: enterValue,
-    //     },
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         Authorization: `Bearer ${accesstoken}`,
-    //       },
-    //     },
-    //   );
+       const {data} = await axios.post(
+        UrlHelper.FORGOT_PASSWORD_API,
+        {
+          email: enterValue,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
-    //   console.log("datat :: "+data)
+      console.log("datat :: "+data)
 
-    //   dispatch(loadProfile(accesstoken))
       
       
-    //    Toast.show({
-    //      type: 'success',
-    //      text1: data.message,
-    //    });
-    //    setProgressBar(false);
-    //    navigation.goBack();
-    //  } catch (error) {
-    //   setProgressBar(false);
-    //    Toast.show({
-    //      type: 'error',
-    //      text1: 'Something went wrong',
-    //    });
-    //    console.log(error);
+      
+       Toast.show({
+         type: 'success',
+         text1: 'OTP sent to mail',
+         text2: data.message
+       });
+       setProgressBar(false);
+       navigation.navigate("OtpVerification");
+       
+     } catch (error) {
+      setProgressBar(false);
+       Toast.show({
+         type: 'error',
+         text1: 'Something went wrong',
+       });
+       console.log(error);
 
-    //  }
+     }
    }
  };
 
