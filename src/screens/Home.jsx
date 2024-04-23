@@ -56,6 +56,8 @@ const images = [
 const Home = () => {
   const {user, accesstoken, loading} = useSelector(state => state.user);
 
+  const [showDate, setShowDate] = useState(true);
+
   const [nextResultTime, setNextResultTime] = useState(10);
   const [timeDifference, setTimeDifference] = useState(3);
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -77,14 +79,23 @@ const Home = () => {
   useEffect(() => {
     const backAction = () => {
       if (currentScreen === 'Home') {
-        Alert.alert('Hold on!', 'Are you sure you want to exit?', [
-          {
-            text: 'Cancel',
-            onPress: () => null,
-            style: 'cancel',
-          },
-          {text: 'YES', onPress: () => BackHandler.exitApp()},
-        ]);
+      
+
+        if(!showDate)
+        {
+          setShowDate(true)
+          console.log("Backbutton pressed ")
+        }else{
+          Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {text: 'YES', onPress: () => BackHandler.exitApp()},
+          ]);
+        }
+        
 
         // BackHandler.exitApp();
         return true;
@@ -100,7 +111,7 @@ const Home = () => {
     );
 
     return () => backHandler.remove();
-  }, [currentScreen, navigation]);
+  }, [currentScreen, navigation,showDate]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -108,6 +119,8 @@ const Home = () => {
       return () => setCurrentScreen(''); // Reset the current screen when the screen is blurred
     }, []),
   );
+
+  console.log("Show date :: "+showDate)
 
   const {
     results,
@@ -156,7 +169,7 @@ const Home = () => {
     timeDifference,
   ]);
 
-  const [showDate, setShowDate] = useState(true);
+ 
   const toogleView = () => {
     setShowDate(false);
   };
@@ -728,10 +741,54 @@ const Home = () => {
                             justifyContent: 'flex-end',
                             borderRadius: heightPercentageToDP(2),
                           }}>
-                          <Countdown
+                            <Countdown
+    until={timeDifference / 1000}
+    onFinish={() => console.log('Timer Completed...')}
+    size={12}
+    timeToShow={['H', 'M', 'S']}
+    digitStyle={{
+        backgroundColor: 'transparent', // Set background to transparent
+        borderWidth: 0, // Remove border
+        paddingHorizontal: 0, // Remove horizontal padding
+        paddingVertical: 0, // Remove vertical padding
+        margin: 0, // Remove margin
+    }}
+    digitTxtStyle={{ color: COLORS.black }}
+    timeLabelStyle={{
+        color: COLORS.grayHalfBg,
+        fontWeight: 'bold',
+    }}
+    separatorStyle={{
+        color: COLORS.black,
+        marginTop: heightPercentageToDP(-2),
+        marginHorizontal: heightPercentageToDP(-8),
+        
+        paddingHorizontal: 0, // Remove horizontal padding
+    }}
+    timeLabels={{
+        h: 'Hours',
+        m: 'Minutes',
+        s: 'Seconds',
+    }}
+    showSeparator
+    style={{
+        flexDirection: 'row',
+        alignItems: 'center', // Align items to center
+        transform: [{ rotate: '90deg' }],
+        color: COLORS.black,
+        fontFamily: FONT.Montserrat_SemiBold,
+        fontSize: heightPercentageToDP(3),
+        marginStart: heightPercentageToDP(-4),
+        marginBottom: heightPercentageToDP(9),
+    }}
+/>
+
+
+
+                          {/* <Countdown
                             until={timeDifference / 1000} // Pass time difference in seconds
                             onFinish={() => console.log('Timer Completed...')} // Callback when countdown finishes
-                            size={14}
+                            size={12}
                             timeToShow={['H', 'M', 'S']}
                             digitStyle={{
                               backgroundColor: COLORS.grayHalfBg,
@@ -758,12 +815,12 @@ const Home = () => {
                               transform: [{rotate: '90deg'}],
                               color: COLORS.black,
                               fontFamily: FONT.Montserrat_SemiBold,
-                              fontSize: heightPercentageToDP(4),
+                              fontSize: heightPercentageToDP(3),
 
                               marginStart: heightPercentageToDP(-4),
                               marginBottom: heightPercentageToDP(8),
                             }}
-                          />
+                          /> */}
                         </View>
                       )}
                     </View>
@@ -829,7 +886,8 @@ const Home = () => {
                   <View
                     style={{
                       flex: 1,
-                      paddingEnd: heightPercentageToDP(2),
+                      paddingEnd: heightPercentageToDP(3),
+
                     }}>
                     <View
                       style={{
@@ -1033,7 +1091,50 @@ const Home = () => {
                           justifyContent: 'flex-end',
                           borderRadius: heightPercentageToDP(2),
                         }}>
-                        <Countdown
+
+<Countdown
+    until={timeDifference / 1000}
+    onFinish={() => console.log('Timer Completed...')}
+    size={12}
+    timeToShow={['H', 'M', 'S']}
+    digitStyle={{
+        backgroundColor: 'transparent', // Set background to transparent
+        borderWidth: 0, // Remove border
+        paddingHorizontal: 0, // Remove horizontal padding
+        paddingVertical: 0, // Remove vertical padding
+        margin: 0, // Remove margin
+    }}
+    digitTxtStyle={{ color: COLORS.black }}
+    timeLabelStyle={{
+        color: COLORS.grayHalfBg,
+        fontWeight: 'bold',
+    }}
+    separatorStyle={{
+        color: COLORS.black,
+        marginTop: heightPercentageToDP(-2),
+        marginHorizontal: heightPercentageToDP(-8),
+        
+        paddingHorizontal: 0, // Remove horizontal padding
+    }}
+    timeLabels={{
+        h: 'Hours',
+        m: 'Minutes',
+        s: 'Seconds',
+    }}
+    showSeparator
+    style={{
+        flexDirection: 'row',
+        alignItems: 'center', // Align items to center
+        transform: [{ rotate: '90deg' }],
+        color: COLORS.black,
+        fontFamily: FONT.Montserrat_SemiBold,
+        fontSize: heightPercentageToDP(3),
+        marginStart: heightPercentageToDP(-4),
+        marginBottom: heightPercentageToDP(15),
+    }}
+/>
+
+                        {/* <Countdown
                           until={timeDifference / 1000} // Pass time difference in seconds
                           onFinish={() => console.log('Timer Completed...')} // Callback when countdown finishes
                           size={14}
@@ -1068,7 +1169,7 @@ const Home = () => {
                             marginStart: heightPercentageToDP(-4),
                             marginBottom: heightPercentageToDP(10),
                           }}
-                        />
+                        /> */}
                       </View>)}
 
                       
