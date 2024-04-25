@@ -46,6 +46,7 @@ import FileViewer from 'react-native-file-viewer';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {serverName} from '../redux/store';
 import LinearGradient from 'react-native-linear-gradient';
+import {ImageSlider} from '@pembajak/react-native-image-slider-banner';
 
 const images = [
   'https://imgs.search.brave.com/PvhNVIxs9m8r1whelc9RPX2dMQ371Xcsk3Lf2dCiVHQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvYmlnLXNhbGUt/YmFubmVyLWRlc2ln/bi1zcGVjaWFsLW9m/ZmVyLXVwLTUwLW9m/Zi1yZWFkeS1wcm9t/b3Rpb24tdGVtcGxh/dGUtdXNlLXdlYi1w/cmludC1kZXNpZ25f/MTEwNDY0LTU3MC5q/cGc_c2l6ZT02MjYm/ZXh0PWpwZw',
@@ -79,13 +80,10 @@ const Home = () => {
   useEffect(() => {
     const backAction = () => {
       if (currentScreen === 'Home') {
-      
-
-        if(!showDate)
-        {
-          setShowDate(true)
-          console.log("Backbutton pressed ")
-        }else{
+        if (!showDate) {
+          setShowDate(true);
+          console.log('Backbutton pressed ');
+        } else {
           Alert.alert('Hold on!', 'Are you sure you want to exit?', [
             {
               text: 'Cancel',
@@ -95,7 +93,6 @@ const Home = () => {
             {text: 'YES', onPress: () => BackHandler.exitApp()},
           ]);
         }
-        
 
         // BackHandler.exitApp();
         return true;
@@ -111,7 +108,7 @@ const Home = () => {
     );
 
     return () => backHandler.remove();
-  }, [currentScreen, navigation,showDate]);
+  }, [currentScreen, navigation, showDate]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -120,8 +117,7 @@ const Home = () => {
     }, []),
   );
 
-  console.log("Show date :: "+showDate)
-
+  // console.log("Show date :: "+showDate)
   const {
     results,
     resultAccordingLocation,
@@ -169,7 +165,6 @@ const Home = () => {
     timeDifference,
   ]);
 
- 
   const toogleView = () => {
     setShowDate(false);
   };
@@ -202,7 +197,8 @@ const Home = () => {
   // Commenting this for Testing next result
   useEffect(() => {
     const interval = setInterval(() => {
-      const nextPage = (currentPage + 1) % images.length;
+      // const nextPage = (currentPage + 1) % images.length;
+      const nextPage = (currentPage + 1) % promotions.length;
       setCurrentPage(nextPage);
       scrollViewRef.current?.scrollTo({x: width * nextPage, animated: true});
     }, 3000);
@@ -398,7 +394,7 @@ const Home = () => {
               
             </article>
             <aside>
-              <h1><span>Since 1984</span></h1>
+              <h1><span>Since 1927</span></h1>
               <div>
                 <p>A Mobile Lottery App</p>
               </div>
@@ -471,12 +467,16 @@ const Home = () => {
       });
   };
 
+  const sliderData = promotions.map((promotion, index) => ({
+    img: 'https://sincelott.onrender.com/uploads/promotion/' + promotion.url,
+  }));
+
   return (
     <SafeAreaView
       className="flex-1"
       style={{
         backgroundColor: COLORS.white,
-        padding: heightPercentageToDP(2),
+        paddingVertical: heightPercentageToDP(2),
       }}>
       {loading ? (
         <HomeLoading />
@@ -488,6 +488,7 @@ const Home = () => {
               style={{
                 height: heightPercentageToDP(10),
                 flexDirection: 'row',
+                paddingHorizontal: heightPercentageToDP(2),
               }}>
               <View
                 style={{
@@ -591,12 +592,14 @@ const Home = () => {
               onPress={() => navigation.navigate('Search')}
               style={{
                 height: heightPercentageToDP(7),
+                
                 flexDirection: 'row',
                 backgroundColor: COLORS.grayHalfBg,
                 alignItems: 'center',
                 paddingHorizontal: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
                 marginTop: heightPercentageToDP(2),
+                marginHorizontal: heightPercentageToDP(2)
               }}>
               <Fontisto
                 name={'search'}
@@ -627,6 +630,7 @@ const Home = () => {
                   marginTop: heightPercentageToDP(2),
                   borderRadius: heightPercentageToDP(2),
                   elevation: heightPercentageToDP(1),
+                  marginHorizontal: heightPercentageToDP(2),
                 }}>
                 <View
                   style={{
@@ -645,12 +649,14 @@ const Home = () => {
                       style={{
                         alignSelf: 'flex-start',
                         paddingStart: heightPercentageToDP(2),
+
+                        width: '100%',
                       }}>
                       <Text
                         style={{
                           fontFamily: FONT.Montserrat_SemiBold,
                           fontSize: heightPercentageToDP(4),
-                          marginTop: heightPercentageToDP(2),
+
                           color: COLORS.black,
                         }}
                         numberOfLines={1}>
@@ -658,17 +664,22 @@ const Home = () => {
                       </Text>
                     </View>
 
-                    <Text
+                    <View
                       style={{
-                        fontFamily: FONT.SF_PRO_REGULAR,
-                        fontSize: heightPercentageToDP(14),
-                        color: COLORS.black,
-                        marginTop: heightPercentageToDP(-2),
-                        color: COLORS.black,
-                      }}
-                      numberOfLines={1}>
-                      {homeResult?.resultNumber}
-                    </Text>
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.SF_PRO_REGULAR,
+                          fontSize: heightPercentageToDP(14),
+                          color: COLORS.black,
+                          paddingStart: heightPercentageToDP(3),
+                        }}
+                        numberOfLines={1}>
+                        {homeResult?.resultNumber}
+                      </Text>
+                    </View>
                   </View>
 
                   {/** Top view right container */}
@@ -685,8 +696,10 @@ const Home = () => {
                   ) : (
                     <View
                       style={{
-                        flex: 1,
+                        flex: 1.5,
                         justifyContent: 'center',
+
+                        alignItems: 'center',
                       }}>
                       <View
                         style={{
@@ -725,7 +738,6 @@ const Home = () => {
                               textAlign: 'center',
                               color: COLORS.black,
                               fontFamily: FONT.HELVETICA_BOLD,
-                              color: COLORS.black,
                             }}>
                             {hasTimePassed(homeResult?.nextresulttime)
                               ? ''
@@ -739,51 +751,50 @@ const Home = () => {
                           style={{
                             flex: 1,
                             justifyContent: 'flex-end',
+                            alignItems: 'center',
                             borderRadius: heightPercentageToDP(2),
                           }}>
-                            <Countdown
-    until={timeDifference / 1000}
-    onFinish={() => console.log('Timer Completed...')}
-    size={12}
-    timeToShow={['H', 'M', 'S']}
-    digitStyle={{
-        backgroundColor: 'transparent', // Set background to transparent
-        borderWidth: 0, // Remove border
-        paddingHorizontal: 0, // Remove horizontal padding
-        paddingVertical: 0, // Remove vertical padding
-        margin: 0, // Remove margin
-    }}
-    digitTxtStyle={{ color: COLORS.black }}
-    timeLabelStyle={{
-        color: COLORS.grayHalfBg,
-        fontWeight: 'bold',
-    }}
-    separatorStyle={{
-        color: COLORS.black,
-        marginTop: heightPercentageToDP(-2),
-        marginHorizontal: heightPercentageToDP(-8),
-        
-        paddingHorizontal: 0, // Remove horizontal padding
-    }}
-    timeLabels={{
-        h: 'Hours',
-        m: 'Minutes',
-        s: 'Seconds',
-    }}
-    showSeparator
-    style={{
-        flexDirection: 'row',
-        alignItems: 'center', // Align items to center
-        transform: [{ rotate: '90deg' }],
-        color: COLORS.black,
-        fontFamily: FONT.Montserrat_SemiBold,
-        fontSize: heightPercentageToDP(3),
-        marginStart: heightPercentageToDP(-4),
-        marginBottom: heightPercentageToDP(9),
-    }}
-/>
+                          <Countdown
+                            until={timeDifference / 1000}
+                            onFinish={() => console.log('Timer Completed...')}
+                            size={12}
+                            timeToShow={['H', 'M', 'S']}
+                            digitStyle={{
+                              backgroundColor: 'transparent', // Set background to transparent
+                              borderWidth: 0, // Remove border
+                              paddingHorizontal: 0, // Remove horizontal padding
+                              paddingVertical: 0, // Remove vertical padding
+                              margin: 0, // Remove margin
+                            }}
+                            digitTxtStyle={{color: COLORS.black}}
+                            timeLabelStyle={{
+                              color: COLORS.grayHalfBg,
+                              fontWeight: 'bold',
+                            }}
+                            separatorStyle={{
+                              color: COLORS.black,
+                              marginTop: heightPercentageToDP(-2),
+                              marginHorizontal: heightPercentageToDP(-8),
 
-
+                              paddingHorizontal: 0, // Remove horizontal padding
+                            }}
+                            timeLabels={{
+                              h: 'Hours',
+                              m: 'Minutes',
+                              s: 'Seconds',
+                            }}
+                            showSeparator
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center', // Align items to center
+                              transform: [{rotate: '90deg'}],
+                              color: COLORS.black,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-2),
+                              marginBottom: heightPercentageToDP(9),
+                            }}
+                          />
 
                           {/* <Countdown
                             until={timeDifference / 1000} // Pass time difference in seconds
@@ -886,8 +897,7 @@ const Home = () => {
                   <View
                     style={{
                       flex: 1,
-                      paddingEnd: heightPercentageToDP(3),
-
+                      paddingEnd: heightPercentageToDP(3.5),
                     }}>
                     <View
                       style={{
@@ -914,6 +924,7 @@ const Home = () => {
                   borderRadius: heightPercentageToDP(2),
                   elevation: heightPercentageToDP(1),
                   justifyContent: 'space-evenly',
+                  marginHorizontal: heightPercentageToDP(2),
                 }}>
                 <View
                   style={{
@@ -959,16 +970,15 @@ const Home = () => {
 
                     <ScrollView nestedScrollEnabled={true}>
                       <LinearGradient
-                        colors={[
-                            COLORS.white_s,
-                            COLORS.grayHalfBg,
-                        ]}
+                        colors={[COLORS.white_s, COLORS.grayHalfBg]}
                         style={{
                           backgroundColor: COLORS.white,
                           height: heightPercentageToDP(27),
-                          justifyContent: 'center',
-                          alignItems: 'center',
                           borderRadius: heightPercentageToDP(1),
+                          paddingHorizontal: heightPercentageToDP(1),
+                          paddingVertical: heightPercentageToDP(2),
+                          marginHorizontal: heightPercentageToDP(3),
+                          marginTop: heightPercentageToDP(2),
                         }}>
                         {/** All Date for a specific location */}
 
@@ -1000,7 +1010,7 @@ const Home = () => {
                               }}>
                               <Text
                                 style={{
-                                  fontFamily: FONT.Montserrat_Regular,
+                                  fontFamily: FONT.Montserrat_SemiBold,
                                   fontSize: heightPercentageToDP(2),
                                   textAlign: 'left',
                                   color: COLORS.black,
@@ -1010,7 +1020,7 @@ const Home = () => {
 
                               <Text
                                 style={{
-                                  fontFamily: FONT.Montserrat_Regular,
+                                  fontFamily: FONT.Montserrat_SemiBold,
                                   fontSize: heightPercentageToDP(2),
                                   color: COLORS.black,
                                 }}>
@@ -1019,7 +1029,7 @@ const Home = () => {
 
                               <Text
                                 style={{
-                                  fontFamily: FONT.Montserrat_Regular,
+                                  fontFamily: FONT.Montserrat_SemiBold,
                                   fontSize: heightPercentageToDP(2),
                                   textAlign: 'right',
                                   color: COLORS.black,
@@ -1050,91 +1060,92 @@ const Home = () => {
 
                         justifyContent: 'center',
                       }}>
-                         {hasTimePassed(homeResult?.nextresulttime) ? null : (<View style={{position: 'absolute', top: 10, zIndex: 1}}>
+                      {hasTimePassed(homeResult?.nextresulttime) ? null : (
+                        <View
+                          style={{position: 'absolute', top: 10, zIndex: 1}}>
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                fontFamily: FONT.Montserrat_Regular,
+                                color: COLORS.black,
+                              }}>
+                              Next
+                            </Text>
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                fontFamily: FONT.Montserrat_Regular,
+                                color: COLORS.black,
+                              }}>
+                              Result
+                            </Text>
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                color: COLORS.black,
+                                fontFamily: FONT.HELVETICA_BOLD,
+                              }}>
+                              {homeResult?.nextresulttime}
+                            </Text>
+                          </View>
+                        </View>
+                      )}
+
+                      {hasTimePassed(homeResult?.nextresulttime) ? null : (
                         <View
                           style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
+                            flex: 1,
+                            justifyContent: 'flex-end',
+                            borderRadius: heightPercentageToDP(2),
                           }}>
-                          <Text
-                            style={{
-                              textAlign: 'center',
-                              fontFamily: FONT.Montserrat_Regular,
+                          <Countdown
+                            until={timeDifference / 1000}
+                            onFinish={() => console.log('Timer Completed...')}
+                            size={12}
+                            timeToShow={['H', 'M', 'S']}
+                            digitStyle={{
+                              backgroundColor: 'transparent', // Set background to transparent
+                              borderWidth: 0, // Remove border
+                              paddingHorizontal: 0, // Remove horizontal padding
+                              paddingVertical: 0, // Remove vertical padding
+                              margin: 0, // Remove margin
+                            }}
+                            digitTxtStyle={{color: COLORS.black}}
+                            timeLabelStyle={{
+                              color: COLORS.grayHalfBg,
+                              fontWeight: 'bold',
+                            }}
+                            separatorStyle={{
                               color: COLORS.black,
-                            }}>
-                            Next
-                          </Text>
-                          <Text
+                              marginTop: heightPercentageToDP(-2),
+                              marginHorizontal: heightPercentageToDP(-8),
+
+                              paddingHorizontal: 0, // Remove horizontal padding
+                            }}
+                            timeLabels={{
+                              h: 'Hours',
+                              m: 'Minutes',
+                              s: 'Seconds',
+                            }}
+                            showSeparator
                             style={{
-                              textAlign: 'center',
-                              fontFamily: FONT.Montserrat_Regular,
+                              flexDirection: 'row',
+                              alignItems: 'center', // Align items to center
+                              transform: [{rotate: '90deg'}],
                               color: COLORS.black,
-                            }}>
-                            Result
-                          </Text>
-                          <Text
-                            style={{
-                              textAlign: 'center',
-                              color: COLORS.black,
-                              fontFamily: FONT.HELVETICA_BOLD,
-                            }}>
-                            {homeResult?.nextresulttime}
-                          </Text>
-                        </View>
-                      </View>)}
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-4),
+                              marginBottom: heightPercentageToDP(15),
+                            }}
+                          />
 
-                      
-
-                      {hasTimePassed(homeResult?.nextresulttime) ? null : (<View
-                        style={{
-                          flex: 1,
-                          justifyContent: 'flex-end',
-                          borderRadius: heightPercentageToDP(2),
-                        }}>
-
-<Countdown
-    until={timeDifference / 1000}
-    onFinish={() => console.log('Timer Completed...')}
-    size={12}
-    timeToShow={['H', 'M', 'S']}
-    digitStyle={{
-        backgroundColor: 'transparent', // Set background to transparent
-        borderWidth: 0, // Remove border
-        paddingHorizontal: 0, // Remove horizontal padding
-        paddingVertical: 0, // Remove vertical padding
-        margin: 0, // Remove margin
-    }}
-    digitTxtStyle={{ color: COLORS.black }}
-    timeLabelStyle={{
-        color: COLORS.grayHalfBg,
-        fontWeight: 'bold',
-    }}
-    separatorStyle={{
-        color: COLORS.black,
-        marginTop: heightPercentageToDP(-2),
-        marginHorizontal: heightPercentageToDP(-8),
-        
-        paddingHorizontal: 0, // Remove horizontal padding
-    }}
-    timeLabels={{
-        h: 'Hours',
-        m: 'Minutes',
-        s: 'Seconds',
-    }}
-    showSeparator
-    style={{
-        flexDirection: 'row',
-        alignItems: 'center', // Align items to center
-        transform: [{ rotate: '90deg' }],
-        color: COLORS.black,
-        fontFamily: FONT.Montserrat_SemiBold,
-        fontSize: heightPercentageToDP(3),
-        marginStart: heightPercentageToDP(-4),
-        marginBottom: heightPercentageToDP(15),
-    }}
-/>
-
-                        {/* <Countdown
+                          {/* <Countdown
                           until={timeDifference / 1000} // Pass time difference in seconds
                           onFinish={() => console.log('Timer Completed...')} // Callback when countdown finishes
                           size={14}
@@ -1170,9 +1181,8 @@ const Home = () => {
                             marginBottom: heightPercentageToDP(10),
                           }}
                         /> */}
-                      </View>)}
-
-                      
+                        </View>
+                      )}
                     </View>
                   )}
                 </View>
@@ -1184,9 +1194,8 @@ const Home = () => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-               
                   }}>
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     onPress={() => setShowDate(true)}
                     className="rounded-md p-2"
                     style={{
@@ -1200,7 +1209,7 @@ const Home = () => {
                       size={heightPercentageToDP(3)}
                       color={COLORS.black}
                     />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
 
                   <TouchableOpacity
                     onPress={checkAndRequestPermission}
@@ -1227,7 +1236,7 @@ const Home = () => {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                 {/* <TouchableOpacity
+                {/* <TouchableOpacity
                     onPress={checkAndRequestPermission}
                     style={{
                       backgroundColor: COLORS.blue,
@@ -1261,6 +1270,7 @@ const Home = () => {
                 marginVertical: heightPercentageToDP(2),
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                marginHorizontal: heightPercentageToDP(2),
               }}>
               <GradientText
                 style={{
@@ -1298,6 +1308,7 @@ const Home = () => {
                   alignItems: 'center',
                   gap: heightPercentageToDP(2),
                   marginBottom: heightPercentageToDP(2),
+                  marginHorizontal: heightPercentageToDP(2),
                 }}>
                 <ScrollView
                   horizontal={true}
@@ -1380,6 +1391,7 @@ const Home = () => {
 
             {/** PROMOTION CONTAINER */}
 
+
             {loadingPromotion ? (
               <View
                 style={{
@@ -1390,52 +1402,45 @@ const Home = () => {
                 <Loading />
               </View>
             ) : (
-              <View style={styles.container}>
-                <View>
-                  <ScrollView
-                    ref={scrollViewRef}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    onScroll={handlePageChange}
-                    scrollEventThrottle={16}>
-                    {/* https://sincelott.onrender.com/uploads/promotion/ */}
-                    {promotions.map((image, index) => (
-                      <Image
-                        key={index}
-                        source={{
-                          uri:
-                            'https://sincelott.onrender.com/uploads/promotion/' +
-                            image.url,
-                        }}
-                        style={styles.image}
-                        resizeMode="cover"
-                      />
-                    ))}
-                  </ScrollView>
-                </View>
-
-                <View style={styles.indicatorContainer}>
-                  {images.map((_, index) => (
-                    <View
-                      key={index}
-                      style={[
-                        styles.indicator,
-                        {
-                          backgroundColor:
-                            currentPage === index
-                              ? COLORS.darkGray
-                              : COLORS.grayHalfBg,
-                        },
-                      ]}
-                    />
-                  ))}
-                </View>
+              <View
+              style={{
+                margin: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(2),
+                overflow: 'hidden',
+            
+              }}
+                >
+                <ImageSlider
+                  data={sliderData}
+                  preview={false}
+                  autoPlay={true}
+                  closeIconColor="#fff"
+                  caroselImageStyle={{resizeMode: 'cover'}}
+                  indicatorMainContainerStyle={{
+                    justifyContent: 'center',
+                    borderRadius: heightPercentageToDP(2),
+                  }}
+                  caroselImageContainerStyle={{
+                    height: heightPercentageToDP(20),
+                    borderRadius: heightPercentageToDP(2),
+                  }}
+                  indicatorContainerStyle={{
+                    position: 'absolute',
+                    bottom: heightPercentageToDP(-2),
+                  }}
+                  activeIndicatorStyle={{
+                    backgroundColor: COLORS.blue,
+                  }}
+                  inActiveIndicatorStyle={{
+                    backgroundColor: COLORS.profileDarkGray,
+                  }}
+                  
+                />
               </View>
             )}
 
             {/** WALLET CONTAINER */}
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{justifyContent: 'center', alignItems: 'center',marginHorizontal: heightPercentageToDP(2),}}>
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}>

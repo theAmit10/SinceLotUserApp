@@ -2,6 +2,10 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/Elephant.ttf",
+      "sha1": "8d9daa4b2bb48bc77e8333f75fdb1bfe3e040ca7"
+    },
+    {
       "path": "assets/fonts/Helvetica-Bold.ttf",
       "sha1": "d064906892c6baf2916d5102910026ba0a4f2664"
     },
@@ -34,6 +38,10 @@
       "sha1": "295d5085e3c8069afb6c1ba0f39dbfa581b862e9"
     },
     {
+      "path": "assets/image/dark_user.png",
+      "sha1": "feb014378d4598795fb7b9643f1899779cd60351"
+    },
+    {
       "path": "assets/image/dummy_user.jpeg",
       "sha1": "edc91e90e6406b4276f02d93dc87d84ef343bf95"
     },
@@ -42,8 +50,20 @@
       "sha1": "0c532a1a10db869aac2e4ce62a654aee167d6b57"
     },
     {
+      "path": "assets/image/logonobg.png",
+      "sha1": "64087b5e0c38eea1b8fd334fdc5af0bbb2557c66"
+    },
+    {
       "path": "assets/image/profileplaceholder.jpg",
       "sha1": "c124fd39394f1736290bfff6512ba1ecd96840e3"
+    },
+    {
+      "path": "assets/image/sincelogo.png",
+      "sha1": "db9b67b85c946391f1f24ebbe99c083bb6c1a4e3"
+    },
+    {
+      "path": "assets/image/splashimage.jpeg",
+      "sha1": "71804568e8cc1bfb6f9205bb937abcf1121750d5"
     }
   ]
 }

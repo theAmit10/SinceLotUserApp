@@ -74,8 +74,9 @@
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
 		<string>Fontisto.ttf</string>
+		<string>Elephant.ttf</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-  	<string>PhotoPermission</string>
+	<string>PhotoPermission</string>
 </dict>
 </plist>

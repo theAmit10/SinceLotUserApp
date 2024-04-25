@@ -83,7 +83,7 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
         
       </article>
       <aside>
-        <h1><span>Since 1984</span></h1>
+        <h1><span>Since 1927</span></h1>
         <div>
           <p>A Mobile Lottery App</p>
         </div>

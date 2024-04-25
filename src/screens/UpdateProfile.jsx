@@ -6,163 +6,149 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import { COLORS, FONT } from '../../assets/constants';
+import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Toast from 'react-native-toast-message';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ProfileBackground from '../components/background/ProfileBackground';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Wallet from '../components/home/Wallet';
-import { Consumer } from 'react-native-paper/lib/typescript/core/settings';
-import { useDispatch, useSelector } from 'react-redux';
-import { loadProfile, logout } from '../redux/actions/userAction';
-import { useMessageAndErrorUser } from '../utils/hooks';
+import {Consumer} from 'react-native-paper/lib/typescript/core/settings';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadProfile, logout} from '../redux/actions/userAction';
+import {useMessageAndErrorUser} from '../utils/hooks';
 import Loading from '../components/helpercComponent/Loading';
-import { HOVER } from 'nativewind/dist/utils/selector';
+import {HOVER} from 'nativewind/dist/utils/selector';
 import LinearGradient from 'react-native-linear-gradient';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
 
-
 const UpdateProfile = () => {
-
   const navigation = useNavigation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [name, setName] = useState("")
+  const [name, setName] = useState('');
   // const [email, setEmail] = useState('');
 
-  const { user, accesstoken, loading } = useSelector(state => state.user);
+  const {user, accesstoken, loading} = useSelector(state => state.user);
 
-
-  useMessageAndErrorUser(navigation, dispatch, "Login")
+  useMessageAndErrorUser(navigation, dispatch, 'Login');
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    dispatch(loadProfile(accesstoken))
-  },[isFocused])
-
+    dispatch(loadProfile(accesstoken));
+  }, [isFocused]);
 
   const logoutHandler = () => {
-
     Toast.show({
       type: 'success',
       text1: 'Please wait... logging off',
     });
 
-    dispatch(logout())
+    dispatch(logout());
   };
 
-  
-
   const ChangePasswordHandler = () => {
-
     Toast.show({
       type: 'success',
       text1: 'change password precessing',
     });
   };
 
+  const [showProgressBar, setProgressBar] = useState(false);
 
-  const [showProgressBar,setProgressBar] = useState(false); 
-
-  const updateProfileHandler  = async () => {
-    if (!name) {
-     Toast.show({
-       type: 'error',
-       text1: 'Please enter your name',
-     });
-     
-   } else {
-     setProgressBar(true);
-
-     try {
+  const checkEmailOrPhone = str => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(str);
   
-       const {data} = await axios.put(
-        UrlHelper.UPDATE_USER_PROFILE_API,
-        {
-          name: name,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accesstoken}`,
+  };
+
+  const updateProfileHandler = async () => {
+    if (!name) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter your name',
+      });
+    } else {
+      setProgressBar(true);
+
+      try {
+        const {data} = await axios.put(
+          UrlHelper.UPDATE_USER_PROFILE_API,
+          {
+            name: name,
           },
-        },
-      );
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          },
+        );
 
-      console.log("datat :: "+data)
+        console.log('datat :: ' + data);
 
-      dispatch(loadProfile(accesstoken))
-      
-       Toast.show({
-         type: 'success',
-         text1: data.message,
-       });
-       setProgressBar(false);
-       navigation.goBack();
-     } catch (error) {
-      setProgressBar(false);
-       Toast.show({
-         type: 'error',
-         text1: 'Something went wrong',
-       });
-       console.log(error);
+        dispatch(loadProfile(accesstoken));
 
-     }
-   }
- };
-
-
-
-
-
-
-
-
+        Toast.show({
+          type: 'success',
+          text1: data.message,
+        });
+        setProgressBar(false);
+        navigation.goBack();
+      } catch (error) {
+        setProgressBar(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+        });
+        console.log(error);
+      }
+    }
+  };
 
   return (
-    <View style={{ flex: 1 }}>
-
-
+    <View style={{flex: 1}}>
       <ProfileBackground />
-
 
       {/** Profile Cointainer */}
 
-      <View style={{
-        backgroundColor: COLORS.white_s,
-        margin: heightPercentageToDP(2),
-        borderRadius: heightPercentageToDP(1),
-        paddingStart: heightPercentageToDP(1)
-      }}>
+      <View
+        style={{
+          backgroundColor: COLORS.white_s,
+          margin: heightPercentageToDP(2),
+          borderRadius: heightPercentageToDP(1),
+          paddingStart: heightPercentageToDP(1),
+        }}>
+        <GradientText
+          style={{
+            fontSize: heightPercentageToDP(3.5),
+            fontFamily: FONT.Montserrat_Bold,
+            color: COLORS.darkGray,
+          }}>
+          Update
+        </GradientText>
 
-        <GradientText style={{
-          fontSize: heightPercentageToDP(3.5),
-          fontFamily: FONT.Montserrat_Bold,
-          color:COLORS.darkGray,
-        }}>Update</GradientText>
-
-        <GradientText style={{
-          fontSize: heightPercentageToDP(3.5),
-          fontFamily: FONT.Montserrat_Bold,
-          color:COLORS.darkGray,
-        }}>Profile</GradientText>
-
+        <GradientText
+          style={{
+            fontSize: heightPercentageToDP(3.5),
+            fontFamily: FONT.Montserrat_Bold,
+            color: COLORS.darkGray,
+          }}>
+          Profile
+        </GradientText>
       </View>
-
-
 
       <View
         style={{
@@ -171,10 +157,8 @@ const UpdateProfile = () => {
           backgroundColor: COLORS.white_s,
           borderTopLeftRadius: heightPercentageToDP(5),
           borderTopRightRadius: heightPercentageToDP(5),
-          elevation: heightPercentageToDP(3)
+          elevation: heightPercentageToDP(3),
         }}>
-
-
         {/** Top Style View */}
         <View
           style={{
@@ -192,137 +176,211 @@ const UpdateProfile = () => {
             }}></View>
         </View>
 
-
-
-        {/** Profile Main Container */}
-        <View
-          style={{
-            flex: 2,
-            margin: heightPercentageToDP(2),
-          }}>
+        <ScrollView>
+          {/** Profile Main Container */}
           <View
             style={{
-
-              paddingVertical: heightPercentageToDP(2),
+              flex: 2,
+              margin: heightPercentageToDP(2),
             }}>
-
-
-            {/** Change name container */}
-
-
             <View
               style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
+                paddingVertical: heightPercentageToDP(2),
               }}>
-                <LinearGradient
-                colors={[COLORS.lightWhite, COLORS.white_s]}
-                className="rounded-xl p-1">
-                <MaterialCommunityIcons
-                  name={'account'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.darkGray}
-                />
-              </LinearGradient>
-             
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2),
-                  color: COLORS.black,
-                }}
-                placeholder="Name"
-                placeholderTextColor={COLORS.black}
-                label="Name"
-                value={name}
-                onChangeText={text => setName(text)}
-              />
-            </View>
+              {/** Change name container */}
 
-           
-            {/** Update Profile container */}
-
-            <TouchableOpacity
-            onPress={() => navigation.navigate("UploadProfilePicture")}
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-              }}>
-              <LinearGradient
-                colors={[COLORS.lightWhite, COLORS.white_s]}
-                className="rounded-xl p-1">
-                <MaterialCommunityIcons
-                  name={'account'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.darkGray}
-                />
-              </LinearGradient>
-              <Text
+              <View
                 style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2),
-                  color: COLORS.black,
-                  
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.grayBg,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  marginTop: heightPercentageToDP(-2),
+                  borderRadius: heightPercentageToDP(1),
                 }}>
-                Profile Picture
-              </Text>
+                <LinearGradient
+                  colors={[COLORS.lightWhite, COLORS.white_s]}
+                  className="rounded-xl p-1">
+                  <MaterialCommunityIcons
+                    name={'account'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </LinearGradient>
 
-              <Ionicons
-                name={'chevron-forward-outline'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-            </TouchableOpacity>
-
-
-
-            {/** Bottom Submit Container */}
-
-            <View
-              style={{
-                marginBottom: heightPercentageToDP(5),
-                marginTop: heightPercentageToDP(2),
-              }}>
-              {showProgressBar ? (
-                <Loading />
-              ) : (
-                <TouchableOpacity
-                  onPress={updateProfileHandler}
+                <TextInput
                   style={{
-                    backgroundColor: COLORS.blue,
-                    padding: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    alignItems: 'center',
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2),
+                    color: COLORS.black,
+                  }}
+                  placeholder="Name"
+                  placeholderTextColor={COLORS.black}
+                  label="Name"
+                  value={name}
+                  onChangeText={text => setName(text)}
+                />
+              </View>
+
+              {/** Update Profile container */}
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate('UploadProfilePicture')}
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.grayBg,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  marginTop: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <LinearGradient
+                  colors={[COLORS.lightWhite, COLORS.white_s]}
+                  className="rounded-xl p-1">
+                  <MaterialCommunityIcons
+                    name={'account'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </LinearGradient>
+                <Text
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2),
+                    color: COLORS.black,
                   }}>
+                  Profile Picture
+                </Text>
+
+                <Ionicons
+                  name={'chevron-forward-outline'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+              </TouchableOpacity>
+
+              {checkEmailOrPhone(user.email) ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('ChangeEmail', {forData: 'Email'})
+                  }
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.grayBg,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <Fontisto
+                      name={'email'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </LinearGradient>
                   <Text
                     style={{
-                      color: COLORS.white,
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
                       fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
                     }}>
-                    Submit
+                    Change Email
                   </Text>
+
+                  <Ionicons
+                    name={'chevron-forward-outline'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('ChangeEmail', {forData: 'Phone No.'})
+                  }
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.grayBg,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <FontAwesome
+                      name={'phone'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </LinearGradient>
+                  <Text
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}>
+                    Change Phone Number
+                  </Text>
+
+                  <Ionicons
+                    name={'chevron-forward-outline'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
                 </TouchableOpacity>
               )}
+              {/** Email */}
+
+              {/** Phone number */}
+
+              {/** Bottom Submit Container */}
+
+              <View
+                style={{
+                  marginBottom: heightPercentageToDP(5),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                {showProgressBar ? (
+                  <Loading />
+                ) : (
+                  <TouchableOpacity
+                    onPress={updateProfileHandler}
+                    style={{
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Submit
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-
-        
-
           </View>
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -340,8 +398,6 @@ const styles = StyleSheet.create({
     fontFamily: FONT.Montserrat_Bold,
   },
 });
-
-
 
 // import {
 //   StyleSheet,
@@ -379,25 +435,23 @@ const styles = StyleSheet.create({
 
 //   const [name, setName] = useState('');
 
-  
-
 //   const {user, accesstoken, loading, message} = useSelector(
 //     state => state.user,
 //   );
 
-//   const [showProgressBar,setProgressBar] = useState(false); 
+//   const [showProgressBar,setProgressBar] = useState(false);
 //   const updateProfileHandler  = async () => {
 //     if (!name) {
 //      Toast.show({
 //        type: 'error',
 //        text1: 'Enter your name',
 //      });
-     
+
 //    } else {
 //      setProgressBar(true);
 
 //      try {
-     
+
 //        // Resize the image
 //       //  try {
 //       //    console.log('Started Compressing Image');
@@ -446,7 +500,7 @@ const styles = StyleSheet.create({
 //       console.log("datat :: "+data)
 
 //       dispatch(loadProfile(accesstoken))
-      
+
 //        Toast.show({
 //          type: 'success',
 //          text1: data.message,
@@ -513,7 +567,6 @@ const styles = StyleSheet.create({
 //      else console.log(err);
 //    }
 //  };
-
 
 //   return (
 //     <View style={{flex: 1}}>
@@ -671,7 +724,7 @@ const styles = StyleSheet.create({
 //                 </TouchableOpacity>
 //               )}
 //             </View>
-            
+
 //           </View>
 //         </View>
 //       </View>

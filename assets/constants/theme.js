@@ -8,6 +8,7 @@ const COLORS = {
   
   lightGray: '#EDEDEE',
   golden: '#ae9159',
+  goldenLight: '#ebda8e',
   white: '#F3F4F8',
   lightWhite: '#FAFAFC',
 
@@ -63,6 +64,7 @@ const FONT = {
   Montserrat_Regular: 'Montserrat-Regular',
   Montserrat_SemiBold: 'Montserrat-SemiBold',
   ZCOOL_Regular: 'ZCOOL-Regular',
+  ELEPHANT: 'Elephant',
 };
 
 const SIZES = {

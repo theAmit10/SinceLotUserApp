@@ -51,6 +51,7 @@ const Login = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex =  /^(?:\+91|0)?[6-9]\d{9}$/; 
 
+
     if (!email) {
       Toast.show({
         type: 'error',

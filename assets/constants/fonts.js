@@ -6,8 +6,9 @@ const Montserrat_Bold = "Montserrat-Bold.ttf";
 const Montserrat_Regular = "Montserrat-Regular.ttf";
 const Montserrat_SemiBold = "Montserrat-SemiBold.ttf";
 const ZCOOL_Regular  = "ZCOOL-Regular.ttf";
+const ELEPHANT  = "Elephant.ttf";
 
 
 export default {
-    HELVETICA_BOLD,HELVETICA_REGULAR,SF_PRO_MEDIUM,SF_PRO_REGULAR,Montserrat_Bold,Montserrat_Regular,Montserrat_SemiBold,ZCOOL_Regular
+    ELEPHANT,HELVETICA_BOLD,HELVETICA_REGULAR,SF_PRO_MEDIUM,SF_PRO_REGULAR,Montserrat_Bold,Montserrat_Regular,Montserrat_SemiBold,ZCOOL_Regular
 };
