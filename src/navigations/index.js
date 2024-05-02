@@ -32,6 +32,7 @@ import ChangeEmail from '../screens/ChangeEmail';
 import SignUp from '../screens/SignUp';
 import ResetPassword from '../screens/ResetPassword';
 import GoogleAuthPassword from '../screens/GoogleAuthPassword';
+import AddContact from '../screens/AddContact';
 
 
 const Stack = createNativeStackNavigator()
@@ -75,6 +76,7 @@ const Main = () => {
                 <Stack.Screen  name="SignUp" component={SignUp}/>
                 <Stack.Screen  name="ResetPassword" component={ResetPassword}/>
                 <Stack.Screen  name="GoogleAuthPassword" component={GoogleAuthPassword}/>
+                <Stack.Screen  name="AddContact" component={AddContact}/>
             </Stack.Group>
         </Stack.Navigator>
 

@@ -71,7 +71,6 @@ const UpdateProfile = () => {
   const checkEmailOrPhone = str => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(str);
-  
   };
 
   const updateProfileHandler = async () => {
@@ -187,43 +186,7 @@ const UpdateProfile = () => {
               style={{
                 paddingVertical: heightPercentageToDP(2),
               }}>
-              {/** Change name container */}
-
-              <View
-                style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.grayBg,
-                  alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(2),
-                  marginTop: heightPercentageToDP(-2),
-                  borderRadius: heightPercentageToDP(1),
-                }}>
-                <LinearGradient
-                  colors={[COLORS.lightWhite, COLORS.white_s]}
-                  className="rounded-xl p-1">
-                  <MaterialCommunityIcons
-                    name={'account'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </LinearGradient>
-
-                <TextInput
-                  style={{
-                    marginStart: heightPercentageToDP(1),
-                    flex: 1,
-                    fontFamily: FONT.Montserrat_Regular,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.black,
-                  }}
-                  placeholder="Name"
-                  placeholderTextColor={COLORS.black}
-                  label="Name"
-                  value={name}
-                  onChangeText={text => setName(text)}
-                />
-              </View>
+              
 
               {/** Update Profile container */}
 
@@ -235,7 +198,7 @@ const UpdateProfile = () => {
                   backgroundColor: COLORS.grayBg,
                   alignItems: 'center',
                   paddingHorizontal: heightPercentageToDP(2),
-                  marginTop: heightPercentageToDP(2),
+                  marginTop: heightPercentageToDP(-2),
                   borderRadius: heightPercentageToDP(1),
                 }}>
                 <LinearGradient
@@ -346,6 +309,129 @@ const UpdateProfile = () => {
                   />
                 </TouchableOpacity>
               )}
+
+              {/** For adding contact */}
+
+              {checkEmailOrPhone(user.email) ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('AddContact', {forData: 'Phone No.'})
+                  }
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.grayBg,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <FontAwesome
+                      name={'phone'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </LinearGradient>
+                  <Text
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}>
+                    Add Phone Number
+                  </Text>
+
+                  <Ionicons
+                    name={'chevron-forward-outline'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('AddContact', {forData: 'Email'})
+                  }
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.grayBg,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <Fontisto
+                      name={'email'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </LinearGradient>
+                  <Text
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}>
+                    Update Email
+                  </Text>
+
+                  <Ionicons
+                    name={'chevron-forward-outline'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </TouchableOpacity>
+              )}
+
+              {/** Change name container */}
+
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.grayBg,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  marginTop: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <LinearGradient
+                  colors={[COLORS.lightWhite, COLORS.white_s]}
+                  className="rounded-xl p-1">
+                  <MaterialCommunityIcons
+                    name={'account'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </LinearGradient>
+
+                <TextInput
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2),
+                    color: COLORS.black,
+                  }}
+                  placeholder="Name"
+                  placeholderTextColor={COLORS.black}
+                  label="Name"
+                  value={name}
+                  onChangeText={text => setName(text)}
+                />
+              </View>
+
               {/** Email */}
 
               {/** Phone number */}

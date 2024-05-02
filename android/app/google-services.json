@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "933772582958",
+    "project_id": "sincelot",
+    "storage_bucket": "sincelot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933772582958:android:e9d40bc5f8024d945affbf",
+        "android_client_info": {
+          "package_name": "com.sincelotuser"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC2mJrnpx9UTPaDEthHLWCgKLFjHAU_AY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

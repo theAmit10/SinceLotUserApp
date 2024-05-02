@@ -430,28 +430,39 @@ const Home = () => {
   };
 
   const createPDF = async () => {
-    let options = {
-      //Content to print
-      html: htmlContent,
-      //File Name
-      fileName: `${homeResult.lotdate.lotdate}${homeResult.lottime.lottime}`,
-      //File directory
-      directory: 'Download',
 
-      base64: true,
-    };
+    if(!homeResult)
+    {
+      Toast.show({
+        type: 'info',
+        text1: "No data available"
+      })
+    }else{
+      let options = {
+        //Content to print
+        html: htmlContent,
+        //File Name
+        fileName: `${homeResult.lotdate.lotdate}${homeResult.lottime.lottime}`,
+        //File directory
+        directory: 'Download',
+  
+        base64: true,
+      };
+  
+      let file = await RNHTMLtoPDF.convert(options);
+      // console.log(file.filePath);
+      Alert.alert(
+        'Successfully Exported',
+        'Path:' + file.filePath,
+        [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Open', onPress: () => openFile(file.filePath)},
+        ],
+        {cancelable: true},
+      );
+    }
 
-    let file = await RNHTMLtoPDF.convert(options);
-    // console.log(file.filePath);
-    Alert.alert(
-      'Successfully Exported',
-      'Path:' + file.filePath,
-      [
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'Open', onPress: () => openFile(file.filePath)},
-      ],
-      {cancelable: true},
-    );
+    
   };
 
   const openFile = filepath => {
@@ -468,7 +479,7 @@ const Home = () => {
   };
 
   const sliderData = promotions.map((promotion, index) => ({
-    img: 'https://sincelott.onrender.com/uploads/promotion/' + promotion.url,
+    img: `${serverName}/uploads/promotion/${promotion.url}`,
   }));
 
   return (

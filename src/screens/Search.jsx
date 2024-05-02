@@ -153,7 +153,10 @@ const Search = () => {
                           flexDirection: 'row',
                           justifyContent: 'space-between'
                         }}>
-                        <Text
+                          <View style={{
+                            flex: 1.5
+                          }}>
+                          <Text
                           style={{
                             color: COLORS.black,
                             fontFamily: FONT.Montserrat_SemiBold,
@@ -161,6 +164,12 @@ const Search = () => {
                           }}>
                           {item.lotlocation}
                         </Text>
+                          </View>
+                       
+                        <View style={{
+                          flex: 1,
+                          
+                        }}>
                         <Text
                           style={{
                             color: COLORS.black,
@@ -169,6 +178,8 @@ const Search = () => {
                           }}>
                           Max {item.maximumRange}
                         </Text>
+                        </View>
+                        
                       </TouchableOpacity>
                     )}
                     keyExtractor={item => item._id}

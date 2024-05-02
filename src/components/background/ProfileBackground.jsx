@@ -182,7 +182,7 @@ const ProfileBackground = () => {
         }}>
         {/** User Profile Image */}
         <TouchableOpacity
-        onPress={checkAndRequestPermission}
+  
           style={{
             borderRadius: 100,
             overflow: 'hidden',
@@ -190,7 +190,7 @@ const ProfileBackground = () => {
             height: heightPercentageToDP(20),
             zIndex: 2,
             position: 'absolute',
-            top: heightPercentageToDP(-3),
+            top: heightPercentageToDP(-4),
             left: heightPercentageToDP(4),
           }}>
           
@@ -227,10 +227,26 @@ const ProfileBackground = () => {
             alignSelf: 'stretch',
             marginTop: heightPercentageToDP(14)
           }}>
+            {/** name */}
           <GradientText style={{...styles.textStyle}}>{user? user.name: ""}</GradientText>
+            {/** email */}
           <GradientText style={styles.textStyleEmail}>
           {user? user.email: ""}
           </GradientText>
+            {/** contact */}
+           {
+             user && user.contact != user.userId ? (<GradientText style={styles.textStyleEmail}>
+              {user? user.contact: ""}
+              </GradientText>) : (null)
+           }
+
+            {/* {
+             user && user?.contact ? (<GradientText style={styles.textStyleEmail}>
+              {user? user.contact: ""}
+              </GradientText>) : (null)
+           } */}
+          
+          
           <GradientText style={styles.textStyleEmail}>
             User ID - {user ? user.userId : ''}
           </GradientText>
