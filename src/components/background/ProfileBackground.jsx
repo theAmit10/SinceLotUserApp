@@ -22,9 +22,7 @@ const ProfileBackground = () => {
 
   const { user, accesstoken, loading } = useSelector(state => state.user);
 
- 
 
-  const source = require('../../../assets/image/dummy_user.jpeg');
   const [imageSource, setImageSource] = useState(require('../../../assets/image/dark_user.png'));
 
   const [showProgressBar, setProgressBar] = useState(false);
@@ -148,6 +146,7 @@ const ProfileBackground = () => {
           type: 'error',
           text1: 'Profile updated successfully',
         });
+        
         setProgressBar(false);
         navigation.goBack();
       } catch (error) {

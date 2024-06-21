@@ -178,7 +178,7 @@ const OtpVerification = () => {
                 <TextInput
                   key={index}
                   style={{
-                    color: COLORS.darkGrays,
+                    color: COLORS.black,
                     borderColor: COLORS.gray2,
                     backgroundColor: COLORS.white,
                     ...styles.userOtpInput,

@@ -39,7 +39,7 @@ const Setting = () => {
       console.log('AsyncStorage data cleared successfully.');
       navigation.reset({
         index: 0,
-        routes: [{name: 'Login'}],
+        routes: [{name: 'SplashScreen'}],
       });
     } catch (error) {
       Toast.show({

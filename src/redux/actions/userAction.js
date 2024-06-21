@@ -4,6 +4,7 @@ import {store} from '../store';
 import {combineSlices} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UrlHelper from '../../helper/UrlHelper';
+import Toast from 'react-native-toast-message';
 
 export const login = (email, password) => async dispatch => {
   try {
@@ -77,6 +78,10 @@ export const loadProfile = accesstoken => async dispatch => {
   } catch (error) {
     console.log(error);
     console.log(error.response);
+    Toast.show({
+      type: 'error',
+      text1: error.response.data.message
+    })
 
     dispatch({
       type: 'loadUserFail',
@@ -118,8 +123,10 @@ export const logout = accesstoken => async dispatch => {
 
 
 // Getting Registered
-export const register = (name,email,password) => async dispatch => {
+export const register = (name,email,password,userDeviceToken) => async dispatch => {
   console.log("Registering User")
+  console.log("Registering User data :: ",name,email,password,userDeviceToken)
+
   try {
     dispatch({
       type: 'registerRequest',
@@ -130,7 +137,7 @@ export const register = (name,email,password) => async dispatch => {
           name,
           email,
           password,
-          role: 'admin'
+          devicetoken: userDeviceToken,
       }
   ,
       {
@@ -304,6 +311,36 @@ export const loadAllAboutUs = (accesstoken) => async dispatch => {
   
     dispatch({
       type: 'getAllAboutFail',
+      payload: error.response.data.message,
+    });
+  }
+  };
+
+
+
+  // Load All Notification
+export const loadAllNotification = (accesstoken) => async dispatch => {
+  try {
+    dispatch({
+      type: 'getAllNotificationRequest',
+  });
+  
+    const {data} = await axios.get(UrlHelper.NOTIFICATION_API, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+  
+    dispatch({
+      type: 'getAllNotificationSuccess',
+      payload: data.notifications,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response);
+  
+    dispatch({
+      type: 'getAllNotificationFail',
       payload: error.response.data.message,
     });
   }

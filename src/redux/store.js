@@ -6,6 +6,7 @@ import { timeReducer } from "./reducers/timeReducer"
 import { dateReducer } from "./reducers/dateReducer"
 import { resultReducer } from "./reducers/resultReducer"
 import { promotionReducer } from "./reducers/promotionReducer"
+import userDeviceTokenSlice from "./userDeviceTokenSlice"
 
 export const store = configureStore({
     reducer:{
@@ -15,7 +16,8 @@ export const store = configureStore({
         time: timeReducer,
         date: dateReducer,
         result: resultReducer,
-        promotion: promotionReducer
+        promotion: promotionReducer,
+        userDeviceToken: userDeviceTokenSlice,
     }
 })
 

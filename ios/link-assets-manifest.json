@@ -38,16 +38,12 @@
       "sha1": "295d5085e3c8069afb6c1ba0f39dbfa581b862e9"
     },
     {
+      "path": "assets/image/applogo.png",
+      "sha1": "90459d6f7b8071185843fc314940cb6d1c9bb9cd"
+    },
+    {
       "path": "assets/image/dark_user.png",
       "sha1": "feb014378d4598795fb7b9643f1899779cd60351"
-    },
-    {
-      "path": "assets/image/dummy_user.jpeg",
-      "sha1": "edc91e90e6406b4276f02d93dc87d84ef343bf95"
-    },
-    {
-      "path": "assets/image/logo.png",
-      "sha1": "0c532a1a10db869aac2e4ce62a654aee167d6b57"
     },
     {
       "path": "assets/image/logonobg.png",
@@ -60,10 +56,6 @@
     {
       "path": "assets/image/sincelogo.png",
       "sha1": "db9b67b85c946391f1f24ebbe99c083bb6c1a4e3"
-    },
-    {
-      "path": "assets/image/splashimage.jpeg",
-      "sha1": "71804568e8cc1bfb6f9205bb937abcf1121750d5"
     }
   ]
 }

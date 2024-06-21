@@ -13,14 +13,12 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1F2A59DA674F4B74B06BBF68 /* dummy_user.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 7AA7B8109E274503A050D9A5 /* dummy_user.jpeg */; };
 		3303E6453D50462DBCEBE540 /* SFPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */; };
 		520C77EA857442A6AF3D190F /* ZCOOL-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */; };
 		6F2C488BA24F4A63B390AFC3 /* SFPRO-MEDIUM.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 46ACC0214E6949EB9C86A259 /* SFPRO-MEDIUM.OTF */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		83FD2889146045F0B2DA311F /* profileplaceholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C8E5C98B2A78453DB2170445 /* profileplaceholder.jpg */; };
 		A81D27FEA1AB4E25A9D6A72F /* Helvetica-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C75C2CF74ABF42398DE03600 /* Helvetica-Bold.ttf */; };
-		AAEC659F3B3346A5A9517557 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F5363302D00347A98EDEAFA8 /* logo.png */; };
 		AE6DA2273D619A7EE0F576D2 /* Pods_SinceLotUser_SinceLotUserTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA158DF48A2B27B7C876AA6 /* Pods_SinceLotUser_SinceLotUserTests.framework */; };
 		C72D079817BB485083AA4770 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1355EE2E22664CE8AFDC3223 /* Montserrat-Bold.ttf */; };
 		E4919C467CCC0B36268C9013 /* Pods_SinceLotUser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 624956F02C1206A6A7EAF73C /* Pods_SinceLotUser.framework */; };
@@ -29,7 +27,7 @@
 		F3B49FA8E472499281A522C2 /* dark_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A4147FA9DE045C6ABD6F434 /* dark_user.png */; };
 		4582426929EA4B059E75FE54 /* logonobg.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCB355B30774D318BC11B8C /* logonobg.png */; };
 		07E8AA3DAB6B4002BD060BD9 /* sincelogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 779B22062F7649B6995AE8F5 /* sincelogo.png */; };
-		2E4EDCE5609745D691C02135 /* splashimage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = EF361D25BD6047979E8E1DB3 /* splashimage.jpeg */; };
+		074D1B808A8B4722B78A78AE /* applogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 00FFBCD6490446F5988E193A /* applogo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +59,6 @@
 		5B7EB9410499542E8C5724F5 /* Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig"; path = "Target Support Files/Pods-SinceLotUser-SinceLotUserTests/Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig"; sourceTree = "<group>"; };
 		624956F02C1206A6A7EAF73C /* Pods_SinceLotUser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SinceLotUser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DA158DF48A2B27B7C876AA6 /* Pods_SinceLotUser_SinceLotUserTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SinceLotUser_SinceLotUserTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7AA7B8109E274503A050D9A5 /* dummy_user.jpeg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = dummy_user.jpeg; path = ../assets/image/dummy_user.jpeg; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SinceLotUser/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-SinceLotUser-SinceLotUserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser-SinceLotUserTests.release.xcconfig"; path = "Target Support Files/Pods-SinceLotUser-SinceLotUserTests/Pods-SinceLotUser-SinceLotUserTests.release.xcconfig"; sourceTree = "<group>"; };
 		BB881E37BC34482D8EEE655F /* Helvetica.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Helvetica.ttf; path = ../assets/fonts/Helvetica.ttf; sourceTree = "<group>"; };
@@ -69,13 +66,12 @@
 		C8E5C98B2A78453DB2170445 /* profileplaceholder.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = profileplaceholder.jpg; path = ../assets/image/profileplaceholder.jpg; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "ZCOOL-Regular.ttf"; path = "../assets/fonts/ZCOOL-Regular.ttf"; sourceTree = "<group>"; };
-		F5363302D00347A98EDEAFA8 /* logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = logo.png; path = ../assets/image/logo.png; sourceTree = "<group>"; };
 		FC098421A44144E6A865034B /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		9F1B458E341A46BA8FF43DFC /* Elephant.ttf */ = {isa = PBXFileReference; name = "Elephant.ttf"; path = "../assets/fonts/Elephant.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		8A4147FA9DE045C6ABD6F434 /* dark_user.png */ = {isa = PBXFileReference; name = "dark_user.png"; path = "../assets/image/dark_user.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		ACCB355B30774D318BC11B8C /* logonobg.png */ = {isa = PBXFileReference; name = "logonobg.png"; path = "../assets/image/logonobg.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		779B22062F7649B6995AE8F5 /* sincelogo.png */ = {isa = PBXFileReference; name = "sincelogo.png"; path = "../assets/image/sincelogo.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		EF361D25BD6047979E8E1DB3 /* splashimage.jpeg */ = {isa = PBXFileReference; name = "splashimage.jpeg"; path = "../assets/image/splashimage.jpeg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		00FFBCD6490446F5988E193A /* applogo.png */ = {isa = PBXFileReference; name = "applogo.png"; path = "../assets/image/applogo.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,14 +188,12 @@
 				EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */,
 				46ACC0214E6949EB9C86A259 /* SFPRO-MEDIUM.OTF */,
 				27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */,
-				7AA7B8109E274503A050D9A5 /* dummy_user.jpeg */,
-				F5363302D00347A98EDEAFA8 /* logo.png */,
 				C8E5C98B2A78453DB2170445 /* profileplaceholder.jpg */,
 				9F1B458E341A46BA8FF43DFC /* Elephant.ttf */,
 				8A4147FA9DE045C6ABD6F434 /* dark_user.png */,
 				ACCB355B30774D318BC11B8C /* logonobg.png */,
 				779B22062F7649B6995AE8F5 /* sincelogo.png */,
-				EF361D25BD6047979E8E1DB3 /* splashimage.jpeg */,
+				00FFBCD6490446F5988E193A /* applogo.png */,
 			);
 			name = Resources;
 			path = "";
@@ -308,14 +302,12 @@
 				520C77EA857442A6AF3D190F /* ZCOOL-Regular.ttf in Resources */,
 				6F2C488BA24F4A63B390AFC3 /* SFPRO-MEDIUM.OTF in Resources */,
 				3303E6453D50462DBCEBE540 /* SFPRO-REGULAR.OTF in Resources */,
-				1F2A59DA674F4B74B06BBF68 /* dummy_user.jpeg in Resources */,
-				AAEC659F3B3346A5A9517557 /* logo.png in Resources */,
 				83FD2889146045F0B2DA311F /* profileplaceholder.jpg in Resources */,
 				F723CADF2E70430A8EF29CAD /* Elephant.ttf in Resources */,
 				F3B49FA8E472499281A522C2 /* dark_user.png in Resources */,
 				4582426929EA4B059E75FE54 /* logonobg.png in Resources */,
 				07E8AA3DAB6B4002BD060BD9 /* sincelogo.png in Resources */,
-				2E4EDCE5609745D691C02135 /* splashimage.jpeg in Resources */,
+				074D1B808A8B4722B78A78AE /* applogo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

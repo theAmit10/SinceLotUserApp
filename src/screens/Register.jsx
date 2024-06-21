@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import LoginBackground from '../components/login/LoginBackground';
 import {
   heightPercentageToDP,
@@ -23,6 +23,9 @@ import {useDispatch} from 'react-redux';
 import {register} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
 import Loading from '../components/helpercComponent/Loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import UrlHelper from '../helper/UrlHelper';
 
 const Register = ({route}) => {
   const {signupwith} = route.params;
@@ -34,6 +37,8 @@ const Register = ({route}) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [userDeviceToken, setUserDeviceToken] = useState("");
+
 
   const navigation = useNavigation();
 
@@ -48,7 +53,23 @@ const Register = ({route}) => {
   const dispatch = useDispatch();
   const loading = useMessageAndErrorUser(navigation, dispatch, 'Login');
 
-  const submitHandler = () => {
+  const [showProgressBar, setProgressBar] = useState(false);
+
+  useEffect(() => {
+    getDeviceAccessToken();
+  }, []);
+
+  const getDeviceAccessToken = async () => {
+    try {
+      const val = await AsyncStorage.getItem('fcm_token');
+      console.log('Device Token :: ' + val);
+      setUserDeviceToken(val)
+    } catch (error) {
+      console.log('error' + error);
+    }
+  };
+
+  const submitHandler = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex =  /^(?:\+91|0)?[6-9]\d{9}$/; 
 
@@ -89,11 +110,51 @@ const Register = ({route}) => {
           text1: 'Password and Confirm Password Not Matched',
         });
       } else {
-        dispatch(register(name, email, password));
+        console.log("Email :: "+email)
+        console.log("name :: "+name)
+        console.log("devicetoken :: "+userDeviceToken)
+
+        // dispatch(register(name, email, password,userDeviceToken));
         Toast.show({
           type: 'success',
           text1: 'Processing',
         });
+        setProgressBar(true);
+        try {
+          const {data} = await axios.post(
+            UrlHelper.REGISTER_API,
+            {
+              name,
+              email,
+              password,
+              devicetoken: userDeviceToken,
+              role: 'user',
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          );
+  
+          console.log('datat :: ' + data);
+  
+          Toast.show({
+            type: 'success',
+            text1: data.message,
+          });
+          setProgressBar(false);
+          navigation.navigate("Login")
+        } catch (error) {
+          setProgressBar(false);
+          Toast.show({
+            type: 'error',
+            text1: 'Something went wrong',
+          });
+          console.log(error);
+          console.log(error.response.data.message);
+          console.log(error.response);
+        }
       }
     } else {
       if (!name) {
@@ -132,11 +193,49 @@ const Register = ({route}) => {
           text1: 'Password and Confirm Password Not Matched',
         });
       } else {
-        dispatch(register(name, email, password));
+        // dispatch(register(name, email, password,userDeviceToken));
         Toast.show({
           type: 'success',
           text1: 'Processing',
         });
+        setProgressBar(true);
+        try {
+          const {data} = await axios.post(
+            UrlHelper.REGISTER_API,
+            {
+              name,
+              email,
+              password,
+              devicetoken: userDeviceToken,
+              role: 'user',
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          );
+  
+          console.log('datat :: ' + data);
+  
+          Toast.show({
+            type: 'success',
+            text1: data.message,
+          });
+          setProgressBar(false);
+          navigation.navigate("Login")
+        } catch (error) {
+          setProgressBar(false);
+          Toast.show({
+            type: 'error',
+            text1: 'Something went wrong',
+          });
+          console.log(error);
+          console.log(error.response.data.message);
+          console.log(error.response);
+        }
+
+
       }
     }
   };
@@ -349,7 +448,7 @@ const Register = ({route}) => {
               />
             </View>
 
-            {loading ? (
+            {showProgressBar ? (
               <View
                 style={{
                   padding: heightPercentageToDP(2),

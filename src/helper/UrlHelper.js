@@ -29,6 +29,7 @@ const ALL_ABOUT_API = server + 'user/getallabout';
 
 // For Reset and Forgot password
 const FORGOT_PASSWORD_API = server + 'user/forgetpassword';
+const NOTIFICATION_API = server + 'user/allnotification';
 
 
 export default {
@@ -51,5 +52,6 @@ export default {
   USER_PROFILE_PIC_API,
   CHANGE_PASSWORD_API,
   ALL_ABOUT_API,
-  FORGOT_PASSWORD_API
+  FORGOT_PASSWORD_API,
+  NOTIFICATION_API
 };

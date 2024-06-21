@@ -1,6 +1,6 @@
 
 
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,14 +11,44 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONT} from '../../assets/constants';
 import SplashScreenGradientText from '../components/helpercComponent/SplashScreenGradientText';
+import { onDisplayNotification } from '../helper/NotificationServices';
+import messaging from '@react-native-firebase/messaging';
+import {PermissionsAndroid,Platform} from 'react-native';
+import notifee from '@notifee/react-native';
+import Toast from 'react-native-toast-message';
+
 
 const SplashScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  // useEffect(() => {
+  //   getUserAccessToken();
+  // }, []);
+
+
+  // useEffect(() => {
+  //   requestUserPermission();
+  // }, []);
+
   useEffect(() => {
     getUserAccessToken();
+    requestUserPermission(); 
   }, []);
+
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage))
+      onDisplayNotification(remoteMessage?.notification?.title,remoteMessage?.notification?.body)
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
+
+
+  
 
   const getUserAccessToken = async () => {
     try {
@@ -43,6 +73,83 @@ const SplashScreen = () => {
       console.log('error' + error);
     }
   };
+
+  const getFCMToken = async () => {
+    console.log("Get FCM Started")
+    try {
+        
+        let fcmToken = await AsyncStorage.getItem('fcm_token');
+
+        console.log("FCM TOKEN :: ",fcmToken) 
+        if(!!fcmToken){
+           console.log("OLD FCM_TOKEN FOUND",fcmToken) 
+        }else{
+            await messaging().registerDeviceForRemoteMessages();
+            const token = await messaging().getToken();
+            console.log("_TOKEN",token) 
+            await AsyncStorage.setItem('fcm_token', token)
+            console.log("NEW FCM_TOKEN",token) 
+        }
+    } catch (error) {
+        console.log("error during generating token",error)
+    }
+}
+
+// async function requestUserPermission() {
+//   console.log("requesting permission started")
+//   const granted =  await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+//   console.log("Permission status Check :: "+granted)
+//   if(granted === PermissionsAndroid.RESULTS.DENIED)
+//   {
+//     console.log("Permission status for all :: "+granted)
+//     if(Platform.OS == 'android' && Platform.Version >= 33){
+//       console.log("Permission status :: "+granted)
+//       const permissionResult =  await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+    
+//       if(permissionResult !== PermissionsAndroid.RESULTS.GRANTED){
+//         console.log('Permission not granted!');
+//         Toast.show({
+//           type: 'info',
+//           text1: 'Permission not granted!'
+//         })
+//         return;
+//       }
+    
+//     }
+
+//   }else{
+//     console.log("ELse Run")
+//   }
+//   getFCMToken();
+// }
+
+
+const requestUserPermission = async () => {
+  console.log("requesting permission started");
+
+  if (Platform.OS === 'android' && Platform.Version >= 33) {
+    const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+    console.log("requesting permission status :: "+granted)
+    if (!granted) {
+      console.log("Permission status for all :: " + granted);
+      const permissionResult = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+
+      if (permissionResult !== PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Permission not granted!');
+        Toast.show({
+          type: 'info',
+          text1: 'Permission not granted!'
+        });
+        return;
+      }
+    }
+  }
+
+  getFCMToken(); // Call getFCMToken after ensuring permission
+};
+
+
+
 
 
 

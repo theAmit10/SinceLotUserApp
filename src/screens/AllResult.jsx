@@ -49,7 +49,11 @@ const AllResult = () => {
   }, [dispatch, focused]);
 
   useEffect(() => {
-    setFilteredData(results); // Update filteredData whenever locations change
+
+    const firstThreeElements = results.slice(0,20);
+    
+
+    setFilteredData(firstThreeElements); // Update filteredData whenever locations change
   }, [results]);
 
   const submitHandler = () => {
