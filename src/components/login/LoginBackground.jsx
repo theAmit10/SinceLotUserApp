@@ -1,7 +1,7 @@
 
 
 
-import {StyleSheet, Text, View} from 'react-native';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
 import {
@@ -18,6 +18,16 @@ const LoginBackground = () => {
         flex: 1,
         backgroundColor: COLORS.grayBg,
       }}>
+
+        <ImageBackground
+        source={require("../../../assets/image/tlwbg.jpg")}
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+        >
+
+        
         {/** Top View Rectangle View */}
       <View
         style={{
@@ -43,7 +53,7 @@ const LoginBackground = () => {
       </View>
       <View
         style={{
-          backgroundColor: COLORS.grayHalfBg,
+          backgroundColor: 'rgba(128, 128, 128, 0.5)',
           width: widthPercentageToDP(50),
           flex: 1,
           opacity: 80,
@@ -65,7 +75,7 @@ const LoginBackground = () => {
             backgroundColor: COLORS.background,
           }}></View>
       </View>
-
+      </ImageBackground>
       
     </View>
   );

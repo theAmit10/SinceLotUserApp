@@ -1,5 +1,6 @@
 import {
   FlatList,
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
@@ -19,20 +20,21 @@ import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllLocations } from '../redux/actions/locationAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAllLocations} from '../redux/actions/locationAction';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Search = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {accesstoken} = useSelector(state => state.user);
-  const {loading,locations} = useSelector(state => state.location);
-
+  const {loading, locations} = useSelector(state => state.location);
 
   // const [filteredData, setFilteredData] = useState(locations);
   const [filteredData, setFilteredData] = useState([]);
-  
+
   const handleSearch = text => {
     const filtered = locations.filter(item =>
       item.lotlocation.toLowerCase().includes(text.toLowerCase()),
@@ -40,19 +42,16 @@ const Search = () => {
     setFilteredData(filtered);
   };
 
-  const focused = useIsFocused()
-
-
+  const focused = useIsFocused();
 
   useEffect(() => {
-    dispatch(getAllLocations(accesstoken))
-  },[dispatch,focused])
+    dispatch(getAllLocations(accesstoken));
+  }, [dispatch, focused]);
 
   useEffect(() => {
     setFilteredData(locations); // Update filteredData whenever locations change
   }, [locations]);
- 
-  
+
   const submitHandler = () => {
     Toast.show({
       type: 'success',
@@ -66,138 +65,150 @@ const Search = () => {
 
       {/** Main Cointainer */}
 
-      <View
-        style={{
-          height: heightPercentageToDP(85),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
-        <View
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '100%',
+            height: heightPercentageToDP(85),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
+              height: heightPercentageToDP(85),
+              width: widthPercentageToDP(100),
 
-        {/** Content Container */}
-
-        <View
-          style={{
-            height: heightPercentageToDP(15),
-            margin: heightPercentageToDP(2),
-          }}>
-          <GradientText style={styles.textStyle}>Search</GradientText>
-
-          <View
-            style={{
-              height: heightPercentageToDP(7),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              marginTop: heightPercentageToDP(2),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            <Fontisto
-              name={'search'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-            />
-            <TextInput
+            {/** Top Style View */}
+            <View
               style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.Montserrat_Regular,
-                fontSize: heightPercentageToDP(2.5),
-                color: COLORS.black
-              }}
-              placeholder="Search for location"
-              placeholderTextColor={COLORS.black}
-              label="Search"
-              onChangeText={handleSearch}
-            />
-          </View>
-        </View>
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
 
-        <View
-          style={{
-            flex: 2,
-          }}>
-            {
-                loading ? (<Loading/>) : (
+            {/** Content Container */}
+
+            <View
+              style={{
+                height: heightPercentageToDP(15),
+                margin: heightPercentageToDP(2),
+              }}>
+              <GradientTextWhite style={styles.textStyle}>
+                Search
+              </GradientTextWhite>
+
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.white_s,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                <Fontisto
+                  name={'search'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+                <TextInput
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2.5),
+                    color: COLORS.black,
+                  }}
+                  placeholder="Search for location"
+                  placeholderTextColor={COLORS.black}
+                  label="Search"
+                  onChangeText={handleSearch}
+                />
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 2,
+              }}>
+              {loading ? (
+                <Loading />
+              ) : (
                 <FlatList
-                    data={filteredData}
-                    renderItem={({item, index}) => (
-                      <TouchableOpacity
-                    
-                      
-                      onPress={() => navigation.navigate("SearchTime",{
-                        locationdata: item,
-                      })}
+                  data={filteredData}
+                  renderItem={({item, index}) => (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('SearchTime', {
+                          locationdata: item,
+                        })
+                      }>
+                      <LinearGradient
+                        colors={
+                          index % 2 === 0
+                            ? [COLORS.lightblue, COLORS.midblue]
+                            : [COLORS.lightyellow, COLORS.darkyellow]
+                        }
                         style={{
                           ...styles.item,
-                          backgroundColor:
-                            index % 2 === 0 ? COLORS.lightDarkGray : COLORS.grayHalfBg,
                           flexDirection: 'row',
-                          justifyContent: 'space-between'
+                          justifyContent: 'space-between',
                         }}>
-                          <View style={{
-                            flex: 1.5
+                        <View
+                          style={{
+                            flex: 1.5,
                           }}>
                           <Text
-                          style={{
-                            color: COLORS.black,
-                            fontFamily: FONT.Montserrat_SemiBold,
-                            fontSize: heightPercentageToDP(2.5),
-                          }}>
-                          {item.lotlocation}
-                        </Text>
-                          </View>
-                       
-                        <View style={{
-                          flex: 1,
-                          
-                        }}>
-                        <Text
-                          style={{
-                            color: COLORS.black,
-                            fontFamily: FONT.Montserrat_Regular,
-                            fontSize: heightPercentageToDP(2),
-                          }}>
-                          Max {item.maximumRange}
-                        </Text>
+                            style={{
+                              color: COLORS.black,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              fontSize: heightPercentageToDP(2.5),
+                            }}>
+                            {item.lotlocation}
+                          </Text>
                         </View>
-                        
-                      </TouchableOpacity>
-                    )}
-                    keyExtractor={item => item._id}
-                    initialNumToRender={10} // Render initial 10 items
-                    maxToRenderPerBatch={10} // Batch size to render
-                    windowSize={10} // Number of items kept in memory
-                  />)
-            }
-          
-        </View>
 
-        {/** Bottom Submit Container */}
-
-       
-
-        
-
-        {/** end */}
+                        <View
+                          style={{
+                            flex: 1,
+                          }}>
+                          <Text
+                            style={{
+                              color: COLORS.black,
+                              fontFamily: FONT.Montserrat_Regular,
+                              fontSize: heightPercentageToDP(2),
+                            }}>
+                            Max {item.maximumRange}
+                          </Text>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
+                  keyExtractor={item => item._id}
+                  initialNumToRender={10} // Render initial 10 items
+                  maxToRenderPerBatch={10} // Batch size to render
+                  windowSize={10} // Number of items kept in memory
+                />
+              )}
+            </View>
+          </View>
+        </ImageBackground>
       </View>
     </View>
   );
@@ -209,7 +220,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
-    color:COLORS.black
+    color: COLORS.black,
   },
   container: {
     justifyContent: 'center',
@@ -228,8 +239,6 @@ const styles = StyleSheet.create({
     fontFamily: FONT.SF_PRO_MEDIUM,
   },
 });
-
-
 
 // {/* <View
 //           style={{

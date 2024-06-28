@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -26,6 +27,7 @@ import Loading from '../components/helpercComponent/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import UrlHelper from '../helper/UrlHelper';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const Register = ({route}) => {
   const {signupwith} = route.params;
@@ -37,8 +39,7 @@ const Register = ({route}) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-  const [userDeviceToken, setUserDeviceToken] = useState("");
-
+  const [userDeviceToken, setUserDeviceToken] = useState('');
 
   const navigation = useNavigation();
 
@@ -63,7 +64,7 @@ const Register = ({route}) => {
     try {
       const val = await AsyncStorage.getItem('fcm_token');
       console.log('Device Token :: ' + val);
-      setUserDeviceToken(val)
+      setUserDeviceToken(val);
     } catch (error) {
       console.log('error' + error);
     }
@@ -71,7 +72,7 @@ const Register = ({route}) => {
 
   const submitHandler = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex =  /^(?:\+91|0)?[6-9]\d{9}$/; 
+    const phoneRegex = /^(?:\+91|0)?[6-9]\d{9}$/;
 
     if (signupwith === 'emailtype') {
       if (!name) {
@@ -110,9 +111,9 @@ const Register = ({route}) => {
           text1: 'Password and Confirm Password Not Matched',
         });
       } else {
-        console.log("Email :: "+email)
-        console.log("name :: "+name)
-        console.log("devicetoken :: "+userDeviceToken)
+        console.log('Email :: ' + email);
+        console.log('name :: ' + name);
+        console.log('devicetoken :: ' + userDeviceToken);
 
         // dispatch(register(name, email, password,userDeviceToken));
         Toast.show({
@@ -136,15 +137,15 @@ const Register = ({route}) => {
               },
             },
           );
-  
+
           console.log('datat :: ' + data);
-  
+
           Toast.show({
             type: 'success',
             text1: data.message,
           });
           setProgressBar(false);
-          navigation.navigate("Login")
+          navigation.navigate('Login');
         } catch (error) {
           setProgressBar(false);
           Toast.show({
@@ -152,6 +153,7 @@ const Register = ({route}) => {
             text1: 'Something went wrong',
           });
           console.log(error);
+          console.log(error.response);
           console.log(error.response.data.message);
           console.log(error.response);
         }
@@ -215,15 +217,15 @@ const Register = ({route}) => {
               },
             },
           );
-  
+
           console.log('datat :: ' + data);
-  
+
           Toast.show({
             type: 'success',
             text1: data.message,
           });
           setProgressBar(false);
-          navigation.navigate("Login")
+          navigation.navigate('Login');
         } catch (error) {
           setProgressBar(false);
           Toast.show({
@@ -234,8 +236,6 @@ const Register = ({route}) => {
           console.log(error.response.data.message);
           console.log(error.response);
         }
-
-
       }
     }
   };
@@ -244,267 +244,280 @@ const Register = ({route}) => {
     <SafeAreaView style={{flex: 1}}>
       <LoginBackground />
 
-      {/** Login Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(75),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
-        <View
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '100%',
+            height: heightPercentageToDP(75),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
+              height: heightPercentageToDP(75),
+              width: widthPercentageToDP(100),
 
-        {/** Login Main Container */}
-        <View
-          style={{
-            flex: 1,
-            margin: heightPercentageToDP(2),
-          }}>
-          <GradientText style={styles.textStyle}>Register Now</GradientText>
-
-          <View
-            style={{
-              marginTop: heightPercentageToDP(3),
-              paddingVertical: heightPercentageToDP(2),
-              gap: heightPercentageToDP(2),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            {/** Name container */}
+            {/** Top Style View */}
             <View
               style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-              }}>
-              <Entypo
-                name={'user'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.black,
-                }}
-                placeholder="Name"
-                placeholderTextColor={COLORS.black}
-                label="Name"
-                value={name}
-                onChangeText={text => setName(text)}
-              />
-            </View>
-
-            {/** Email container */}
-            {signupwith === 'emailtype' ? (
-              <View
-                style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.grayBg,
-                  alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                }}>
-                <Fontisto
-                  name={'email'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.darkGray}
-                />
-                <TextInput
-                  style={{
-                    marginStart: heightPercentageToDP(1),
-                    flex: 1,
-                    fontFamily: FONT.SF_PRO_REGULAR,
-                    color: COLORS.black,
-                  }}
-                  placeholder="Email"
-                  placeholderTextColor={COLORS.black}
-                  label="Email"
-                  value={email}
-                  onChangeText={text => setEmail(text)}
-                />
-              </View>
-            ) : (
-              <View
-                style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.grayBg,
-                  alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                }}>
-                <FontAwesome
-                  name={'phone'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.darkGray}
-                />
-                <TextInput
-                  style={{
-                    marginStart: heightPercentageToDP(1),
-                    flex: 1,
-                    fontFamily: FONT.SF_PRO_REGULAR,
-                    color: COLORS.black,
-                  }}
-                  placeholder="Phone number"
-                  placeholderTextColor={COLORS.black}
-                  label="Phone number"
-                  value={email}
-                  onChangeText={text => setEmail(text)}
-                />
-              </View>
-            )}
-
-            {/** Password container */}
-            <View
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-              }}>
-              <Entypo
-                name={'lock'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.black,
-                }}
-                placeholder="Password"
-                value={password}
-                placeholderTextColor={COLORS.black}
-                onChangeText={text => setPassword(text)}
-                secureTextEntry={!passwordVisible}
-              />
-              <Entypo
-                onPress={togglePasswordVisibility}
-                name={passwordVisible ? 'eye' : 'eye-with-line'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-            </View>
-
-            {/** Confirm Password container */}
-            <View
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-              }}>
-              <Entypo
-                name={'lock'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.black,
-                }}
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                placeholderTextColor={COLORS.black}
-                onChangeText={text => setConfirmPassword(text)}
-                secureTextEntry={!confirmPasswordVisible}
-              />
-              <Entypo
-                onPress={togglePasswordVisibilityConfirmPassword}
-                name={passwordVisible ? 'eye' : 'eye-with-line'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-            </View>
-
-            {showProgressBar ? (
-              <View
-                style={{
-                  padding: heightPercentageToDP(2),
-                  marginTop: heightPercentageToDP(4),
-                }}>
-                <Loading />
-              </View>
-            ) : (
-              <TouchableOpacity
-                onPress={submitHandler}
-                style={{
-                  backgroundColor: COLORS.blue,
-                  padding: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  alignItems: 'center',
-                  marginTop: heightPercentageToDP(4),
-                }}>
-                <Text
-                  style={{
-                    color: COLORS.white,
-                    fontFamily: FONT.Montserrat_Regular,
-                  }}>
-                  Submit
-                </Text>
-              </TouchableOpacity>
-            )}
-
-            <View
-              style={{
-                padding: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                flexDirection: 'row',
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Text
+              <View
                 style={{
-                  color: COLORS.gray2,
-                  fontFamily: FONT.Montserrat_Regular,
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.white_s,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
+
+            {/** Login Main Container */}
+            <View
+              style={{
+                flex: 1,
+                margin: heightPercentageToDP(2),
+              }}>
+              <GradientTextWhite style={styles.textStyle}>
+                Register Now
+              </GradientTextWhite>
+
+              <View
+                style={{
+                  marginTop: heightPercentageToDP(3),
+                  paddingVertical: heightPercentageToDP(2),
+                  gap: heightPercentageToDP(2),
                 }}>
-                Already have account?
-              </Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Login')}
-                style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text
+                {/** Name container */}
+                <View
                   style={{
-                    color: COLORS.blue,
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
                   }}>
-                  {' '}
-                  Sign In
-                </Text>
-              </TouchableOpacity>
+                  <Entypo
+                    name={'user'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.SF_PRO_REGULAR,
+                      color: COLORS.black,
+                    }}
+                    placeholder="Name"
+                    placeholderTextColor={COLORS.black}
+                    label="Name"
+                    value={name}
+                    onChangeText={text => setName(text)}
+                  />
+                </View>
+
+                {/** Email container */}
+                {signupwith === 'emailtype' ? (
+                  <View
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <Fontisto
+                      name={'email'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                    <TextInput
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.SF_PRO_REGULAR,
+                        color: COLORS.black,
+                      }}
+                      placeholder="Email"
+                      placeholderTextColor={COLORS.black}
+                      label="Email"
+                      value={email}
+                      onChangeText={text => setEmail(text)}
+                    />
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <FontAwesome
+                      name={'phone'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                    <TextInput
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.SF_PRO_REGULAR,
+                        color: COLORS.black,
+                      }}
+                      placeholder="Phone number"
+                      placeholderTextColor={COLORS.black}
+                      label="Phone number"
+                      value={email}
+                      onChangeText={text => setEmail(text)}
+                    />
+                  </View>
+                )}
+
+                {/** Password container */}
+                <View
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <Entypo
+                    name={'lock'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.SF_PRO_REGULAR,
+                      color: COLORS.black,
+                    }}
+                    placeholder="Password"
+                    value={password}
+                    placeholderTextColor={COLORS.black}
+                    onChangeText={text => setPassword(text)}
+                    secureTextEntry={!passwordVisible}
+                  />
+                  <Entypo
+                    onPress={togglePasswordVisibility}
+                    name={passwordVisible ? 'eye' : 'eye-with-line'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </View>
+
+                {/** Confirm Password container */}
+                <View
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <Entypo
+                    name={'lock'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.SF_PRO_REGULAR,
+                      color: COLORS.black,
+                    }}
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    placeholderTextColor={COLORS.black}
+                    onChangeText={text => setConfirmPassword(text)}
+                    secureTextEntry={!confirmPasswordVisible}
+                  />
+                  <Entypo
+                    onPress={togglePasswordVisibilityConfirmPassword}
+                    name={passwordVisible ? 'eye' : 'eye-with-line'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </View>
+
+                {showProgressBar ? (
+                  <View
+                    style={{
+                      padding: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(4),
+                    }}>
+                    <Loading />
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    onPress={submitHandler}
+                    style={{
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
+                      marginTop: heightPercentageToDP(4),
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Submit
+                    </Text>
+                  </TouchableOpacity>
+                )}
+
+                <View
+                  style={{
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: COLORS.white_s,
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Already have account?
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Login')}
+                    style={{justifyContent: 'center', alignItems: 'center'}}>
+                    <Text
+                      style={{
+                        color: COLORS.blue,
+                      }}>
+                      {' '}
+                      Sign In
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
           </View>
-        </View>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -516,6 +529,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s,
   },
 });
 

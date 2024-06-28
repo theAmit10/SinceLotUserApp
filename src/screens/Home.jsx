@@ -10,6 +10,7 @@ import {
   Alert,
   BackHandler,
   Dimensions,
+  ImageBackground,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Countdown from 'react-native-countdown-component';
@@ -50,12 +51,24 @@ import {ImageSlider} from '@pembajak/react-native-image-slider-banner';
 import {onDisplayNotification} from '../helper/NotificationServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const images = [
   'https://imgs.search.brave.com/PvhNVIxs9m8r1whelc9RPX2dMQ371Xcsk3Lf2dCiVHQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvYmlnLXNhbGUt/YmFubmVyLWRlc2ln/bi1zcGVjaWFsLW9m/ZmVyLXVwLTUwLW9m/Zi1yZWFkeS1wcm9t/b3Rpb24tdGVtcGxh/dGUtdXNlLXdlYi1w/cmludC1kZXNpZ25f/MTEwNDY0LTU3MC5q/cGc_c2l6ZT02MjYm/ZXh0PWpwZw',
   'https://imgs.search.brave.com/0_WERhkh6NjaGafm4qPeYRM1WbUdabgTpK7LCJ8EKFA/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvaG90LXNhbGUt/aG9yaXpvbnRhbC1i/YW5uZXItd2l0aC1z/ZWFzb25hbC1vZmZl/cl80MTkzNDEtNjA1/LmpwZz9zaXplPTYy/NiZleHQ9anBn',
   'https://imgs.search.brave.com/pBRUab3Kras4ziV_cQdR0AtRiSrOuJKwhMTmHY988d8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3Ivc3BlY2lhbC1v/ZmZlci1maW5hbC1z/YWxlLXRhZy1iYW5u/ZXItZGVzaWduLXRl/bXBsYXRlLW1hcmtl/dGluZy1zcGVjaWFs/LW9mZmVyLXByb21v/dGlvbl82ODA1OTgt/MTk1LmpwZz9zaXpl/PTYyNiZleHQ9anBn',
 ];
+
+// result_lightblue : '#1993FF',
+//   result_green: '#7EC530',
+//   result_yellow: '#EFC62A',
+//   result_orange: '#FF8500',
+//   result_pink: '#EE3D64',
+//   result_darkblue: '#2260FF',
+//   result_purple: '#A628F2',
+//   result_cyan: '#34BFC8',
+
+const COLORS_LIST = [COLORS.result_lightblue, COLORS.result_green, COLORS.result_yellow, COLORS.result_orange, COLORS.result_pink,COLORS.result_darkblue,COLORS.result_purple,COLORS.result_cyan]; 
 
 const Home = () => {
   const {user, accesstoken, loading} = useSelector(state => state.user);
@@ -120,8 +133,6 @@ const Home = () => {
     }, []),
   );
 
-  
-
   // console.log("Show date :: "+showDate)
   const {
     results,
@@ -153,10 +164,9 @@ const Home = () => {
     setHomeResult(results[0]);
   }, [dispatch, focused]);
 
-  // Commenting this for checking 
+  // Commenting this for checking
   // useEffect(() => {
   //   const firstThreeElements = results;
-
 
   //   // const firstThreeElements = results.slice(0,20);
 
@@ -177,16 +187,12 @@ const Home = () => {
   // ]);
 
   useEffect(() => {
-    const firstThreeElements = results.slice(0,15);
+    const firstThreeElements = results.slice(0, 15);
     if (firstTimeClick) {
       setHomeResult(firstThreeElements[0]);
     }
-    setFilteredData(firstThreeElements); 
-
-  }, [
-    results,
-    homeResult,  
-  ]);
+    setFilteredData(firstThreeElements);
+  }, [results, homeResult]);
 
   const toogleView = () => {
     setShowDate(false);
@@ -206,7 +212,7 @@ const Home = () => {
   const settingHomeResultUsingLocation = (item, index) => {
     setHomeResult(item);
     setFirstTimeClick(false);
-    setInitialResultIndex(index)
+    setInitialResultIndex(index);
     console.log('Mine time');
     console.log(extractTime(item.nextresulttime));
 
@@ -539,16 +545,15 @@ const Home = () => {
     }, 1000);
   };
 
-
   // Auto Reload HomeScreen
   const [previousData, setPreviousData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Auto Reloading start")
+        console.log('Auto Reloading start');
         dispatch(getAllResult(accesstoken));
-        const { results } = useSelector(state => state.result);
+        const {results} = useSelector(state => state.result);
 
         if (!isEqual(previousData, results)) {
           setPreviousData(results);
@@ -557,7 +562,7 @@ const Home = () => {
           // or use some state to trigger a re-render.
         }
       } catch (error) {
-        console.log("Auto Reloading error")
+        console.log('Auto Reloading error');
         console.log(error);
       }
     };
@@ -582,240 +587,195 @@ const Home = () => {
     return true;
   };
 
-
   return (
-    <SafeAreaView
-      className="flex-1"
-      style={{
-        backgroundColor: COLORS.white,
-        paddingVertical: heightPercentageToDP(2),
-      }}>
-      {loading ? (
-        <HomeLoading />
-      ) : user ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/** TOP HEADER CONTAINER */}
-          <View
-            style={{
-              height: heightPercentageToDP(10),
-              flexDirection: 'row',
-              paddingHorizontal: heightPercentageToDP(2),
-            }}>
-            <View
-              style={{
-                flex: 3,
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: heightPercentageToDP(1),
-              }}>
-              {/** Profile Image Container */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate('UpdateProfile')}
-                style={{
-                  borderRadius: 100,
-                  overflow: 'hidden',
-                  width: 70,
-                  height: 70,
-                }}>
-                {user?.avatar?.url ? (
-                  <Image
-                    source={{
-                      uri: `${serverName}/uploads/${user?.avatar.url}`,
-                    }}
-                    resizeMode="cover"
-                    style={{
-                      height: 70,
-                      width: 70,
-                    }}
-                  />
-                ) : (
-                  <Image
-                    source={require('../../assets/image/dark_user.png')}
-                    resizeMode="cover"
-                    style={{
-                      height: 70,
-                      width: 70,
-                    }}
-                  />
-                )}
-              </TouchableOpacity>
-
-              {/** Profile name Container */}
-              <View>
-                <GradientText
-                  style={{
-                    fontSize: heightPercentageToDP(2),
-                    fontFamily: FONT.Montserrat_Bold,
-                    color: COLORS.darkGray,
-                  }}>
-                  User ID - {user ? user.userId : ''}
-                </GradientText>
-
-                <Text
-                  style={{
-                    fontFamily: FONT.Montserrat_Regular,
-                    color: COLORS.black,
-                  }}>
-                  Hello
-                  <Text
-                    style={{
-                      fontFamily: FONT.HELVETICA_BOLD,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                    }}>
-                    , {user.name}
-                  </Text>
-                </Text>
-              </View>
-            </View>
-
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: heightPercentageToDP(2),
-              }}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Notification')}>
-                <Ionicons
-                  name={'notifications'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.black}
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => navigation.navigate('Setting')}>
-                <Entypo
-                  name={'menu'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.black}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/** SEARCH CONTAINER */}
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Search')}
-            style={{
-              height: heightPercentageToDP(7),
-
-              flexDirection: 'row',
-              backgroundColor: COLORS.lightblue,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              marginTop: heightPercentageToDP(2),
-              marginHorizontal: heightPercentageToDP(2),
-            }}>
-            <Fontisto
-              name={'search'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-            />
-            <Text
-              style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.Montserrat_Regular,
-                fontSize: heightPercentageToDP(2),
-                color: COLORS.black,
-              }}>
-              Search for location
-            </Text>
-          </TouchableOpacity>
-
-          {/** BIG RESULT  homeResult && homeResult.length === 0 */}
-
-          {homeResult && homeResult.length === 0 ? (
-            <NoDataFound data={'No Result Available'} />
-          ) : showDate ? (
-            <View
-              style={{
-                height: heightPercentageToDP(40),
-                backgroundColor: COLORS.grayHalfBg,
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(2),
-                elevation: heightPercentageToDP(1),
-                marginHorizontal: heightPercentageToDP(2),
-              }}>
+    <SafeAreaView className="flex-1">
+      <View style={styles.container}>
+        <ImageBackground source={require('../../assets/image/tlwbg.jpg')}>
+          {loading ? (
+            <HomeLoading />
+          ) : user ? (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {/** TOP HEADER CONTAINER */}
               <View
                 style={{
-                  height: heightPercentageToDP(30),
-                  borderRadius: heightPercentageToDP(1),
+                  height: heightPercentageToDP(10),
                   flexDirection: 'row',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  marginTop: heightPercentageToDP(2),
                 }}>
-                {/** Top view left container */}
                 <View
                   style={{
-                    flex: 5,
-                    justifyContent: 'center',
+                    flex: 3,
+                    flexDirection: 'row',
                     alignItems: 'center',
+                    gap: heightPercentageToDP(1),
                   }}>
-                  <View
+                  {/** Profile Image Container */}
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('UpdateProfile')}
                     style={{
-                      alignSelf: 'flex-start',
-                      paddingStart: heightPercentageToDP(2),
-
-                      width: '100%',
+                      borderRadius: 100,
+                      overflow: 'hidden',
+                      width: 70,
+                      height: 70,
                     }}>
+                    {user?.avatar?.url ? (
+                      <Image
+                        source={{
+                          uri: `${serverName}/uploads/${user?.avatar.url}`,
+                        }}
+                        resizeMode="cover"
+                        style={{
+                          height: 70,
+                          width: 70,
+                        }}
+                      />
+                    ) : (
+                      <Image
+                        source={require('../../assets/image/dark_user.png')}
+                        resizeMode="cover"
+                        style={{
+                          height: 70,
+                          width: 70,
+                        }}
+                      />
+                    )}
+                  </TouchableOpacity>
+
+                  {/** Profile name Container */}
+                  <View>
+                    <GradientTextWhite
+                      style={{
+                        fontSize: heightPercentageToDP(2),
+                        fontFamily: FONT.Montserrat_Bold,
+                        color: COLORS.white_s,
+                      }}>
+                      User ID - {user ? user.userId : ''}
+                    </GradientTextWhite>
+
                     <Text
                       style={{
-                        fontFamily: FONT.Montserrat_SemiBold,
-                        fontSize: heightPercentageToDP(4),
-
-                        color: COLORS.black,
-                      }}
-                      numberOfLines={1}>
-                      {homeResult?.lotlocation?.lotlocation}
-                    </Text>
-                  </View>
-
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: FONT.SF_PRO_REGULAR,
-                        fontSize: heightPercentageToDP(14),
-                        color: COLORS.black,
-                        paddingStart: heightPercentageToDP(3),
-                      }}
-                      numberOfLines={1}>
-                      {homeResult?.resultNumber}
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.white_s,
+                      }}>
+                      Hello
+                      <Text
+                        style={{
+                          fontFamily: FONT.HELVETICA_BOLD,
+                          color: COLORS.white_s,
+                          fontSize: heightPercentageToDP(2),
+                        }}>
+                        , {user.name}
+                      </Text>
                     </Text>
                   </View>
                 </View>
 
-                {/** Top view right container */}
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: heightPercentageToDP(2),
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Notification')}>
+                    <Ionicons
+                      name={'notifications'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.white_s}
+                    />
+                  </TouchableOpacity>
 
-                {loaderForNextResult ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Setting')}>
+                    <Entypo
+                      name={'menu'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.white_s}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/** SEARCH CONTAINER */}
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Search')}
+                style={{
+                  height: heightPercentageToDP(7),
+
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.grayHalfBg,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  marginTop: heightPercentageToDP(2),
+                  marginHorizontal: heightPercentageToDP(2),
+                }}>
+                <Fontisto
+                  name={'search'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+                <Text
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2),
+                    color: COLORS.black,
+                  }}>
+                  Search for location
+                </Text>
+              </TouchableOpacity>
+
+              {/** BIG RESULT  homeResult && homeResult.length === 0 */}
+
+              {homeResult && homeResult.length === 0 ? (
+                <NoDataFound data={'No Result Available'} />
+              ) : showDate ? (
+                <View
+                  style={{
+                    height: heightPercentageToDP(40),
+                    backgroundColor: COLORS.grayHalfBg,
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(2),
+                    elevation: heightPercentageToDP(1),
+                    marginHorizontal: heightPercentageToDP(2),
+                  }}>
                   <View
                     style={{
-                      flex: 1,
-
-                      justifyContent: 'center',
+                      height: heightPercentageToDP(30),
+                      borderRadius: heightPercentageToDP(1),
+                      flexDirection: 'row',
                     }}>
-                    <Loading />
-                  </View>
-                ) : (
-                  <View
-                    style={{
-                      flex: 1.5,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
+                    {/** Top view left container */}
                     <View
                       style={{
-                        position: 'absolute',
-                        top: 2,
-                        zIndex: 1,
-                        borderRadius: heightPercentageToDP(2),
+                        flex: 5,
+                        justifyContent: 'center',
+                        alignItems: 'center',
                       }}>
+                      <View
+                        style={{
+                          alignSelf: 'flex-start',
+                          paddingStart: heightPercentageToDP(2),
+
+                          width: '100%',
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: FONT.Montserrat_SemiBold,
+                            fontSize: heightPercentageToDP(4),
+
+                            color: COLORS.black,
+                          }}
+                          numberOfLines={1}>
+                          {homeResult?.lotlocation?.lotlocation}
+                        </Text>
+                      </View>
+
                       <View
                         style={{
                           justifyContent: 'center',
@@ -823,81 +783,124 @@ const Home = () => {
                         }}>
                         <Text
                           style={{
-                            textAlign: 'center',
-                            fontFamily: FONT.Montserrat_Regular,
+                            fontFamily: FONT.SF_PRO_REGULAR,
+                            fontSize: heightPercentageToDP(14),
                             color: COLORS.black,
-                          }}>
-                          Next
-                        </Text>
-                        <Text
-                          style={{
-                            textAlign: 'center',
-                            fontFamily: FONT.Montserrat_Regular,
-                            color: COLORS.black,
-                          }}>
-                          Result
-                        </Text>
-                        <Text
-                          style={{
-                            textAlign: 'center',
-                            color: COLORS.black,
-                            fontFamily: FONT.HELVETICA_BOLD,
-                          }}>
-                          {homeResult?.nextresulttime}
+                            paddingStart: heightPercentageToDP(3),
+                          }}
+                          numberOfLines={1}>
+                          {homeResult?.resultNumber}
                         </Text>
                       </View>
                     </View>
 
-                    <View
-                      style={{
-                        flex: 1,
-                        justifyContent: 'flex-end',
-                        alignItems: 'center',
-                        borderRadius: heightPercentageToDP(2),
-                      }}>
-                      <Countdown
-                        until={timeDifference / 1000}
-                        onFinish={() => afterTimerCompleted()}
-                        size={12}
-                        timeToShow={['H', 'M', 'S']}
-                        digitStyle={{
-                          backgroundColor: 'transparent', // Set background to transparent
-                          borderWidth: 0, // Remove border
-                          paddingHorizontal: 0, // Remove horizontal padding
-                          paddingVertical: 0, // Remove vertical padding
-                          margin: 0, // Remove margin
-                        }}
-                        digitTxtStyle={{color: COLORS.black}}
-                        timeLabelStyle={{
-                          color: COLORS.grayHalfBg,
-                          fontWeight: 'bold',
-                        }}
-                        separatorStyle={{
-                          color: COLORS.black,
-                          marginTop: heightPercentageToDP(-2),
-                          marginHorizontal: heightPercentageToDP(-8),
+                    {/** Top view right container */}
 
-                          paddingHorizontal: 0, // Remove horizontal padding
-                        }}
-                        timeLabels={{
-                          h: 'Hours',
-                          m: 'Minutes',
-                          s: 'Seconds',
-                        }}
-                        showSeparator
+                    {loaderForNextResult ? (
+                      <View
                         style={{
-                          flexDirection: 'row',
-                          alignItems: 'center', // Align items to center
-                          transform: [{rotate: '90deg'}],
-                          color: COLORS.black,
-                          fontFamily: FONT.Montserrat_SemiBold,
-                          fontSize: heightPercentageToDP(3),
-                          marginStart: heightPercentageToDP(-2),
-                          marginBottom: heightPercentageToDP(9),
-                        }}
-                      />
+                          flex: 1,
 
-                      {/* <Countdown
+                          justifyContent: 'center',
+                        }}>
+                        <Loading />
+                      </View>
+                    ) : (
+                      <View
+                        style={{
+                          flex: 1.5,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <View
+                          style={{
+                            position: 'absolute',
+                            top: 2,
+                            zIndex: 1,
+                            borderRadius: heightPercentageToDP(2),
+                          }}>
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                fontFamily: FONT.Montserrat_Regular,
+                                color: COLORS.black,
+                              }}>
+                              Next
+                            </Text>
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                fontFamily: FONT.Montserrat_Regular,
+                                color: COLORS.black,
+                              }}>
+                              Result
+                            </Text>
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                color: COLORS.black,
+                                fontFamily: FONT.HELVETICA_BOLD,
+                              }}>
+                              {homeResult?.nextresulttime}
+                            </Text>
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1,
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                            borderRadius: heightPercentageToDP(2),
+                          }}>
+                          <Countdown
+                            until={timeDifference / 1000}
+                            onFinish={() => afterTimerCompleted()}
+                            size={12}
+                            timeToShow={['H', 'M', 'S']}
+                            digitStyle={{
+                              backgroundColor: 'transparent', // Set background to transparent
+                              borderWidth: 0, // Remove border
+                              paddingHorizontal: 0, // Remove horizontal padding
+                              paddingVertical: 0, // Remove vertical padding
+                              margin: 0, // Remove margin
+                            }}
+                            digitTxtStyle={{color: COLORS.black}}
+                            timeLabelStyle={{
+                              color: COLORS.grayHalfBg,
+                              fontWeight: 'bold',
+                            }}
+                            separatorStyle={{
+                              color: COLORS.black,
+                              marginTop: heightPercentageToDP(-2),
+                              marginHorizontal: heightPercentageToDP(-8),
+
+                              paddingHorizontal: 0, // Remove horizontal padding
+                            }}
+                            timeLabels={{
+                              h: 'Hours',
+                              m: 'Minutes',
+                              s: 'Seconds',
+                            }}
+                            showSeparator
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center', // Align items to center
+                              transform: [{rotate: '90deg'}],
+                              color: COLORS.black,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-2),
+                              marginBottom: heightPercentageToDP(9),
+                            }}
+                          />
+
+                          {/* <Countdown
                             until={timeDifference / 1000} // Pass time difference in seconds
                             onFinish={() => console.log('Timer Completed...')} // Callback when countdown finishes
                             size={12}
@@ -933,315 +936,316 @@ const Home = () => {
                               marginBottom: heightPercentageToDP(8),
                             }}
                           /> */}
-                    </View>
+                        </View>
+                      </View>
+                    )}
                   </View>
-                )}
-              </View>
 
-              {/** Big Result bottom container */}
+                  {/** Big Result bottom container */}
 
-              <TouchableOpacity
-                onPress={toogleView}
-                style={{
-                  flex: 1,
-                  backgroundColor: COLORS.white_s,
-                  margin: heightPercentageToDP(1),
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  gap: heightPercentageToDP(1),
-                  zIndex: 2,
-                  borderRadius: heightPercentageToDP(1),
-                }}>
-                <View
-                  style={{
-                    backgroundColor: COLORS.grayHalfBg,
-                    padding: heightPercentageToDP(1),
-                    borderRadius: heightPercentageToDP(1),
-                    marginStart: heightPercentageToDP(2),
-                  }}>
-                  <Ionicons
-                    name={'calendar'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </View>
-
-                <Text
-                  style={{
-                    fontFamily: FONT.Montserrat_Regular,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.black,
-                  }}>
-                  {homeResult?.lotdate?.lotdate}
-                </Text>
-
-                <Text
-                  style={{
-                    fontFamily: FONT.Montserrat_Regular,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.black,
-                  }}>
-                  {homeResult?.lottime?.lottime}
-                </Text>
-
-                <Text
-                  style={{
-                    fontFamily: FONT.Montserrat_Regular,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.black,
-                  }}>
-                  {homeResult?.resultNumber}
-                </Text>
-
-                <View
-                  style={{
-                    flex: 1,
-                    paddingEnd: heightPercentageToDP(3.5),
-                  }}>
-                  <View
-                    style={{
-                      backgroundColor: COLORS.grayHalfBg,
-                      padding: heightPercentageToDP(0.5),
-                      borderRadius: heightPercentageToDP(1),
-                      alignSelf: 'flex-end',
-                    }}>
-                    <Ionicons
-                      name={'caret-down-circle-sharp'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View
-              style={{
-                height: heightPercentageToDP(45),
-                backgroundColor: COLORS.grayHalfBg,
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(2),
-                elevation: heightPercentageToDP(1),
-                justifyContent: 'space-evenly',
-                marginHorizontal: heightPercentageToDP(2),
-              }}>
-              <View
-                style={{
-                  height: heightPercentageToDP(40),
-                  borderRadius: heightPercentageToDP(1),
-                  flexDirection: 'row',
-                }}>
-                {/** Top view left container */}
-                <View
-                  style={{
-                    flex: 5,
-                    padding: heightPercentageToDP(1),
-                  }}>
-                  {/** Top Locaton With Result */}
-                  <View
+                  <TouchableOpacity
+                    onPress={toogleView}
                     style={{
                       flex: 1,
+                      backgroundColor: COLORS.white_s,
+                      margin: heightPercentageToDP(1),
+                      justifyContent: 'center',
+                      alignItems: 'center',
                       flexDirection: 'row',
-                      justifyContent: 'space-between',
                       gap: heightPercentageToDP(1),
+                      zIndex: 2,
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    <GradientText
+                    <View
                       style={{
-                        fontSize: heightPercentageToDP(3),
-                        fontFamily: FONT.Montserrat_Bold,
+                        backgroundColor: COLORS.grayHalfBg,
+                        padding: heightPercentageToDP(1),
+                        borderRadius: heightPercentageToDP(1),
+                        marginStart: heightPercentageToDP(2),
+                      }}>
+                      <Ionicons
+                        name={'calendar'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </View>
+
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
                       }}>
-                      {homeResult?.lotlocation?.lotlocation}
-                    </GradientText>
+                      {homeResult?.lotdate?.lotdate}
+                    </Text>
 
-                    <GradientText
+                    <Text
                       style={{
-                        fontSize: heightPercentageToDP(3),
-                        fontFamily: FONT.Montserrat_Bold,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
-                        marginEnd: heightPercentageToDP(1),
+                      }}>
+                      {homeResult?.lottime?.lottime}
+                    </Text>
+
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
                       }}>
                       {homeResult?.resultNumber}
-                    </GradientText>
-                  </View>
-
-                  {/** List of result in flatlist */}
-
-                  <ScrollView nestedScrollEnabled={true}>
-                    <LinearGradient
-                      colors={[COLORS.white_s, COLORS.grayHalfBg]}
-                      style={{
-                        backgroundColor: COLORS.white,
-                        height: heightPercentageToDP(27),
-                        borderRadius: heightPercentageToDP(1),
-                        paddingHorizontal: heightPercentageToDP(1),
-                        paddingVertical: heightPercentageToDP(2),
-                        marginHorizontal: heightPercentageToDP(3),
-                        marginTop: heightPercentageToDP(2),
-                      }}>
-                      {/** All Date for a specific location */}
-
-                      {resultAccordingLocation.length === 0 ? (
-                        <View
-                          style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}>
-                          <Text>No Data Available</Text>
-                        </View>
-                      ) : loadingForResultAccordingLocation ? (
-                        <View>
-                          <Loading />
-                        </View>
-                      ) : (
-                        resultAccordingLocation.map((item, index) => (
-                          <TouchableOpacity
-                            onPress={() => {
-                              setHomeResult(item);
-                              setShowDate(true);
-                            }}
-                            key={index}
-                            style={{
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              alignItems: 'stretch',
-                              gap: heightPercentageToDP(2.5),
-                            }}>
-                            <Text
-                              style={{
-                                fontFamily: FONT.Montserrat_SemiBold,
-                                fontSize: heightPercentageToDP(2),
-                                textAlign: 'left',
-                                color: COLORS.black,
-                              }}>
-                              {item.lotdate.lotdate}
-                            </Text>
-
-                            <Text
-                              style={{
-                                fontFamily: FONT.Montserrat_SemiBold,
-                                fontSize: heightPercentageToDP(2),
-                                color: COLORS.black,
-                              }}>
-                              {item.lottime.lottime}
-                            </Text>
-
-                            <Text
-                              style={{
-                                fontFamily: FONT.Montserrat_SemiBold,
-                                fontSize: heightPercentageToDP(2),
-                                textAlign: 'right',
-                                color: COLORS.black,
-                              }}>
-                              {item.resultNumber}
-                            </Text>
-                          </TouchableOpacity>
-                        ))
-                      )}
-                    </LinearGradient>
-                  </ScrollView>
-                </View>
-
-                {/** Top view right container */}
-                {loaderForNextResult ? (
-                  <View
-                    style={{
-                      flex: 1,
-
-                      justifyContent: 'center',
-                    }}>
-                    <Loading />
-                  </View>
-                ) : (
-                  <View
-                    style={{
-                      flex: 1,
-
-                      justifyContent: 'center',
-                    }}>
-                    <View style={{position: 'absolute', top: 10, zIndex: 1}}>
-                      <View
-                        style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <Text
-                          style={{
-                            textAlign: 'center',
-                            fontFamily: FONT.Montserrat_Regular,
-                            color: COLORS.black,
-                          }}>
-                          Next
-                        </Text>
-                        <Text
-                          style={{
-                            textAlign: 'center',
-                            fontFamily: FONT.Montserrat_Regular,
-                            color: COLORS.black,
-                          }}>
-                          Result
-                        </Text>
-                        <Text
-                          style={{
-                            textAlign: 'center',
-                            color: COLORS.black,
-                            fontFamily: FONT.HELVETICA_BOLD,
-                          }}>
-                          {homeResult?.nextresulttime}
-                        </Text>
-                      </View>
-                    </View>
+                    </Text>
 
                     <View
                       style={{
                         flex: 1,
-                        justifyContent: 'flex-end',
-                        borderRadius: heightPercentageToDP(2),
+                        paddingEnd: heightPercentageToDP(3.5),
                       }}>
-                      <Countdown
-                        until={timeDifference / 1000}
-                        onFinish={() => console.log('Timer Completed...')}
-                        size={12}
-                        timeToShow={['H', 'M', 'S']}
-                        digitStyle={{
-                          backgroundColor: 'transparent', // Set background to transparent
-                          borderWidth: 0, // Remove border
-                          paddingHorizontal: 0, // Remove horizontal padding
-                          paddingVertical: 0, // Remove vertical padding
-                          margin: 0, // Remove margin
-                        }}
-                        digitTxtStyle={{color: COLORS.black}}
-                        timeLabelStyle={{
-                          color: COLORS.grayHalfBg,
-                          fontWeight: 'bold',
-                        }}
-                        separatorStyle={{
-                          color: COLORS.black,
-                          marginTop: heightPercentageToDP(-2),
-                          marginHorizontal: heightPercentageToDP(-8),
-
-                          paddingHorizontal: 0, // Remove horizontal padding
-                        }}
-                        timeLabels={{
-                          h: 'Hours',
-                          m: 'Minutes',
-                          s: 'Seconds',
-                        }}
-                        showSeparator
+                      <View
                         style={{
+                          backgroundColor: COLORS.grayHalfBg,
+                          padding: heightPercentageToDP(0.5),
+                          borderRadius: heightPercentageToDP(1),
+                          alignSelf: 'flex-end',
+                        }}>
+                        <Ionicons
+                          name={'caret-down-circle-sharp'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View
+                  style={{
+                    height: heightPercentageToDP(45),
+                    backgroundColor: COLORS.grayHalfBg,
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(2),
+                    elevation: heightPercentageToDP(1),
+                    justifyContent: 'space-evenly',
+                    marginHorizontal: heightPercentageToDP(2),
+                  }}>
+                  <View
+                    style={{
+                      height: heightPercentageToDP(40),
+                      borderRadius: heightPercentageToDP(1),
+                      flexDirection: 'row',
+                    }}>
+                    {/** Top view left container */}
+                    <View
+                      style={{
+                        flex: 5,
+                        padding: heightPercentageToDP(1),
+                      }}>
+                      {/** Top Locaton With Result */}
+                      <View
+                        style={{
+                          flex: 1,
                           flexDirection: 'row',
-                          alignItems: 'center', // Align items to center
-                          transform: [{rotate: '90deg'}],
-                          color: COLORS.black,
-                          fontFamily: FONT.Montserrat_SemiBold,
-                          fontSize: heightPercentageToDP(3),
-                          marginStart: heightPercentageToDP(-4),
-                          marginBottom: heightPercentageToDP(15),
-                        }}
-                      />
+                          justifyContent: 'space-between',
+                          gap: heightPercentageToDP(1),
+                        }}>
+                        <GradientText
+                          style={{
+                            fontSize: heightPercentageToDP(3),
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}>
+                          {homeResult?.lotlocation?.lotlocation}
+                        </GradientText>
 
-                      {/* <Countdown
+                        <GradientText
+                          style={{
+                            fontSize: heightPercentageToDP(3),
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                            marginEnd: heightPercentageToDP(1),
+                          }}>
+                          {homeResult?.resultNumber}
+                        </GradientText>
+                      </View>
+
+                      {/** List of result in flatlist */}
+
+                      <ScrollView nestedScrollEnabled={true}>
+                        <LinearGradient
+                          colors={[COLORS.white_s, COLORS.grayHalfBg]}
+                          style={{
+                            backgroundColor: COLORS.white,
+                            height: heightPercentageToDP(27),
+                            borderRadius: heightPercentageToDP(1),
+                            paddingHorizontal: heightPercentageToDP(1),
+                            paddingVertical: heightPercentageToDP(2),
+                            marginHorizontal: heightPercentageToDP(3),
+                            marginTop: heightPercentageToDP(2),
+                          }}>
+                          {/** All Date for a specific location */}
+
+                          {resultAccordingLocation.length === 0 ? (
+                            <View
+                              style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <Text>No Data Available</Text>
+                            </View>
+                          ) : loadingForResultAccordingLocation ? (
+                            <View>
+                              <Loading />
+                            </View>
+                          ) : (
+                            resultAccordingLocation.map((item, index) => (
+                              <TouchableOpacity
+                                onPress={() => {
+                                  setHomeResult(item);
+                                  setShowDate(true);
+                                }}
+                                key={index}
+                                style={{
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignItems: 'stretch',
+                                  gap: heightPercentageToDP(2.5),
+                                }}>
+                                <Text
+                                  style={{
+                                    fontFamily: FONT.Montserrat_SemiBold,
+                                    fontSize: heightPercentageToDP(2),
+                                    textAlign: 'left',
+                                    color: COLORS.black,
+                                  }}>
+                                  {item.lotdate.lotdate}
+                                </Text>
+
+                                <Text
+                                  style={{
+                                    fontFamily: FONT.Montserrat_SemiBold,
+                                    fontSize: heightPercentageToDP(2),
+                                    color: COLORS.black,
+                                  }}>
+                                  {item.lottime.lottime}
+                                </Text>
+
+                                <Text
+                                  style={{
+                                    fontFamily: FONT.Montserrat_SemiBold,
+                                    fontSize: heightPercentageToDP(2),
+                                    textAlign: 'right',
+                                    color: COLORS.black,
+                                  }}>
+                                  {item.resultNumber}
+                                </Text>
+                              </TouchableOpacity>
+                            ))
+                          )}
+                        </LinearGradient>
+                      </ScrollView>
+                    </View>
+
+                    {/** Top view right container */}
+                    {loaderForNextResult ? (
+                      <View
+                        style={{
+                          flex: 1,
+
+                          justifyContent: 'center',
+                        }}>
+                        <Loading />
+                      </View>
+                    ) : (
+                      <View
+                        style={{
+                          flex: 1,
+
+                          justifyContent: 'center',
+                        }}>
+                        <View
+                          style={{position: 'absolute', top: 10, zIndex: 1}}>
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                fontFamily: FONT.Montserrat_Regular,
+                                color: COLORS.black,
+                              }}>
+                              Next
+                            </Text>
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                fontFamily: FONT.Montserrat_Regular,
+                                color: COLORS.black,
+                              }}>
+                              Result
+                            </Text>
+                            <Text
+                              style={{
+                                textAlign: 'center',
+                                color: COLORS.black,
+                                fontFamily: FONT.HELVETICA_BOLD,
+                              }}>
+                              {homeResult?.nextresulttime}
+                            </Text>
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1,
+                            justifyContent: 'flex-end',
+                            borderRadius: heightPercentageToDP(2),
+                          }}>
+                          <Countdown
+                            until={timeDifference / 1000}
+                            onFinish={() => console.log('Timer Completed...')}
+                            size={12}
+                            timeToShow={['H', 'M', 'S']}
+                            digitStyle={{
+                              backgroundColor: 'transparent', // Set background to transparent
+                              borderWidth: 0, // Remove border
+                              paddingHorizontal: 0, // Remove horizontal padding
+                              paddingVertical: 0, // Remove vertical padding
+                              margin: 0, // Remove margin
+                            }}
+                            digitTxtStyle={{color: COLORS.black}}
+                            timeLabelStyle={{
+                              color: COLORS.grayHalfBg,
+                              fontWeight: 'bold',
+                            }}
+                            separatorStyle={{
+                              color: COLORS.black,
+                              marginTop: heightPercentageToDP(-2),
+                              marginHorizontal: heightPercentageToDP(-8),
+
+                              paddingHorizontal: 0, // Remove horizontal padding
+                            }}
+                            timeLabels={{
+                              h: 'Hours',
+                              m: 'Minutes',
+                              s: 'Seconds',
+                            }}
+                            showSeparator
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center', // Align items to center
+                              transform: [{rotate: '90deg'}],
+                              color: COLORS.black,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-4),
+                              marginBottom: heightPercentageToDP(15),
+                            }}
+                          />
+
+                          {/* <Countdown
                           until={timeDifference / 1000} // Pass time difference in seconds
                           onFinish={() => console.log('Timer Completed...')} // Callback when countdown finishes
                           size={14}
@@ -1277,20 +1281,20 @@ const Home = () => {
                             marginBottom: heightPercentageToDP(10),
                           }}
                         /> */}
-                    </View>
+                        </View>
+                      </View>
+                    )}
                   </View>
-                )}
-              </View>
 
-              {/** Big Result bottom container */}
+                  {/** Big Result bottom container */}
 
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                {/* <TouchableOpacity
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                    {/* <TouchableOpacity
                     onPress={() => setShowDate(true)}
                     className="rounded-md p-2"
                     style={{
@@ -1306,32 +1310,32 @@ const Home = () => {
                     />
                   </TouchableOpacity> */}
 
-                <TouchableOpacity
-                  onPress={checkAndRequestPermission}
-                  style={{
-                    backgroundColor: COLORS.blue,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    gap: heightPercentageToDP(1),
-                    zIndex: 2,
-                    borderRadius: heightPercentageToDP(1),
-                    height: heightPercentageToDP(5),
-                    marginBottom: heightPercentageToDP(2),
-                    marginHorizontal: heightPercentageToDP(2),
-                    flex: 1,
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.white_s,
-                    }}>
-                    Download
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              {/* <TouchableOpacity
+                    <TouchableOpacity
+                      onPress={checkAndRequestPermission}
+                      style={{
+                        backgroundColor: COLORS.blue,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        gap: heightPercentageToDP(1),
+                        zIndex: 2,
+                        borderRadius: heightPercentageToDP(1),
+                        height: heightPercentageToDP(5),
+                        marginBottom: heightPercentageToDP(2),
+                        marginHorizontal: heightPercentageToDP(2),
+                        flex: 1,
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(2),
+                          color: COLORS.white_s,
+                        }}>
+                        Download
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  {/* <TouchableOpacity
                     onPress={checkAndRequestPermission}
                     style={{
                       backgroundColor: COLORS.blue,
@@ -1354,279 +1358,280 @@ const Home = () => {
                       Download
                     </Text>
                   </TouchableOpacity> */}
-            </View>
-          )}
-
-          {/** BOTTOM RESULT CONTAINER */}
-
-          <View
-            style={{
-              height: heightPercentageToDP(5),
-              marginVertical: heightPercentageToDP(2),
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginHorizontal: heightPercentageToDP(2),
-            }}>
-            <GradientText
-              style={{
-                fontSize: heightPercentageToDP(4),
-                fontFamily: FONT.Montserrat_Bold,
-                color: COLORS.black,
-              }}>
-              Results
-            </GradientText>
-
-            <Text
-              onPress={() => navigation.navigate('AllResult')}
-              style={{
-                fontFamily: FONT.Montserrat_Regular,
-                fontSize: heightPercentageToDP(2),
-                textAlign: 'center',
-                textAlignVertical: 'center',
-                color: COLORS.black,
-              }}>
-              See all
-            </Text>
-          </View>
-
-          {/** BOTTOM RESULT CONTENT CONTAINER */}
-
-          {filteredData.length === 0 ? (
-            <NoDataFound data={'No Result Available'} />
-          ) : (
-            <View
-              style={{
-                height: heightPercentageToDP(25),
-                borderRadius: heightPercentageToDP(1),
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: heightPercentageToDP(2),
-                marginBottom: heightPercentageToDP(2),
-                marginHorizontal: heightPercentageToDP(2),
-              }}>
-              <ScrollView
-                horizontal={true}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}>
-                {filteredData.map((item, index) => (
-                  <TouchableOpacity
-                    onPress={() => settingHomeResultUsingLocation(item,index)}
-                    key={index}
-                    style={{
-                      height: heightPercentageToDP(20),
-                      width: widthPercentageToDP(30),
-                      borderRadius: heightPercentageToDP(1),
-                      backgroundColor: 'gray',
-                      ...styles.resultContentContainer,
-                      position: 'relative',
-                    }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        backgroundColor:
-                          index % 2 === 0
-                            ? COLORS.grayHalfBg
-                            : COLORS.lightDarkGray,
-                        borderTopRightRadius: heightPercentageToDP(1),
-                        borderTopLeftRadius: heightPercentageToDP(1),
-                        paddingTop: heightPercentageToDP(1),
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_SemiBold,
-                          fontSize: heightPercentageToDP(2),
-                          textAlign: 'center',
-                          color: COLORS.black,
-                        }}>
-                        {item.lotlocation.lotlocation}
-                      </Text>
-                    </View>
-
-                    <View
-                      style={{
-                        backgroundColor: 'transparent',
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_SemiBold,
-                          fontSize: heightPercentageToDP(5),
-                          textAlign: 'center',
-                          color: COLORS.black,
-                        }}>
-                        {item.resultNumber}
-                      </Text>
-                    </View>
-
-                    <View
-                      style={{
-                        flex: 1,
-                        backgroundColor: COLORS.white_s,
-                        borderBottomRightRadius: heightPercentageToDP(1),
-                        borderBottomLeftRadius: heightPercentageToDP(1),
-                        justifyContent: 'flex-end',
-                        margin: heightPercentageToDP(0.5),
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_Regular,
-                          fontSize: heightPercentageToDP(2),
-                          textAlign: 'center',
-                          padding: heightPercentageToDP(0.5),
-                          color: COLORS.black,
-                        }}>
-                        {item.lottime.lottime}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
-          )}
-
-          {/** PROMOTION CONTAINER */}
-
-          {loadingPromotion ? (
-            <View
-              style={{
-                height: heightPercentageToDP(20),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Loading />
-            </View>
-          ) : (
-            <View
-              style={{
-                margin: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(2),
-                overflow: 'hidden',
-              }}>
-              <ImageSlider
-                data={sliderData}
-                preview={false}
-                autoPlay={true}
-                closeIconColor="#fff"
-                caroselImageStyle={{resizeMode: 'cover'}}
-                indicatorMainContainerStyle={{
-                  justifyContent: 'center',
-                  borderRadius: heightPercentageToDP(2),
-                }}
-                caroselImageContainerStyle={{
-                  height: heightPercentageToDP(20),
-                  borderRadius: heightPercentageToDP(2),
-                }}
-                indicatorContainerStyle={{
-                  position: 'absolute',
-                  bottom: heightPercentageToDP(-2),
-                }}
-                activeIndicatorStyle={{
-                  backgroundColor: COLORS.blue,
-                }}
-                inActiveIndicatorStyle={{
-                  backgroundColor: COLORS.profileDarkGray,
-                }}
-              />
-            </View>
-          )}
-
-          {/** WALLET CONTAINER */}
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginHorizontal: heightPercentageToDP(2),
-            }}>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              {user.walletOne.visibility && (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('WalletBalance', {
-                      data: user.walletOne,
-                    })
-                  }>
-                  <Wallet wallet={user.walletOne} />
-                </TouchableOpacity>
+                </View>
               )}
 
-              {user.walletTwo.visibility && (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('WalletBalance', {
-                      data: user.walletTwo,
-                    })
-                  }>
-                  <Wallet wallet={user.walletTwo} />
-                </TouchableOpacity>
-              )}
-            </ScrollView>
-          </View>
-        </ScrollView>
-      ) : (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: COLORS.white,
-          }}>
-          {error && !retrying && (
-            <View style={styles.retryContainer}>
-              <Text style={styles.retryText}>
-                There was an issue fetching the data.
-              </Text>
-              <TouchableOpacity
-                onPress={handleRetry}
-                style={styles.retryButton}>
-                <Text style={styles.retryButtonText}>Retry</Text>
-              </TouchableOpacity>
+              {/** BOTTOM RESULT CONTAINER */}
 
-             
-                <TouchableOpacity
-                  onPress={logoutHandler}
+              <View
+                style={{
+                  height: heightPercentageToDP(5),
+                  marginVertical: heightPercentageToDP(2),
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginHorizontal: heightPercentageToDP(2),
+                }}>
+                <GradientText
                   style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    marginTop: heightPercentageToDP(2),
-                    marginHorizontal: heightPercentageToDP(4),
+                    fontSize: heightPercentageToDP(4),
+                    fontFamily: FONT.Montserrat_Bold,
+                    color: COLORS.black,
                   }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <AntDesign
-                      name={'logout'}
+                  Results
+                </GradientText>
+
+                <Text
+                  onPress={() => navigation.navigate('AllResult')}
+                  style={{
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2),
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
+                    color: COLORS.black,
+                  }}>
+                  See all
+                </Text>
+              </View>
+
+              {/** BOTTOM RESULT CONTENT CONTAINER */}
+
+              {filteredData.length === 0 ? (
+                <NoDataFound data={'No Result Available'} />
+              ) : (
+                <View
+                  style={{
+                    height: heightPercentageToDP(25),
+                    borderRadius: heightPercentageToDP(1),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: heightPercentageToDP(2),
+                    marginBottom: heightPercentageToDP(2),
+                    marginHorizontal: heightPercentageToDP(2),
+                  }}>
+                  <ScrollView
+                    horizontal={true}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}>
+                    {filteredData.map((item, index) => (
+                      <TouchableOpacity
+                        onPress={() =>
+                          settingHomeResultUsingLocation(item, index)
+                        }
+                        key={index}
+                        style={{
+                          height: heightPercentageToDP(20),
+                          width: widthPercentageToDP(30),
+                          borderRadius: heightPercentageToDP(1),
+                          backgroundColor: 'gray',
+                          ...styles.resultContentContainer,
+                          position: 'relative',
+                        }}>
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS_LIST[index % COLORS_LIST.length],
+                            borderTopRightRadius: heightPercentageToDP(1),
+                            borderTopLeftRadius: heightPercentageToDP(1),
+                            paddingTop: heightPercentageToDP(1),
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              fontSize: heightPercentageToDP(2),
+                              textAlign: 'center',
+                              color: COLORS.black,
+                            }}>
+                            {item.lotlocation.lotlocation}
+                          </Text>
+                        </View>
+
+                        <View
+                          style={{
+                            backgroundColor: 'transparent',
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              fontSize: heightPercentageToDP(5),
+                              textAlign: 'center',
+                              color: COLORS.black,
+                            }}>
+                            {item.resultNumber}
+                          </Text>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS.white_s,
+                            borderBottomRightRadius: heightPercentageToDP(1),
+                            borderBottomLeftRadius: heightPercentageToDP(1),
+                            justifyContent: 'flex-end',
+                            margin: heightPercentageToDP(0.5),
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: FONT.Montserrat_Regular,
+                              fontSize: heightPercentageToDP(2),
+                              textAlign: 'center',
+                              padding: heightPercentageToDP(0.5),
+                              color: COLORS.black,
+                            }}>
+                            {item.lottime.lottime}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              )}
+
+              {/** PROMOTION CONTAINER */}
+
+              {loadingPromotion ? (
+                <View
+                  style={{
+                    height: heightPercentageToDP(20),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Loading />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    margin: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(2),
+                    overflow: 'hidden',
+                  }}>
+                  <ImageSlider
+                    data={sliderData}
+                    preview={false}
+                    autoPlay={true}
+                    closeIconColor="#fff"
+                    caroselImageStyle={{resizeMode: 'cover'}}
+                    indicatorMainContainerStyle={{
+                      justifyContent: 'center',
+                      borderRadius: heightPercentageToDP(2),
+                    }}
+                    caroselImageContainerStyle={{
+                      height: heightPercentageToDP(20),
+                      borderRadius: heightPercentageToDP(2),
+                    }}
+                    indicatorContainerStyle={{
+                      position: 'absolute',
+                      bottom: heightPercentageToDP(-2),
+                    }}
+                    activeIndicatorStyle={{
+                      backgroundColor: COLORS.blue,
+                    }}
+                    inActiveIndicatorStyle={{
+                      backgroundColor: COLORS.profileDarkGray,
+                    }}
+                  />
+                </View>
+              )}
+
+              {/** WALLET CONTAINER */}
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginHorizontal: heightPercentageToDP(2),
+                  marginBottom: heightPercentageToDP(2)
+                }}>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  {user.walletOne.visibility && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('WalletBalance', {
+                          data: user.walletOne,
+                        })
+                      }>
+                      <Wallet wallet={user.walletOne} />
+                    </TouchableOpacity>
+                  )}
+
+                  {user.walletTwo.visibility && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('WalletBalance', {
+                          data: user.walletTwo,
+                        })
+                      }>
+                      <Wallet wallet={user.walletTwo} />
+                    </TouchableOpacity>
+                  )}
+                </ScrollView>
+              </View>
+            </ScrollView>
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: COLORS.white,
+              }}>
+              {error && !retrying && (
+                <View style={styles.retryContainer}>
+                  <Text style={styles.retryText}>
+                    There was an issue fetching the data.
+                  </Text>
+                  <TouchableOpacity
+                    onPress={handleRetry}
+                    style={styles.retryButton}>
+                    <Text style={styles.retryButtonText}>Retry</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={logoutHandler}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.grayBg,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      marginTop: heightPercentageToDP(2),
+                      marginHorizontal: heightPercentageToDP(4),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <AntDesign
+                        name={'logout'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                      }}>
+                      Logout
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
+                  </TouchableOpacity>
 
-                  <Text
-                    style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                    }}>
-                    Logout
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-          
-              {/** Logout container */}
+                  {/** Logout container */}
+                </View>
+              )}
             </View>
           )}
-        </View>
-      )}
+        </ImageBackground>
+      </View>
     </SafeAreaView>
   );
 };
@@ -1705,7 +1710,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT.Montserrat_Regular,
     fontSize: heightPercentageToDP(2.5),
     marginBottom: heightPercentageToDP(2),
-    color: COLORS.black
+    color: COLORS.black,
   },
   retryButton: {
     backgroundColor: COLORS.primary,
