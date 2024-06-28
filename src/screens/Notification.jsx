@@ -1,10 +1,6 @@
-
-
-
-
-
 import {
   FlatList,
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -29,7 +25,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllLocations} from '../redux/actions/locationAction';
 import {getAllResult} from '../redux/actions/resultAction';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
-import { loadAllNotification } from '../redux/actions/userAction';
+import {loadAllNotification} from '../redux/actions/userAction';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const Notification = () => {
   const navigation = useNavigation();
@@ -45,104 +42,116 @@ const Notification = () => {
     dispatch(loadAllNotification(accesstoken));
   }, [dispatch, focused]);
 
- 
-
   return (
     <View style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Notification</GradientText>
-      </View>
-
-      {/** Main Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(70),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
-        <View
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '100%',
+            height: heightPercentageToDP(70),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
+              height: heightPercentageToDP(70),
+              width: widthPercentageToDP(100),
 
-        {/** Content Container */}
-
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {loadingNotification ? (
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
+            }}>
+            {/** Top Style View */}
             <View
               style={{
-                flex: 1,
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
                 justifyContent: 'center',
                 alignItems: 'center',
-                paddingTop: heightPercentageToDP(2),
               }}>
-              <Loading />
+              <View
+                style={{
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
             </View>
-          ) : notifications && notifications.length == 0 ? (
+
             <View
               style={{
-                height: heightPercentageToDP(10),
                 margin: heightPercentageToDP(2),
+                backgroundColor: 'transparent',
               }}>
-              <NoDataFound data={'No data found '} />
+              <GradientTextWhite style={styles.textStyle}>
+                Notification
+              </GradientTextWhite>
             </View>
-          ) : (
-            notifications?.map((item,index) => (
-              <View
-             key={index}
-              style={{
-                height: heightPercentageToDP(10),
-                backgroundColor: COLORS.grayBg,
-                margin: heightPercentageToDP(2),
-                padding: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(2),
-              }}>
-              <Text
-                style={{
-                  color: COLORS.black,
-                  fontFamily: FONT.Montserrat_SemiBold,
-                  fontSize: heightPercentageToDP(2),
-                }}
-                numberOfLines={1}>
-                {item.title}
-              </Text>
 
-              <Text
-                style={{
-                  color: COLORS.black,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2),
-                }}
-                numberOfLines={2}>
-                {item.description}
-              </Text>
-            </View>
-            ))
-           
-          )}
-        </ScrollView>
+            {/** Content Container */}
+
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {loadingNotification ? (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: heightPercentageToDP(2),
+                  }}>
+                  <Loading />
+                </View>
+              ) : notifications && notifications.length == 0 ? (
+                <View
+                  style={{
+                    height: heightPercentageToDP(10),
+                    margin: heightPercentageToDP(2),
+                  }}>
+                  <NoDataFound data={'No data found '} />
+                </View>
+              ) : (
+                notifications?.map((item, index) => (
+                  <View
+                    key={index}
+                    style={{
+                      height: heightPercentageToDP(11),
+                      backgroundColor: COLORS.white_s,
+                      margin: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.black,
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        fontSize: heightPercentageToDP(2),
+                      }}
+                      numberOfLines={1}>
+                      {item.title}
+                    </Text>
+
+                    <Text
+                      style={{
+                        color: COLORS.black,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                      }}
+                      numberOfLines={2}>
+                      {item.description}
+                    </Text>
+                  </View>
+                ))
+              )}
+            </ScrollView>
+          </View>
+        </ImageBackground>
       </View>
+
+      {/** Main Cointainer */}
     </View>
   );
 };
@@ -204,10 +213,9 @@ const styles = StyleSheet.create({
 //   const {accesstoken} = useSelector(state => state.user);
 //   const {loadingNotification,notifications} = useSelector(state => state.location);
 
-
 //   // const [filteredData, setFilteredData] = useState(locations);
 //   const [filteredData, setFilteredData] = useState([]);
-  
+
 //   const handleSearch = text => {
 //     const filtered = notifications.filter(item =>
 //       item.title.toLowerCase().includes(text.toLowerCase()),
@@ -217,8 +225,6 @@ const styles = StyleSheet.create({
 
 //   const focused = useIsFocused()
 
-
-
 //   useEffect(() => {
 //     dispatch(loadAllNotification(accesstoken))
 //   },[dispatch,focused])
@@ -226,9 +232,6 @@ const styles = StyleSheet.create({
 //   useEffect(() => {
 //     setFilteredData(notifications); // Update filteredData whenever locations change
 //   }, [notifications]);
- 
-  
-  
 
 //   return (
 //     <View style={{flex: 1}}>
@@ -281,8 +284,7 @@ const styles = StyleSheet.create({
 //                     data={filteredData}
 //                     renderItem={({item, index}) => (
 //                       <TouchableOpacity
-                    
-                      
+
 //                       onPress={() => navigation.navigate("SearchTime",{
 //                         locationdata: item,
 //                       })}
@@ -305,9 +307,7 @@ const styles = StyleSheet.create({
 //                           {item.title}
 //                         </Text>
 //                           </View>
-                       
-                        
-                        
+
 //                       </TouchableOpacity>
 //                     )}
 //                     keyExtractor={item => item._id}
@@ -316,14 +316,10 @@ const styles = StyleSheet.create({
 //                     windowSize={10} // Number of items kept in memory
 //                   />)
 //             }
-          
+
 //         </View>
 
 //         {/** Bottom Submit Container */}
-
-       
-
-        
 
 //         {/** end */}
 //       </View>

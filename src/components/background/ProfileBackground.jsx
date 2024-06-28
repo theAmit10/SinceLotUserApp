@@ -1,4 +1,4 @@
-import { Image, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {
   heightPercentageToDP,
@@ -164,10 +164,17 @@ const ProfileBackground = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: COLORS.white_s,
+     
       }}>
       {/** Top View Rectangle View */}
-      <View
+
+      <ImageBackground
+        source={require('../../../assets/image/tlwbg.jpg')}
+        style={{
+          width: '100%',
+          height: '100%',
+        }}>
+           <View
         style={{
           width: heightPercentageToDP(30),
           height: heightPercentageToDP(30),
@@ -270,13 +277,7 @@ const ProfileBackground = () => {
             borderBottomLeftRadius: heightPercentageToDP(5),
           }}></View>
       </View>
-      <View
-        style={{
-          backgroundColor: COLORS.profileDarkGray,
-          width: widthPercentageToDP(100),
-          height: heightPercentageToDP(30),
-          opacity: 80,
-        }}>
+      
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           className="rounded-md p-2"
@@ -298,7 +299,10 @@ const ProfileBackground = () => {
             margin: heightPercentageToDP(3),
             backgroundColor: COLORS.background,
           }}></View>
-      </View>
+
+
+        </ImageBackground>
+     
     </View>
   );
 };

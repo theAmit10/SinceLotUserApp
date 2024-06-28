@@ -6,6 +6,7 @@ import {
   View,
   Platform,
   Image,
+  ImageBackground,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -30,6 +31,7 @@ import mime, {Mime} from 'mime';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import DocumentPicker from 'react-native-document-picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const UploadProfilePicture = () => {
   const [enterData, setEnterData] = useState('');
@@ -188,22 +190,27 @@ const UploadProfilePicture = () => {
     <View style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Upload</GradientText>
-        <GradientText style={styles.textStyle}>Profile Picture</GradientText>
-      </View>
+      
 
       {/** Login Cointainer */}
 
-      <View
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(75),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+
+<View
         style={{
-          height: heightPercentageToDP(65),
+          height: heightPercentageToDP(75),
           width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
+
           borderTopLeftRadius: heightPercentageToDP(5),
           borderTopRightRadius: heightPercentageToDP(5),
         }}>
@@ -223,6 +230,15 @@ const UploadProfilePicture = () => {
               borderRadius: heightPercentageToDP(2),
             }}></View>
         </View>
+
+        <View
+        style={{
+          margin: heightPercentageToDP(2),
+      
+        }}>
+        <GradientTextWhite style={styles.textStyle}>Upload</GradientTextWhite>
+        <GradientTextWhite style={styles.textStyle}>Profile Picture</GradientTextWhite>
+      </View>
 
         {/** Result Main Container */}
 
@@ -333,6 +349,10 @@ const UploadProfilePicture = () => {
           </View>
         )}
       </View>
+            </ImageBackground>
+            </View>
+
+   
     </View>
   );
 };
@@ -343,5 +363,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s
   },
 });

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {
   heightPercentageToDP,
@@ -9,6 +9,7 @@ import GradientText from '../components/helpercComponent/GradientText';
 import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Background from '../components/background/Background';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const WalletBalance = ({route}) => {
   const {data} = route.params;
@@ -27,22 +28,27 @@ const WalletBalance = ({route}) => {
     <View style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Wallet</GradientText>
-        <GradientText style={styles.textStyle}>Balance</GradientText>
-      </View>
+      
 
       {/** Login Cointainer */}
 
-      <View
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(75),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+
+<View
         style={{
-          height: heightPercentageToDP(65),
+          height: heightPercentageToDP(75),
           width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
+
           borderTopLeftRadius: heightPercentageToDP(5),
           borderTopRightRadius: heightPercentageToDP(5),
         }}>
@@ -63,6 +69,15 @@ const WalletBalance = ({route}) => {
             }}></View>
         </View>
 
+        <View
+        style={{
+          margin: heightPercentageToDP(2),
+          backgroundColor: 'transparent',
+        }}>
+        <GradientTextWhite style={styles.textStyle}>Wallet</GradientTextWhite>
+        <GradientTextWhite style={styles.textStyle}>Balance</GradientTextWhite>
+      </View>
+
         {/** Result Main Container */}
 
         <View style={{padding: heightPercentageToDP(2)}}>
@@ -70,6 +85,10 @@ const WalletBalance = ({route}) => {
           <GradientText style={styles.textStyle}>₹ {data.balance}</GradientText>
         </View>
       </View>
+            </ImageBackground>
+            </View>
+
+  
     </View>
   );
 };

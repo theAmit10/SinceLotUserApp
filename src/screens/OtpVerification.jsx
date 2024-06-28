@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
@@ -20,6 +21,7 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import UrlHelper from '../helper/UrlHelper';
 import Loading from '../components/helpercComponent/Loading';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const OtpVerification = () => {
   const navigation = useNavigation();
@@ -29,7 +31,6 @@ const OtpVerification = () => {
     .map((_, index) => useRef(null));
   const [otp, setOtp] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);
-
 
   const handleChangeText = (text, index) => {
     const newOtp = otp.slice(0, index) + text + otp.slice(index + 1);
@@ -53,60 +54,54 @@ const OtpVerification = () => {
 
   const submitHandler = async () => {
     console.log('Working on OTP verifcation ');
-    
+
     Toast.show({
       type: 'info',
       text1: 'Processing',
     });
-   setProgressBar(true);
+    setProgressBar(true);
 
-   try {
+    try {
+      console.log('OTP :: ' + otp);
 
-    console.log("OTP :: "+otp)
-
-     const {data} = await axios.put(
-      UrlHelper.FORGOT_PASSWORD_API,
-      {
-        otp: parseInt(otp),
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
+      const {data} = await axios.put(
+        UrlHelper.FORGOT_PASSWORD_API,
+        {
+          otp: parseInt(otp),
         },
-      },
-    );
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
-    console.log("datat :: "+data)
-  
-    setProgressBar(false);
-     
-     
-   } catch (error) {
-    console.log(error)
-    console.log(error.response.data.message)
-    setProgressBar(false);
-  
-    if(error.response.data.message === "Please enter new password ")
-    {
-      navigation.navigate("ResetPassword",{
-        otp: otp
-      })
-    }else if(error.response.data.message === "Incorrect OTP or OTP has been expired"){
-      Toast.show({
-        type: 'error',
-        text1: error.response.data.message,
-      });
-    } 
-    else{
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
-    } 
-   }
+      console.log('datat :: ' + data);
 
+      setProgressBar(false);
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.message);
+      setProgressBar(false);
 
-    
+      if (error.response.data.message === 'Please enter new password ') {
+        navigation.navigate('ResetPassword', {
+          otp: otp,
+        });
+      } else if (
+        error.response.data.message === 'Incorrect OTP or OTP has been expired'
+      ) {
+        Toast.show({
+          type: 'error',
+          text1: error.response.data.message,
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+        });
+      }
+    }
   };
 
   return (
@@ -115,117 +110,127 @@ const OtpVerification = () => {
 
       {/** Login Cointainer */}
 
-      <View
-        style={{
-          height: heightPercentageToDP(55),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
-        <View
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '100%',
+            height: heightPercentageToDP(55),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
+              height: heightPercentageToDP(55),
+              width: widthPercentageToDP(100),
 
-        {/** Login Main Container */}
-        <View
-          style={{
-            flex: 1,
-            margin: heightPercentageToDP(2),
-          }}>
-          <GradientText style={styles.textStyle}>Otp Verification</GradientText>
-
-          <View
-            style={{
-              marginTop: heightPercentageToDP(3),
-              paddingVertical: heightPercentageToDP(2),
-              gap: heightPercentageToDP(2),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
-
+            {/** Top Style View */}
             <View
               style={{
-                padding: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
                 alignItems: 'center',
-                justifyContent: 'center'
               }}>
-              <Text
-                style={{
-                  color: COLORS.black,
-                  fontFamily: FONT.Montserrat_Regular,
-                  textAlign: 'center'
-                }}>
-                Enter the One time password sent to your Account
-              </Text>
-            </View>
-            {/** Otp container */}
-
-            <View style={styles.otpContainer}>
-              {inputs.map((input, index) => (
-                <TextInput
-                  key={index}
-                  style={{
-                    color: COLORS.black,
-                    borderColor: COLORS.gray2,
-                    backgroundColor: COLORS.white,
-                    ...styles.userOtpInput,
-                  }}
-                  maxLength={1}
-                  keyboardType="numeric"
-                  onChangeText={text => handleChangeText(text, index)}
-                  ref={input}
-                  autoFocus={index === 0}
-                />
-              ))}
-            </View>
-
-          
-
-            {showProgressBar ? (
               <View
                 style={{
-                  height: heightPercentageToDP(10),
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Loading />
-              </View>
-            ) : (
-              <TouchableOpacity
-              onPress={handleCheckOtp}
-                style={{
-                  backgroundColor: COLORS.blue,
-                  padding: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  alignItems: 'center',
-                  marginTop: heightPercentageToDP(5),
-                }}>
-                <Text
-                  style={{
-                    color: COLORS.white,
-                    fontFamily: FONT.Montserrat_Regular,
-                  }}>
-                  Submit
-                </Text>
-              </TouchableOpacity>
-            )}
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
 
-            
+            {/** Login Main Container */}
+            <View
+              style={{
+                flex: 1,
+                margin: heightPercentageToDP(2),
+              }}>
+              <GradientTextWhite style={styles.textStyle}>
+                Otp Verification
+              </GradientTextWhite>
+
+              <View
+                style={{
+                  marginTop: heightPercentageToDP(3),
+                  paddingVertical: heightPercentageToDP(2),
+                  gap: heightPercentageToDP(2),
+                }}>
+                <View
+                  style={{
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: COLORS.black,
+                      fontFamily: FONT.Montserrat_Regular,
+                      textAlign: 'center',
+                    }}>
+                    Enter the One time password sent to your Account
+                  </Text>
+                </View>
+                {/** Otp container */}
+
+                <View style={styles.otpContainer}>
+                  {inputs.map((input, index) => (
+                    <TextInput
+                      key={index}
+                      style={{
+                        color: COLORS.black,
+                        borderColor: COLORS.gray2,
+                        backgroundColor: COLORS.white,
+                        ...styles.userOtpInput,
+                      }}
+                      maxLength={1}
+                      keyboardType="numeric"
+                      onChangeText={text => handleChangeText(text, index)}
+                      ref={input}
+                      autoFocus={index === 0}
+                    />
+                  ))}
+                </View>
+
+                {showProgressBar ? (
+                  <View
+                    style={{
+                      height: heightPercentageToDP(10),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Loading />
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    onPress={handleCheckOtp}
+                    style={{
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
+                      marginTop: heightPercentageToDP(5),
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Submit
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
           </View>
-        </View>
+        </ImageBackground>
       </View>
     </View>
   );
@@ -237,7 +242,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
-    color: COLORS.black
+    color: COLORS.black,
   },
   userOtpInput: {
     fontFamily: FONT.Montserrat_Bold,

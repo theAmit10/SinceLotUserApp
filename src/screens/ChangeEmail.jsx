@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
@@ -26,6 +27,7 @@ import Background from '../components/background/Background';
 import UrlHelper from '../helper/UrlHelper';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const ChangeEmail = ({route}) => {
   const {forData} = route.params;
@@ -41,27 +43,23 @@ const ChangeEmail = ({route}) => {
   const [showProgressBar, setProgressBar] = useState(false);
 
   const updateProfileHandler = async () => {
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex =  /^(?:\+91|0)?[6-9]\d{9}$/; 
+    const phoneRegex = /^(?:\+91|0)?[6-9]\d{9}$/;
 
-    if (forData === "Email")
-    {
-
+    if (forData === 'Email') {
       if (!enterValue) {
         Toast.show({
           type: 'error',
           text1: 'Please enter your email',
         });
-      }else if (!emailRegex.test(enterValue)) {
+      } else if (!emailRegex.test(enterValue)) {
         Toast.show({
           type: 'error',
           text1: 'Enter valid email address',
         });
-      }
-       else {
+      } else {
         setProgressBar(true);
-  
+
         try {
           const {data} = await axios.put(
             UrlHelper.UPDATE_USER_PROFILE_API,
@@ -75,11 +73,11 @@ const ChangeEmail = ({route}) => {
               },
             },
           );
-  
+
           console.log('datat :: ' + data);
-  
+
           dispatch(loadProfile(accesstoken));
-  
+
           Toast.show({
             type: 'success',
             text1: data.message,
@@ -95,9 +93,7 @@ const ChangeEmail = ({route}) => {
           console.log(error);
         }
       }
-
-    }else{
-
+    } else {
       if (!enterValue) {
         Toast.show({
           type: 'error',
@@ -108,10 +104,9 @@ const ChangeEmail = ({route}) => {
           type: 'error',
           text1: 'Enter valid Phone Number',
         });
-      }
-      else {
+      } else {
         setProgressBar(true);
-  
+
         try {
           const {data} = await axios.put(
             UrlHelper.UPDATE_USER_PROFILE_API,
@@ -125,11 +120,11 @@ const ChangeEmail = ({route}) => {
               },
             },
           );
-  
+
           console.log('datat :: ' + data);
-  
+
           dispatch(loadProfile(accesstoken));
-  
+
           Toast.show({
             type: 'success',
             text1: data.message,
@@ -145,11 +140,7 @@ const ChangeEmail = ({route}) => {
           console.log(error);
         }
       }
-
     }
-
-    
-
   };
 
   return (
@@ -158,126 +149,141 @@ const ChangeEmail = ({route}) => {
 
       {/** Login Cointainer */}
 
-      <View
-        style={{
-          height: heightPercentageToDP(65),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
-        <View
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
+              height: heightPercentageToDP(65),
+              width: widthPercentageToDP(100),
 
-        {/** Login Main Container */}
-        <View
-          style={{
-            flex: 1,
-            margin: heightPercentageToDP(2),
-          }}>
-          <GradientText style={styles.textStyle}>Change {forData}</GradientText>
-
-          <View
-            style={{
-              marginTop: heightPercentageToDP(3),
-              paddingVertical: heightPercentageToDP(2),
-              gap: heightPercentageToDP(2),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            {/** old password container */}
+            {/** Top Style View */}
             <View
               style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
                 alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
               }}>
-              <LinearGradient
-                colors={[COLORS.lightWhite, COLORS.white_s]}
-                className="rounded-xl p-1">
-                {forData === 'Email' ? (
-                  <MaterialCommunityIcons
-                    name={'account'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                ) : (
-                  <FontAwesome
-                    name={'phone'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                )}
-              </LinearGradient>
-
-              <TextInput
+              <View
                 style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2),
-                  color: COLORS.black,
-                }}
-                placeholder={forData}
-                placeholderTextColor={COLORS.black}
-                label="Email"
-                value={enterValue}
-                onChangeText={text => setEnterValue(text)}
-              />
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
+
+            {/** Login Main Container */}
+            <View
+              style={{
+                flex: 1,
+                margin: heightPercentageToDP(2),
+              }}>
+              <GradientTextWhite style={styles.textStyle}>
+                Change {forData}
+              </GradientTextWhite>
+
+              <View
+                style={{
+                  marginTop: heightPercentageToDP(3),
+                  paddingVertical: heightPercentageToDP(2),
+                  gap: heightPercentageToDP(2),
+                }}>
+                {/** old password container */}
+                <View
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.grayBg, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    {forData === 'Email' ? (
+                      <MaterialCommunityIcons
+                        name={'account'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    ) : (
+                      <FontAwesome
+                        name={'phone'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    )}
+                  </LinearGradient>
+
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}
+                    placeholder={forData}
+                    placeholderTextColor={COLORS.black}
+                    label="Email"
+                    value={enterValue}
+                    onChangeText={text => setEnterValue(text)}
+                  />
+                </View>
+              </View>
+
+              {showProgressBar ? (
+                <View
+                  style={{
+                    padding: heightPercentageToDP(2),
+                    flex: 1,
+                    justifyContent: 'center',
+                  }}>
+                  <Loading />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    paddingBottom: heightPercentageToDP(5),
+                  }}>
+                  <TouchableOpacity
+                    onPress={updateProfileHandler}
+                    style={{
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Submit
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           </View>
-
-          {showProgressBar ? (
-            <View
-              style={{
-                padding: heightPercentageToDP(2),
-                flex: 1,
-                justifyContent: 'center',
-              }}>
-              <Loading />
-            </View>
-          ) : (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'flex-end',
-                paddingBottom: heightPercentageToDP(5),
-              }}>
-              <TouchableOpacity
-                onPress={updateProfileHandler}
-                style={{
-                  backgroundColor: COLORS.blue,
-                  padding: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    color: COLORS.white,
-                    fontFamily: FONT.Montserrat_Regular,
-                  }}>
-                  Submit
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
+        </ImageBackground>
       </View>
     </View>
   );

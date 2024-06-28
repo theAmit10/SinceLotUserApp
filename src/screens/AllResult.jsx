@@ -1,6 +1,7 @@
 
 import {
   FlatList,
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
@@ -23,6 +24,7 @@ import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllLocations} from '../redux/actions/locationAction';
 import {getAllResult} from '../redux/actions/resultAction';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const AllResult = () => {
   const navigation = useNavigation();
@@ -67,22 +69,25 @@ const AllResult = () => {
     <View style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>All</GradientText>
-        <GradientText style={styles.textStyle}>Result</GradientText>
-      </View>
+      
 
-      {/** Main Cointainer */}
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(80),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
 
-      <View
+<View
         style={{
-          height: heightPercentageToDP(70),
+          height: heightPercentageToDP(80),
           width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
+  
           borderTopLeftRadius: heightPercentageToDP(5),
           borderTopRightRadius: heightPercentageToDP(5),
         }}>
@@ -106,6 +111,15 @@ const AllResult = () => {
         {/** Content Container */}
 
         <View
+        style={{
+          margin: heightPercentageToDP(2),
+          backgroundColor: 'transparent',
+        }}>
+        <GradientTextWhite style={styles.textStyle}>All</GradientTextWhite>
+        <GradientTextWhite style={styles.textStyle}>Result</GradientTextWhite>
+      </View>
+
+        <View
           style={{
             height: heightPercentageToDP(10),
             margin: heightPercentageToDP(2),
@@ -114,7 +128,7 @@ const AllResult = () => {
             style={{
               height: heightPercentageToDP(7),
               flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
+              backgroundColor: COLORS.white_s,
               alignItems: 'center',
               paddingHorizontal: heightPercentageToDP(2),
               borderRadius: heightPercentageToDP(1),
@@ -160,7 +174,7 @@ const AllResult = () => {
                   }}>
                   <View
                     style={{
-                      backgroundColor: COLORS.grayHalfBg,
+                      backgroundColor: COLORS.white_s,
                       height: heightPercentageToDP(15),
                       borderRadius: heightPercentageToDP(2),
                     }}>
@@ -242,6 +256,10 @@ const AllResult = () => {
 
         {/** end */}
       </View>
+            </ImageBackground>
+            </View>
+
+  
     </View>
   );
 };

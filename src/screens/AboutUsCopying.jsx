@@ -7,9 +7,9 @@ import {
     View,
     Button,
     TouchableOpacity,
+    ImageBackground,
   } from 'react-native';
   import React, {useEffect, useState} from 'react';
-  import LoginBackground from '../components/login/LoginBackground';
   import {
     heightPercentageToDP,
     widthPercentageToDP,
@@ -21,6 +21,7 @@ import {
   import Background from '../components/background/Background';
   import Clipboard from '@react-native-clipboard/clipboard';
   import Toast from 'react-native-toast-message';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
   
   const AboutUsCopying = ({route}) => {
     const [email, setEmail] = useState('');
@@ -78,13 +79,25 @@ import {
     return (
       <View style={{flex: 1}}>
         <Background />
-  
-        {/** Login Container */}
+
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(75),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+
+              {/** Login Container */}
         <View
           style={{
             height: heightPercentageToDP(75),
             width: widthPercentageToDP(100),
-            backgroundColor: COLORS.white_s,
+    
             borderTopLeftRadius: heightPercentageToDP(5),
             borderTopRightRadius: heightPercentageToDP(5),
           }}>
@@ -111,10 +124,10 @@ import {
               flex: 1,
               margin: heightPercentageToDP(2),
             }}>
-            <GradientText style={styles.textStyle}>
+            <GradientTextWhite style={styles.textStyle}>
               About Us
-            </GradientText>
-            <GradientText style={styles.textStyle}>Details</GradientText>
+            </GradientTextWhite>
+            <GradientTextWhite style={styles.textStyle}>Details</GradientTextWhite>
   
             <ScrollView showsVerticalScrollIndicator={false}>
               <View
@@ -127,7 +140,7 @@ import {
                 <View
                   style={{
                     flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
+                    backgroundColor: COLORS.white_s,
                     alignItems: 'center',
                     paddingHorizontal: heightPercentageToDP(2),
                     borderRadius: heightPercentageToDP(1),
@@ -166,7 +179,7 @@ import {
                 <View
                   style={{
                     flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
+                    backgroundColor: COLORS.white_s,
                     alignItems: 'center',
                     paddingHorizontal: heightPercentageToDP(2),
                     borderRadius: heightPercentageToDP(1),
@@ -212,6 +225,10 @@ import {
             </View>
           </View>
         </View>
+            </ImageBackground>
+            </View>
+  
+      
       </View>
     );
   };

@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -32,6 +33,7 @@ import {HOVER} from 'nativewind/dist/utils/selector';
 import LinearGradient from 'react-native-linear-gradient';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const UpdateProfile = () => {
   const navigation = useNavigation();
@@ -123,350 +125,363 @@ const UpdateProfile = () => {
 
       {/** Profile Cointainer */}
 
-      <View
-        style={{
-          backgroundColor: COLORS.white_s,
-          margin: heightPercentageToDP(2),
-          borderRadius: heightPercentageToDP(1),
-          paddingStart: heightPercentageToDP(1),
-        }}>
-        <GradientText
-          style={{
-            fontSize: heightPercentageToDP(3.5),
-            fontFamily: FONT.Montserrat_Bold,
-            color: COLORS.darkGray,
-          }}>
-          Update
-        </GradientText>
+      
 
-        <GradientText
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
           style={{
-            fontSize: heightPercentageToDP(3.5),
-            fontFamily: FONT.Montserrat_Bold,
-            color: COLORS.darkGray,
-          }}>
-          Profile
-        </GradientText>
-      </View>
-
-      <View
-        style={{
-          height: heightPercentageToDP(42),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-          elevation: heightPercentageToDP(3),
-        }}>
-        {/** Top Style View */}
-        <View
-          style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '100%',
+            height: heightPercentageToDP(52),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
+              height: heightPercentageToDP(52),
+              width: widthPercentageToDP(100),
 
-        <ScrollView>
-          {/** Profile Main Container */}
-          <View
-            style={{
-              flex: 2,
-              margin: heightPercentageToDP(2),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
+              elevation: heightPercentageToDP(3),
             }}>
+            {/** Top Style View */}
             <View
               style={{
-                paddingVertical: heightPercentageToDP(2),
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
-              
-
-              {/** Update Profile container */}
-
-              <TouchableOpacity
-                onPress={() => navigation.navigate('UploadProfilePicture')}
-                style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.grayBg,
-                  alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(2),
-                  marginTop: heightPercentageToDP(-2),
-                  borderRadius: heightPercentageToDP(1),
-                }}>
-                <LinearGradient
-                  colors={[COLORS.lightWhite, COLORS.white_s]}
-                  className="rounded-xl p-1">
-                  <MaterialCommunityIcons
-                    name={'account'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </LinearGradient>
-                <Text
-                  style={{
-                    marginStart: heightPercentageToDP(1),
-                    flex: 1,
-                    fontFamily: FONT.Montserrat_Regular,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.black,
-                  }}>
-                  Profile Picture
-                </Text>
-
-                <Ionicons
-                  name={'chevron-forward-outline'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.darkGray}
-                />
-              </TouchableOpacity>
-
-              {checkEmailOrPhone(user.email) ? (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('ChangeEmail', {forData: 'Email'})
-                  }
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <Fontisto
-                      name={'email'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                  </LinearGradient>
-                  <Text
-                    style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
-                    }}>
-                    Change Email
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('ChangeEmail', {forData: 'Phone No.'})
-                  }
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <FontAwesome
-                      name={'phone'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                  </LinearGradient>
-                  <Text
-                    style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
-                    }}>
-                    Change Phone Number
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-              )}
-
-              {/** For adding contact */}
-
-              {checkEmailOrPhone(user.email) ? (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('AddContact', {forData: 'Phone No.'})
-                  }
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <FontAwesome
-                      name={'phone'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                  </LinearGradient>
-                  <Text
-                    style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
-                    }}>
-                    Add Phone Number
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('AddContact', {forData: 'Email'})
-                  }
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <Fontisto
-                      name={'email'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                  </LinearGradient>
-                  <Text
-                    style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
-                    }}>
-                    Update Email
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-              )}
-
-              {/** Change name container */}
-
               <View
                 style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
                   backgroundColor: COLORS.grayBg,
-                  alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(2),
-                  marginTop: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                }}>
-                <LinearGradient
-                  colors={[COLORS.lightWhite, COLORS.white_s]}
-                  className="rounded-xl p-1">
-                  <MaterialCommunityIcons
-                    name={'account'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </LinearGradient>
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
 
-                <TextInput
-                  style={{
-                    marginStart: heightPercentageToDP(1),
-                    flex: 1,
-                    fontFamily: FONT.Montserrat_Regular,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.black,
-                  }}
-                  placeholder="Name"
-                  placeholderTextColor={COLORS.black}
-                  label="Name"
-                  value={name}
-                  onChangeText={text => setName(text)}
-                />
-              </View>
+           
+        <GradientTextWhite
+          style={{
+            fontSize: heightPercentageToDP(3.5),
+            fontFamily: FONT.Montserrat_Bold,
+            color: COLORS.darkGray,
+            marginStart: heightPercentageToDP(2)
+          }}>
+          Update
+        </GradientTextWhite>
 
-              {/** Email */}
+        <GradientTextWhite
+          style={{
+            fontSize: heightPercentageToDP(3.5),
+            fontFamily: FONT.Montserrat_Bold,
+            color: COLORS.darkGray,
+            marginStart: heightPercentageToDP(2)
+          }}>
+          Profile
+        </GradientTextWhite>
 
-              {/** Phone number */}
 
-              {/** Bottom Submit Container */}
-
+            <ScrollView>
+              {/** Profile Main Container */}
               <View
                 style={{
-                  marginBottom: heightPercentageToDP(5),
-                  marginTop: heightPercentageToDP(2),
+                  flex: 2,
+                  margin: heightPercentageToDP(2),
                 }}>
-                {showProgressBar ? (
-                  <Loading />
-                ) : (
+                <View
+                  style={{
+                    paddingVertical: heightPercentageToDP(2),
+                  }}>
+                  {/** Update Profile container */}
+
                   <TouchableOpacity
-                    onPress={updateProfileHandler}
+                    onPress={() => navigation.navigate('UploadProfilePicture')}
                     style={{
-                      backgroundColor: COLORS.blue,
-                      padding: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
                       alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(-2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'account'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
                     <Text
                       style={{
-                        color: COLORS.white,
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
                         fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
                       }}>
-                      Submit
+                      Profile Picture
                     </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
                   </TouchableOpacity>
-                )}
+
+                  {checkEmailOrPhone(user.email) ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('ChangeEmail', {forData: 'Email'})
+                      }
+                      style={{
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        marginTop: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                      }}>
+                      <LinearGradient
+                        colors={[COLORS.grayBg, COLORS.white_s]}
+                        className="rounded-xl p-1">
+                        <Fontisto
+                          name={'email'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </LinearGradient>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(2),
+                          color: COLORS.black,
+                        }}>
+                        Change Email
+                      </Text>
+
+                      <Ionicons
+                        name={'chevron-forward-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('ChangeEmail', {
+                          forData: 'Phone No.',
+                        })
+                      }
+                      style={{
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        marginTop: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                      }}>
+                      <LinearGradient
+                        colors={[COLORS.grayBg, COLORS.white_s]}
+                        className="rounded-xl p-1">
+                        <FontAwesome
+                          name={'phone'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </LinearGradient>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(2),
+                          color: COLORS.black,
+                        }}>
+                        Change Phone Number
+                      </Text>
+
+                      <Ionicons
+                        name={'chevron-forward-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </TouchableOpacity>
+                  )}
+
+                  {/** For adding contact */}
+
+                  {checkEmailOrPhone(user.email) ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('AddContact', {
+                          forData: 'Phone No.',
+                        })
+                      }
+                      style={{
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        marginTop: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                      }}>
+                      <LinearGradient
+                        colors={[COLORS.grayBg, COLORS.white_s]}
+                        className="rounded-xl p-1">
+                        <FontAwesome
+                          name={'phone'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </LinearGradient>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(2),
+                          color: COLORS.black,
+                        }}>
+                        Add Phone Number
+                      </Text>
+
+                      <Ionicons
+                        name={'chevron-forward-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('AddContact', {forData: 'Email'})
+                      }
+                      style={{
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        marginTop: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                      }}>
+                      <LinearGradient
+                        colors={[COLORS.grayBg, COLORS.white_s]}
+                        className="rounded-xl p-1">
+                        <Fontisto
+                          name={'email'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </LinearGradient>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(2),
+                          color: COLORS.black,
+                        }}>
+                        Update Email
+                      </Text>
+
+                      <Ionicons
+                        name={'chevron-forward-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </TouchableOpacity>
+                  )}
+
+                  {/** Change name container */}
+
+                  <View
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'account'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+
+                    <TextInput
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}
+                      placeholder="Name"
+                      placeholderTextColor={COLORS.black}
+                      label="Name"
+                      value={name}
+                      onChangeText={text => setName(text)}
+                    />
+                  </View>
+
+                  {/** Email */}
+
+                  {/** Phone number */}
+
+                  {/** Bottom Submit Container */}
+
+                  <View
+                    style={{
+                      marginBottom: heightPercentageToDP(5),
+                      marginTop: heightPercentageToDP(2),
+                    }}>
+                    {showProgressBar ? (
+                      <Loading />
+                    ) : (
+                      <TouchableOpacity
+                        onPress={updateProfileHandler}
+                        style={{
+                          backgroundColor: COLORS.blue,
+                          padding: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            color: COLORS.white,
+                            fontFamily: FONT.Montserrat_Regular,
+                          }}>
+                          Submit
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
               </View>
-            </View>
+            </ScrollView>
           </View>
-        </ScrollView>
+        </ImageBackground>
       </View>
     </View>
   );

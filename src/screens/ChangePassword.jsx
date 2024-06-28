@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
@@ -24,6 +25,7 @@ import {useMessageAndErrorUser} from '../utils/hooks';
 import Background from '../components/background/Background';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const ChangePassword = () => {
   const [password, setPassword] = useState('');
@@ -138,13 +140,24 @@ const ChangePassword = () => {
     <View style={{flex: 1}}>
       <Background/>
 
-      {/** Login Cointainer */}
+      {/** Main Cointainer */}
 
-      <View
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+              <View
         style={{
           height: heightPercentageToDP(65),
           width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
+ 
           borderTopLeftRadius: heightPercentageToDP(5),
           borderTopRightRadius: heightPercentageToDP(5),
         }}>
@@ -171,7 +184,7 @@ const ChangePassword = () => {
             flex: 1,
             margin: heightPercentageToDP(2),
           }}>
-          <GradientText style={styles.textStyle}>Change Password</GradientText>
+          <GradientTextWhite style={styles.textStyle}>Change Password</GradientTextWhite>
 
           <View
             style={{
@@ -184,7 +197,7 @@ const ChangePassword = () => {
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
+                backgroundColor: COLORS.white_s,
                 alignItems: 'center',
                 paddingHorizontal: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
@@ -222,7 +235,7 @@ const ChangePassword = () => {
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
+                backgroundColor: COLORS.white_s,
                 alignItems: 'center',
                 paddingHorizontal: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
@@ -259,7 +272,7 @@ const ChangePassword = () => {
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
+                backgroundColor: COLORS.white_s,
                 alignItems: 'center',
                 paddingHorizontal: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
@@ -316,6 +329,9 @@ const ChangePassword = () => {
           </View>
         </View>
       </View>
+            </ImageBackground>
+          </View>
+    
     </View>
   );
 };

@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
@@ -26,6 +27,7 @@ import Background from '../components/background/Background';
 import UrlHelper from '../helper/UrlHelper';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const AddContact = ({route}) => {
   const {forData} = route.params;
@@ -156,11 +158,23 @@ const AddContact = ({route}) => {
 
       {/** Login Cointainer */}
 
-      <View
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+
+<View
         style={{
           height: heightPercentageToDP(65),
           width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
+         
           borderTopLeftRadius: heightPercentageToDP(5),
           borderTopRightRadius: heightPercentageToDP(5),
         }}>
@@ -187,7 +201,7 @@ const AddContact = ({route}) => {
             flex: 1,
             margin: heightPercentageToDP(2),
           }}>
-          <GradientText style={styles.textStyle}>Update {forData}</GradientText>
+          <GradientTextWhite style={styles.textStyle}>Update {forData}</GradientTextWhite>
 
           <View
             style={{
@@ -200,14 +214,14 @@ const AddContact = ({route}) => {
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
+                backgroundColor: COLORS.white_s,
                 alignItems: 'center',
                 paddingHorizontal: heightPercentageToDP(2),
                 marginTop: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
               }}>
               <LinearGradient
-                colors={[COLORS.lightWhite, COLORS.white_s]}
+                colors={[COLORS.grayBg, COLORS.white_s]}
                 className="rounded-xl p-1">
                 {forData === 'Email' ? (
                   <MaterialCommunityIcons
@@ -277,6 +291,11 @@ const AddContact = ({route}) => {
           )}
         </View>
       </View>
+
+          </ImageBackground>
+          </View>
+
+     
     </View>
   );
 };
