@@ -46,6 +46,9 @@ const DEPOSIT_PAYPAL_API = server + 'result/addpaypalpayment';
 const DEPOSIT_SKRILL_API = server + 'result/addskrillpayment';
 const DEPOSIT_CRYPTO_API = server + 'result/addcryptopayment';
 
+// FOR WITHDRAW
+const WITHDRAW_PAYMENT_API = server + 'user/createwithdraw';
+
 
 
 export default {
@@ -80,5 +83,6 @@ export default {
   DEPOSIT_PAYPAL_API,
   DEPOSIT_SKRILL_API,
   DEPOSIT_CRYPTO_API,
-  DEPOSIT_API
+  DEPOSIT_API,
+  WITHDRAW_PAYMENT_API
 };

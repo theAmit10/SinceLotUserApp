@@ -45,6 +45,11 @@ import CryptoDeposit from '../screens/payment/CryptoDeposit';
 import Withdraw from '../screens/payment/Withdraw';
 import History from '../screens/payment/History';
 import PlayHistory from '../screens/payment/PlayHistory';
+import Withdrawupi from '../screens/payment/Withdrawupi';
+import Withdrawbank from '../screens/payment/Withdrawbank';
+import Withdrawpaypal from '../screens/payment/Withdrawpaypal';
+import Withdrawskrill from '../screens/payment/Withdrawskrill';
+import Withdrawcrypto from '../screens/payment/Withdrawcrypto';
 
 
 const Stack = createNativeStackNavigator()
@@ -101,6 +106,14 @@ const Main = () => {
                 <Stack.Screen  name="Withdraw" component={Withdraw}/>
                 <Stack.Screen  name="History" component={History}/>
                 <Stack.Screen  name="PlayHistory" component={PlayHistory}/>
+
+                {/** FOR WITHDRAW */}
+                <Stack.Screen  name="Withdrawupi" component={Withdrawupi}/>
+                <Stack.Screen  name="Withdrawbank" component={Withdrawbank}/>
+                <Stack.Screen  name="Withdrawpaypal" component={Withdrawpaypal}/>
+                <Stack.Screen  name="Withdrawskrill" component={Withdrawskrill}/>
+                <Stack.Screen  name="Withdrawcrypto" component={Withdrawcrypto}/>
+
             </Stack.Group>
         </Stack.Navigator>
 

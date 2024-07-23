@@ -7,6 +7,8 @@ import { dateReducer } from "./reducers/dateReducer"
 import { resultReducer } from "./reducers/resultReducer"
 import { promotionReducer } from "./reducers/promotionReducer"
 import userDeviceTokenSlice from "./userDeviceTokenSlice"
+import { sincelotUserApi } from "../helper/Networkcall"
+import { setupListeners } from "@reduxjs/toolkit/query"
 
 export const store = configureStore({
     reducer:{
@@ -18,9 +20,15 @@ export const store = configureStore({
         result: resultReducer,
         promotion: promotionReducer,
         userDeviceToken: userDeviceTokenSlice,
-    }
+        [sincelotUserApi.reducerPath]: sincelotUserApi.reducer
+     
+    },
+    middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(sincelotUserApi.middleware),
+
 })
 
+setupListeners(store.dispatch)
 
 
 // export const server = "https://sinceapp.thelionworld.com/api/v1/"
