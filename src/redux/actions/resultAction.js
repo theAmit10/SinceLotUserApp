@@ -13,7 +13,7 @@ export const getAllResult = (accesstoken) => async dispatch => {
       },
     });
 
-    console.log("ACTION result :: "+data.results)
+    // console.log("ACTION result :: "+data.results)
 
     dispatch({
       type: 'getAllResultSuccess',
@@ -21,8 +21,8 @@ export const getAllResult = (accesstoken) => async dispatch => {
     });
 
   } catch (error) {
-    console.log(error);
-    console.log(error.response.data.message);
+    // console.log(error);
+    // console.log(error.response.data.message);
 
     dispatch({
       type: 'getAllResultFail',
@@ -110,7 +110,7 @@ export const getResultDetails = (accesstoken,id) => async dispatch => {
         },
       });
   
-      console.log("ACTION result accoding to location :: "+data.results)
+      // console.log("ACTION result accoding to location :: "+data.results)
   
       dispatch({
         type: 'getAllResultAccordingLocationSuccess',
@@ -145,7 +145,7 @@ export const getResultDetails = (accesstoken,id) => async dispatch => {
         },
       });
 
-      console.log("Starting Next Result API :: "+data.results.length)
+      // console.log("Starting Next Result API :: "+data.results.length)
   
       dispatch({
         type: 'getNextResultSuccess',

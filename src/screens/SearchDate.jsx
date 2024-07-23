@@ -28,9 +28,10 @@ import GradientTextWhite from '../components/helpercComponent/GradientTextWhite'
 
 const SearchDate = ({route}) => {
   const navigation = useNavigation();
-
+ 
   const {timedata, locationdata} = route.params;
 
+ 
   const [searchData, setSearchData] = useState('');
   const [showLoading, setLoading] = useState(false);
   const [data, setData] = useState([

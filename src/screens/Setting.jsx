@@ -83,7 +83,7 @@ const Setting = () => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(65),
+            height: heightPercentageToDP(75),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -91,7 +91,7 @@ const Setting = () => {
           }}>
           <View
             style={{
-              height: heightPercentageToDP(65),
+              height: heightPercentageToDP(75),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -202,6 +202,46 @@ const Setting = () => {
                       color: COLORS.black,
                     }}>
                     Game Description
+                  </Text>
+
+                  <Ionicons
+                    name={'chevron-forward-outline'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </TouchableOpacity>
+
+                {/** Add  Deposit */}
+
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Payment')}
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.grayBg, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <MaterialCommunityIcons
+                      name={'gamepad-variant-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </LinearGradient>
+                  <Text
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}>
+                    Deposit Payment
                   </Text>
 
                   <Ionicons

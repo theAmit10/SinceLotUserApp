@@ -34,6 +34,17 @@ import ResetPassword from '../screens/ResetPassword';
 import GoogleAuthPassword from '../screens/GoogleAuthPassword';
 import AddContact from '../screens/AddContact';
 import AboutUsCopying from '../screens/AboutUsCopying';
+import PlayArena from '../screens/PlayArena';
+import PlayArenaLocation from '../screens/PlayArenaLocation';
+import Payment from '../screens/payment/Payment';
+import UpiDeposit from '../screens/payment/UpiDeposit';
+import BankDeposit from '../screens/payment/BankDeposit';
+import PaypalDeposit from '../screens/payment/PaypalDeposit';
+import Skrill from '../screens/payment/Skrill';
+import CryptoDeposit from '../screens/payment/CryptoDeposit';
+import Withdraw from '../screens/payment/Withdraw';
+import History from '../screens/payment/History';
+import PlayHistory from '../screens/payment/PlayHistory';
 
 
 const Stack = createNativeStackNavigator()
@@ -79,6 +90,17 @@ const Main = () => {
                 <Stack.Screen  name="GoogleAuthPassword" component={GoogleAuthPassword}/>
                 <Stack.Screen  name="AddContact" component={AddContact}/>
                 <Stack.Screen  name="AboutUsCopying" component={AboutUsCopying}/>
+                <Stack.Screen  name="PlayArena" component={PlayArena}/>
+                <Stack.Screen  name="PlayArenaLocation" component={PlayArenaLocation}/>
+                <Stack.Screen  name="Payment" component={Payment}/>
+                <Stack.Screen  name="UpiDeposit" component={UpiDeposit}/>
+                <Stack.Screen  name="BankDeposit" component={BankDeposit}/>
+                <Stack.Screen  name="PaypalDeposit" component={PaypalDeposit}/>
+                <Stack.Screen  name="Skrill" component={Skrill}/>
+                <Stack.Screen  name="CryptoDeposit" component={CryptoDeposit}/>
+                <Stack.Screen  name="Withdraw" component={Withdraw}/>
+                <Stack.Screen  name="History" component={History}/>
+                <Stack.Screen  name="PlayHistory" component={PlayHistory}/>
             </Stack.Group>
         </Stack.Navigator>
 

@@ -50,23 +50,9 @@ const UpdateProfile = () => {
 
   useEffect(() => {
     dispatch(loadProfile(accesstoken));
+
   }, [isFocused]);
 
-  const logoutHandler = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Please wait... logging off',
-    });
-
-    dispatch(logout());
-  };
-
-  const ChangePasswordHandler = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'change password precessing',
-    });
-  };
 
   const [showProgressBar, setProgressBar] = useState(false);
 
@@ -118,6 +104,8 @@ const UpdateProfile = () => {
       }
     }
   };
+
+ 
 
   return (
     <View style={{flex: 1}}>

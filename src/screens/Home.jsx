@@ -68,7 +68,16 @@ const images = [
 //   result_purple: '#A628F2',
 //   result_cyan: '#34BFC8',
 
-const COLORS_LIST = [COLORS.result_lightblue, COLORS.result_green, COLORS.result_yellow, COLORS.result_orange, COLORS.result_pink,COLORS.result_darkblue,COLORS.result_purple,COLORS.result_cyan]; 
+const COLORS_LIST = [
+  COLORS.result_lightblue,
+  COLORS.result_green,
+  COLORS.result_yellow,
+  COLORS.result_orange,
+  COLORS.result_pink,
+  COLORS.result_darkblue,
+  COLORS.result_purple,
+  COLORS.result_cyan,
+];
 
 const Home = () => {
   const {user, accesstoken, loading} = useSelector(state => state.user);
@@ -551,7 +560,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('Auto Reloading start');
+        // console.log('Auto Reloading start');
         dispatch(getAllResult(accesstoken));
         const {results} = useSelector(state => state.result);
 
@@ -562,8 +571,8 @@ const Home = () => {
           // or use some state to trigger a re-render.
         }
       } catch (error) {
-        console.log('Auto Reloading error');
-        console.log(error);
+        // console.log('Auto Reloading error');
+        // console.log(error);
       }
     };
 
@@ -679,6 +688,15 @@ const Home = () => {
                     alignItems: 'center',
                     gap: heightPercentageToDP(2),
                   }}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('PlayArenaLocation')}>
+                    <Entypo
+                      name={'controller-play'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.white_s}
+                    />
+                  </TouchableOpacity>
+
                   <TouchableOpacity
                     onPress={() => navigation.navigate('Notification')}>
                     <Ionicons
@@ -1430,7 +1448,8 @@ const Home = () => {
                         <View
                           style={{
                             flex: 1,
-                            backgroundColor: COLORS_LIST[index % COLORS_LIST.length],
+                            backgroundColor:
+                              COLORS_LIST[index % COLORS_LIST.length],
                             borderTopRightRadius: heightPercentageToDP(1),
                             borderTopLeftRadius: heightPercentageToDP(1),
                             paddingTop: heightPercentageToDP(1),
@@ -1539,7 +1558,7 @@ const Home = () => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginHorizontal: heightPercentageToDP(2),
-                  marginBottom: heightPercentageToDP(2)
+                  marginBottom: heightPercentageToDP(2),
                 }}>
                 <ScrollView
                   horizontal={true}

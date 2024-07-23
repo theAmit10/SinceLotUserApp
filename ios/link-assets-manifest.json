@@ -42,12 +42,28 @@
       "sha1": "90459d6f7b8071185843fc314940cb6d1c9bb9cd"
     },
     {
+      "path": "assets/image/bank.png",
+      "sha1": "f1ee39575f43fff54ea2c884160a1e0335731962"
+    },
+    {
+      "path": "assets/image/crypto.png",
+      "sha1": "7df2a86700b83319023f368a3793ad93b2082b35"
+    },
+    {
       "path": "assets/image/dark_user.png",
       "sha1": "feb014378d4598795fb7b9643f1899779cd60351"
     },
     {
+      "path": "assets/image/deposit.png",
+      "sha1": "89ad516b9a48d7d23646305725af081a4f839d5f"
+    },
+    {
       "path": "assets/image/logonobg.png",
       "sha1": "64087b5e0c38eea1b8fd334fdc5af0bbb2557c66"
+    },
+    {
+      "path": "assets/image/paypal.png",
+      "sha1": "5608087fddb90d16d944ee1b9ee6fed5d0174b86"
     },
     {
       "path": "assets/image/profileplaceholder.jpg",
@@ -56,6 +72,22 @@
     {
       "path": "assets/image/sincelogo.png",
       "sha1": "db9b67b85c946391f1f24ebbe99c083bb6c1a4e3"
+    },
+    {
+      "path": "assets/image/skrill.png",
+      "sha1": "27c53ffeb6240e2d8aa290e200a7eac991870f68"
+    },
+    {
+      "path": "assets/image/tlwbg.jpg",
+      "sha1": "8f83c5cb631eda02235cf4e68ae9641d424c0330"
+    },
+    {
+      "path": "assets/image/upi.png",
+      "sha1": "290c3e35fd001726072fda5501bbff68e47c936b"
+    },
+    {
+      "path": "assets/image/withdraw.png",
+      "sha1": "2f1104401cd2a8bcaf2858e32a64b9d23ca4fc4f"
     }
   ]
 }

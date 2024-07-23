@@ -21,8 +21,10 @@ export const store = configureStore({
     }
 })
 
-// export const server = "https://sincelott.onrender.com/api/v1/"
-// export const serverName = "https://sincelott.onrender.com"
 
-export const server = "https://sinceapp.thelionworld.com/api/v1/"
-export const serverName = "https://sinceapp.thelionworld.com"
+
+// export const server = "https://sinceapp.thelionworld.com/api/v1/"
+// export const serverName = "https://sinceapp.thelionworld.com"
+
+export const server = "https://adminbackend-lyyx.onrender.com/api/v1/"
+export const serverName = "https://adminbackend-lyyx.onrender.com"
