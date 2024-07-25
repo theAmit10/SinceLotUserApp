@@ -1,21 +1,25 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import UrlHelper from './UrlHelper';
 
 export const sincelotUserApi = createApi({
   reducerPath: 'sincelotUserApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://adminbackend-lyyx.onrender.com/api/v1/' }),
-  endpoints: (builder) => ({
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://adminbackend-lyyx.onrender.com/api/v1/',
+  }),
+  endpoints: builder => ({
     getData: builder.query({
-      query: (accessToken) => ({
+      query: accessToken => ({
         url: 'user/profile',
         method: 'get',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      })
+      }),
     }),
+
+    // FOR CREATE A WITHDRAW REQUEST
     createWithdraw: builder.mutation({
-      query: ({ accessToken, body }) => ({
+      query: ({accessToken, body}) => ({
         url: UrlHelper.WITHDRAW_PAYMENT_API,
         method: 'POST',
         headers: {
@@ -25,45 +29,66 @@ export const sincelotUserApi = createApi({
         body,
       }),
     }),
+
+    // FOR GETTING ALL THE LOCATION WITH TIME
+    getAllLocationWithTime: builder.query({
+      query: accessToken => ({
+        url: 'result/alllotlocationwithtime',
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    }),
+
+    // FOR BETTING
+
+     // FOR GETTING DATE ACCORDING TO THE LOCATION, TIME
+     getDateAccToLocTime: builder.query({
+        query: (accessToken, lottimeId,lotlocationId) => ({
+          url: `result/searchdate?llottime=${lottimeId}&lotlocation=${lotlocationId}`,
+          method: 'get',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+      }),
+
+    // FOR GETTING BET ACCORDING TO THE LOCATION, TIME AND CURRENT DATE
+    getBetAccToLocTimeDate: builder.query({
+      query: (accessToken, lotlocation, lottime, lotdate) => ({
+        url: `result/playzone/singleplay?lotlocation=${lotlocation}&lottime=${lottime}&lotdate=${lotdate}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    }),
+
+     // FOR CREATE A PLAY REQUEST
+     createPlay: builder.mutation({
+      query: ({accessToken, body}) => ({
+        url: UrlHelper.CREATE_PLAY_API,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+    }),
+
+
+
+    // ######## END #########
   }),
 });
 
-export const { useGetDataQuery, useCreateWithdrawMutation } = sincelotUserApi;
-
-
-// import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-// import UrlHelper from './UrlHelper';
-
-// export const sincelotUserApi = createApi({
-//     reducerPath: 'sincelotUserApi',
-//     baseQuery: fetchBaseQuery({ baseUrl: 'https://adminbackend-lyyx.onrender.com/api/v1/' }),
-//     endpoints: (builder) => ({
-//       getData: builder.query({
-//         query: (accesstoken) => ({
-//           url: 'user/profile',
-//           method: 'get',
-//           headers: {
-//             Authorization: `Bearer ${accesstoken}`,
-//           },
-//         })
-//       }),
-
-//      // Define a POST request
-//      createWithdraw: builder.mutation({
-//         query: ({ accessToken, body }) => ({
-//           url: UrlHelper.WITHDRAW_PAYMENT_API,
-//           method: 'POST',
-//           headers: {
-//             Authorization: `Bearer ${accessToken}`,
-//             'Content-Type': 'application/json',
-//           },
-//           body,
-//         }),
-//       }),
-
-//     }),
-//   });
-
-//  export const { useGetDataQuery, useCreateWithdrawMutation } = sincelotUserApi;
-
-
+export const {
+  useGetDataQuery,
+  useCreateWithdrawMutation,
+  useGetAllLocationWithTimeQuery,
+  useGetDateAccToLocTimeQuery,
+  useGetBetAccToLocTimeDateQuery,
+  useCreatePlayMutation,
+} = sincelotUserApi;

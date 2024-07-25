@@ -31,7 +31,7 @@ const Withdrawpaypal = () => {
   const {accesstoken, user} = useSelector(state => state.user);
 
   const [amountval, setAmountval] = useState('');
-  const [upiHolderName, setUpiHolderName] = useState('');
+
   const [paypalEmail, setpaypalEmail] = useState('');
   const [remarkval, setRemarkval] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);

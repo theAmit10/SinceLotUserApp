@@ -1,369 +1,11 @@
-// import React from 'react';
-// import {
-//   FlatList,
-//   Image,
-//   ImageBackground,
-//   StyleSheet,
-//   Text,
-//   TouchableOpacity,
-//   View,
-// } from 'react-native';
-// import LinearGradient from 'react-native-linear-gradient';
-// import {
-//   heightPercentageToDP,
-//   widthPercentageToDP,
-// } from 'react-native-responsive-screen';
-// import {COLORS, FONT} from '../../assets/constants';
-// import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-// import Background from '../components/background/Background';
-// import {useNavigation} from '@react-navigation/native';
-
-// const numberdata = [
-//   {id: '1', number: '101'},
-//   {id: '2', number: '102'},
-//   {id: '3', number: '103'},
-//   {id: '4', number: '104'},
-//   {id: '5', number: '105'},
-//   {id: '6', number: '106'},
-//   {id: '7', number: '107'},
-//   {id: '8', number: '108'},
-//   {id: '9', number: '109'},
-//   {id: '10', number: '110'},
-//   {id: '11', number: '111'},
-//   {id: '12', number: '112'},
-// ];
-
-// const PlayArena = () => {
-//   const navigation = useNavigation();
-
-//   // const renderItem = ({ item, index }) => (
-//   //   <View style={[
-//   //     styles.itemContainer,
-//   //     { backgroundColor: index % 2 === 0 ? COLORS.white_s : COLORS.blue }
-//   //   ]}>
-//   //     <LinearGradient
-//   //       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-//   //       style={styles.gradient}
-//   //     >
-//   //       <Text style={styles.itemText}>{item.number}</Text>
-//   //       <Text style={styles.selectText}>Select</Text>
-//   //     </LinearGradient>
-//   //   </View>
-//   // );
-
-//   const renderItem = ({item, index}) => {
-//     const groupedTimes = [];
-//     for (let i = 0; i < item.length; i += 3) {
-//       groupedTimes.push(item.slice(i, i + 3));
-//     }
-
-//     return (
-//       <>
-//         <TouchableOpacity>
-//           <LinearGradient
-//             colors={
-//               index % 2 === 0
-//                 ? [COLORS.lightblue, COLORS.midblue]
-//                 : [COLORS.lightyellow, COLORS.darkyellow]
-//             }
-//             style={styles.item}>
-//             <View style={{flex: 1, justifyContent: 'flex-end'}}>
-//               <ImageBackground
-//                 source={require('../../assets/image/tlwbg.jpg')}
-//                 imageStyle={{
-//                   borderRadius: heightPercentageToDP(5),
-//                   margin: heightPercentageToDP(2),
-//                 }}>
-//                 <View
-//                   style={{
-//                     backgroundColor: COLORS.black,
-//                     margin: heightPercentageToDP(2),
-//                     borderRadius: heightPercentageToDP(5),
-//                     justifyContent: 'center',
-//                     alignItems: 'center',
-//                     opacity: 0.8,
-//                   }}>
-//                   {groupedTimes.map((pair, idx) => (
-//                     <View key={idx} style={[styles.timeRow]}>
-//                       {pair.map(timeItem => (
-//                         <View
-//                           key={timeItem.id}
-//                           style={{
-//                             width: widthPercentageToDP(25),
-//                             marginVertical: heightPercentageToDP(1),
-//                             marginHorizontal: heightPercentageToDP(1),
-//                             borderRadius: heightPercentageToDP(1),
-//                             position: 'relative',
-//                           }}>
-//                           <LinearGradient
-//                             colors={[COLORS.lightblue, COLORS.white_s]}
-//                             style={{
-//                               width: widthPercentageToDP(14),
-//                               flex: 1,
-//                             }}></LinearGradient>
-
-//                           <LinearGradient
-//                             colors={[COLORS.lightblue, COLORS.midblue]}
-//                             style={{
-//                               width: widthPercentageToDP(21),
-//                               height: heightPercentageToDP(6.5),
-//                               backgroundColor: 'cyan',
-//                               position: 'absolute',
-//                               top: heightPercentageToDP(1.5),
-//                               left: heightPercentageToDP(2),
-//                             }}>
-//                             <View
-//                               style={{
-//                                 height: heightPercentageToDP(5),
-//                                 width: widthPercentageToDP(10),
-//                                 right: heightPercentageToDP(-0.5),
-//                                 position: 'absolute',
-//                                 borderStyle: 'solid',
-//                                 borderLeftWidth: heightPercentageToDP(3),
-//                                 borderRightWidth: heightPercentageToDP(3),
-//                                 top: heightPercentageToDP(0.7),
-//                                 borderBottomWidth: heightPercentageToDP(4.5),
-//                                 borderLeftColor: 'transparent',
-//                                 borderRightColor: 'transparent',
-//                                 borderBottomColor: COLORS.white_s,
-//                                 transform: [{rotate: '-90deg'}],
-//                               }}></View>
-//                             <View
-//                               style={{
-//                                 flex: 2,
-//                                 paddingStart: heightPercentageToDP(1),
-//                               }}>
-//                               <Text
-//                                 style={{
-//                                   color: COLORS.black,
-//                                   fontFamily: FONT.Montserrat_Bold,
-//                                   fontSize: heightPercentageToDP(3),
-//                                 }}>
-//                                 {item.number}
-//                               </Text>
-//                             </View>
-//                             <View
-//                               style={{
-//                                 flex: 1,
-//                                 justifyContent: 'flex-end',
-//                                 alignItems: 'flex-end',
-//                                 marginEnd: heightPercentageToDP(4),
-//                               }}>
-//                               <Text
-//                                 style={{
-//                                   color: COLORS.black,
-//                                   fontFamily: FONT.Montserrat_Regular,
-//                                   fontSize: heightPercentageToDP(1.7),
-//                                 }}>
-//                                 Select
-//                               </Text>
-//                             </View>
-//                           </LinearGradient>
-//                         </View>
-//                       ))}
-//                     </View>
-//                   ))}
-//                 </View>
-//               </ImageBackground>
-//             </View>
-//           </LinearGradient>
-//         </TouchableOpacity>
-//       </>
-//     );
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <Background />
-//       <View style={styles.innerContainer}>
-//         <View style={styles.headerContainer}>
-//           <TouchableOpacity
-//             onPress={() => navigation.navigate('UpdateProfile')}
-//             style={styles.profileImageContainer}>
-//             <Image
-//               source={require('../../assets/image/dark_user.png')}
-//               resizeMode="cover"
-//               style={styles.profileImage}
-//             />
-//           </TouchableOpacity>
-
-//           <View style={styles.userInfo}>
-//             <Text style={styles.userInfoText}>
-//               User ID
-//               <Text style={styles.userId}>: 1007</Text>
-//             </Text>
-//             <Text style={styles.userName}>Wasu</Text>
-//           </View>
-
-//           <View style={styles.userBalance}>
-//             <Text style={styles.userBalanceText}>09:00 PM</Text>
-//             <Text style={styles.userBalanceText}>17-05-2024</Text>
-//             <Text style={styles.userBalanceText}>
-//               Balance
-//               <Text style={styles.userBalanceAmount}>: 19000</Text>
-//             </Text>
-//           </View>
-//         </View>
-
-//         <ImageBackground
-//           source={require('../../assets/image/tlwbg.jpg')}
-//           style={styles.imageBackground}
-//           imageStyle={styles.imageBackgroundStyle}>
-//           <View style={styles.topBar}>
-//             <GradientTextWhite style={styles.locationText}>
-//               Canada 🇨🇦
-//             </GradientTextWhite>
-//             <View style={styles.divider} />
-//             <GradientTextWhite style={styles.timeText}>
-//               09:00 AM
-//             </GradientTextWhite>
-//           </View>
-//           <FlatList
-//             data={numberdata}
-//             renderItem={renderItem}
-//             keyExtractor={item => item.id}
-//             initialNumToRender={10}
-//             maxToRenderPerBatch={10}
-//             windowSize={10}
-//           />
-//         </ImageBackground>
-//       </View>
-//     </View>
-//   );
-// };
-
-// export default PlayArena;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   innerContainer: {
-//     flex: 1,
-//     justifyContent: 'flex-end',
-//   },
-//   headerContainer: {
-//     margin: heightPercentageToDP(2),
-//     backgroundColor: COLORS.grayHalfBg,
-//     height: heightPercentageToDP(12),
-//     borderRadius: heightPercentageToDP(2),
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-//   profileImageContainer: {
-//     borderRadius: 100,
-//     overflow: 'hidden',
-//     width: 70,
-//     height: 70,
-//     margin: heightPercentageToDP(1),
-//   },
-//   profileImage: {
-//     height: 70,
-//     width: 70,
-//   },
-//   userInfo: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     paddingStart: heightPercentageToDP(1),
-//   },
-//   userInfoText: {
-//     fontFamily: FONT.Montserrat_Regular,
-//     color: COLORS.black,
-//   },
-//   userId: {
-//     fontFamily: FONT.HELVETICA_BOLD,
-//     fontSize: heightPercentageToDP(2),
-//   },
-//   userName: {
-//     fontFamily: FONT.HELVETICA_BOLD,
-//     fontSize: heightPercentageToDP(2),
-//     color: COLORS.black,
-//   },
-//   userBalance: {
-//     justifyContent: 'center',
-//     alignItems: 'flex-end',
-//     paddingEnd: heightPercentageToDP(1),
-//   },
-//   userBalanceText: {
-//     fontFamily: FONT.Montserrat_Regular,
-//     color: COLORS.black,
-//   },
-//   userBalanceAmount: {
-//     fontFamily: FONT.HELVETICA_BOLD,
-//     fontSize: heightPercentageToDP(2),
-//   },
-//   imageBackground: {
-//     width: '100%',
-//     height: heightPercentageToDP(65),
-//   },
-//   imageBackgroundStyle: {
-//     borderTopLeftRadius: heightPercentageToDP(5),
-//     borderTopRightRadius: heightPercentageToDP(5),
-//   },
-//   topBar: {
-//     height: heightPercentageToDP(5),
-//     flexDirection: 'row',
-//     justifyContent: 'space-evenly',
-//     alignItems: 'center',
-//   },
-//   locationText: {
-//     fontSize: heightPercentageToDP(2),
-//     fontFamily: FONT.Montserrat_Bold,
-//     color: COLORS.black,
-//   },
-//   divider: {
-//     width: widthPercentageToDP(20),
-//     height: heightPercentageToDP(0.8),
-//     backgroundColor: COLORS.grayBg,
-//     borderRadius: heightPercentageToDP(2),
-//   },
-//   timeText: {
-//     fontSize: heightPercentageToDP(2),
-//     fontFamily: FONT.Montserrat_Bold,
-//     color: COLORS.black,
-//   },
-//   flatListContent: {
-//     padding: heightPercentageToDP(2),
-//   },
-//   itemContainer: {
-//     flex: 1,
-//     margin: heightPercentageToDP(1),
-//     borderRadius: heightPercentageToDP(1),
-//     overflow: 'hidden',
-//   },
-//   gradient: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: heightPercentageToDP(2),
-//   },
-//   itemText: {
-//     color: COLORS.black,
-//     fontFamily: FONT.Montserrat_Bold,
-//     fontSize: heightPercentageToDP(3),
-//   },
-//   selectText: {
-//     color: COLORS.black,
-//     fontFamily: FONT.Montserrat_Regular,
-//     fontSize: heightPercentageToDP(1.7),
-//     marginTop: heightPercentageToDP(0.5),
-//   },
-//   item: {
-//     padding: heightPercentageToDP(2),
-//     marginVertical: heightPercentageToDP(1),
-//     marginHorizontal: heightPercentageToDP(2),
-//     borderRadius: heightPercentageToDP(1),
-//     flexDirection: 'row',
-//   },
-// });
-
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
   ImageBackground,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -375,58 +17,350 @@ import {
 import {COLORS, FONT} from '../../assets/constants';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import Background from '../components/background/Background';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  useCreatePlayMutation,
+  useGetDateAccToLocTimeQuery,
+} from '../helper/Networkcall';
+import {useDispatch, useSelector} from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Loading from '../components/helpercComponent/Loading';
+import GradientText from '../components/helpercComponent/GradientText';
+import NoDataFound from '../components/helpercComponent/NoDataFound';
+import {serverName} from '../redux/store';
+import Toast from 'react-native-toast-message';
+import { loadProfile } from '../redux/actions/userAction';
 
-const numberdata = [
-  {id: '1', number: '101'},
-  {id: '2', number: '102'},
-  {id: '3', number: '103'},
-  {id: '4', number: '104'},
-  {id: '5', number: '105'},
-  {id: '6', number: '106'},
-  {id: '7', number: '107'},
-  {id: '8', number: '108'},
-  {id: '9', number: '109'},
-  {id: '10', number: '110'},
-  {id: '11', number: '111'},
-  {id: '12', number: '112'},
-];
 
-const PlayArena = () => {
+const getCurrentDate = () => {
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+  const year = today.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+// Function to find the object with the current date
+const findCurrentDateObject = data => {
+  console.log('Checking for the current date is availble in the database');
+  const currentDate = getCurrentDate();
+
+  console.log('current data : ' + currentDate);
+  const lotdates = data.lotdates || [];
+
+  const found = lotdates.find(item => item.lotdate === currentDate);
+
+  return found ? found : 'Current date not found';
+};
+
+// Function to create an array from 1 to maximumNumber
+const createLocationDataArray = maximumNumber => {
+  return Array.from({length: maximumNumber}, (_, index) => ({
+    id: index + 1,
+    name: `${index + 1}`,
+  }));
+};
+
+const PlayArena = ({route}) => {
   const navigation = useNavigation();
+  const {locationdata, timedata} = route.params;
+  const {accesstoken, user} = useSelector(state => state.user);
 
-  const renderItem = ({item}) => (
-    <View style={styles.itemContainer}>
-    <LinearGradient
-      colors={[COLORS.yellow, COLORS.darkyellow]}
-      style={{
-        paddingHorizontal: heightPercentageToDP(1),
-        paddingVertical: heightPercentageToDP(0.8),
-        borderRadius: heightPercentageToDP(2.5),
-        shadowColor: COLORS.black,
-        shadowOpacity: 0.8,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 3,
-        elevation: 6, // Ensures shadow shows on Android
-      }}
-    >
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused()
+
+  useEffect(() => {
+    dispatch(loadProfile(accesstoken));
+  },[isFocused])
+
+  console.log('USERS :: ' + JSON.stringify(user));
+
+  const [betnumberdata, setBetnumberdata] = useState([]);
+  const [selectedNumber, setSelectedNumber] = useState([]);
+  const [showSelectedVisible, setshowSelectedVisible] = useState(false);
+  const [inputValues, setInputValues] = useState({});
+
+  const handleInputChange = (text, id) => {
+    setInputValues(prevValues => ({
+      ...prevValues,
+      [id]: text,
+    }));
+  };
+  const addAmountForInput = id => {
+    setInputValues(prevValues => {
+      // Get the current amount, default to 0 if not present
+      const currentAmount = parseInt(prevValues[id] || '0', 10);
+      // Add 10 to the current amount and convert it back to a string
+      return {
+        ...prevValues,
+        [id]: (currentAmount + 10).toString(),
+      };
+    });
+  };
+  const removeAmountForInput = id => {
+    console.log('Removing');
+    console.log('Removing :: ' + id);
+    setInputValues(prevValues => {
+      // Get the current amount, default to 0 if not present
+      const currentAmount = parseInt(prevValues[id] || '0', 10);
+      // Subtract 10 from the current amount and convert it back to a string
+      return {
+        ...prevValues,
+        [id]: (currentAmount - 10).toString(),
+      };
+    });
+  };
+  const handleAddClick = id => {
+    addAmountForInput(id);
+  };
+  const handleRemoveClick = id => {
+    removeAmountForInput(id);
+  };
+  const winningAmountPrice = (str1, str2) => {
+    // Convert the first string to a number
+    const number1 = parseFloat(str1);
+
+    // Extract numeric part from the second string
+    // Remove any whitespace and convert to lowercase for uniformity
+    const cleanedStr2 = str2.trim().toLowerCase();
+
+    // Find the position of 'x' or 'X' in the second string
+    const xIndex = cleanedStr2.indexOf('x');
+
+    // If 'x' or 'X' is found, extract the part before it and convert to a number
+    const number2 =
+      xIndex !== -1 ? parseFloat(cleanedStr2.substring(0, xIndex)) : 0;
+
+    // Multiply the two numbers
+    const result = number1 * number2;
+
+    return result;
+  };
+
+  console.log('FROM PLAYARENA :: ' + JSON.stringify(inputValues));
+
+  const {data, error, isLoading} = useGetDateAccToLocTimeQuery(
+    accesstoken,
+    timedata._id,
+    locationdata._id,
+  );
+  const [result, setResult] = useState(null);
+  useEffect(() => {
+    if (!isLoading && data) {
+      const currentDateObject = findCurrentDateObject(data);
+      setResult(currentDateObject);
+
+      console.log('Today Play :: ' + JSON.stringify(result));
+
+      if (result !== 'Current date not found') {
+        console.log(' result !==  Current date not found ');
+        const maximumNumber = locationdata.maximumNumber; // Ensure `maximumNumber` exists in the data
+        if (maximumNumber) {
+          const generatedArray = createLocationDataArray(maximumNumber);
+          setBetnumberdata(generatedArray);
+        }
+      }
+    }
+  }, [isLoading, data, result]);
+
+  const addingNumberForBetting = number => {
+    console.log('ADDING NUMBER TO LIST');
+
+    setSelectedNumber(prevSelectedNumbers => {
+      const updatedList = [...prevSelectedNumbers];
+
+      const index = updatedList.indexOf(number);
+      if (index > -1) {
+        // Number is already present, remove it
+        updatedList.splice(index, 1);
+      } else {
+        // Number is not present, add it
+        updatedList.push(number);
+      }
+
+      console.log('SELECTED NUMBER :: ', updatedList);
+      return updatedList;
+    });
+  };
+
+  const showingSeletedContainer = () => {
+    if (showSelectedVisible) {
+      setshowSelectedVisible(false);
+    } else {
+      setshowSelectedVisible(true);
+    }
+  };
+
+  const sumObjectValues = obj => {
+    // Extract values, convert them to numbers, and sum them up
+    return Object.values(obj)
+      .map(value => parseFloat(value)) // Convert each value to a number
+      .reduce((sum, value) => sum + value, 0); // Sum them up
+  };
+
+  function canPlaceBet(walletBalanceStr, bettingAmountStr) {
+    const walletBalance = parseFloat(walletBalanceStr);
+    const bettingAmount = parseFloat(bettingAmountStr);
+
+    if (isNaN(walletBalance) || isNaN(bettingAmount)) {
+      throw new Error('Invalid input: Both inputs must be valid numbers.');
+    }
+
+    return walletBalance >= bettingAmount;
+  }
+
+// USED TO GET SELECTED NUMBER WITH AMOUNT INVESTED
+  const transformData = (inputValues, multiplier) => {
+    return Object.entries(inputValues).map(([playnumber, amount]) => ({
+      playnumber: parseInt(playnumber, 10),
+      amount: parseFloat(amount),
+      winningamount: winningAmountPrice(amount, multiplier),
+    }));
+  };
+
+  const [createPlay, {isLoading: isPlayLoading, error: playError}] =
+    useCreatePlayMutation();
+  console.log('Is palyloading ' + isPlayLoading);
+
+  // TO CHECK THE AMOUNT IN EACH OF THE SELECTED NUMBER IS VALID
+  const checkAmounOfSelectedNumberIsValid = (list) => {
+    // Check if the object is empty
+    if (Object.keys(list).length === 0) {
+      return false;
+    }
+  
+    // Check if any value is an empty string "" or "0"
+    for (const key in list) {
+      if (list[key] === "" || list[key] === "0") {
+        return false;
+      }
+    }
+  
+    return true;
+  };
+  
+
+  const submitHandler = async () => {
+    if (sumObjectValues(inputValues) === 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid amount',
+        text2: 'Add amount for bet',
+      });
+    } else if (
+      !canPlaceBet(user.walletTwo.balance, sumObjectValues(inputValues))
+    ) {
+      Toast.show({
+        type: 'error',
+        text1: 'Insufficent Balance',
+        text2: 'Add balance to play',
+      });
+    }else if (
+      !checkAmounOfSelectedNumberIsValid(inputValues)
+    ) {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid amount',
+        text2: 'Add betting amount for all numbers',
+      });
+    } 
+     else {
+     
+      try {
+        const body = {
+          playnumbers: transformData(inputValues, locationdata.maximumReturn),
+          lotdate: result._id,
+          lottime: timedata._id,
+          lotlocation: locationdata._id,
+        };
+
+        console.log('Request body :: ' + JSON.stringify(body));
+
+        const res = await createPlay({
+          accessToken: accesstoken,
+          body,
+        }).unwrap();
+        console.log('Create Play res :: ' + JSON.stringify(res));
+
+        if(res.message === "Playbet entry added successfully")
+        {
+          Toast.show({
+            type: 'success',
+            text1: 'Order Placed Successfully',
+            text2: res.message,
+          });
+        }
+        
+
+        navigation.goBack();
+      } catch (error) {
+        console.log('Error during withdraw:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+        });
+      }
+    }
+  };
+
+  const renderItem = ({item, index}) => (
+    <TouchableOpacity
+      key={index}
+      onPress={() => addingNumberForBetting(item)}
+      style={styles.itemContainer}>
       <LinearGradient
-        colors={[COLORS.grayBg, COLORS.white_s]}
+        colors={
+          selectedNumber.includes(item)
+            ? [COLORS.result_lightblue, COLORS.time_secondbluw]
+            : [COLORS.yellow, COLORS.darkyellow]
+        }
         style={{
-          ...styles.gradient,
+          paddingHorizontal: heightPercentageToDP(1),
+          paddingVertical: heightPercentageToDP(0.8),
+          borderRadius: heightPercentageToDP(2.5),
           shadowColor: COLORS.black,
-        shadowOpacity: 0.8,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 3,
-        elevation: 6, // Ensures shadow shows on Android
-        }}
-      >
-        <Text style={styles.itemText}>{item.number}</Text>
-        <View style={{ backgroundColor: COLORS.grayBg, height: 1, width: '100%' }}></View>
-        <Text style={styles.selectText}>Select</Text>
+          shadowOpacity: 0.8,
+          shadowOffset: {width: 0, height: 2},
+          shadowRadius: 3,
+          elevation: 6, // Ensures shadow shows on Android
+        }}>
+        <LinearGradient
+          colors={[COLORS.grayBg, COLORS.white_s]}
+          style={{
+            ...styles.gradient,
+            shadowColor: COLORS.black,
+            shadowOpacity: 0.8,
+            shadowOffset: {width: 0, height: 2},
+            shadowRadius: 3,
+            elevation: 6, // Ensures shadow shows on Android
+          }}>
+          <Text
+            style={{
+              ...styles.itemText,
+              color: selectedNumber.includes(item)
+                ? COLORS.time_firstblue
+                : COLORS.black,
+            }}>
+            {item.name}
+          </Text>
+          <View
+            style={{
+              backgroundColor: COLORS.grayBg,
+              height: 1,
+              width: '100%',
+            }}></View>
+          <Text
+            style={{
+              ...styles.selectText,
+              color: selectedNumber.includes(item)
+                ? COLORS.time_firstblue
+                : COLORS.black,
+            }}>
+            {selectedNumber.includes(item) ? 'Selected' : 'Select'}
+          </Text>
+        </LinearGradient>
       </LinearGradient>
-    </LinearGradient>
-  </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -434,130 +368,145 @@ const PlayArena = () => {
       <Background />
       <View style={styles.innerContainer}>
         {/** Top header wollet container */}
-        <View
-          style={{
-            margin: heightPercentageToDP(2),
-            backgroundColor: COLORS.grayHalfBg,
-            height: heightPercentageToDP(12),
-            borderRadius: heightPercentageToDP(2),
-            flexDirection: 'row',
-          }}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('UpdateProfile')}
-            style={{
-              borderRadius: 100,
-              overflow: 'hidden',
-              width: 70,
-              height: 70,
-              marginTop: heightPercentageToDP(1),
-              marginStart: heightPercentageToDP(1),
-            }}>
-            <Image
-              source={require('../../assets/image/dark_user.png')}
-              resizeMode="cover"
-              style={{
-                height: 70,
-                width: 70,
-              }}
-            />
-          </TouchableOpacity>
 
+        {user && (
           <View
             style={{
-              flex: 1,
+              margin: heightPercentageToDP(2),
+              backgroundColor: COLORS.grayHalfBg,
+              height: heightPercentageToDP(12),
+              borderRadius: heightPercentageToDP(2),
+              flexDirection: 'row',
             }}>
+            <TouchableOpacity
+              style={{
+                borderRadius: 100,
+                overflow: 'hidden',
+                width: 70,
+                height: 70,
+                marginTop: heightPercentageToDP(1),
+                marginStart: heightPercentageToDP(1),
+              }}>
+              {user?.avatar?.url ? (
+                <Image
+                  source={{
+                    uri: `${serverName}/uploads/${user?.avatar.url}`,
+                  }}
+                  resizeMode="cover"
+                  style={{
+                    height: 70,
+                    width: 70,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={require('../../assets/image/dark_user.png')}
+                  resizeMode="cover"
+                  style={{
+                    height: 70,
+                    width: 70,
+                  }}
+                />
+              )}
+            </TouchableOpacity>
+
             <View
               style={{
-                flex: 2,
-
-                justifyContent: 'center',
-                paddingStart: heightPercentageToDP(1),
-                flexDirection: 'row',
+                flex: 1,
               }}>
               <View
                 style={{
-                  flex: 1,
+                  flex: 2,
 
                   justifyContent: 'center',
+                  paddingStart: heightPercentageToDP(1),
+                  flexDirection: 'row',
                 }}>
-                <Text
+                <View
                   style={{
-                    fontFamily: FONT.Montserrat_Regular,
-                    color: COLORS.black,
+                    flex: 1,
+
+                    justifyContent: 'center',
                   }}>
-                  User ID
+                  <Text
+                    style={{
+                      fontFamily: FONT.Montserrat_Regular,
+                      color: COLORS.black,
+                    }}>
+                    User ID
+                    <Text
+                      style={{
+                        fontFamily: FONT.HELVETICA_BOLD,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                      }}>
+                      : {user.userId}
+                    </Text>
+                  </Text>
+
                   <Text
                     style={{
                       fontFamily: FONT.HELVETICA_BOLD,
                       color: COLORS.black,
                       fontSize: heightPercentageToDP(2),
                     }}>
-                    : 1007
+                    {user.name}
                   </Text>
-                </Text>
+                </View>
 
-                <Text
+                <View
                   style={{
-                    fontFamily: FONT.HELVETICA_BOLD,
-                    color: COLORS.black,
-                    fontSize: heightPercentageToDP(2),
-                  }}>
-                  Wasu
-                </Text>
-              </View>
+                    flex: 1,
 
+                    paddingEnd: heightPercentageToDP(1),
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: FONT.Montserrat_Regular,
+                      color: COLORS.black,
+                    }}>
+                    {timedata.time}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontFamily: FONT.Montserrat_Regular,
+                      color: COLORS.black,
+                    }}>
+                    {getCurrentDate()}
+                  </Text>
+                </View>
+              </View>
               <View
                 style={{
                   flex: 1,
 
-                  paddingEnd: heightPercentageToDP(1),
-                  alignItems: 'flex-end',
                   justifyContent: 'center',
+                  alignItems: 'flex-end',
+                  paddingEnd: heightPercentageToDP(1),
                 }}>
                 <Text
                   style={{
                     fontFamily: FONT.Montserrat_Regular,
                     color: COLORS.black,
                   }}>
-                  09:00 PM
-                </Text>
-
-                <Text
-                  style={{
-                    fontFamily: FONT.Montserrat_Regular,
-                    color: COLORS.black,
-                  }}>
-                  17-05-2024
+                  Balance
+                  <Text
+                    style={{
+                      fontFamily: FONT.HELVETICA_BOLD,
+                      color: COLORS.black,
+                      fontSize: heightPercentageToDP(2),
+                      paddingStart: heightPercentageToDP(1),
+                    }}>
+                    : {user.walletTwo.balance}
+                  </Text>
                 </Text>
               </View>
             </View>
-            <View
-              style={{
-                flex: 1,
-
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-                paddingEnd: heightPercentageToDP(1),
-              }}>
-              <Text
-                style={{
-                  fontFamily: FONT.Montserrat_Regular,
-                  color: COLORS.black,
-                }}>
-                Balance
-                <Text
-                  style={{
-                    fontFamily: FONT.HELVETICA_BOLD,
-                    color: COLORS.black,
-                    fontSize: heightPercentageToDP(2),
-                    paddingStart: heightPercentageToDP(1),
-                  }}>
-                  : 19000
-                </Text>
-              </Text>
-            </View>
           </View>
-        </View>
+        )}
 
         <ImageBackground
           source={require('../../assets/image/tlwbg.jpg')}
@@ -565,20 +514,310 @@ const PlayArena = () => {
           imageStyle={styles.imageBackgroundStyle}>
           <View style={styles.topBar}>
             <GradientTextWhite style={styles.locationText}>
-              Canada 🇨🇦
+              {locationdata.name}
             </GradientTextWhite>
             <View style={styles.divider} />
             <GradientTextWhite style={styles.timeText}>
-              09:00 AM
+              {timedata.time}
             </GradientTextWhite>
           </View>
-          <FlatList
-            data={numberdata}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-            numColumns={3}
-            contentContainerStyle={styles.flatListContent}
-          />
+
+          {/** FOR PLAY NUMBER */}
+          {result === 'Current date not found' ? (
+            <View
+              style={{
+                margin: heightPercentageToDP(2),
+              }}>
+              <NoDataFound data={'No Game Available today'} />
+            </View>
+          ) : (
+            betnumberdata.length !== 0 &&
+            !showSelectedVisible && (
+              <FlatList
+                data={betnumberdata}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                numColumns={3}
+                contentContainerStyle={styles.flatListContent}
+              />
+            )
+          )}
+
+          {/** FOR SELECTED NUMBER  */}
+          {selectedNumber.length !== 0 && showSelectedVisible && (
+            <FlatList
+              data={selectedNumber}
+              renderItem={({item, index}) => (
+                <View
+                  key={index.toString()}
+                  style={{
+                    height: heightPercentageToDP(12),
+                    backgroundColor: COLORS.white_s,
+                    marginHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(2),
+                    flexDirection: 'row',
+                    marginBottom: heightPercentageToDP(1),
+                  }}>
+                  {/** SELECTED NUMBER */}
+                  <TouchableOpacity
+                    style={{
+                      margin: heightPercentageToDP(1),
+                      borderRadius: heightPercentageToDP(1),
+                      overflow: 'hidden',
+                      width: widthPercentageToDP(20),
+                      height: heightPercentageToDP(9),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.result_lightblue, COLORS.time_secondbluw]}
+                      style={{
+                        height: heightPercentageToDP(9),
+                        paddingHorizontal: heightPercentageToDP(1),
+                        paddingVertical: heightPercentageToDP(0.8),
+                        borderRadius: heightPercentageToDP(2.5),
+                        shadowColor: COLORS.black,
+                        shadowOpacity: 0.8,
+                        shadowOffset: {width: 0, height: 2},
+                        shadowRadius: 3,
+                        elevation: 6, // Ensures shadow shows on Android
+                      }}>
+                      <LinearGradient
+                        colors={[COLORS.grayBg, COLORS.white_s]}
+                        style={{
+                          ...styles.gradient,
+                          shadowColor: COLORS.black,
+                          shadowOpacity: 0.8,
+                          shadowOffset: {width: 0, height: 2},
+                          shadowRadius: 3,
+                          elevation: 6, // Ensures shadow shows on Android
+                        }}>
+                        <Text
+                          style={{
+                            ...styles.itemText,
+                            color: COLORS.time_firstblue,
+                          }}>
+                          {item.name}
+                        </Text>
+                        <View
+                          style={{
+                            backgroundColor: COLORS.grayBg,
+                            height: 1,
+                            width: '100%',
+                          }}></View>
+                      </LinearGradient>
+                    </LinearGradient>
+                  </TouchableOpacity>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    {/** AMOUNT NUMBER */}
+                    <View
+                      style={{
+                        flex: 2,
+
+                        justifyContent: 'space-evenly',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                      }}>
+                      {/** Add */}
+                      <TouchableOpacity onPress={() => handleAddClick(item.id)}>
+                        <LinearGradient
+                          colors={[
+                            COLORS.time_firstgreen,
+                            COLORS.time_secondgreen,
+                          ]}
+                          className="rounded-xl p-1">
+                          <Ionicons
+                            name={'add-circle-outline'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                          />
+                        </LinearGradient>
+                      </TouchableOpacity>
+
+                      {/** Amont */}
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                          width: widthPercentageToDP(30),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                            textAlign: 'center',
+                          }}
+                          placeholder={'Amount'}
+                          value={inputValues[item.id]?.toString() || ''}
+                          onChangeText={text =>
+                            handleInputChange(text, item.id)
+                          }
+                          keyboardType="numeric"
+                        />
+                      </LinearGradient>
+
+                      {/** Remove */}
+                      <TouchableOpacity
+                        onPress={() => handleRemoveClick(item.id)}>
+                        <LinearGradient
+                          colors={[
+                            COLORS.time_firstgreen,
+                            COLORS.time_secondgreen,
+                          ]}
+                          className="rounded-xl p-1">
+                          <Ionicons
+                            name={'remove-circle-outline'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                          />
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    </View>
+
+                    {/** YOU WIN  */}
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: heightPercentageToDP(1),
+                        flexDirection: 'row',
+                        gap: heightPercentageToDP(1),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_Regular,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(1.5),
+                        }}>
+                        Winning Amount
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                        }}>
+                        ${' '}
+                        {isNaN(
+                          winningAmountPrice(
+                            inputValues[item.id]?.toString(),
+                            locationdata.maximumReturn,
+                          ),
+                        )
+                          ? 0
+                          : winningAmountPrice(
+                              inputValues[item.id]?.toString(),
+                              locationdata.maximumReturn,
+                            )}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              )}
+              keyExtractor={item => item.id.toString()}
+              ListFooterComponent={() => (
+                <View>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      height: heightPercentageToDP(8),
+                      borderRadius: heightPercentageToDP(2),
+                      alignItems: 'center',
+                      gap: heightPercentageToDP(3),
+                      paddingStart: heightPercentageToDP(2),
+                      margin: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: heightPercentageToDP(2),
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                      }}>
+                      Total Amount
+                    </Text>
+
+                    <GradientText
+                      style={{
+                        fontSize: heightPercentageToDP(2),
+                        fontFamily: FONT.Montserrat_Bold,
+                        color: COLORS.black,
+                      }}>
+                      {sumObjectValues(inputValues)}
+                    </GradientText>
+                  </LinearGradient>
+
+                  {isPlayLoading ? (
+                    <View style={styles.loading}>
+                      <Loading />
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={submitHandler}
+                      style={{
+                        backgroundColor: COLORS.blue,
+                        padding: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        alignItems: 'center',
+                        marginHorizontal: heightPercentageToDP(2),
+                        marginBottom: heightPercentageToDP(4),
+                      }}>
+                      <Text
+                        style={{
+                          color: COLORS.white,
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(2),
+                        }}>
+                        Submit
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              )}
+            />
+          )}
+
+          {/** FOR SUBMIT BUTTON */}
+          {selectedNumber.length !== 0 && !showSelectedVisible && (
+            <View
+              style={{
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                padding: heightPercentageToDP(1),
+              }}>
+              <TouchableOpacity
+                onPress={showingSeletedContainer}
+                style={{
+                  backgroundColor: COLORS.yellow,
+                  padding: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(3),
+                }}>
+                <Text
+                  style={{
+                    color: COLORS.black,
+                    fontFamily: FONT.HELVETICA_BOLD,
+                    fontSize: heightPercentageToDP(2),
+                  }}>
+                  Confirm
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </ImageBackground>
       </View>
     </View>
@@ -698,6 +937,9 @@ const styles = StyleSheet.create({
   },
 });
 
+// ###########
+
+// import React, {useEffect, useState} from 'react';
 // import {
 //   FlatList,
 //   Image,
@@ -708,274 +950,179 @@ const styles = StyleSheet.create({
 //   TouchableOpacity,
 //   View,
 // } from 'react-native';
-// import React, {useEffect, useState} from 'react';
-// import LoginBackground from '../components/login/LoginBackground';
+// import LinearGradient from 'react-native-linear-gradient';
 // import {
 //   heightPercentageToDP,
 //   widthPercentageToDP,
 // } from 'react-native-responsive-screen';
 // import {COLORS, FONT} from '../../assets/constants';
-// import GradientText from '../components/helpercComponent/GradientText';
-// import Fontisto from 'react-native-vector-icons/Fontisto';
-// import Entypo from 'react-native-vector-icons/Entypo';
-// import Toast from 'react-native-toast-message';
-// import {useIsFocused, useNavigation} from '@react-navigation/native';
-// import Background from '../components/background/Background';
-// import Loading from '../components/helpercComponent/Loading';
-// import {useDispatch, useSelector} from 'react-redux';
-// import {getDateAccordingToLocationAndTime} from '../redux/actions/dateAction';
-// import LinearGradient from 'react-native-linear-gradient';
 // import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+// import Background from '../components/background/Background';
+// import {useNavigation} from '@react-navigation/native';
+// import {useGetDateAccToLocTimeQuery} from '../helper/Networkcall';
+// import {useSelector} from 'react-redux';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// // const numberdata = [
-// //   {
-// //     id: '1',
-// //     number: '101',
-// //   },
-// //   {
-// //     id: '2',
-// //     number: '108',
-// //   },
-// //   {
-// //     id: '3',
-// //     number: '109',
-// //   },
-// //   {
-// //     id: '4',
-// //     number: '11',
-// //   },
-// //   {
-// //     id: '5',
-// //     number: '10',
-// //   },
-// //   {
-// //     id: '6',
-// //     number: '109',
-// //   },
-// //   {
-// //     id: '7',
-// //     number: '101',
-// //   },
-// //   {
-// //     id: '8',
-// //     number: '108',
-// //   },
-// //   {
-// //     id: '9',
-// //     number: '104',
-// //   },
-// //   {
-// //     id: '10',
-// //     number: '101',
-// //   },
-// //   {
-// //     id: '11',
-// //     number: '108',
-// //   },
-// //   {
-// //     id: '12',
-// //     number: '109',
-// //   },
-// // ];
+// const getCurrentDate = () => {
+//   const today = new Date();
+//   const day = String(today.getDate()).padStart(2, '0');
+//   const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+//   const year = today.getFullYear();
+//   return `${day}-${month}-${year}`;
+// };
 
-// const numberdataq = [
-//   {
-//     id: '1',
-//     number: '101',
-//   },
-//   {
-//     id: '2',
-//     number: '102',
-//   },
-//   {
-//     id: '3',
-//     number: '103',
-//   },
-// ];
+// // Function to find the object with the current date
+// const findCurrentDateObject = data => {
+//   const currentDate = getCurrentDate();
+//   const lotdates = data.lotdates || [];
 
-// const numberdataw = [
-//   {
-//     id: '1',
-//     number: '104',
-//   },
-//   {
-//     id: '2',
-//     number: '105',
-//   },
-//   {
-//     id: '3',
-//     number: '106',
-//   },
-// ];
+//   const found = lotdates.find(item => item.lotdate === currentDate);
 
-// const numberdatae = [
-//   {
-//     id: '1',
-//     number: '107',
-//   },
-//   {
-//     id: '2',
-//     number: '108',
-//   },
-//   {
-//     id: '3',
-//     number: '109',
-//   },
-// ];
+//   return found ? found : 'Current date not found';
+// };
 
-// const numberdatar = [
-//   {
-//     id: '1',
-//     number: '110',
-//   },
-//   {
-//     id: '2',
-//     number: '111',
-//   },
-//   {
-//     id: '3',
-//     number: '112',
-//   },
-// ];
+// // Function to create an array from 1 to maximumNumber
+// const createLocationDataArray = maximumNumber => {
+//   return Array.from({ length: maximumNumber }, (_, index) => ({
+//     id: index + 1,
+//     name: `${index + 1}`,
+//   }));
+// };
 
-// const PlayArena = () => {
+// const PlayArena = ({route}) => {
 //   const navigation = useNavigation();
+//   const {accesstoken} = useSelector(state => state.user);
+//   const {locationdata, timedata} = route.params;
 
-//   const timedata = {
-//     _id: '66433dfce262898ccc7e8a94',
-//     lottime: '09:00 AM',
-//     lotlocation: {
-//       _id: '663e8569b5f0696f5009b813',
-//       lotlocation: 'Canada 🇨🇦',
-//       locationTitle: 'Canada  ( CA )',
-//       locationDescription:
-//         'This location you can choose number 01 to 200 any number  if your selected number display as a winning number you receive 200X value \n\nExample  if you choose 130 number with minimum amount 10 and if 130 number comes on display as a winning number you will receive \n\n10×200  = 2000 in total\n\nUse Short Code  ( CA ) For this location',
-//       maximumRange: '200 - 200X',
-//       createdAt: '2024-05-10T15:47:57.411Z',
-//       __v: 0,
-//     },
-//     createdAt: '2024-05-13T09:48:27.169Z',
-//     __v: 0,
-//   };
-//   const locationdata = {
-//     _id: '663e8569b5f0696f5009b813',
-//     lotlocation: 'Canada 🇨🇦',
-//     locationTitle: 'Canada  ( CA )',
-//     locationDescription:
-//       'This location you can choose number 01 to 200 any number  if your selected number display as a winning number you receive 200X value \n\nExample  if you choose 130 number with minimum amount 10 and if 130 number comes on display as a winning number you will receive \n\n10×200  = 2000 in total\n\nUse Short Code  ( CA ) For this location',
-//     maximumRange: '200 - 200X',
-//     createdAt: '2024-05-10T15:47:57.411Z',
-//     __v: 0,
+//   const [amountVal, setAmountVal] = useState('');
+//   const [betnumberdata, setBetnumberdata] = useState([]);
+//   const [selectedNumber, setSelectedNumber] = useState([]);
+//   const [showSelectedVisible, setshowSelectedVisible] = useState(false);
+//   const [inputValues, setInputValues] = useState({});
+
+//   const handleInputChange = (text, id) => {
+//     setInputValues(prevValues => ({
+//       ...prevValues,
+//       [id]: text,
+//     }));
 //   };
 
-//   const renderItem = ({item, index}) => {
-//     const groupedTimes = [];
-//     for (let i = 0; i < item.length; i += 2) {
-//       groupedTimes.push(item.slice(i, i + 2));
+//   console.log('FROM PLAYARENA :: '+JSON.stringify(inputValues));
+//   // console.log('PLAYARENA LOCATION :: ' + JSON.stringify(locationdata));
+//   // console.log('PLAYARENA TIME :: ' + JSON.stringify(timedata._id));
+
+//   //  FOR GETTING CURRENT DATE ID
+//   const {data, error, isLoading} = useGetDateAccToLocTimeQuery(
+//     accesstoken,
+//     timedata._id,
+//     locationdata._id,
+//   );
+//   const [result, setResult] = useState(null);
+//   useEffect(() => {
+//     if (!isLoading && data) {
+//       const currentDateObject = findCurrentDateObject(data);
+//       setResult(currentDateObject);
+
+//       const maximumNumber = locationdata.maximumNumber; // Ensure `maximumNumber` exists in the data
+//       if (maximumNumber) {
+//         const generatedArray = createLocationDataArray(maximumNumber);
+//         setBetnumberdata(generatedArray);
+//       }
 //     }
+//   }, [isLoading, data]);
 
-//     return (
-//       <View>
-//         {groupedTimes.map((pair, idx) => (
-//           <View
-//             key={idx}
-//             style={{
-//               margin: heightPercentageToDP(2),
-//               height: heightPercentageToDP(10),
-//               backgroundColor: COLORS.white_s,
-//               borderRadius: heightPercentageToDP(2),
-//               flexDirection: 'row',
-//             }}>
-//             {pair.map((timeItem, timeIdx) => (
-//               <View
-//                 key={timeIdx}
-//                 style={{
-//                   width: widthPercentageToDP(25),
-//                   marginVertical: heightPercentageToDP(1),
-//                   marginHorizontal: heightPercentageToDP(1),
-//                   borderRadius: heightPercentageToDP(1),
-//                   position: 'relative',
-//                 }}>
-//                 <LinearGradient
-//                   colors={[COLORS.time_firstblue, COLORS.white_s]}
-//                   style={{
-//                     width: widthPercentageToDP(14),
-//                     flex: 1,
-//                   }}></LinearGradient>
+//   // console.log('Result :: ' + JSON.stringify(result));
+//   // console.log('Betting Number :: ' + JSON.stringify(betnumberdata));
 
-//                 <LinearGradient
-//                   colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-//                   style={{
-//                     width: widthPercentageToDP(21),
-//                     height: heightPercentageToDP(6.5),
-//                     backgroundColor: 'cyan',
-//                     position: 'absolute',
-//                     top: heightPercentageToDP(1.5),
-//                     left: heightPercentageToDP(2),
-//                   }}>
-//                   <View
-//                     style={{
-//                       height: heightPercentageToDP(5),
-//                       width: widthPercentageToDP(10),
-//                       right: heightPercentageToDP(-0.5),
-//                       position: 'absolute',
-//                       borderStyle: 'solid',
-//                       borderLeftWidth: heightPercentageToDP(3),
-//                       borderRightWidth: heightPercentageToDP(3),
-//                       top: heightPercentageToDP(0.7),
-//                       borderBottomWidth: heightPercentageToDP(4.5),
-//                       borderLeftColor: 'transparent',
-//                       borderRightColor: 'transparent',
-//                       borderBottomColor: COLORS.white_s,
-//                       transform: [{rotate: '-90deg'}],
-//                     }}></View>
-//                   <View
-//                     style={{
-//                       flex: 2,
-//                       paddingStart: heightPercentageToDP(1),
-//                     }}>
-//                     <Text
-//                       style={{
-//                         color: COLORS.black,
-//                         fontFamily: FONT.Montserrat_Bold,
-//                         fontSize: heightPercentageToDP(3),
-//                       }}>
-//                       101
-//                     </Text>
-//                   </View>
-//                   <View
-//                     style={{
-//                       flex: 1,
-//                       justifyContent: 'flex-end',
-//                       alignItems: 'flex-end',
-//                       marginEnd: heightPercentageToDP(4),
-//                     }}>
-//                     <Text
-//                       style={{
-//                         color: COLORS.black,
-//                         fontFamily: FONT.Montserrat_Regular,
-//                         fontSize: heightPercentageToDP(1.7),
-//                       }}>
-//                       Select
-//                     </Text>
-//                   </View>
-//                 </LinearGradient>
-//               </View>
-//             ))}
-//           </View>
-//         ))}
-//       </View>
-//     );
+//   const addingNumberForBetting = number => {
+//     console.log('ADDING NUMBER TO LIST');
+
+//     setSelectedNumber(prevSelectedNumbers => {
+//       const updatedList = [...prevSelectedNumbers];
+
+//       const index = updatedList.indexOf(number);
+//       if (index > -1) {
+//         // Number is already present, remove it
+//         updatedList.splice(index, 1);
+//       } else {
+//         // Number is not present, add it
+//         updatedList.push(number);
+//       }
+
+//       console.log('SELECTED NUMBER :: ', updatedList);
+//       return updatedList;
+//     });
 //   };
+
+//   const showingSeletedContainer = () => {
+//     setshowSelectedVisible(prevState => !prevState);
+//   };
+
+//   const renderItem = ({item,index}) => (
+//     <TouchableOpacity
+//       key={index}
+//       onPress={() => addingNumberForBetting(item)}
+//       style={styles.itemContainer}>
+//       <LinearGradient
+//         colors={
+//           selectedNumber.includes(item)
+//             ? [COLORS.result_lightblue, COLORS.time_secondbluw]
+//             : [COLORS.yellow, COLORS.darkyellow]
+//         }
+//         style={{
+//           paddingHorizontal: heightPercentageToDP(1),
+//           paddingVertical: heightPercentageToDP(0.8),
+//           borderRadius: heightPercentageToDP(2.5),
+//           shadowColor: COLORS.black,
+//           shadowOpacity: 0.8,
+//           shadowOffset: {width: 0, height: 2},
+//           shadowRadius: 3,
+//           elevation: 6, // Ensures shadow shows on Android
+//         }}>
+//         <LinearGradient
+//           colors={[COLORS.grayBg, COLORS.white_s]}
+//           style={{
+//             ...styles.gradient,
+//             shadowColor: COLORS.black,
+//             shadowOpacity: 0.8,
+//             shadowOffset: {width: 0, height: 2},
+//             shadowRadius: 3,
+//             elevation: 6, // Ensures shadow shows on Android
+//           }}>
+//           <Text
+//             style={{
+//               ...styles.itemText,
+//               color: selectedNumber.includes(item)
+//                 ? COLORS.time_firstblue
+//                 : COLORS.black,
+//             }}>
+//             {item.name}
+//           </Text>
+//           <View
+//             style={{
+//               backgroundColor: COLORS.grayBg,
+//               height: 1,
+//               width: '100%',
+//             }}></View>
+//           <Text
+//             style={{
+//               ...styles.selectText,
+//               color: selectedNumber.includes(item)
+//                 ? COLORS.time_firstblue
+//                 : COLORS.black,
+//             }}>
+//             {selectedNumber.includes(item) ? 'Selected' : 'Select'}
+//           </Text>
+//         </LinearGradient>
+//       </LinearGradient>
+//     </TouchableOpacity>
+//   );
 
 //   return (
-//     <View style={{flex: 1}}>
+//     <View style={styles.container}>
 //       <Background />
-
-//       {/** Main Cointainer */}
-
-//       <View style={{flex: 1, justifyContent: 'flex-end'}}>
-//         {/** Top Wallet Details continer */}
+//       <View style={styles.innerContainer}>
+//         {/** Top header wollet container */}
 //         <View
 //           style={{
 //             margin: heightPercentageToDP(2),
@@ -1056,489 +1203,248 @@ const styles = StyleSheet.create({
 //                   alignItems: 'flex-end',
 //                   justifyContent: 'center',
 //                 }}>
-//                 <Text
+//                 <View
 //                   style={{
-//                     fontFamily: FONT.Montserrat_Regular,
-//                     color: COLORS.black,
+//                     backgroundColor: COLORS.result_lightblue,
+//                     flexDirection: 'row',
+//                     justifyContent: 'center',
+//                     alignItems: 'center',
+//                     paddingVertical: heightPercentageToDP(1),
+//                     paddingHorizontal: heightPercentageToDP(2),
+//                     borderRadius: 20,
+//                     overflow: 'hidden',
+//                     shadowColor: COLORS.black,
+//                     shadowOpacity: 0.8,
+//                     shadowOffset: {width: 0, height: 2},
+//                     shadowRadius: 3,
+//                     elevation: 6, // Ensures shadow shows on Android
 //                   }}>
-//                   09:00 PM
-//                 </Text>
-
-//                 <Text
-//                   style={{
-//                     fontFamily: FONT.Montserrat_Regular,
-//                     color: COLORS.black,
-//                   }}>
-//                   17-05-2024
-//                 </Text>
+//                   <GradientTextWhite
+//                     title="Wallet: 50k"
+//                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+//                     style={{
+//                       fontFamily: FONT.HELVETICA_BOLD,
+//                       fontSize: heightPercentageToDP(2),
+//                     }}
+//                   />
+//                 </View>
 //               </View>
 //             </View>
+
 //             <View
 //               style={{
 //                 flex: 1,
-
-//                 justifyContent: 'center',
-//                 alignItems: 'flex-end',
-//                 paddingEnd: heightPercentageToDP(1),
+//                 flexDirection: 'row',
+//                 justifyContent: 'flex-end',
+//                 marginBottom: heightPercentageToDP(1),
 //               }}>
-//               <Text
+//               <TouchableOpacity
 //                 style={{
-//                   fontFamily: FONT.Montserrat_Regular,
-//                   color: COLORS.black,
+//                   backgroundColor: COLORS.black,
+//                   justifyContent: 'center',
+//                   alignItems: 'center',
+//                   paddingVertical: heightPercentageToDP(1),
+//                   paddingHorizontal: heightPercentageToDP(2),
+//                   borderRadius: 20,
+//                   overflow: 'hidden',
+//                   marginEnd: heightPercentageToDP(1),
 //                 }}>
-//                 Balance
 //                 <Text
 //                   style={{
-//                     fontFamily: FONT.HELVETICA_BOLD,
-//                     color: COLORS.black,
-//                     fontSize: heightPercentageToDP(2),
-//                     paddingStart: heightPercentageToDP(1),
+//                     fontFamily: FONT.Montserrat_Regular,
+//                     fontSize: heightPercentageToDP(1.8),
+//                     color: COLORS.white,
 //                   }}>
-//                   : 19000
+//                   Wallet History
 //                 </Text>
-//               </Text>
+//               </TouchableOpacity>
 //             </View>
 //           </View>
 //         </View>
 
-//         <ImageBackground
-//           source={require('../../assets/image/tlwbg.jpg')}
+//         {/** Showing selected container */}
+//         <View
 //           style={{
-//             width: '100%',
-//             height: heightPercentageToDP(65),
-//           }}
-//           imageStyle={{
-//             borderTopLeftRadius: heightPercentageToDP(5),
-//             borderTopRightRadius: heightPercentageToDP(5),
+//             backgroundColor: COLORS.grayHalfBg,
+//             height: heightPercentageToDP(7),
+//             borderRadius: heightPercentageToDP(2),
+//             flexDirection: 'row',
+//             paddingHorizontal: heightPercentageToDP(2),
+//             justifyContent: 'space-between',
+//             alignItems: 'center',
 //           }}>
+//           <Text
+//             style={{
+//               fontFamily: FONT.Montserrat_Regular,
+//               color: COLORS.black,
+//               fontSize: heightPercentageToDP(2),
+//             }}>
+//             Showing Selected
+//           </Text>
+
+//           <View style={{flexDirection: 'row'}}>
+//             <TouchableOpacity
+//               style={{
+//                 flexDirection: 'row',
+//                 justifyContent: 'center',
+//                 alignItems: 'center',
+//                 borderRadius: 20,
+//                 overflow: 'hidden',
+//                 marginEnd: heightPercentageToDP(2),
+//                 shadowColor: COLORS.black,
+//                 shadowOpacity: 0.8,
+//                 shadowOffset: {width: 0, height: 2},
+//                 shadowRadius: 3,
+//                 elevation: 6, // Ensures shadow shows on Android
+//               }}
+//               onPress={showingSeletedContainer}>
+//               <GradientTextWhite
+//                 title="Selected"
+//                 colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+//                 style={{
+//                   fontFamily: FONT.HELVETICA_BOLD,
+//                   fontSize: heightPercentageToDP(2),
+//                 }}
+//               />
+//               <Ionicons
+//                 name={
+//                   showSelectedVisible ? 'chevron-up' : 'chevron-down'
+//                 }
+//                 size={heightPercentageToDP(3)}
+//                 color={COLORS.time_firstblue}
+//               />
+//             </TouchableOpacity>
+
+//             <TouchableOpacity
+//               style={{
+//                 backgroundColor: COLORS.result_lightblue,
+//                 justifyContent: 'center',
+//                 alignItems: 'center',
+//                 paddingVertical: heightPercentageToDP(1),
+//                 paddingHorizontal: heightPercentageToDP(2),
+//                 borderRadius: 20,
+//                 overflow: 'hidden',
+//                 shadowColor: COLORS.black,
+//                 shadowOpacity: 0.8,
+//                 shadowOffset: {width: 0, height: 2},
+//                 shadowRadius: 3,
+//                 elevation: 6, // Ensures shadow shows on Android
+//               }}>
+//               <GradientTextWhite
+//                 title="Total : 50k"
+//                 colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+//                 style={{
+//                   fontFamily: FONT.HELVETICA_BOLD,
+//                   fontSize: heightPercentageToDP(2),
+//                 }}
+//               />
+//             </TouchableOpacity>
+//           </View>
+//         </View>
+
+//         {showSelectedVisible && (
 //           <View
 //             style={{
-//               height: heightPercentageToDP(65),
-//               width: widthPercentageToDP(100),
-
-//               borderTopLeftRadius: heightPercentageToDP(5),
-//               borderTopRightRadius: heightPercentageToDP(5),
+//               backgroundColor: COLORS.grayHalfBg,
+//               height: heightPercentageToDP(29),
+//               borderRadius: heightPercentageToDP(2),
+//               padding: heightPercentageToDP(2),
 //             }}>
-//             {/** Top Style View */}
-//             <View
-//               style={{
-//                 height: heightPercentageToDP(5),
-//                 width: widthPercentageToDP(100),
-//                 justifyContent: 'space-evenly',
-//                 alignItems: 'center',
-//                 flexDirection: 'row',
-//               }}>
-//               <GradientTextWhite
-//                 style={{
-//                   fontSize: heightPercentageToDP(2),
-//                   fontFamily: FONT.Montserrat_Bold,
-//                   color: COLORS.black,
-//                 }}>
-//                 {locationdata.lotlocation}
-//               </GradientTextWhite>
-
-//               <View
-//                 style={{
-//                   width: widthPercentageToDP(20),
-//                   height: heightPercentageToDP(0.8),
-//                   backgroundColor: COLORS.grayBg,
-//                   borderRadius: heightPercentageToDP(2),
-//                 }}></View>
-
-//               <GradientTextWhite
-//                 style={{
-//                   fontSize: heightPercentageToDP(2),
-//                   fontFamily: FONT.Montserrat_Bold,
-//                   color: COLORS.black,
-//                 }}>
-//                 {timedata.lottime}
-//               </GradientTextWhite>
-//             </View>
-
-//             {/** Content Container */}
-
-//             <View
-//               style={{
-//                 margin: heightPercentageToDP(2),
-//                 height: heightPercentageToDP(10),
-//                 backgroundColor: COLORS.white_s,
-//                 borderRadius: heightPercentageToDP(2),
-//                 flexDirection: 'row',
-//               }}>
-//               {numberdataq.map((item, index) => (
-// <View
-//   key={index}
-//   style={{
-//     width: widthPercentageToDP(25),
-//     marginVertical: heightPercentageToDP(1),
-//     marginHorizontal: heightPercentageToDP(1),
-//     borderRadius: heightPercentageToDP(1),
-//     position: 'relative',
-//   }}>
-//   <LinearGradient
-//     colors={[COLORS.lightblue, COLORS.white_s]}
-//     style={{
-//       width: widthPercentageToDP(14),
-//       flex: 1,
-//     }}></LinearGradient>
-
-//   <LinearGradient
-//     colors={[COLORS.lightblue, COLORS.midblue]}
-//     style={{
-//       width: widthPercentageToDP(21),
-//       height: heightPercentageToDP(6.5),
-//       backgroundColor: 'cyan',
-//       position: 'absolute',
-//       top: heightPercentageToDP(1.5),
-//       left: heightPercentageToDP(2),
-//     }}>
-//     <View
-//       style={{
-//         height: heightPercentageToDP(5),
-//         width: widthPercentageToDP(10),
-//         right: heightPercentageToDP(-0.5),
-//         position: 'absolute',
-//         borderStyle: 'solid',
-//         borderLeftWidth: heightPercentageToDP(3),
-//         borderRightWidth: heightPercentageToDP(3),
-//         top: heightPercentageToDP(0.7),
-//         borderBottomWidth: heightPercentageToDP(4.5),
-//         borderLeftColor: 'transparent',
-//         borderRightColor: 'transparent',
-//         borderBottomColor: COLORS.white_s,
-//         transform: [{rotate: '-90deg'}],
-//       }}></View>
-//     <View
-//       style={{
-//         flex: 2,
-//         paddingStart: heightPercentageToDP(1),
-//       }}>
-//       <Text
-//         style={{
-//           color: COLORS.black,
-//           fontFamily: FONT.Montserrat_Bold,
-//           fontSize: heightPercentageToDP(3),
-//         }}>
-//         {item.number}
-//       </Text>
-//     </View>
-//     <View
-//       style={{
-//         flex: 1,
-//         justifyContent: 'flex-end',
-//         alignItems: 'flex-end',
-//         marginEnd: heightPercentageToDP(4),
-//       }}>
-//       <Text
-//         style={{
-//           color: COLORS.black,
-//           fontFamily: FONT.Montserrat_Regular,
-//           fontSize: heightPercentageToDP(1.7),
-//         }}>
-//         Select
-//       </Text>
-//     </View>
-//   </LinearGradient>
-// </View>
-//               ))}
-//             </View>
-
-//             <View
-//               style={{
-//                 margin: heightPercentageToDP(2),
-//                 height: heightPercentageToDP(10),
-//                 backgroundColor: COLORS.white_s,
-//                 borderRadius: heightPercentageToDP(2),
-//                 flexDirection: 'row',
-//               }}>
-//               {numberdataw.map((item, index) => (
-//                 <View
-//                   key={index}
-//                   style={{
-//                     width: widthPercentageToDP(25),
-//                     marginVertical: heightPercentageToDP(1),
-//                     marginHorizontal: heightPercentageToDP(1),
-//                     borderRadius: heightPercentageToDP(1),
-//                     position: 'relative',
-//                   }}>
-//                   <LinearGradient
-//                     colors={[COLORS.lightyellow, COLORS.white_s]}
-//                     style={{
-//                       width: widthPercentageToDP(14),
-//                       flex: 1,
-//                     }}></LinearGradient>
-
-//                   <LinearGradient
-//                     colors={[COLORS.lightyellow, COLORS.darkyellow]}
-//                     style={{
-//                       width: widthPercentageToDP(21),
-//                       height: heightPercentageToDP(6.5),
-//                       backgroundColor: 'cyan',
-//                       position: 'absolute',
-//                       top: heightPercentageToDP(1.5),
-//                       left: heightPercentageToDP(2),
-//                     }}>
-//                     <View
-//                       style={{
-//                         height: heightPercentageToDP(5),
-//                         width: widthPercentageToDP(10),
-//                         right: heightPercentageToDP(-0.5),
-//                         position: 'absolute',
-//                         borderStyle: 'solid',
-//                         borderLeftWidth: heightPercentageToDP(3),
-//                         borderRightWidth: heightPercentageToDP(3),
-//                         top: heightPercentageToDP(0.7),
-//                         borderBottomWidth: heightPercentageToDP(4.5),
-//                         borderLeftColor: 'transparent',
-//                         borderRightColor: 'transparent',
-//                         borderBottomColor: COLORS.white_s,
-//                         transform: [{rotate: '-90deg'}],
-//                       }}></View>
-//                     <View
-//                       style={{
-//                         flex: 2,
-//                         paddingStart: heightPercentageToDP(1),
-//                       }}>
-//                       <Text
-//                         style={{
-//                           color: COLORS.black,
-//                           fontFamily: FONT.Montserrat_Bold,
-//                           fontSize: heightPercentageToDP(3),
-//                         }}>
-//                         {item.number}
-//                       </Text>
-//                     </View>
-//                     <View
-//                       style={{
-//                         flex: 1,
-//                         justifyContent: 'flex-end',
-//                         alignItems: 'flex-end',
-//                         marginEnd: heightPercentageToDP(4),
-//                       }}>
-//                       <Text
-//                         style={{
-//                           color: COLORS.black,
-//                           fontFamily: FONT.Montserrat_Regular,
-//                           fontSize: heightPercentageToDP(1.7),
-//                         }}>
-//                         Select
-//                       </Text>
-//                     </View>
-//                   </LinearGradient>
-//                 </View>
-//               ))}
-//             </View>
-
-//             <View
-//               style={{
-//                 margin: heightPercentageToDP(2),
-//                 height: heightPercentageToDP(10),
-//                 backgroundColor: COLORS.white_s,
-//                 borderRadius: heightPercentageToDP(2),
-//                 flexDirection: 'row',
-//               }}>
-//               {numberdatae.map((item, index) => (
-//                 <View
-//                   key={index}
-//                   style={{
-//                     width: widthPercentageToDP(25),
-//                     marginVertical: heightPercentageToDP(1),
-//                     marginHorizontal: heightPercentageToDP(1),
-//                     borderRadius: heightPercentageToDP(1),
-//                     position: 'relative',
-//                   }}>
-//                   <LinearGradient
-//                     colors={[COLORS.lightblue, COLORS.white_s]}
-//                     style={{
-//                       width: widthPercentageToDP(14),
-//                       flex: 1,
-//                     }}></LinearGradient>
-
-//                   <LinearGradient
-//                     colors={[COLORS.lightblue, COLORS.midblue]}
-//                     style={{
-//                       width: widthPercentageToDP(21),
-//                       height: heightPercentageToDP(6.5),
-//                       backgroundColor: 'cyan',
-//                       position: 'absolute',
-//                       top: heightPercentageToDP(1.5),
-//                       left: heightPercentageToDP(2),
-//                     }}>
-//                     <View
-//                       style={{
-//                         height: heightPercentageToDP(5),
-//                         width: widthPercentageToDP(10),
-//                         right: heightPercentageToDP(-0.5),
-//                         position: 'absolute',
-//                         borderStyle: 'solid',
-//                         borderLeftWidth: heightPercentageToDP(3),
-//                         borderRightWidth: heightPercentageToDP(3),
-//                         top: heightPercentageToDP(0.7),
-//                         borderBottomWidth: heightPercentageToDP(4.5),
-//                         borderLeftColor: 'transparent',
-//                         borderRightColor: 'transparent',
-//                         borderBottomColor: COLORS.white_s,
-//                         transform: [{rotate: '-90deg'}],
-//                       }}></View>
-//                     <View
-//                       style={{
-//                         flex: 2,
-//                         paddingStart: heightPercentageToDP(1),
-//                       }}>
-//                       <Text
-//                         style={{
-//                           color: COLORS.black,
-//                           fontFamily: FONT.Montserrat_Bold,
-//                           fontSize: heightPercentageToDP(3),
-//                         }}>
-//                         {item.number}
-//                       </Text>
-//                     </View>
-//                     <View
-//                       style={{
-//                         flex: 1,
-//                         justifyContent: 'flex-end',
-//                         alignItems: 'flex-end',
-//                         marginEnd: heightPercentageToDP(4),
-//                       }}>
-//                       <Text
-//                         style={{
-//                           color: COLORS.black,
-//                           fontFamily: FONT.Montserrat_Regular,
-//                           fontSize: heightPercentageToDP(1.7),
-//                         }}>
-//                         Select
-//                       </Text>
-//                     </View>
-//                   </LinearGradient>
-//                 </View>
-//               ))}
-//             </View>
-
-//             <View
-//               style={{
-//                 margin: heightPercentageToDP(2),
-//                 height: heightPercentageToDP(10),
-//                 backgroundColor: COLORS.white_s,
-//                 borderRadius: heightPercentageToDP(2),
-//                 flexDirection: 'row',
-//               }}>
-//               {numberdatar.map((item, index) => (
-//                 <View
-//                   key={index}
-//                   style={{
-//                     width: widthPercentageToDP(25),
-//                     marginVertical: heightPercentageToDP(1),
-//                     marginHorizontal: heightPercentageToDP(1),
-//                     borderRadius: heightPercentageToDP(1),
-//                     position: 'relative',
-//                   }}>
-//                   <LinearGradient
-//                     colors={[COLORS.lightyellow, COLORS.white_s]}
-//                     style={{
-//                       width: widthPercentageToDP(14),
-//                       flex: 1,
-//                     }}></LinearGradient>
-
-//                   <LinearGradient
-//                     colors={[COLORS.lightyellow, COLORS.darkyellow]}
-//                     style={{
-//                       width: widthPercentageToDP(21),
-//                       height: heightPercentageToDP(6.5),
-//                       backgroundColor: 'cyan',
-//                       position: 'absolute',
-//                       top: heightPercentageToDP(1.5),
-//                       left: heightPercentageToDP(2),
-//                     }}>
-//                     <View
-//                       style={{
-//                         height: heightPercentageToDP(5),
-//                         width: widthPercentageToDP(10),
-//                         right: heightPercentageToDP(-0.5),
-//                         position: 'absolute',
-//                         borderStyle: 'solid',
-//                         borderLeftWidth: heightPercentageToDP(3),
-//                         borderRightWidth: heightPercentageToDP(3),
-//                         top: heightPercentageToDP(0.7),
-//                         borderBottomWidth: heightPercentageToDP(4.5),
-//                         borderLeftColor: 'transparent',
-//                         borderRightColor: 'transparent',
-//                         borderBottomColor: COLORS.white_s,
-//                         transform: [{rotate: '-90deg'}],
-//                       }}></View>
-//                     <View
-//                       style={{
-//                         flex: 2,
-//                         paddingStart: heightPercentageToDP(1),
-//                       }}>
-//                       <Text
-//                         style={{
-//                           color: COLORS.black,
-//                           fontFamily: FONT.Montserrat_Bold,
-//                           fontSize: heightPercentageToDP(3),
-//                         }}>
-//                         {item.number}
-//                       </Text>
-//                     </View>
-//                     <View
-//                       style={{
-//                         flex: 1,
-//                         justifyContent: 'flex-end',
-//                         alignItems: 'flex-end',
-//                         marginEnd: heightPercentageToDP(4),
-//                       }}>
-//                       <Text
-//                         style={{
-//                           color: COLORS.black,
-//                           fontFamily: FONT.Montserrat_Regular,
-//                           fontSize: heightPercentageToDP(1.7),
-//                         }}>
-//                         Select
-//                       </Text>
-//                     </View>
-//                   </LinearGradient>
-//                 </View>
-//               ))}
-//             </View>
-
 //             <FlatList
-//               data={numberdatar}
-//               renderItem={renderItem}
-//               keyExtractor={item => item.id}
-//               initialNumToRender={10} // Render initial 10 items
-//               maxToRenderPerBatch={10} // Batch size to render
-//               windowSize={10} // Number of items kept in memory
+//               data={selectedNumber}
+//               renderItem={({item, index}) => (
+//                 <View
+//                   key={index.toString()}
+//                   style={{
+//                     flexDirection: 'row',
+//                     justifyContent: 'space-between',
+//                     marginBottom: heightPercentageToDP(1),
+//                   }}>
+//                   <Text
+//                     style={{
+//                       fontFamily: FONT.Montserrat_Regular,
+//                       color: COLORS.black,
+//                       fontSize: heightPercentageToDP(2),
+//                     }}>
+//                     {item.name}
+//                   </Text>
+//                   <TextInput
+//                     style={{
+//                       borderColor: COLORS.gray,
+//                       borderWidth: 1,
+//                       borderRadius: 5,
+//                       width: widthPercentageToDP(20),
+//                       paddingHorizontal: heightPercentageToDP(1),
+//                     }}
+//                     value={inputValues[item.id]?.toString() || ''}
+//                     onChangeText={text => handleInputChange(text, item.id)}
+//                     keyboardType="numeric"
+//                   />
+//                 </View>
+//               )}
+//               keyExtractor={item => item.id.toString()}
+//               ListEmptyComponent={() => (
+//                 <Text
+//                   style={{
+//                     fontFamily: FONT.Montserrat_Regular,
+//                     color: COLORS.black,
+//                     fontSize: heightPercentageToDP(2),
+//                     textAlign: 'center',
+//                     marginTop: heightPercentageToDP(10),
+//                   }}>
+//                   No selected numbers
+//                 </Text>
+//               )}
 //             />
-
 //           </View>
-//         </ImageBackground>
+//         )}
+
+//         {/** List of numbers */}
+//         <View style={{flex: 1, marginTop: heightPercentageToDP(2)}}>
+//           <FlatList
+//             data={betnumberdata}
+//             renderItem={renderItem}
+//             keyExtractor={item => item.id.toString()}
+//             numColumns={3}
+//             columnWrapperStyle={{justifyContent: 'space-between'}}
+//             showsVerticalScrollIndicator={false}
+//             contentContainerStyle={{
+//               paddingBottom: heightPercentageToDP(2),
+//             }}
+//           />
+//         </View>
 //       </View>
 //     </View>
 //   );
 // };
 
-// export default PlayArena;
-
 // const styles = StyleSheet.create({
-//   textStyle: {
-//     fontSize: heightPercentageToDP(4),
-//     fontFamily: FONT.Montserrat_Bold,
-//     color: COLORS.black,
-//   },
 //   container: {
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     marginTop: 20,
-//     height: heightPercentageToDP(20),
+//     flex: 1,
+//     backgroundColor: COLORS.background,
 //   },
-//   item: {
-//     padding: heightPercentageToDP(2),
-//     marginVertical: heightPercentageToDP(1),
+//   innerContainer: {
+//     flex: 1,
 //     marginHorizontal: heightPercentageToDP(2),
-//     borderRadius: heightPercentageToDP(1),
+//     marginVertical: heightPercentageToDP(1),
 //   },
-//   title: {
-//     color: COLORS.white_s,
-//     fontFamily: FONT.SF_PRO_MEDIUM,
+//   itemContainer: {
+//     flex: 1,
+//     margin: heightPercentageToDP(1),
+//   },
+//   gradient: {
+//     padding: heightPercentageToDP(2),
+//     borderRadius: heightPercentageToDP(2),
+//     alignItems: 'center',
+//   },
+//   itemText: {
+//     fontFamily: FONT.HELVETICA_BOLD,
+//     fontSize: heightPercentageToDP(2.2),
+//   },
+//   selectText: {
+//     fontFamily: FONT.Montserrat_Regular,
+//     fontSize: heightPercentageToDP(2),
 //   },
 // });
+
+// export default PlayArena;

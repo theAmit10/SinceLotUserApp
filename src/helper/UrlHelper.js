@@ -49,6 +49,10 @@ const DEPOSIT_CRYPTO_API = server + 'result/addcryptopayment';
 // FOR WITHDRAW
 const WITHDRAW_PAYMENT_API = server + 'user/createwithdraw';
 
+//   FOR PLAY REQUEST
+const CREATE_PLAY_API = server + 'result/playbet/addplybet';
+
+
 
 
 export default {
@@ -84,5 +88,6 @@ export default {
   DEPOSIT_SKRILL_API,
   DEPOSIT_CRYPTO_API,
   DEPOSIT_API,
-  WITHDRAW_PAYMENT_API
+  WITHDRAW_PAYMENT_API,
+  CREATE_PLAY_API
 };

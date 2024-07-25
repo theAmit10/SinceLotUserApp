@@ -25,6 +25,8 @@ import {getAllLocations} from '../redux/actions/locationAction';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import LinearGradient from 'react-native-linear-gradient';
 import {getTimeAccordingLocation} from '../redux/actions/timeAction';
+import {useGetAllLocationWithTimeQuery} from '../helper/Networkcall';
+import NoDataFound from '../components/helpercComponent/NoDataFound';
 
 const datatypefilter = [
   {id: 'all', val: 'All'},
@@ -141,10 +143,58 @@ const locationdata = [
 
 const PlayArenaLocation = () => {
   const navigation = useNavigation();
-  const [selectedFilter, setSelectedFilter] = useState(datatypefilter[0].id);
+  const {accesstoken} = useSelector(state => state.user);
+  const [alldatafiler, setalldatafilter] = useState([])
+  const [selectedFilter, setSelectedFilter] = useState(null);
 
-  const settingFilterData = item => {
-    setSelectedFilter(item.id);
+  const {data, error, isLoading} = useGetAllLocationWithTimeQuery(accesstoken);
+
+  // FOR ALL FILTER TYPE DATA
+  useEffect(() => {
+    if (!isLoading && data) {
+      const uniqueItems = new Set();
+      const filtertype = [{ _id: '123', maximumReturn: 'All' }]; // Default element
+  
+      data.locationData.forEach(item => {
+        const key = item.maximumReturn;
+        if (!uniqueItems.has(key)) {
+          uniqueItems.add(key);
+          filtertype.push({ _id: item._id, maximumReturn: item.maximumReturn });
+        }
+      });
+  
+      // Sorting the filtertype array
+      filtertype.sort((a, b) => {
+        if (a.maximumReturn === 'All') return -1;
+        if (b.maximumReturn === 'All') return 1;
+        const aReturn = parseFloat(a.maximumReturn.replace('x', ''));
+        const bReturn = parseFloat(b.maximumReturn.replace('x', ''));
+        return aReturn - bReturn;
+      });
+  
+      setalldatafilter(filtertype);
+      setSelectedFilter(filtertype[0]._id);
+  
+      console.log(filtertype);
+    }
+  }, [isLoading, data]);
+  
+
+
+  
+
+  const settingFilterData = itemf => {
+    setSelectedFilter(itemf._id);
+    if(itemf.maximumReturn.toLowerCase() === 'all')
+    {
+      setFilteredData(data?.locationData);
+    }else{
+      const filtered = data?.locationData.filter(item =>
+        item.maximumReturn.toLowerCase().includes(itemf.maximumReturn.toLowerCase()),
+      );
+      setFilteredData(filtered);
+    }
+   
   };
 
   const [expandedItems, setExpandedItems] = useState({});
@@ -156,15 +206,30 @@ const PlayArenaLocation = () => {
     }));
   };
 
+  const [filteredData, setFilteredData] = useState([]);
+
+  const handleSearch = text => {
+    const filtered = data?.locationData.filter(item =>
+      item.name.toLowerCase().includes(text.toLowerCase()),
+    );
+    setFilteredData(filtered);
+  };
+
+  useEffect(() => {
+    setFilteredData(data?.locationData); // Update filteredData whenever locations change
+  }, [data]);
+
   const renderItem = ({item, index}) => {
     const groupedTimes = [];
     for (let i = 0; i < item.times.length; i += 2) {
       groupedTimes.push(item.times.slice(i, i + 2));
     }
 
+
+
     return (
       <>
-        <TouchableOpacity onPress={() => toggleItem(item.id)}>
+        <TouchableOpacity onPress={() => toggleItem(item._id)}>
           <LinearGradient
             colors={
               index % 2 === 0
@@ -196,78 +261,98 @@ const PlayArenaLocation = () => {
           </LinearGradient>
         </TouchableOpacity>
 
-        {expandedItems[item.id] && (
+        {expandedItems[item._id] && (
           <View style={{flex: 1, justifyContent: 'flex-end'}}>
-          <ImageBackground
-            source={require('../../assets/image/tlwbg.jpg')}
-            
-            imageStyle={{
-              borderRadius: heightPercentageToDP(5),
-              margin: heightPercentageToDP(2)
-            }}>
+            <ImageBackground
+              source={require('../../assets/image/tlwbg.jpg')}
+              imageStyle={{
+                borderRadius: heightPercentageToDP(3),
+                margin: heightPercentageToDP(2),
+              }}
+              style={{flex: 1}} // Ensures the overlay covers the entire image
+            >
+              {/* Transparent Black Overlay */}
               <View
-            style={{
-             backgroundColor: COLORS.black,
-              margin: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(5),
-              justifyContent: 'center',
-              alignItems: 'center',
-              opacity: 0.8
-            }}>
+                style={{
+                  ...StyleSheet.absoluteFillObject,
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust opacity as needed
+                  borderRadius: heightPercentageToDP(3),
+                  margin: heightPercentageToDP(2),
+                }}
+              />
 
-            {groupedTimes.map((pair, idx) => (
-              <View key={idx} style={[styles.timeRow]}>
-                {pair.map(timeItem => (
-                  <TouchableOpacity
-                  key={timeItem.id}
-                  onPress={() => navigation.navigate("PlayArena")}
-                  >
-                     <LinearGradient
-                   
-                    colors={
-                      idx % 2 === 0
-                        ? [COLORS.lightblue, COLORS.midblue]
-                        : [COLORS.lightyellow, COLORS.darkyellow]
-                    }
+              <View
+                style={{
+                  backgroundColor: 'transparent',
+                  margin: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(5),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                {groupedTimes.length === 0 ? (
+                  <GradientTextWhite
                     style={{
-                      ...styles.item,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      gap: heightPercentageToDP(2),
-                      opacity: 1
+                      ...styles.textStyle,
+                      height: heightPercentageToDP(15),
+                      textAlignVertical: 'center',
                     }}>
-                    <Text
-                      style={{
-                        color: COLORS.black,
-                        fontFamily: FONT.Montserrat_Regular,
-                        fontSize: heightPercentageToDP(1.8),
-                        textAlignVertical: 'center',
-                        
-                      }}>
-                      {timeItem.time}
-                    </Text>
-                    <Text
-                      style={{
-                        color: COLORS.black,
-                        fontFamily: FONT.Montserrat_Regular,
-                        fontSize: heightPercentageToDP(1.8),
-                        textAlignVertical: 'center',
-                      }}>
-                      Play
-                    </Text>
-                  </LinearGradient>
-
-                  </TouchableOpacity>
-                 
-                ))}
+                    No Available time
+                  </GradientTextWhite>
+                ) : (
+                  groupedTimes.map((pair, idx) => (
+                    <View key={idx} style={[styles.timeRow]}>
+                      {pair.map(timeItem => (
+                        <TouchableOpacity
+                          key={timeItem._id}
+                          
+                          onPress={() =>
+                            navigation.navigate('PlayArena', {
+                              locationdata: item,
+                              timedata: timeItem
+                            })
+                          }
+                          >
+                          <LinearGradient
+                            colors={
+                              idx % 2 === 0
+                                ? [COLORS.lightblue, COLORS.midblue]
+                                : [COLORS.lightyellow, COLORS.darkyellow]
+                            }
+                            style={{
+                              ...styles.item,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              gap: heightPercentageToDP(2),
+                              opacity: 1,
+                            }}>
+                            <Text
+                              style={{
+                                color: COLORS.black,
+                                fontFamily: FONT.Montserrat_Regular,
+                                fontSize: heightPercentageToDP(1.8),
+                                textAlignVertical: 'center',
+                              }}>
+                              {timeItem.time}
+                            </Text>
+                            <Text
+                              style={{
+                                color: COLORS.black,
+                                fontFamily: FONT.Montserrat_Regular,
+                                fontSize: heightPercentageToDP(1.8),
+                                textAlignVertical: 'center',
+                              }}>
+                              Play
+                            </Text>
+                          </LinearGradient>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  ))
+                )}
               </View>
-            ))}
-          </View>
-
             </ImageBackground>
-            </View>
-          
+          </View>
         )}
       </>
     );
@@ -345,6 +430,7 @@ const PlayArenaLocation = () => {
                   placeholder="Search for location"
                   placeholderTextColor={COLORS.black}
                   label="Search"
+                  onChangeText={handleSearch}
                 />
               </View>
 
@@ -358,17 +444,17 @@ const PlayArenaLocation = () => {
                   borderRadius: heightPercentageToDP(3),
                   marginTop: heightPercentageToDP(2),
                 }}>
-                {datatypefilter.map(item => (
+                {alldatafiler.map(item => (
                   <TouchableOpacity
                     onPress={() => settingFilterData(item)}
-                    key={item.id}
+                    key={item._id}
                     style={{
                       backgroundColor: COLORS.grayHalfBg,
                       padding: heightPercentageToDP(1),
                       margin: heightPercentageToDP(0.2),
                       borderRadius: heightPercentageToDP(1),
                       borderColor:
-                        selectedFilter == item.id
+                        selectedFilter == item._id
                           ? COLORS.green
                           : COLORS.grayHalfBg,
                       borderWidth: 1,
@@ -380,7 +466,7 @@ const PlayArenaLocation = () => {
                         color: COLORS.black,
                         paddingHorizontal: heightPercentageToDP(0.5),
                       }}>
-                      {item.val}
+                      {item.maximumReturn}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -388,13 +474,13 @@ const PlayArenaLocation = () => {
             </View>
 
             <View style={{flex: 2}}>
-              {false ? (
+              {isLoading ? (
                 <Loading />
               ) : (
                 <FlatList
-                  data={locationdata}
+                  data={filteredData}
                   renderItem={renderItem}
-                  keyExtractor={item => item.id}
+                  keyExtractor={item => item._id}
                   initialNumToRender={10}
                   maxToRenderPerBatch={10}
                   windowSize={10}
