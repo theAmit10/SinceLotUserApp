@@ -79,6 +79,44 @@ export const sincelotUserApi = createApi({
     }),
 
 
+    // FOR HISTORIES
+
+     // FOR GETTING USERS PLAY HISTORY
+     getPlayHistory: builder.query({
+      query: accessToken => ({
+        url: 'result/singleuser/playbets',
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    }),
+
+     // FOR GETTING USERS HISTORY
+     getHistory: builder.query({
+      query: (accesstoken,userId) => ({
+        url: `user/getuserdeposit/?userid=1016`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // FOR CREATE A DEPOSIT REQUEST
+    createDeposit: builder.mutation({
+      query: ({accessToken, body}) => ({
+        url: UrlHelper.DEPOSIT_API,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'multipart/form-data'
+        },
+        body,
+      }),
+    }),
+
+
 
     // ######## END #########
   }),
@@ -91,4 +129,7 @@ export const {
   useGetDateAccToLocTimeQuery,
   useGetBetAccToLocTimeDateQuery,
   useCreatePlayMutation,
+  useGetPlayHistoryQuery,
+  useGetHistoryQuery,
+  useCreateDepositMutation
 } = sincelotUserApi;

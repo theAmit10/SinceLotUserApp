@@ -13,7 +13,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import mime, {getExtension}  from 'mime';
+import mime from 'mime';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
@@ -29,6 +29,7 @@ import DocumentPicker from 'react-native-document-picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
+import {useCreateDepositMutation} from '../../helper/Networkcall';
 
 const upiapidata = [
   {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
@@ -40,17 +41,15 @@ const upiapidata = [
 
 const UpiDeposit = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const {accesstoken, user} = useSelector(state => state.user);
-  const [upioption, setUpiOption] = useState('1');
+
   const [upiVisible, setUpiVisible] = useState(false);
   const [selectedUpiId, setSelectedUpiId] = useState(upiapidata[1]);
 
   const [amountval, setAmountval] = useState('');
   const [transactionval, setTransactionval] = useState('');
   const [remarkval, setRemarkval] = useState('');
-  const [imageFileName, setImageFileName] = useState('Choose a file');
 
   const toggleUpiOptionView = () => {
     setUpiVisible(!upiVisible);
@@ -70,280 +69,91 @@ const UpiDeposit = () => {
     setUpiVisible(false);
   };
 
+  const [imageFileName, setImageFileName] = useState('Choose a file');
+  const [mineImage, setMineImage] = useState(null);
+
+  const [createDeposit, {isLoading, error}] = useCreateDepositMutation();
+
   const [imageSource, setImageSource] = useState(null);
-  const [showProgressBar, setProgressBar] = useState(false);
 
   // For Opening PhoneStorage
-  // const selectDoc = async () => {
-  //   try {
-  //     const doc = await DocumentPicker.pick({
-  //       type: [DocumentPicker.types.images],
-  //       allowMultiSelection: true,
-  //     });
+  const selectDoc = async () => {
+    try {
+      const doc = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+        allowMultiSelection: true,
+      });
 
-  //     if (doc) {
-  //       console.log("Image :: "+JSON.stringify(doc));
-  //       console.log("Image uri:: "+doc[0].uri);
-  //       // setImageSource({uri: doc[0].uri});
-  //       setImageSource(doc[0]);
-  //       setImageFileName(doc[0].name);
-  //     }
-  //   } catch (err) {
-  //     if (DocumentPicker.isCancel(err))
-  //       console.log('User cancelled the upload', err);
-  //     else console.log(err);
-  //   }
-  // };
+      if (doc) {
+        console.log(doc);
 
-
-  const getFileExtension = (mimeType) => {
-    const extension = mime.getExtension(mimeType);
-    return extension;
+        setMineImage(doc);
+        setImageSource({uri: doc[0].uri});
+        setImageFileName(doc[0].name);
+      }
+    } catch (err) {
+      if (DocumentPicker.isCancel(err))
+        console.log('User cancelled the upload', err);
+      else console.log(err);
+    }
   };
 
-  
+  const submitDeposit = async () => {
+    if (!amountval) {
+      Toast.show({type: 'error', text1: 'Enter Deposit Amount'});
+      return;
+    }
+    if (!transactionval) {
+      Toast.show({type: 'error', text1: 'Enter Transaction Number'});
+      return;
+    }
+    if (!imageSource) {
+      Toast.show({type: 'error', text1: 'Add Transaction Screenshot'});
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append('amount', amountval);
+      formData.append('transactionid', transactionval);
+      formData.append('remark', remarkval);
+      formData.append('paymenttype', 'Upi');
+      formData.append('paymenttypeid', selectedUpiId.paymentId);
+      formData.append('username', user.name);
+      formData.append('userid', user.userId);
+      formData.append('paymentstatus', 'Pending');
 
+      formData.append('receipt', {
+        uri: mineImage[0].uri,
+        name: mineImage[0].name,
+        type: mineImage[0].type || 'image/jpeg', // Default to 'image/jpeg' if type is null
+      });
 
-    // For Opening PhoneStorage
-    const selectDoc = async () => {
-      try {
-        const doc = await DocumentPicker.pick({
-          type: [DocumentPicker.types.images],
-          allowMultiSelection: true,
+      formData.append('transactionType', 'Deposit');
+      console.log('FORM DATA :: ' + JSON.stringify(formData));
+
+      const res = await createDeposit({
+        accessToken: accesstoken,
+        body: formData,
+      }).unwrap();
+
+      Toast.show({type: 'success', text1: 'Success', text2: res.message});
+      navigation.goBack();
+    } catch (error) {
+      console.log('Error during deposit:', error);
+      if (error.response) {
+        Toast.show({type: 'error', text1: error.response.data});
+      } else if (error.request) {
+        Toast.show({
+          type: 'error',
+          text1: 'Request was made, but no response was received',
         });
-  
-        if (doc) {
-          console.log(doc);
-          console.log(doc[0].uri);
-          const ty = mime.getType(doc[0].uri);
-  
-          console.log('Image type ty:: ' + ty);
-          console.log('Image type getFileExtension(mimeType):: ' + getFileExtension(doc[0].type));
-          console.log('Image type :: ' + doc[0].type);
-  
-          setImageSource({uri: doc[0].uri});
-          setImageFileName(doc[0].name);
-        }
-      } catch (err) {
-        if (DocumentPicker.isCancel(err))
-          console.log('User cancelled the upload', err);
-        else console.log(err);
+      } else {
+        Toast.show({type: 'error', text1: error.message});
       }
-    };
-  
-    // for uploading Profile content
-    // const handleUpdateProfile = async () => {
-    //   if (!imageSource) {
-    //     Toast.show({
-    //       type: 'error',
-    //       text1: 'Add profile picture',
-    //     });
-    //   } else {
-    //     setProgressBar(true);
-  
-    //     try {
-    //       const formData = new FormData();
-    //       console.log('Image URI :: ' + imageSource.uri);
-  
-    //       if (!imageSource.uri) {
-    //         Toast.show({
-    //           type: 'error',
-    //           text1: 'Please select a image',
-    //         });
-    //       } else {
-    //         // Resize the image
-    //         try {
-    //           console.log('Started Compressing Image');
-    //           const resizedImage = await ImageResizer.createResizedImage(
-    //             imageSource.uri,
-    //             200, // Adjust the dimensions as needed
-    //             200, // Adjust the dimensions as needed
-    //             'JPEG',
-    //             80, // Image quality (0-100)
-    //             0, // Rotation (0 = no rotation)
-    //             null,
-    //           );
-  
-    //           console.log('Compressed Image :: ' + resizedImage.size);
-    //           setImageSource(resizedImage);
-  
-    //           if (imageSource) {
-    //             formData.append('file', {
-    //               uri: resizedImage.uri,
-    //               type: mime.getType(resizedImage.uri),
-    //               name: 'profile.jpg',
-    //             });
-    //           }
-    //         } catch (error) {
-    //           Toast.show({
-    //             type: 'error',
-    //             text1: 'Error resizing the image',
-    //             text2: error,
-    //           });
-    //           // console.error('Error resizing the image:', error);
-    //         }
-  
-    //         const response = await axios.post(
-    //           UrlHelper.USER_PROFILE_PIC_API,
-    //           formData,
-    //           {
-    //             headers: {
-    //               Authorization: `Bearer ${accesstoken}`,
-    //               'Content-Type': 'multipart/form-data',
-    //             },
-    //           },
-    //         );
-  
-    //         console.log('Profile updated successfully:', response.data);
-    //         // console.warn('Profile updated successfully:');
-    //         Toast.show({
-    //           type: 'error',
-    //           text1: 'Profile updated successfully',
-    //         });
-    //         setProgressBar(false);
-    //         navigation.goBack();
-    //       }
-  
-    //       setProgressBar(false);
-    //     } catch (error) {
-    //       setProgressBar(false);
-    //       Toast.show({
-    //         type: 'error',
-    //         text1: 'Something went wrong',
-    //       });
-    //       console.log(error);
-    //     }
-    //   }
-    // };
-  
+    }
+  };
 
-  // FIRST ONE
-
-  // for uploading Transaction content
-  // const submitDeposit = async () => {
-  //   if (!amountval) {
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: 'Enter Deposit Amount',
-  //     });
-  //     // console.error('Enter amount');
-  //   } else if (!transactionval) {
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: 'Enter Transaction Number',
-  //     });
-  //   } else if (!imageSource) {
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: 'Add Transaction Screenshot',
-  //     });
-  //     // console.error('Add Transaction Screenshot');
-  //   } else {
-  //     setProgressBar(true);
-  //     try {
-  //       const formData = new FormData();
-
-  //       formData.append('amount', amountval);
-  //       formData.append('transactionid', transactionval);
-  //       formData.append('remark', remarkval);
-  //       formData.append('paymenttype', 'Upi');
-  //       formData.append('paymenttypeid', selectedUpiId.id);
-  //       formData.append('username', user.name);
-  //       formData.append('userid', user.userId);
-  //       formData.append('paymentstatus', 'Pending');
-  //       formData.append('transactionType', 'Deposit');
-  //       // formData.append('receipt', 'Deposit');
-  //       console.log('Image URI :: ' + imageSource.uri);
-  //       // Resize the image
-  //       try {
-  //         console.log('Started Compressing Image');
-  //         // const resizedImage = await ImageResizer.createResizedImage(
-  //         //   imageSource.uri,
-  //         //   1000, // Adjust the dimensions as needed
-  //         //   1000, // Adjust the dimensions as needed
-  //         //   'JPEG',
-  //         //   100, // Image quality (0-100)
-  //         //   0, // Rotation (0 = no rotation)
-  //         //   null,
-  //         // );
-  //         // console.log('Compressed Image :: ' + resizedImage.size);
-       
-  //         // setImageSource(resizedImage);
-
-  //         // console.log("Mine Image resizedImage :: "+JSON.stringify(resizedImage))
-  //         // if (imageSource) {
-  //         //   formData.append('receipt', {
-  //         //     uri: imageSource.uri,
-  //         //     type: 'image/jpeg',
-  //         //     name: 'bank_receipt.jpg',
-  //         //   });
-  //         // }
-
-  //         if (imageSource) {
-  //           formData.append('receipt', {
-  //             uri: imageSource.uri,
-  //             type: imageSource.type,
-  //             name: imageSource.name,
-  //           });
-  //         }
-
-  //       } catch (error) {
-  //         // console.error('Error resizing the image:', error);
-  //         Toast.show({
-  //           type: 'error',
-  //           text1: 'Error resizing the image:',
-  //           text2: error,
-  //         });
-  //       }
-  //       const response = await axios.post(UrlHelper.DEPOSIT_UPI_API, formData, {
-  //         headers: {
-  //           Authorization: `Bearer ${accesstoken}`,
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //       });
-  //       console.log('Transaction Image updated successfully:', response.data);
-  //       // if (response.data.status == 'true') {
-  //       Toast.show({
-  //         type: 'success',
-  //         text1: 'Success',
-  //         text2: 'UPI deposit request submitted successfully.',
-  //       });
-  //       navigation.goBack();
-  //       // } else {
-  //       //   Toast.show({
-  //       //     type: 'error',
-  //       //     text1: 'Something went wrong',
-  //       //     text2: response.data.message
-  //       //   });
-  //       // }
-  //       // console.warn('Transaction Image updated successfully:');
-  //       setProgressBar(false);
-  //     } catch (error) {
-  //       console.log("Error during deposit")
-  //       console.log("Error during deposit :: "+error)
-  //       if (error.response) {
-  //         Toast.show({
-  //           type: 'error',
-  //           text1: error.response.data,
-  //         });
-  //       } else if (error.request) {
-  //         Toast.show({
-  //           type: 'error',
-  //           text1: 'Request was made, but no response was received',
-  //         });
-  //       } else {
-  //         Toast.show({
-  //           type: 'error',
-  //           text1: error.message,
-  //         });
-  //       }
-  //     }
-  //   }
-  // };
-
-  
   useEffect(() => {
-    // dispatch(loadProfile(accesstoken));
     allTheDepositData();
   }, [isFocused, loadingAllData, allDepositdata]);
 
@@ -371,84 +181,6 @@ const UpiDeposit = () => {
         text1: 'Something went wrong',
       });
       console.log(error);
-    }
-  };
-
-  const submitDeposit = async () => {
-    if (!amountval) {
-      Toast.show({
-        type: 'error',
-        text1: 'Enter Deposit Amount',
-      });
-    } else if (!transactionval) {
-      Toast.show({
-        type: 'error',
-        text1: 'Enter Transaction Number',
-      });
-    } else if (!imageSource) {
-      Toast.show({
-        type: 'error',
-        text1: 'Add Transaction Screenshot',
-      });
-    } else {
-      setProgressBar(true);
-      try {
-        const formData = new FormData();
-  
-        formData.append('amount', amountval);
-        formData.append('transactionid', transactionval);
-        formData.append('remark', remarkval);
-        formData.append('paymenttype', 'Upi');
-        formData.append('paymenttypeid', selectedUpiId.paymentId);
-        formData.append('username', user.name);
-        formData.append('userid', user.userId);
-        formData.append('paymentstatus', 'Pending');
-        formData.append('image', {
-          uri: imageSource.uri,
-          name: 'photo.jpeg',
-          type: 'image/jpeg',
-        
-        });
-        formData.append('transactionType', 'Deposit');
-        
-        console.log('Image URI :: ' + imageSource.uri);
-        console.log("Form data :: "+JSON.stringify(formData))
-  
-        const response = await axios.post(UrlHelper.DEPOSIT_API, formData, {
-          headers: {
-            // Accept: 'application/json',
-            Authorization: `Bearer ${accesstoken}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        console.log('Transaction Image updated successfully:', response.data);
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'UPI deposit request submitted successfully.',
-        });
-        navigation.goBack();
-        setProgressBar(false);
-      } catch (error) {
-        console.log("Error during deposit:", error);
-        if (error.response) {
-          Toast.show({
-            type: 'error',
-            text1: error.response.data,
-          });
-        } else if (error.request) {
-          Toast.show({
-            type: 'error',
-            text1: 'Request was made, but no response was received',
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: error.message,
-          });
-        }
-        setProgressBar(false);
-      }
     }
   };
 
@@ -672,7 +404,7 @@ const UpiDeposit = () => {
                         </View>
                         <View style={{gap: heightPercentageToDP(0.5)}}>
                           <TouchableOpacity
-                            onPress={() => copyToClipboard(item.name)}>
+                            onPress={() => copyToClipboard(item.upiholdername)}>
                             <LinearGradient
                               colors={[COLORS.lightWhite, COLORS.white_s]}
                               style={{
@@ -908,7 +640,7 @@ const UpiDeposit = () => {
                         marginBottom: heightPercentageToDP(5),
                         marginTop: heightPercentageToDP(2),
                       }}>
-                      {false ? (
+                      {isLoading ? (
                         <Loading />
                       ) : (
                         <TouchableOpacity

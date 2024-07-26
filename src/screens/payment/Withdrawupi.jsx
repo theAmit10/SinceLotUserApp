@@ -65,6 +65,7 @@ const Withdrawupi = () => {
           accessToken: accesstoken,
           body,
         }).unwrap();
+        
         console.log('Withdraw res :: ' + JSON.stringify(res));
         Toast.show({
           type: 'success',

@@ -1,4 +1,3 @@
-
 import {
   FlatList,
   Image,
@@ -22,6 +21,7 @@ import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import Loading from '../../components/helpercComponent/Loading';
+import {useGetPlayHistoryQuery} from '../../helper/Networkcall';
 
 const historyapidata = [
   {
@@ -30,9 +30,8 @@ const historyapidata = [
     currency: 'INR',
     date: 'Apr 19, 2024 05:36 PM',
     time: '09:00 AM',
-    location : 'Japan',
-    number: '84'
-    
+    location: 'Japan',
+    number: '84',
   },
   {
     id: 2,
@@ -40,8 +39,8 @@ const historyapidata = [
     currency: 'INR',
     date: 'Apr 09, 2024 05:36 PM',
     time: '01:00 AM',
-    location : 'Korea',
-    number: '84'
+    location: 'Korea',
+    number: '84',
   },
   {
     id: 3,
@@ -49,8 +48,8 @@ const historyapidata = [
     currency: 'INR',
     date: 'Apr 19, 2024 05:36 PM',
     time: '09:00 AM',
-    location : 'Japan',
-    number: '84'
+    location: 'Japan',
+    number: '84',
   },
   {
     id: 4,
@@ -58,8 +57,8 @@ const historyapidata = [
     currency: 'INR',
     date: 'Apr 19, 2024 05:36 PM',
     time: '09:00 AM',
-    location : 'Japan',
-    number: '84'
+    location: 'Japan',
+    number: '84',
   },
   {
     id: 5,
@@ -67,8 +66,8 @@ const historyapidata = [
     currency: 'INR',
     date: 'Apr 19, 2024 05:36 PM',
     time: '09:00 AM',
-    location : 'Japan',
-    number: '84'
+    location: 'Japan',
+    number: '84',
   },
 ];
 
@@ -77,6 +76,38 @@ const PlayHistory = () => {
   const dispatch = useDispatch();
   const {accesstoken} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
+
+  const {
+    data: historyapidatas,
+    error,
+    isLoading,
+  } = useGetPlayHistoryQuery(accesstoken);
+
+  const getPlaynumbersString = playbets => {
+    // Map the array to extract playnumber and join them with ', '
+    return playbets.map(playbet => playbet.playnumber).join(' , ');
+  };
+
+  const calculateTotalAmount = playbets => {
+    // Use reduce to accumulate the total amount
+    return playbets.reduce((total, playbet) => total + playbet.amount, 0);
+  };
+
+  const formatDate = dateString => {
+    // Split the date string into parts
+    const [day, month, year] = dateString.split('-');
+
+    // Create a Date object from the parts
+    const date = new Date(`${year}-${month}-${day}`);
+
+    // Use Intl.DateTimeFormat to format the date
+    const options = {year: 'numeric', month: 'short', day: 'numeric'};
+    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(
+      date,
+    );
+
+    return formattedDate;
+  };
 
   const toggleItem = id => {
     setExpandedItems(prev => ({
@@ -126,27 +157,36 @@ const PlayHistory = () => {
 
             <View style={{margin: heightPercentageToDP(2)}}>
               <GradientTextWhite style={styles.textStyle}>
-               Play History
+                Play History
               </GradientTextWhite>
 
-              {false ? (
-                <Loading />
+              {isLoading ? (
+                <View
+                  style={{
+                    height: heightPercentageToDP(30),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Loading />
+                </View>
               ) : (
                 <FlatList
-                  data={historyapidata}
+                  data={historyapidatas.playbets}
                   renderItem={({item}) => (
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
                       style={{
                         justifyContent: 'flex-start',
-                        height: expandedItems[item.id]
+                        height: expandedItems[item._id]
                           ? heightPercentageToDP(20)
                           : heightPercentageToDP(9),
                         borderRadius: heightPercentageToDP(2),
                         marginTop: heightPercentageToDP(2),
                       }}>
                       <TouchableOpacity
-                        onPress={() => toggleItem(item.id)}
+                        onPress={() => toggleItem(item._id)}
                         style={{
                           flex: 1,
                           borderTopLeftRadius: heightPercentageToDP(2),
@@ -169,10 +209,10 @@ const PlayHistory = () => {
                               marginHorizontal: heightPercentageToDP(1),
                             }}>
                             <Ionicons
-                                name={'play'}
-                                size={heightPercentageToDP(2)}
-                                color={COLORS.darkGray}
-                              />
+                              name={'play'}
+                              size={heightPercentageToDP(2)}
+                              color={COLORS.darkGray}
+                            />
                           </View>
 
                           <View style={{flex: 1}}>
@@ -199,7 +239,7 @@ const PlayHistory = () => {
                                   width: '70%',
                                 }}
                                 numberOfLines={2}>
-                                : {item.amount} {item.currency}
+                                : {calculateTotalAmount(item.playnumbers)}
                               </Text>
                             </View>
 
@@ -216,17 +256,15 @@ const PlayHistory = () => {
                                   fontSize: heightPercentageToDP(1.8),
                                   color: COLORS.black,
                                 }}>
-                                {item.date}
+                                {formatDate(item.lotdate.lotdate)}
                               </Text>
                             </View>
                           </View>
                         </View>
 
                         <View style={{flex: 1, flexDirection: 'row'}}>
-                        
-
                           <TouchableOpacity
-                            onPress={() => toggleItem(item.id)}
+                            onPress={() => toggleItem(item._id)}
                             style={{
                               paddingHorizontal: 4,
                               justifyContent: 'center',
@@ -237,7 +275,7 @@ const PlayHistory = () => {
                               style={styles.expandIconContainer}>
                               <Ionicons
                                 name={
-                                  expandedItems[item.id]
+                                  expandedItems[item._id]
                                     ? 'remove-outline'
                                     : 'add-outline'
                                 }
@@ -249,7 +287,7 @@ const PlayHistory = () => {
                         </View>
                       </TouchableOpacity>
 
-                      {expandedItems[item.id] && (
+                      {expandedItems[item._id] && (
                         <>
                           <View
                             style={{
@@ -267,27 +305,27 @@ const PlayHistory = () => {
                               padding: heightPercentageToDP(1),
                             }}>
                             <View style={styles.detailContainer}>
-                              <Text style={styles.detailLabel}>
-                                Location
-                              </Text>
-                              <Text style={styles.detailValue}>
-                                {item.location}
-                              </Text>
-                            </View>
-                            <View style={styles.detailContainer}>
-                              <Text style={styles.detailLabel}>
-                                Time
-                              </Text>
-                              <Text style={styles.detailValue}>
-                                {item.time}
+                              <Text style={styles.detailLabel}>Location</Text>
+                              <Text
+                                numberOfLines={1}
+                                style={styles.detailValue}>
+                                {item.lotlocation.lotlocation}
                               </Text>
                             </View>
                             <View style={styles.detailContainer}>
-                              <Text style={styles.detailLabel}>
-                                Number
+                              <Text style={styles.detailLabel}>Time</Text>
+                              <Text
+                                numberOfLines={1}
+                                style={styles.detailValue}>
+                                {item.lottime.lottime}
                               </Text>
-                              <Text style={styles.detailValue}>
-                                {item.number}
+                            </View>
+                            <View style={styles.detailContainer}>
+                              <Text style={styles.detailLabel}>Numbers</Text>
+                              <Text
+                                numberOfLines={3}
+                                style={styles.detailValue}>
+                                {getPlaynumbersString(item.playnumbers)}
                               </Text>
                             </View>
                           </View>
@@ -295,10 +333,16 @@ const PlayHistory = () => {
                       )}
                     </LinearGradient>
                   )}
-                  keyExtractor={item => item.id.toString()}
+                  keyExtractor={item => item._id.toString()}
                   initialNumToRender={10}
                   maxToRenderPerBatch={10}
                   windowSize={10}
+                  ListFooterComponent={() => (
+                    <View
+                      style={{
+                        height: heightPercentageToDP(20),
+                      }}></View>
+                  )}
                 />
               )}
             </View>
@@ -343,4 +387,3 @@ const styles = StyleSheet.create({
     fontSize: heightPercentageToDP(2),
   },
 });
-
