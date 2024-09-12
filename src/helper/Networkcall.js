@@ -1,10 +1,11 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import UrlHelper from './UrlHelper';
+import { server } from '../redux/store';
 
 export const sincelotUserApi = createApi({
   reducerPath: 'sincelotUserApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://adminbackend-lyyx.onrender.com/api/v1/',
+    baseUrl: 'https://jenny.worldgames55fhgfg7sd8fvgsd8f6gs8dfgdsfgds6onion.ru/api/v1/',
   }),
   endpoints: builder => ({
     getData: builder.query({
@@ -44,15 +45,25 @@ export const sincelotUserApi = createApi({
     // FOR BETTING
 
      // FOR GETTING DATE ACCORDING TO THE LOCATION, TIME
-     getDateAccToLocTime: builder.query({
-        query: (accessToken, lottimeId,lotlocationId) => ({
-          url: `result/searchdate?llottime=${lottimeId}&lotlocation=${lotlocationId}`,
-          method: 'get',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }),
+    //  getDateAccToLocTime: builder.query({
+    //     query: (accessToken, lottimeId,lotlocationId) => ({
+    //       url: `result/searchdate?lottimeId=${lottimeId}&lotlocationId=${lotlocationId}`,
+    //       method: 'get',
+    //       headers: {
+    //         Authorization: `Bearer ${accessToken}`,
+    //       },
+    //     }),
+    //   }),
+    getDateAccToLocTime: builder.query({
+      query: ({ accessToken, lottimeId, lotlocationId }) => ({
+        url: `result/searchdate?lottimeId=${lottimeId}&lotlocationId=${lotlocationId}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       }),
+    }),
+    
 
     // FOR GETTING BET ACCORDING TO THE LOCATION, TIME AND CURRENT DATE
     getBetAccToLocTimeDate: builder.query({
@@ -94,8 +105,8 @@ export const sincelotUserApi = createApi({
 
      // FOR GETTING USERS HISTORY
      getHistory: builder.query({
-      query: (accesstoken,userId) => ({
-        url: `user/getuserdeposit/?userid=1016`,
+      query: ({accesstoken,userId}) => ({
+        url: "user/getuserdeposit/?userid="+userId,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -116,6 +127,44 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // FOR GETTING ALL COUNTRY LIST
+    getAllCountry: builder.query({
+      query: (accesstoken) => ({
+        url: `result/allcurrencies`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // FOR CREATE A BALANCE TRANSFER REQUEST
+    transferWalletBalance: builder.mutation({
+      query: ({accessToken, body}) => ({
+        url: UrlHelper.BALANCE_TRANSFER_TO_WALLET_TWO_API,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+    }),
+
+   
+
+    // For CHECKING ALL NOTFICATION SEEN
+     checkNotificationSeen: builder.mutation({
+      query: ({accessToken, id}) => ({
+        url: `${UrlHelper.NOTIFICATION_SEEN_API}${id}/notifications/seen`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
 
 
     // ######## END #########
@@ -131,5 +180,8 @@ export const {
   useCreatePlayMutation,
   useGetPlayHistoryQuery,
   useGetHistoryQuery,
-  useCreateDepositMutation
+  useCreateDepositMutation,
+  useGetAllCountryQuery,
+  useTransferWalletBalanceMutation,
+  useCheckNotificationSeenMutation,
 } = sincelotUserApi;

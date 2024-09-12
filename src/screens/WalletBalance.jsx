@@ -10,9 +10,11 @@ import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Background from '../components/background/Background';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import { useSelector } from 'react-redux';
 
 const WalletBalance = ({route}) => {
   const {data} = route.params;
+  const {accesstoken, user} = useSelector(state => state.user);
 
   console.log(JSON.stringify(data));
 
@@ -82,7 +84,7 @@ const WalletBalance = ({route}) => {
 
         <View style={{padding: heightPercentageToDP(2)}}>
           <GradientText style={{fontFamily: FONT.Montserrat_Regular, fontSize: heightPercentageToDP(3), color: COLORS.black, marginBottom: heightPercentageToDP(1)}}>{data.walletName}</GradientText>
-          <GradientText style={styles.textStyle}>₹ {data.balance}</GradientText>
+          <GradientText style={styles.textStyle}>{data.balance} {user.country.countrycurrencysymbol}</GradientText>
         </View>
       </View>
             </ImageBackground>

@@ -22,6 +22,7 @@ import Loading from '../../components/helpercComponent/Loading';
 import { TextInput } from 'react-native-paper';
 
 import { useCreateWithdrawMutation } from '../../helper/Networkcall';
+import { canPlaceWithdraw } from './Withdrawpaypal';
 
 const Withdrawbank = () => {
   const navigation = useNavigation();
@@ -49,7 +50,14 @@ const Withdrawbank = () => {
       Toast.show({ type: 'error', text1: 'Enter Bank IFSC code' });
     } else if (!bankAccountNumber) {
       Toast.show({ type: 'error', text1: 'Enter Account Number' });
-    } else {
+    }else if (!canPlaceWithdraw(user.walletOne.balance, amountval)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Insufficent Balance',
+        text2: 'Add balance to '+user.walletOne.walletName,
+      });
+    }  
+    else {
       setProgressBar(true);
       try {
         const body = {

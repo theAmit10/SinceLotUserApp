@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
@@ -22,6 +22,8 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import Loading from '../../components/helpercComponent/Loading';
 import {useGetPlayHistoryQuery} from '../../helper/Networkcall';
+import NoDataFound from '../../components/helpercComponent/NoDataFound';
+import {getTimeAccordingToTimezone} from '../SearchTime';
 
 const historyapidata = [
   {
@@ -74,14 +76,24 @@ const historyapidata = [
 const PlayHistory = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
 
   const {
     data: historyapidatas,
     error,
     isLoading,
+    refetch,
   } = useGetPlayHistoryQuery(accesstoken);
+
+  console.log(JSON.stringify(historyapidatas?.playbets));
+
+  useFocusEffect(
+    useCallback(() => {
+      // Refetch the data when the screen is focused
+      refetch();
+    }, [refetch]),
+  );
 
   const getPlaynumbersString = playbets => {
     // Map the array to extract playnumber and join them with ', '
@@ -169,9 +181,13 @@ const PlayHistory = () => {
                   }}>
                   <Loading />
                 </View>
+              ) : historyapidatas?.playbets?.length === 0 ? (
+                <View>
+                  <NoDataFound data={'No History Found'} />
+                </View>
               ) : (
                 <FlatList
-                  data={historyapidatas.playbets}
+                  data={historyapidatas?.playbets}
                   renderItem={({item}) => (
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -179,9 +195,6 @@ const PlayHistory = () => {
                       end={{x: 1, y: 0}} // end at right
                       style={{
                         justifyContent: 'flex-start',
-                        height: expandedItems[item._id]
-                          ? heightPercentageToDP(20)
-                          : heightPercentageToDP(9),
                         borderRadius: heightPercentageToDP(2),
                         marginTop: heightPercentageToDP(2),
                       }}>
@@ -203,14 +216,14 @@ const PlayHistory = () => {
                           <View
                             style={{
                               backgroundColor: COLORS.white_s,
-                              padding: heightPercentageToDP(1.5),
+                              padding: heightPercentageToDP(1),
                               borderRadius: heightPercentageToDP(1),
                               marginVertical: heightPercentageToDP(2),
                               marginHorizontal: heightPercentageToDP(1),
                             }}>
-                            <Ionicons
-                              name={'play'}
-                              size={heightPercentageToDP(2)}
+                            <MaterialCommunityIcons
+                              name={'play-circle-outline'}
+                              size={heightPercentageToDP(3)}
                               color={COLORS.darkGray}
                             />
                           </View>
@@ -239,7 +252,8 @@ const PlayHistory = () => {
                                   width: '70%',
                                 }}
                                 numberOfLines={2}>
-                                : {calculateTotalAmount(item.playnumbers)}
+                                : {calculateTotalAmount(item.playnumbers)}{' '}
+                                {user.country.countrycurrencysymbol}
                               </Text>
                             </View>
 
@@ -294,6 +308,7 @@ const PlayHistory = () => {
                               height: 1,
                               backgroundColor: COLORS.white_s,
                               marginHorizontal: heightPercentageToDP(2),
+                             
                             }}
                           />
                           <View
@@ -305,30 +320,93 @@ const PlayHistory = () => {
                               padding: heightPercentageToDP(1),
                             }}>
                             <View style={styles.detailContainer}>
-                              <Text style={styles.detailLabel}>Location</Text>
+                              <Text style={styles.detailValue}>Location</Text>
                               <Text
                                 numberOfLines={1}
-                                style={styles.detailValue}>
+                                style={styles.detailLabel}>
                                 {item.lotlocation.lotlocation}
                               </Text>
                             </View>
                             <View style={styles.detailContainer}>
-                              <Text style={styles.detailLabel}>Time</Text>
+                              <Text style={styles.detailValue}>Time</Text>
                               <Text
                                 numberOfLines={1}
-                                style={styles.detailValue}>
-                                {item.lottime.lottime}
+                                style={styles.detailLabel}>
+                                {getTimeAccordingToTimezone(
+                                  item.lottime.lottime,
+                                  user?.country?.timezone,
+                                )}
                               </Text>
                             </View>
                             <View style={styles.detailContainer}>
-                              <Text style={styles.detailLabel}>Numbers</Text>
+                              <Text style={styles.detailValue}>Total Bets</Text>
                               <Text
                                 numberOfLines={3}
-                                style={styles.detailValue}>
-                                {getPlaynumbersString(item.playnumbers)}
+                                style={styles.detailLabel}>
+                                {item.playnumbers.length}
                               </Text>
                             </View>
                           </View>
+                          {/** PLAY NUMBER */}
+                          <View
+                            style={{
+                              flex: 1,
+                              borderBottomLeftRadius: heightPercentageToDP(2),
+                              borderBottomEndRadius: heightPercentageToDP(2),
+                              flexDirection: 'row',
+                              padding: heightPercentageToDP(1),
+                              
+                            }}>
+                            <View style={styles.detailContainer}>
+                              <Text style={styles.detailValue}>Number</Text>
+                            </View>
+                            <View style={styles.detailContainer}>
+                              <Text style={styles.detailValue}>Amount</Text>
+                            </View>
+                            <View style={styles.detailContainer}>
+                              <Text style={styles.detailValue}>
+                                Win Amt.
+                              </Text>
+                            </View>
+                          </View>
+                          {item.playnumbers.map((pitem, pindex) => (
+                            <View
+                              key={pindex}
+                              style={{
+                                borderBottomLeftRadius: heightPercentageToDP(2),
+                                borderBottomEndRadius: heightPercentageToDP(2),
+                                flexDirection: 'row',
+                                padding: heightPercentageToDP(1),
+                               
+                              }}>
+                              <View style={styles.detailContainer}>
+                                <Text style={{...styles.detailLabel,fontFamily: FONT.Montserrat_SemiBold}}>
+                                  {pitem.playnumber}
+                                </Text>
+                              </View>
+                              <View style={styles.detailContainer}>
+                                <Text style={styles.detailLabel}>
+                                  {pitem.amount}
+                                </Text>
+                              </View>
+                              <View style={styles.detailContainer}>
+                                <Text style={styles.detailLabel}>
+                                  {pitem.winningamount}
+                                </Text>
+                              </View>
+                            </View>
+                          ))}
+                           <View
+                            style={{
+                              height: 1,
+                              backgroundColor: COLORS.white_s,
+                              marginHorizontal: heightPercentageToDP(2),
+                              marginBottom: heightPercentageToDP(3),
+                              marginTop: heightPercentageToDP(1)
+                             
+                            }}
+                          />
+
                         </>
                       )}
                     </LinearGradient>
@@ -380,10 +458,12 @@ const styles = StyleSheet.create({
     fontFamily: FONT.Montserrat_Regular,
     color: COLORS.black,
     fontSize: heightPercentageToDP(2),
+    textAlign : 'center'
   },
   detailValue: {
     fontFamily: FONT.Montserrat_SemiBold,
     color: COLORS.black,
     fontSize: heightPercentageToDP(2),
+    textAlign : 'center'
   },
 });

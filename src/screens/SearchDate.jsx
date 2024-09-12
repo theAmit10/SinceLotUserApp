@@ -25,6 +25,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getDateAccordingToLocationAndTime} from '../redux/actions/dateAction';
 import LinearGradient from 'react-native-linear-gradient';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import { getTimeAccordingToTimezone } from './SearchTime';
 
 const SearchDate = ({route}) => {
   const navigation = useNavigation();
@@ -47,7 +48,7 @@ const SearchDate = ({route}) => {
 
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken,user} = useSelector(state => state.user);
   const {loading, dates} = useSelector(state => state.date);
   const [filteredData, setFilteredData] = useState([]);
 
@@ -133,7 +134,7 @@ const SearchDate = ({route}) => {
                 {locationdata.lotlocation}
               </GradientTextWhite>
               <GradientTextWhite style={styles.textStyle}>
-                {timedata.lottime}
+                {getTimeAccordingToTimezone(timedata.lottime, user?.country?.timezone)}
               </GradientTextWhite>
 
               <GradientTextWhite style={styles.textStyle}>
@@ -204,6 +205,8 @@ const SearchDate = ({route}) => {
                             ? [COLORS.time_firstblue, COLORS.time_secondbluw]
                             : [COLORS.time_firstgreen, COLORS.time_secondgreen]
                         }
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
                         style={{
                           ...styles.item,
                           flexDirection: 'row',

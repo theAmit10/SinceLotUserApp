@@ -5,13 +5,17 @@ import {COLORS, FONT} from '../../../assets/constants';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import GradientText from '../helpercComponent/GradientText';
+import { useSelector } from 'react-redux';
 
 const Wallet = ({wallet}) => {
+
+  const {accesstoken, user} = useSelector(state => state.user);
+
   return (
     <View
       style={{
         height: heightPercentageToDP(15),
-        width: widthPercentageToDP(90),
+        width: widthPercentageToDP(85),
         backgroundColor: COLORS.grayHalfBg,
         marginTop: heightPercentageToDP(2),
         borderRadius: heightPercentageToDP(1),
@@ -41,8 +45,13 @@ const Wallet = ({wallet}) => {
             color: COLORS.black,
             fontFamily: FONT.Montserrat_SemiBold,
             fontSize: heightPercentageToDP(2),
-            marginStart: heightPercentageToDP(-5),
-          }}>
+            marginStart: heightPercentageToDP(-3),
+            maxWidth: heightPercentageToDP(14),
+            textAlign: 'center'
+            
+          }}
+          numberOfLines={2}
+          >
           {wallet.walletName}
         </Text>
       </View>
@@ -63,12 +72,12 @@ const Wallet = ({wallet}) => {
       </View>
       <GradientText
         style={{
-          fontSize: heightPercentageToDP(3),
+          fontSize: heightPercentageToDP(2.5),
           fontFamily: FONT.Montserrat_Bold,
           paddingEnd: heightPercentageToDP(2),
           minWidth: heightPercentageToDP(15)
         }}>
-        ₹ {wallet.balance}
+        {wallet.balance} {user?.country?.countrycurrencysymbol}
       </GradientText>
     </View>
   );

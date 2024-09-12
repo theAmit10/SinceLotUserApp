@@ -271,10 +271,10 @@ const PaypalDeposit = () => {
                       />
                     </View>
                     <GradientTextWhite style={styles.textStyleContent}>
-                      UPI
+                      Paypal
                     </GradientTextWhite>
                     <GradientTextWhite style={styles.textStyleContent}>
-                      {selectedUpiId.paymentId}
+                      {selectedUpiId?.paymentId}
                     </GradientTextWhite>
                     <LinearGradient
                       colors={[COLORS.grayBg, COLORS.white_s]}

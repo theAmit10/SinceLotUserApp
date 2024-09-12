@@ -24,6 +24,7 @@ import {TextInput} from 'react-native-paper';
 import {
   useCreateWithdrawMutation,
 } from '../../helper/Networkcall';
+import { canPlaceWithdraw } from './Withdrawpaypal';
 
 const Withdrawskrill = () => {
   const navigation = useNavigation();
@@ -42,7 +43,14 @@ const Withdrawskrill = () => {
       Toast.show({type: 'error', text1: 'Enter Amount'});
     } else if (!skrillContact) {
       Toast.show({type: 'error', text1: 'Please enter phone number or email address' });
-    } else {
+    }else if (!canPlaceWithdraw(user.walletOne.balance, amountval)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Insufficent Balance',
+        text2: 'Add balance to '+user.walletOne.walletName,
+      });
+    }  
+    else {
       setProgressBar(true);
       try {
         const body = {

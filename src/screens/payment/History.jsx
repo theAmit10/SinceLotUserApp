@@ -29,15 +29,15 @@ const History = () => {
   const {accesstoken, user} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
 
-  console.log("Accesstoken :: "+accesstoken)
-  console.log("User ID :: "+user.userId)
+  console.log('Accesstoken :: ' + accesstoken);
+  console.log('User ID :: ' + user.userId);
 
   const {
     data: historyapidatas,
     error,
     isLoading,
     refetch,
-  } = useGetHistoryQuery(accesstoken, user.userId);
+  } = useGetHistoryQuery({accesstoken : accesstoken, userId : user.userId })
 
   console.log('History isloading :: ' + isLoading);
   console.log('History :: ' + JSON.stringify(error));
@@ -47,7 +47,7 @@ const History = () => {
     useCallback(() => {
       // Refetch the data when the screen is focused
       refetch();
-    }, [refetch])
+    }, [refetch]),
   );
 
   const toggleItem = id => {
@@ -57,10 +57,9 @@ const History = () => {
     }));
   };
 
-  const formatDateTime = (dateTimeString) => {
-    return moment(dateTimeString).format('MMMM DD, YYYY hh:mm A');
+  const formatDateTime = dateTimeString => {
+    return moment(dateTimeString).format('MMMM DD, YYYY');
   };
-  
 
   return (
     <View style={{flex: 1}}>
@@ -115,14 +114,13 @@ const History = () => {
                   }}>
                   <Loading />
                 </View>
-              ) : !historyapidatas && error?.data.message ===
-                'No transactions found for this user' ? (
+              ) : historyapidatas?.transactions.length === 0 ? (
                 <View>
                   <NoDataFound data={'No History Found'} />
                 </View>
               ) : (
                 <FlatList
-                  data={historyapidatas.transactions}
+                  data={historyapidatas?.transactions}
                   renderItem={({item}) => (
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -197,7 +195,7 @@ const History = () => {
                                   width: '70%',
                                 }}
                                 numberOfLines={2}>
-                                : {item.amount}
+                                : {item.amount} {user.country.countrycurrencysymbol}
                               </Text>
                             </View>
 
@@ -233,7 +231,7 @@ const History = () => {
                               style={styles.iconContainer}>
                               <AntDesign
                                 name={
-                                  item.paymentStatus === 'Success'
+                                  item.paymentStatus === 'Completed'
                                     ? 'check'
                                     : 'clockcircleo'
                                 }
@@ -245,7 +243,7 @@ const History = () => {
                               style={{
                                 fontFamily: FONT.Montserrat_Regular,
                                 color: COLORS.black,
-                                fontSize: heightPercentageToDP(1.2),
+                                fontSize: heightPercentageToDP(1.1),
                               }}>
                               {item.paymentStatus}
                             </Text>
@@ -258,7 +256,7 @@ const History = () => {
                               paddingHorizontal: 4,
                               justifyContent: 'center',
                               alignItems: 'center',
-                              marginEnd: heightPercentageToDP(2)
+                              marginEnd: heightPercentageToDP(2),
                             }}>
                             <LinearGradient
                               colors={[COLORS.lightWhite, COLORS.white_s]}
@@ -304,7 +302,9 @@ const History = () => {
                             </View>
                             <View style={styles.detailContainer}>
                               <Text style={styles.detailLabel}>
-                                {item.transactionType === 'Deposit' ? 'Transaction ID' : ''}
+                                {item.transactionType === 'Deposit'
+                                  ? 'Transaction ID'
+                                  : ''}
                               </Text>
                               <Text style={styles.detailValue}>
                                 {item.transactionId}
@@ -320,9 +320,10 @@ const History = () => {
                   maxToRenderPerBatch={10}
                   windowSize={10}
                   ListFooterComponent={() => (
-                    <View style={{
-                      height: heightPercentageToDP(20)
-                    }}></View>
+                    <View
+                      style={{
+                        height: heightPercentageToDP(20),
+                      }}></View>
                   )}
                 />
               )}
@@ -368,7 +369,6 @@ const styles = StyleSheet.create({
     fontSize: heightPercentageToDP(2),
   },
 });
-
 
 // import {
 //   FlatList,
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
 // ];
 
 // const History = () => {
- 
+
 //   const {accesstoken, user} = useSelector(state => state.user);
 //   const [expandedItems, setExpandedItems] = useState({});
 
@@ -478,7 +478,6 @@ const styles = StyleSheet.create({
 //   const formatDateTime = (dateTimeString) => {
 //     return moment(dateTimeString).format('MMMM DD, YYYY hh:mm A');
 //   };
-  
 
 //   return (
 //     <View style={{flex: 1}}>
@@ -786,4 +785,3 @@ const styles = StyleSheet.create({
 //     fontSize: heightPercentageToDP(2),
 //   },
 // });
-

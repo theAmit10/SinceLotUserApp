@@ -22,6 +22,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
   useFocusEffect,
   useIsFocused,
@@ -30,7 +31,11 @@ import {
 import GradientText from '../components/helpercComponent/GradientText';
 import Wallet from '../components/home/Wallet';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadAllPromotion, loadProfile} from '../redux/actions/userAction';
+import {
+  loadAllNotification,
+  loadAllPromotion,
+  loadProfile,
+} from '../redux/actions/userAction';
 import HomeLoading from '../components/background/HomeLoading';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 import {
@@ -52,6 +57,7 @@ import {onDisplayNotification} from '../helper/NotificationServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import {getTimeAccordingToTimezone} from './SearchTime';
 
 const images = [
   'https://imgs.search.brave.com/PvhNVIxs9m8r1whelc9RPX2dMQ371Xcsk3Lf2dCiVHQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvYmlnLXNhbGUt/YmFubmVyLWRlc2ln/bi1zcGVjaWFsLW9m/ZmVyLXVwLTUwLW9m/Zi1yZWFkeS1wcm9t/b3Rpb24tdGVtcGxh/dGUtdXNlLXdlYi1w/cmludC1kZXNpZ25f/MTEwNDY0LTU3MC5q/cGc_c2l6ZT02MjYm/ZXh0PWpwZw',
@@ -156,6 +162,9 @@ const Home = () => {
 
   const [initialResultIndex, setInitialResultIndex] = useState(0);
 
+
+  // console.log(JSON.stringify(promotions))
+
   // For Big Result
   const [homeResult, setHomeResult] = useState([]);
 
@@ -223,9 +232,18 @@ const Home = () => {
     setFirstTimeClick(false);
     setInitialResultIndex(index);
     console.log('Mine time');
-    console.log(extractTime(item.nextresulttime));
+    console.log(
+      extractTime(
+        getTimeAccordingToTimezone(
+          item.nextresulttime,
+          user?.country?.timezone,
+        ),
+      ),
+    );
 
-    const {hour, minute, period} = extractTime(item.nextresulttime);
+    const {hour, minute, period} = extractTime(
+      getTimeAccordingToTimezone(item.nextresulttime, user?.country?.timezone),
+    );
     console.log(hour);
     console.log(minute);
     console.log(period);
@@ -376,7 +394,10 @@ const Home = () => {
                 <tr>
                   <td><span>${item.lotlocation?.lotlocation}</span></td>
                   <td><span>${item.lotdate?.lotdate}</span></td>
-                  <td><span>${item.lottime?.lottime}</span></td>
+                  <td><span>${getTimeAccordingToTimezone(
+                    item.lottime?.lottime,
+                    user?.country?.timezone,
+                  )}</span></td>
                   <td><span>${item.resultNumber}</span></td>
                 </tr>
               `,
@@ -433,7 +454,10 @@ const Home = () => {
         //Content to print
         html: htmlContent,
         //File Name
-        fileName: `${homeResult.lotdate.lotdate}${homeResult.lottime.lottime}`,
+        fileName: `${homeResult.lotdate.lotdate}${getTimeAccordingToTimezone(
+          homeResult.lottime.lottime,
+          user?.country?.timezone,
+        )}`,
         //File directory
         directory: 'Download',
 
@@ -471,6 +495,8 @@ const Home = () => {
     img: `${serverName}/uploads/promotion/${promotion.url}`,
   }));
 
+
+ 
   const shownotifee = () => {
     onDisplayNotification('Jammu Result', '11:00 AM Jammu Result Announced');
   };
@@ -596,6 +622,31 @@ const Home = () => {
     return true;
   };
 
+  const {notifications, loadingNotification} = useSelector(state => state.user);
+
+  const [newNotification, setNewNotification] = useState(true);
+
+  useEffect(() => {
+    dispatch(loadAllNotification(accesstoken, user?._id));
+  }, [dispatch, focused]);
+
+  useEffect(() => {
+    if ((!loadingNotification && notifications, user)) {
+      checkingForNewNotification();
+    }
+  }, [loadingNotification, notifications, focused, user]);
+
+  const checkingForNewNotification = () => {
+    console.log('CHECKING FOR NEW NOTIFCATION');
+    if (notifications) {
+      const noti =
+        notifications?.length === 0 ? true : notifications[0]?.seennow;
+      console.log('seennow noti len :: ' + notifications?.length);
+      console.log('seennow :: ' + noti);
+      setNewNotification(noti);
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1">
       <View style={styles.container}>
@@ -614,14 +665,14 @@ const Home = () => {
                 }}>
                 <View
                   style={{
-                    flex: 3,
+                    flex: 2,
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: heightPercentageToDP(1),
                   }}>
                   {/** Profile Image Container */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('UpdateProfile')}
+                    onPress={() => navigation.navigate('UserProfile')}
                     style={{
                       borderRadius: 100,
                       overflow: 'hidden',
@@ -652,7 +703,9 @@ const Home = () => {
                   </TouchableOpacity>
 
                   {/** Profile name Container */}
-                  <View>
+                  <View style={{
+                     width: widthPercentageToDP(40),
+                  }}> 
                     <GradientTextWhite
                       style={{
                         fontSize: heightPercentageToDP(2),
@@ -663,12 +716,14 @@ const Home = () => {
                     </GradientTextWhite>
 
                     <Text
+                    numberOfLines={1}
                       style={{
                         fontFamily: FONT.Montserrat_Regular,
                         color: COLORS.white_s,
                       }}>
                       Hello
                       <Text
+                      numberOfLines={1}
                         style={{
                           fontFamily: FONT.HELVETICA_BOLD,
                           color: COLORS.white_s,
@@ -690,20 +745,32 @@ const Home = () => {
                   }}>
                   <TouchableOpacity
                     onPress={() => navigation.navigate('PlayArenaLocation')}>
-                    <Entypo
-                      name={'controller-play'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.white_s}
-                    />
+                    <Image
+                        source={require('../../assets/image/play.png')}
+                        resizeMode="contain"
+                        style={{
+                          height: heightPercentageToDP(8),
+                          width: heightPercentageToDP(8),  
+                        
+                        }}
+                      />
                   </TouchableOpacity>
 
                   <TouchableOpacity
                     onPress={() => navigation.navigate('Notification')}>
-                    <Ionicons
-                      name={'notifications'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.white_s}
-                    />
+                    {newNotification ? (
+                      <Ionicons
+                        name={'notifications'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.white_s}
+                      />
+                    ) : (
+                      <MaterialIcons
+                        name={'notifications-on'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.lightyellow}
+                      />
+                    )}
                   </TouchableOpacity>
 
                   <TouchableOpacity
@@ -864,7 +931,10 @@ const Home = () => {
                                 color: COLORS.black,
                                 fontFamily: FONT.HELVETICA_BOLD,
                               }}>
-                              {homeResult?.nextresulttime}
+                              {getTimeAccordingToTimezone(
+                                homeResult?.nextresulttime,
+                                user?.country?.timezone,
+                              )}
                             </Text>
                           </View>
                         </View>
@@ -1003,7 +1073,10 @@ const Home = () => {
                         fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
                       }}>
-                      {homeResult?.lottime?.lottime}
+                      {getTimeAccordingToTimezone(
+                        homeResult?.lottime?.lottime,
+                        user?.country?.timezone,
+                      )}
                     </Text>
 
                     <Text
@@ -1145,7 +1218,10 @@ const Home = () => {
                                     fontSize: heightPercentageToDP(2),
                                     color: COLORS.black,
                                   }}>
-                                  {item.lottime.lottime}
+                                  {getTimeAccordingToTimezone(
+                                    item.lottime.lottime,
+                                    user?.country?.timezone,
+                                  )}
                                 </Text>
 
                                 <Text
@@ -1210,7 +1286,10 @@ const Home = () => {
                                 color: COLORS.black,
                                 fontFamily: FONT.HELVETICA_BOLD,
                               }}>
-                              {homeResult?.nextresulttime}
+                              {getTimeAccordingToTimezone(
+                                homeResult?.nextresulttime,
+                                user?.country?.timezone,
+                              )}
                             </Text>
                           </View>
                         </View>
@@ -1414,7 +1493,12 @@ const Home = () => {
               {/** BOTTOM RESULT CONTENT CONTAINER */}
 
               {filteredData.length === 0 ? (
-                <NoDataFound data={'No Result Available'} />
+                <View
+                  style={{
+                    marginHorizontal: heightPercentageToDP(2),
+                  }}>
+                  <NoDataFound data={'No Result Available'} />
+                </View>
               ) : (
                 <View
                   style={{
@@ -1447,12 +1531,12 @@ const Home = () => {
                         }}>
                         <View
                           style={{
-                            flex: 1,
                             backgroundColor:
                               COLORS_LIST[index % COLORS_LIST.length],
                             borderTopRightRadius: heightPercentageToDP(1),
                             borderTopLeftRadius: heightPercentageToDP(1),
                             paddingTop: heightPercentageToDP(1),
+                            height: heightPercentageToDP(6),
                           }}>
                           <Text
                             style={{
@@ -1472,7 +1556,7 @@ const Home = () => {
                           <Text
                             style={{
                               fontFamily: FONT.Montserrat_SemiBold,
-                              fontSize: heightPercentageToDP(5),
+                              fontSize: heightPercentageToDP(6),
                               textAlign: 'center',
                               color: COLORS.black,
                             }}>
@@ -1497,7 +1581,10 @@ const Home = () => {
                               padding: heightPercentageToDP(0.5),
                               color: COLORS.black,
                             }}>
-                            {item.lottime.lottime}
+                            {getTimeAccordingToTimezone(
+                              item.lottime.lottime,
+                              user?.country?.timezone,
+                            )}
                           </Text>
                         </View>
                       </TouchableOpacity>
@@ -1505,6 +1592,50 @@ const Home = () => {
                   </ScrollView>
                 </View>
               )}
+
+              {/** PLAY HISTORY AND HISTORY */}
+
+              <View
+                style={{
+                  height: heightPercentageToDP(5),
+                  marginVertical: heightPercentageToDP(2),
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginHorizontal: heightPercentageToDP(2),
+                }}>
+                <GradientText
+                 onPress={() => navigation.navigate('Payment')}
+                  style={{
+                    fontSize: heightPercentageToDP(2),
+                    fontFamily: FONT.Montserrat_Bold,
+                    color: COLORS.black,
+                  }}>
+                  Deposit
+                </GradientText>
+
+                <GradientText
+                 onPress={() => navigation.navigate('PlayHistory')}
+                  style={{
+                    fontSize: heightPercentageToDP(2),
+                    fontFamily: FONT.Montserrat_Bold,
+                    color: COLORS.black,
+                  }}>
+                  Play history
+                </GradientText>
+
+               
+                {/* <Text
+                  onPress={() => navigation.navigate('PlayHistory')}
+                  style={{
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2),
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
+                    color: COLORS.black,
+                  }}>
+                  Play history
+                </Text> */}
+              </View>
 
               {/** PROMOTION CONTAINER */}
 
@@ -1528,6 +1659,7 @@ const Home = () => {
                     data={sliderData}
                     preview={false}
                     autoPlay={true}
+                    delay={8000} 
                     closeIconColor="#fff"
                     caroselImageStyle={{resizeMode: 'cover'}}
                     indicatorMainContainerStyle={{
@@ -1563,17 +1695,6 @@ const Home = () => {
                 <ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}>
-                  {user.walletOne.visibility && (
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('WalletBalance', {
-                          data: user.walletOne,
-                        })
-                      }>
-                      <Wallet wallet={user.walletOne} />
-                    </TouchableOpacity>
-                  )}
-
                   {user.walletTwo.visibility && (
                     <TouchableOpacity
                       onPress={() =>
@@ -1584,25 +1705,36 @@ const Home = () => {
                       <Wallet wallet={user.walletTwo} />
                     </TouchableOpacity>
                   )}
+                  {user.walletOne.visibility && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('WalletBalance', {
+                          data: user.walletOne,
+                        })
+                      }>
+                      <Wallet wallet={user.walletOne} />
+                    </TouchableOpacity>
+                  )}
                 </ScrollView>
               </View>
             </ScrollView>
           ) : (
-            <View
+            <SafeAreaView
               style={{
-                flex: 1,
+                height: heightPercentageToDP(100),
                 backgroundColor: COLORS.white,
               }}>
               {error && !retrying && (
                 <View style={styles.retryContainer}>
-                  <Text style={styles.retryText}>
-                    There was an issue fetching the data.
+                  <Text style={{
+                    ...styles.retryText, fontFamily: FONT.Montserrat_Bold
+                  }} >
+                    Session expired,
                   </Text>
-                  <TouchableOpacity
-                    onPress={handleRetry}
-                    style={styles.retryButton}>
-                    <Text style={styles.retryButtonText}>Retry</Text>
-                  </TouchableOpacity>
+                  <Text style={styles.retryText}>
+                    To play continue, please login again
+                  </Text>
+                  
 
                   <TouchableOpacity
                     onPress={logoutHandler}
@@ -1647,7 +1779,7 @@ const Home = () => {
                   {/** Logout container */}
                 </View>
               )}
-            </View>
+            </SafeAreaView>
           )}
         </ImageBackground>
       </View>
@@ -1724,6 +1856,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+
+   
   },
   retryText: {
     fontFamily: FONT.Montserrat_Regular,

@@ -24,6 +24,7 @@ import {TextInput} from 'react-native-paper';
 import {
   useCreateWithdrawMutation,
 } from '../../helper/Networkcall';
+import { canPlaceWithdraw } from './Withdrawpaypal';
 
 const Withdrawcrypto = () => {
   const navigation = useNavigation();
@@ -45,7 +46,14 @@ const Withdrawcrypto = () => {
       Toast.show({type: 'error', text1: 'Enter Crypto Wallet Address'});
     } else if (!networkType) {
       Toast.show({type: 'error', text1: 'Enter Network Type'});
-    } else {
+    }else if (!canPlaceWithdraw(user.walletOne.balance, amountval)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Insufficent Balance',
+        text2: 'Add balance to '+user.walletOne.walletName,
+      });
+    }  
+    else {
       setProgressBar(true);
       try {
         const body = {

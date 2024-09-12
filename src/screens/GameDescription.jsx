@@ -165,6 +165,8 @@ const GameDescription = () => {
                             ? [COLORS.lightblue, COLORS.midblue]
                             : [COLORS.lightyellow, COLORS.darkyellow]
                         }
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
                         style={{
                           ...styles.item,
                           flexDirection: 'row',

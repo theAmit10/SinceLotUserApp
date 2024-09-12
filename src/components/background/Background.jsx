@@ -71,12 +71,12 @@ const Background = () => {
             />
           </TouchableOpacity>
 
-          <View
+          {/* <View
             className="rounded-full h-5 w-5"
             style={{
               margin: heightPercentageToDP(3),
               backgroundColor: COLORS.background,
-            }}></View>
+            }}></View> */}
         </View>
       </ImageBackground>
     </View>

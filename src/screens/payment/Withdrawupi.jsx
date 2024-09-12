@@ -1,5 +1,7 @@
 import {
   ImageBackground,
+  KeyboardAvoidingView,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -21,9 +23,8 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import Loading from '../../components/helpercComponent/Loading';
 import {TextInput} from 'react-native-paper';
 
-import {
-  useCreateWithdrawMutation,
-} from '../../helper/Networkcall';
+import {useCreateWithdrawMutation} from '../../helper/Networkcall';
+import { canPlaceWithdraw } from './Withdrawpaypal';
 
 const Withdrawupi = () => {
   const navigation = useNavigation();
@@ -44,7 +45,14 @@ const Withdrawupi = () => {
       Toast.show({type: 'error', text1: 'Enter UPI Holder Name'});
     } else if (!upiId) {
       Toast.show({type: 'error', text1: 'Enter UPI ID'});
-    } else {
+    }else if (!canPlaceWithdraw(user.walletOne.balance, amountval)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Insufficent Balance',
+        text2: 'Add balance to '+user.walletOne.walletName,
+      });
+    } 
+     else {
       setProgressBar(true);
       try {
         const body = {
@@ -65,7 +73,7 @@ const Withdrawupi = () => {
           accessToken: accesstoken,
           body,
         }).unwrap();
-        
+
         console.log('Withdraw res :: ' + JSON.stringify(res));
         Toast.show({
           type: 'success',
@@ -87,252 +95,257 @@ const Withdrawupi = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
-      <Background />
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: heightPercentageToDP(85),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
+    <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={-60}>
+        <Background />
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <ImageBackground
+            source={require('../../../assets/image/tlwbg.jpg')}
             style={{
+              width: '100%',
               height: heightPercentageToDP(85),
-              width: widthPercentageToDP(100),
+            }}
+            imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
             }}>
             <View
               style={{
-                height: heightPercentageToDP(5),
+                height: heightPercentageToDP(85),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+                borderTopLeftRadius: heightPercentageToDP(5),
+                borderTopRightRadius: heightPercentageToDP(5),
               }}>
               <View
                 style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}
-              />
-            </View>
-            <View style={{margin: heightPercentageToDP(2)}}>
-              <GradientTextWhite style={styles.textStyle}>
-                UPI Withdraw
-              </GradientTextWhite>
-            </View>
-
-            {/** FOR UPI DEPOSIT FORM */}
-
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View
-                style={{
-                  height: heightPercentageToDP(70),
-                  padding: heightPercentageToDP(2),
+                  height: heightPercentageToDP(5),
+                  width: widthPercentageToDP(100),
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                {/** Amount */}
                 <View
                   style={{
+                    width: widthPercentageToDP(20),
+                    height: heightPercentageToDP(0.8),
+                    backgroundColor: COLORS.grayBg,
                     borderRadius: heightPercentageToDP(2),
-                    padding: heightPercentageToDP(1),
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                      paddingStart: heightPercentageToDP(1),
-                    }}>
-                    Amount
-                  </Text>
-
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                    }}>
-                    <TextInput
-                      underlineColor="transparent"
-                      activeUnderlineColor="transparent"
-                      cursorColor={COLORS.white}
-                      placeholderTextColor={COLORS.black}
-                      style={{
-                        backgroundColor: 'transparent',
-                        fontFamily: FONT.Montserrat_Bold,
-                        color: COLORS.black,
-                      }}
-                      textColor={COLORS.black}
-                      fontFamily={FONT.Montserrat_Bold}
-                      value={amountval}
-                      inputMode="decimal"
-                      onChangeText={text => setAmountval(text)}
-                    />
-                  </LinearGradient>
-                </View>
-
-                {/** Upi Holder Name*/}
-                <View
-                  style={{
-                    borderRadius: heightPercentageToDP(2),
-                    padding: heightPercentageToDP(1),
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                      paddingStart: heightPercentageToDP(1),
-                    }}>
-                    UPI Holder Name
-                  </Text>
-
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                    }}>
-                    <TextInput
-                      underlineColor="transparent"
-                      activeUnderlineColor="transparent"
-                      cursorColor={COLORS.white}
-                      placeholderTextColor={COLORS.black}
-                      style={{
-                        backgroundColor: 'transparent',
-                        fontFamily: FONT.Montserrat_Bold,
-                        color: COLORS.black,
-                      }}
-                      value={upiHolderName}
-                      onChangeText={text => setUpiHolderName(text)}
-                    />
-                  </LinearGradient>
-                </View>
-
-                {/** UPI id*/}
-                <View
-                  style={{
-                    borderRadius: heightPercentageToDP(2),
-                    padding: heightPercentageToDP(1),
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                      paddingStart: heightPercentageToDP(1),
-                    }}>
-                    UPI ID
-                  </Text>
-
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                    }}>
-                    <TextInput
-                      underlineColor="transparent"
-                      activeUnderlineColor="transparent"
-                      cursorColor={COLORS.white}
-                      placeholderTextColor={COLORS.black}
-                      style={{
-                        backgroundColor: 'transparent',
-                        fontFamily: FONT.Montserrat_Bold,
-                        color: COLORS.black,
-                      }}
-                      value={upiId}
-                      onChangeText={text => setUpiId(text)}
-                    />
-                  </LinearGradient>
-                </View>
-
-                {/** Remark */}
-
-                <View
-                  style={{
-                    borderRadius: heightPercentageToDP(2),
-                    padding: heightPercentageToDP(1),
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                      paddingStart: heightPercentageToDP(1),
-                    }}>
-                    Remark
-                  </Text>
-
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                    }}>
-                    <TextInput
-                      underlineColor="transparent"
-                      activeUnderlineColor="transparent"
-                      cursorColor={COLORS.white}
-                      placeholderTextColor={COLORS.black}
-                      style={{
-                        backgroundColor: 'transparent',
-                        fontFamily: FONT.Montserrat_Bold,
-                        color: COLORS.black,
-                        minHeight: heightPercentageToDP(10),
-                      }}
-                      multiline={true}
-                      value={remarkval}
-                      numberOfLines={4}
-                      onChangeText={text => setRemarkval(text)}
-                    />
-                  </LinearGradient>
-                </View>
-
-                {/** SUBMIT CONTAINER */}
-                <View
-                  style={{
-                    marginBottom: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                  }}>
-                  {showProgressBar ? (
-                    <Loading />
-                  ) : (
-                    <TouchableOpacity
-                      onPress={submitHandler}
-                      style={{
-                        backgroundColor: COLORS.blue,
-                        padding: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                        alignItems: 'center',
-                      }}>
-                      <Text
-                        style={{
-                          color: COLORS.white,
-                          fontFamily: FONT.Montserrat_Regular,
-                        }}>
-                        Submit
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
+                  }}
+                />
               </View>
-            </ScrollView>
-          </View>
-        </ImageBackground>
-      </View>
-    </View>
+              <View style={{margin: heightPercentageToDP(2)}}>
+                <GradientTextWhite style={styles.textStyle}>
+                  UPI Withdraw
+                </GradientTextWhite>
+              </View>
+
+              {/** FOR UPI DEPOSIT FORM */}
+
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <View
+                  style={{
+                    height: heightPercentageToDP(70),
+                    padding: heightPercentageToDP(2),
+                  }}>
+                  {/** Amount */}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Amount
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        textColor={COLORS.black}
+                        fontFamily={FONT.Montserrat_Bold}
+                        value={amountval}
+                        inputMode="decimal"
+                        onChangeText={text => setAmountval(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** Upi Holder Name*/}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      UPI Holder Name
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={upiHolderName}
+                        onChangeText={text => setUpiHolderName(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** UPI id*/}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      UPI ID
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={upiId}
+                        onChangeText={text => setUpiId(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** Remark */}
+
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Remark
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                          minHeight: heightPercentageToDP(10),
+                        }}
+                        multiline={true}
+                        value={remarkval}
+                        numberOfLines={4}
+                        onChangeText={text => setRemarkval(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** SUBMIT CONTAINER */}
+                  <View
+                    style={{
+                      marginBottom: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                    }}>
+                    {showProgressBar ? (
+                      <Loading />
+                    ) : (
+                      <TouchableOpacity
+                        onPress={submitHandler}
+                        style={{
+                          backgroundColor: COLORS.blue,
+                          padding: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            color: COLORS.white,
+                            fontFamily: FONT.Montserrat_Regular,
+                          }}>
+                          Submit
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              </ScrollView>
+            </View>
+          </ImageBackground>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

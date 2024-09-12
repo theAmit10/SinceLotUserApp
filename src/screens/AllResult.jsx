@@ -25,12 +25,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllLocations} from '../redux/actions/locationAction';
 import {getAllResult} from '../redux/actions/resultAction';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import { getTimeAccordingToTimezone } from './SearchTime';
 
 const AllResult = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken,user} = useSelector(state => state.user);
   // const {loading, locations} = useSelector(state => state.location);
   const {loading, results} = useSelector(state => state.result);
 
@@ -238,7 +239,7 @@ const AllResult = () => {
                           fontSize: heightPercentageToDP(2),
                           color: COLORS.black
                         }}>
-                        {item.lottime.lottime}
+                        {getTimeAccordingToTimezone(item.lottime.lottime, user?.country?.timezone)}
                       </Text>
                     </View>
                   </View>

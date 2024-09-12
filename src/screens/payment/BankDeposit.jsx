@@ -291,7 +291,7 @@ const BankDeposit = () => {
                     Bank
                   </GradientTextWhite>
                   <GradientTextWhite style={styles.textStyleContent}>
-                    {selectedUpiId.paymentId}
+                    {selectedUpiId?.paymentId}
                   </GradientTextWhite>
                   <LinearGradient
                     colors={[COLORS.grayBg, COLORS.white_s]}
@@ -311,7 +311,7 @@ const BankDeposit = () => {
               {upiVisible &&
                 allDepositdata.map(item => (
                   <TouchableOpacity
-                    key={item.id}
+                    key={item._id}
                     onPress={() => settingUpiId(item)}>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}

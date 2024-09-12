@@ -29,7 +29,8 @@ const ALL_ABOUT_API = server + 'user/getallabout';
 
 // For Reset and Forgot password
 const FORGOT_PASSWORD_API = server + 'user/forgetpassword';
-const NOTIFICATION_API = server + 'user/allnotification';
+const NOTIFICATION_API = server + 'user/';
+const NOTIFICATION_SEEN_API = server + 'user/';
 
 // Payment Deposit
 const ALL_UPI_API = server + 'result/allupipaymets';
@@ -51,6 +52,8 @@ const WITHDRAW_PAYMENT_API = server + 'user/createwithdraw';
 
 //   FOR PLAY REQUEST
 const CREATE_PLAY_API = server + 'result/playbet/addplybet';
+
+const BALANCE_TRANSFER_TO_WALLET_TWO_API = server + 'user/balancetransfer';
 
 
 
@@ -89,5 +92,7 @@ export default {
   DEPOSIT_CRYPTO_API,
   DEPOSIT_API,
   WITHDRAW_PAYMENT_API,
-  CREATE_PLAY_API
+  CREATE_PLAY_API,
+  BALANCE_TRANSFER_TO_WALLET_TWO_API,
+  NOTIFICATION_SEEN_API
 };

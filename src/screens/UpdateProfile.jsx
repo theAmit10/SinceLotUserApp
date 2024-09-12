@@ -29,7 +29,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadProfile, logout} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
 import Loading from '../components/helpercComponent/Loading';
-import {HOVER} from 'nativewind/dist/utils/selector';
 import LinearGradient from 'react-native-linear-gradient';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
@@ -50,9 +49,7 @@ const UpdateProfile = () => {
 
   useEffect(() => {
     dispatch(loadProfile(accesstoken));
-
   }, [isFocused]);
-
 
   const [showProgressBar, setProgressBar] = useState(false);
 
@@ -105,15 +102,11 @@ const UpdateProfile = () => {
     }
   };
 
- 
-
   return (
     <View style={{flex: 1}}>
       <ProfileBackground />
 
       {/** Profile Cointainer */}
-
-      
 
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <ImageBackground
@@ -152,27 +145,25 @@ const UpdateProfile = () => {
                 }}></View>
             </View>
 
-           
-        <GradientTextWhite
-          style={{
-            fontSize: heightPercentageToDP(3.5),
-            fontFamily: FONT.Montserrat_Bold,
-            color: COLORS.darkGray,
-            marginStart: heightPercentageToDP(2)
-          }}>
-          Update
-        </GradientTextWhite>
+            <GradientTextWhite
+              style={{
+                fontSize: heightPercentageToDP(3.5),
+                fontFamily: FONT.Montserrat_Bold,
+                color: COLORS.darkGray,
+                marginStart: heightPercentageToDP(2),
+              }}>
+              Update
+            </GradientTextWhite>
 
-        <GradientTextWhite
-          style={{
-            fontSize: heightPercentageToDP(3.5),
-            fontFamily: FONT.Montserrat_Bold,
-            color: COLORS.darkGray,
-            marginStart: heightPercentageToDP(2)
-          }}>
-          Profile
-        </GradientTextWhite>
-
+            <GradientTextWhite
+              style={{
+                fontSize: heightPercentageToDP(3.5),
+                fontFamily: FONT.Montserrat_Bold,
+                color: COLORS.darkGray,
+                marginStart: heightPercentageToDP(2),
+              }}>
+              Profile
+            </GradientTextWhite>
 
             <ScrollView>
               {/** Profile Main Container */}
@@ -397,7 +388,8 @@ const UpdateProfile = () => {
 
                   {/** Change name container */}
 
-                  <View
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('ChangeName')}
                     style={{
                       height: heightPercentageToDP(7),
                       flexDirection: 'row',
@@ -417,54 +409,23 @@ const UpdateProfile = () => {
                       />
                     </LinearGradient>
 
-                    <TextInput
+                    <Text
                       style={{
                         marginStart: heightPercentageToDP(1),
                         flex: 1,
                         fontFamily: FONT.Montserrat_Regular,
                         fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
-                      }}
-                      placeholder="Name"
-                      placeholderTextColor={COLORS.black}
-                      label="Name"
-                      value={name}
-                      onChangeText={text => setName(text)}
+                      }}>
+                      Change Name
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
                     />
-                  </View>
-
-                  {/** Email */}
-
-                  {/** Phone number */}
-
-                  {/** Bottom Submit Container */}
-
-                  <View
-                    style={{
-                      marginBottom: heightPercentageToDP(5),
-                      marginTop: heightPercentageToDP(2),
-                    }}>
-                    {showProgressBar ? (
-                      <Loading />
-                    ) : (
-                      <TouchableOpacity
-                        onPress={updateProfileHandler}
-                        style={{
-                          backgroundColor: COLORS.blue,
-                          padding: heightPercentageToDP(2),
-                          borderRadius: heightPercentageToDP(1),
-                          alignItems: 'center',
-                        }}>
-                        <Text
-                          style={{
-                            color: COLORS.white,
-                            fontFamily: FONT.Montserrat_Regular,
-                          }}>
-                          Submit
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </View>
             </ScrollView>

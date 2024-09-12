@@ -50,6 +50,10 @@ import Withdrawbank from '../screens/payment/Withdrawbank';
 import Withdrawpaypal from '../screens/payment/Withdrawpaypal';
 import Withdrawskrill from '../screens/payment/Withdrawskrill';
 import Withdrawcrypto from '../screens/payment/Withdrawcrypto';
+import SelectCountry from '../components/helpercComponent/SelectCountry';
+import BalanceTransfer from '../screens/payment/BalanceTransfer';
+import UserProfile from '../screens/UserProfile';
+import ChangeName from '../screens/ChangeName';
 
 
 const Stack = createNativeStackNavigator()
@@ -113,6 +117,11 @@ const Main = () => {
                 <Stack.Screen  name="Withdrawpaypal" component={Withdrawpaypal}/>
                 <Stack.Screen  name="Withdrawskrill" component={Withdrawskrill}/>
                 <Stack.Screen  name="Withdrawcrypto" component={Withdrawcrypto}/>
+
+                <Stack.Screen  name="SelectCountry" component={SelectCountry}/>
+                <Stack.Screen  name="BalanceTransfer" component={BalanceTransfer}/>
+                <Stack.Screen  name="UserProfile" component={UserProfile}/>
+                <Stack.Screen  name="ChangeName" component={ChangeName}/>
 
             </Stack.Group>
         </Stack.Navigator>

@@ -1,7 +1,6 @@
 import {
   FlatList,
   ImageBackground,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -14,138 +13,31 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../assets/constants';
-import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllLocations} from '../redux/actions/locationAction';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import LinearGradient from 'react-native-linear-gradient';
-import {getTimeAccordingLocation} from '../redux/actions/timeAction';
 import {useGetAllLocationWithTimeQuery} from '../helper/Networkcall';
-import NoDataFound from '../components/helpercComponent/NoDataFound';
+import {loadProfile} from '../redux/actions/userAction';
+import {getTimeAccordingToTimezone} from './SearchTime';
+import moment from "moment-timezone";
+import Toast from 'react-native-toast-message';
 
-const datatypefilter = [
-  {id: 'all', val: 'All'},
-  {id: '2x', val: '2X'},
-  {id: '5x', val: '5X'},
-  {id: '10x', val: '10X'},
-  {id: '50x', val: '50X'},
-  {id: '100x', val: '100X'},
-  {id: '200x', val: '200X'},
-];
-
-const locationdata = [
-  {
-    id: '1',
-    name: 'Canada',
-    limit: '200 - 200X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '12', time: '10:00 AM'},
-      {id: '13', time: '11:00 AM'},
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '2',
-    name: 'Japan',
-    limit: '200 - 200X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '12', time: '10:00 AM'},
-      {id: '13', time: '11:00 AM'},
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '3',
-    name: 'Punjab',
-    limit: '200 - 200X',
-    times: [
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '4',
-    name: 'Pune',
-    limit: '200 - 200X',
-    times: [
-      {id: '13', time: '11:00 AM'},
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '5',
-    name: 'China',
-    limit: '100 - 100X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '6',
-    name: 'India',
-    limit: '200 - 200X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '12', time: '10:00 AM'},
-      {id: '13', time: '11:00 AM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '7',
-    name: 'USA',
-    limit: '200 - 200X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '12', time: '10:00 AM'},
-      {id: '13', time: '11:00 AM'},
-      {id: '14', time: '12:00 PM'},
-    ],
-  },
-  {
-    id: '8',
-    name: 'Korea',
-    limit: '200 - 200X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '12', time: '10:00 AM'},
-      {id: '13', time: '11:00 AM'},
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-];
 
 const PlayArenaLocation = () => {
   const navigation = useNavigation();
-  const {accesstoken} = useSelector(state => state.user);
-  const [alldatafiler, setalldatafilter] = useState([])
+  const {accesstoken, user} = useSelector(state => state.user);
+  const [alldatafiler, setalldatafilter] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState(null);
+  const dispatch = useDispatch();
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    dispatch(loadProfile(accesstoken));
+  }, [isFocused]);
 
   const {data, error, isLoading} = useGetAllLocationWithTimeQuery(accesstoken);
 
@@ -153,16 +45,16 @@ const PlayArenaLocation = () => {
   useEffect(() => {
     if (!isLoading && data) {
       const uniqueItems = new Set();
-      const filtertype = [{ _id: '123', maximumReturn: 'All' }]; // Default element
-  
+      const filtertype = [{_id: '123', maximumReturn: 'All'}]; // Default element
+
       data.locationData.forEach(item => {
         const key = item.maximumReturn;
         if (!uniqueItems.has(key)) {
           uniqueItems.add(key);
-          filtertype.push({ _id: item._id, maximumReturn: item.maximumReturn });
+          filtertype.push({_id: item._id, maximumReturn: item.maximumReturn});
         }
       });
-  
+
       // Sorting the filtertype array
       filtertype.sort((a, b) => {
         if (a.maximumReturn === 'All') return -1;
@@ -171,30 +63,26 @@ const PlayArenaLocation = () => {
         const bReturn = parseFloat(b.maximumReturn.replace('x', ''));
         return aReturn - bReturn;
       });
-  
+
       setalldatafilter(filtertype);
       setSelectedFilter(filtertype[0]._id);
-  
+
       console.log(filtertype);
     }
   }, [isLoading, data]);
-  
-
-
-  
 
   const settingFilterData = itemf => {
     setSelectedFilter(itemf._id);
-    if(itemf.maximumReturn.toLowerCase() === 'all')
-    {
+    if (itemf.maximumReturn.toLowerCase() === 'all') {
       setFilteredData(data?.locationData);
-    }else{
+    } else {
       const filtered = data?.locationData.filter(item =>
-        item.maximumReturn.toLowerCase().includes(itemf.maximumReturn.toLowerCase()),
+        item.maximumReturn
+          .toLowerCase()
+          .includes(itemf.maximumReturn.toLowerCase()),
       );
       setFilteredData(filtered);
     }
-   
   };
 
   const [expandedItems, setExpandedItems] = useState({});
@@ -206,6 +94,42 @@ const PlayArenaLocation = () => {
     }));
   };
 
+  const navigationHandler = (item, timeItem) => {
+    const now = moment.tz(user?.country?.timezone);
+    console.log("Current Time: ", now.format("hh:mm A"));
+    console.log("Current Date: ", now.format("DD-MM-YYYY"));
+
+    const lotTimeMoment = moment.tz(
+      timeItem?.time,
+      "hh:mm A",
+      user?.country?.timezone
+    );
+    console.log(`Lot Time for location : ${lotTimeMoment.format("hh:mm A")}`);
+
+    // Subtract 15 minutes from the lotTimeMoment
+    const lotTimeMinus15Minutes = lotTimeMoment.clone().subtract(15, 'minutes');
+    
+    const isLotTimeClose = now.isSameOrAfter(lotTimeMinus15Minutes) && now.isBefore(lotTimeMoment);
+    console.log(`Is it within 15 minutes of the lot time? ${isLotTimeClose}`);
+
+    if (isLotTimeClose) {
+        console.log("Navigating to PlayArena...");
+        Toast.show({
+          type: 'info',
+          text1: 'Entry is close for this session',
+          text2: 'Please choose next available time'
+        })
+       
+    } else {
+        console.log("It's too early or past the lot time.");
+         navigation.navigate('PlayArena', {
+          locationdata: item,
+          timedata: timeItem,
+        })
+    }
+};
+
+
   const [filteredData, setFilteredData] = useState([]);
 
   const handleSearch = text => {
@@ -216,7 +140,10 @@ const PlayArenaLocation = () => {
   };
 
   useEffect(() => {
-    setFilteredData(data?.locationData); // Update filteredData whenever locations change
+    if (!isLoading && data) {
+      setFilteredData(data?.locationData); // Update filteredData whenever locations change
+      console.log(data);
+    }
   }, [data]);
 
   const renderItem = ({item, index}) => {
@@ -224,8 +151,6 @@ const PlayArenaLocation = () => {
     for (let i = 0; i < item.times.length; i += 2) {
       groupedTimes.push(item.times.slice(i, i + 2));
     }
-
-
 
     return (
       <>
@@ -236,6 +161,8 @@ const PlayArenaLocation = () => {
                 ? [COLORS.lightblue, COLORS.midblue]
                 : [COLORS.lightyellow, COLORS.darkyellow]
             }
+            start={{x: 0, y: 0}} // start from left
+            end={{x: 1, y: 0}} // end at right
             style={styles.item}>
             <View style={{flex: 1.5}}>
               <Text
@@ -304,20 +231,17 @@ const PlayArenaLocation = () => {
                       {pair.map(timeItem => (
                         <TouchableOpacity
                           key={timeItem._id}
-                          
                           onPress={() =>
-                            navigation.navigate('PlayArena', {
-                              locationdata: item,
-                              timedata: timeItem
-                            })
-                          }
-                          >
+                           navigationHandler(item,timeItem)
+                          }>
                           <LinearGradient
                             colors={
                               idx % 2 === 0
                                 ? [COLORS.lightblue, COLORS.midblue]
                                 : [COLORS.lightyellow, COLORS.darkyellow]
                             }
+                            start={{x: 0, y: 0}} // start from left
+                            end={{x: 1, y: 0}} // end at right
                             style={{
                               ...styles.item,
                               flexDirection: 'row',
@@ -333,7 +257,10 @@ const PlayArenaLocation = () => {
                                 fontSize: heightPercentageToDP(1.8),
                                 textAlignVertical: 'center',
                               }}>
-                              {timeItem.time}
+                              {getTimeAccordingToTimezone(
+                                timeItem.time,
+                                user?.country?.timezone,
+                              )}
                             </Text>
                             <Text
                               style={{
@@ -399,6 +326,7 @@ const PlayArenaLocation = () => {
               style={{
                 height: heightPercentageToDP(21),
                 margin: heightPercentageToDP(2),
+                marginTop: heightPercentageToDP(-1.5),
               }}>
               <GradientTextWhite style={styles.textStyle}>
                 Search

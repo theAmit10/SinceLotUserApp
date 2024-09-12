@@ -24,6 +24,24 @@ import {getAllDate} from '../redux/actions/dateAction';
 import {getTimeAccordingLocation} from '../redux/actions/timeAction';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import LinearGradient from 'react-native-linear-gradient';
+import moment from "moment-timezone";
+
+export function getTimeAccordingToTimezone(time, targetTimeZone) {
+  // Get the current date in "DD-MM-YYYY" format
+  const todayDate = moment().format("DD-MM-YYYY");
+  
+  // Combine the current date and time into a full datetime string
+  const dateTimeIST = `${todayDate} ${time}`;
+
+  // Convert the combined date and time to a moment object in the IST timezone
+  const istTime = moment.tz(dateTimeIST, "DD-MM-YYYY hh:mm A", "Asia/Kolkata");
+
+  // Convert the IST time to the target timezone
+  const targetTime = istTime.clone().tz(targetTimeZone);
+
+  // Return only the time in the target timezone
+  return targetTime.format("hh:mm A");
+}
 
 const SearchTime = ({route}) => {
   const navigation = useNavigation();
@@ -49,7 +67,7 @@ const SearchTime = ({route}) => {
 
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken,user} = useSelector(state => state.user);
   const {loading, times} = useSelector(state => state.time);
   const [filteredData, setFilteredData] = useState([]);
 
@@ -79,6 +97,140 @@ const SearchTime = ({route}) => {
       text1: 'Searching',
     });
   };
+
+  // FOR TIMEZONE
+
+ 
+
+  // JSON data of countries and their timezones
+  const countryTimeZones = [
+    { name: "India", timezone: "Asia/Kolkata" },
+    { name: "United States", timezone: "America/New_York" },
+    { name: "Germany", timezone: "Europe/Berlin" },
+    { name: "Australia", timezone: "Australia/Sydney" },
+    { name: "Japan", timezone: "Asia/Tokyo" },
+    // Add all other countries and their timezones here
+  ];
+
+  // Function to convert IST to user’s timezone
+  function convertISTToUserTime(adminTimeIST, userCountry) {
+    // Convert admin's hardcoded IST time to a moment object
+    const istTime = moment.tz(adminTimeIST, "Asia/Kolkata");
+
+    // Find the user's timezone from the country
+    const userCountryData = countryTimeZones.find(
+      (country) => country.name === userCountry
+    );
+
+    if (userCountryData) {
+      const userTimeZone = userCountryData.timezone;
+
+      // Convert IST time to the user's timezone
+      const userTime = istTime.clone().tz(userTimeZone);
+      return userTime.format("YYYY-MM-DD hh:mm A");
+    } else {
+      // Handle the case where the user's country is not found
+      return "Country not found!";
+    }
+  }
+
+  // Example usage:
+  const adminSetTimeIST = "2024-08-24 11:14"; // Admin set time in IST
+
+  const users = [
+    { name: "User A", country: "India" },
+    { name: "User B", country: "United States" },
+    { name: "User C", country: "Germany" },
+  ];
+
+  // Convert and display time for each user based on their country
+  users.forEach((user) => {
+    const userLocalTime = convertISTToUserTime(adminSetTimeIST, user.country);
+    console.log(
+      `${user.name} in ${user.country} sees the time: ${userLocalTime}`
+    );
+  });
+
+
+
+
+
+  // Import moment-timezone if not already imported
+// npm install moment-timezone
+
+
+// function convertISTToSpecificTimeZone(todayDate, time, targetTimeZone) {
+//   // Combine the date and time strings into a full datetime string
+//   const dateTimeIST = `${todayDate} ${time}`;
+
+//   // Convert the combined date and time to a moment object in the IST timezone
+//   const istTime = moment.tz(dateTimeIST, "DD-MM-YYYY hh:mm A", "Asia/Kolkata");
+
+//   // Convert the IST time to the target timezone
+//   const targetTime = istTime.clone().tz(targetTimeZone);
+
+//   // Return the formatted time in the target timezone
+//   return targetTime.format("YYYY-MM-DD hh:mm A");
+// }
+
+// // Example usage:
+// const todayDate = "29-08-2024";
+// const time = "11:29 AM";
+// const timezone = "Europe/Berlin";
+
+// const convertedTime = convertISTToSpecificTimeZone(todayDate, time, timezone);
+// console.log(`Converted time: ${convertedTime}`);
+
+
+
+// Example usage:
+const time = "11:32 AM";
+const timezone = "America/New_York";
+
+const convertedTime = getTimeAccordingToTimezone(time, user.country.timezone);
+console.log(`Converted time: ${convertedTime}`);
+
+console.log(user.country.timezone)
+
+const navigationHandler = (locationdata, item) => {
+  const now = moment.tz(user?.country?.timezone);
+  console.log("Current Time: ", now.format("hh:mm A"));
+  console.log("Current Date: ", now.format("DD-MM-YYYY"));
+
+  const lotTimeMoment = moment.tz(
+    item?.lottime,
+    "hh:mm A",
+    user?.country?.timezone
+  );
+  console.log(`Lot Time for location : ${lotTimeMoment.format("hh:mm A")}`);
+
+  // Subtract 15 minutes from the lotTimeMoment
+  const lotTimeMinus15Minutes = lotTimeMoment.clone().subtract(15, 'minutes');
+  
+  const isLotTimeClose = now.isSameOrAfter(lotTimeMinus15Minutes) && now.isBefore(lotTimeMoment);
+  console.log(`Is it within 15 minutes of the lot time? ${isLotTimeClose}`);
+
+  if (isLotTimeClose) {
+      console.log("Navigating to PlayArena...");
+      Toast.show({
+        type: 'info',
+        text1: 'Entry is close for this session',
+        text2: 'Please choose next available time'
+      })
+     
+  } else {
+      console.log("It's too early or past the lot time.");
+       navigation.navigate('PlayArena', {
+        locationdata: locationdata,
+        timedata: item,
+      })
+  }
+};
+
+
+
+
+
 
   return (
     <View style={{flex: 1}}>
@@ -190,6 +342,8 @@ const SearchTime = ({route}) => {
                             ? [COLORS.time_firstblue, COLORS.time_secondbluw]
                             : [COLORS.time_firstgreen, COLORS.time_secondgreen]
                         }
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
                         style={{
                           ...styles.item,
                           flexDirection: 'row',
@@ -201,19 +355,20 @@ const SearchTime = ({route}) => {
                             fontFamily: FONT.Montserrat_SemiBold,
                             fontSize: heightPercentageToDP(2.5),
                           }}>
-                          {item.lottime}
+                          {getTimeAccordingToTimezone(item.lottime, user?.country?.timezone)}
                         </Text>
-                        <TouchableOpacity>
-                        <Text
-                          style={{
-                            color: COLORS.black,
-                            fontFamily: FONT.Montserrat_Regular,
-                            fontSize: heightPercentageToDP(2.5),
-                          }}>
-                          Play
-                        </Text>
+                        <TouchableOpacity
+                         onPress={() => navigationHandler(locationdata,item)}
+                        >
+                          <Text
+                            style={{
+                              color: COLORS.black,
+                              fontFamily: FONT.Montserrat_Regular,
+                              fontSize: heightPercentageToDP(2.5),
+                            }}>
+                            Play
+                          </Text>
                         </TouchableOpacity>
-                        
                       </LinearGradient>
                     </TouchableOpacity>
                   )}

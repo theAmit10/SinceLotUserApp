@@ -26,6 +26,17 @@ import {
   useCreateWithdrawMutation,
 } from '../../helper/Networkcall';
 
+export function canPlaceWithdraw(walletBalanceStr, bettingAmountStr) {
+  const walletBalance = parseFloat(walletBalanceStr);
+  const bettingAmount = parseFloat(bettingAmountStr);
+
+  if (isNaN(walletBalance) || isNaN(bettingAmount)) {
+    throw new Error('Invalid input: Both inputs must be valid numbers.');
+  }
+
+  return walletBalance >= bettingAmount;
+}
+
 const Withdrawpaypal = () => {
   const navigation = useNavigation();
   const {accesstoken, user} = useSelector(state => state.user);
@@ -43,7 +54,14 @@ const Withdrawpaypal = () => {
       Toast.show({type: 'error', text1: 'Enter Amount'});
     } else if (!paypalEmail) {
       Toast.show({type: 'error', text1: 'Enter paypal email address'});
-    } else {
+    } else if (!canPlaceWithdraw(user.walletOne.balance, amountval)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Insufficent Balance',
+        text2: 'Add balance to '+user.walletOne.walletName,
+      });
+    } 
+     else {
       setProgressBar(true);
       try {
         const body = {

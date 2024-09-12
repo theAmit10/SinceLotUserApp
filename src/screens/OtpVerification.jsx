@@ -168,6 +168,8 @@ const OtpVerification = () => {
                     borderRadius: heightPercentageToDP(1),
                     alignItems: 'center',
                     justifyContent: 'center',
+                    backgroundColor: COLORS.white_s,
+                    borderRadius: heightPercentageToDP(4)
                   }}>
                   <Text
                     style={{

@@ -1,5 +1,7 @@
 import {
+  Alert,
   ImageBackground,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -26,6 +28,10 @@ import {getResultAccordingToLocationTimeDate} from '../redux/actions/resultActio
 import Loading from '../components/helpercComponent/Loading';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import { getTimeAccordingToTimezone } from './SearchTime';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import FileViewer from 'react-native-file-viewer';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 const Result = ({route}) => {
   const {datedata} = route.params;
@@ -36,7 +42,7 @@ const Result = ({route}) => {
 
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken,user} = useSelector(state => state.user);
   const {loadingResult, results} = useSelector(state => state.result);
   const [filteredData, setFilteredData] = useState([]);
 
@@ -64,6 +70,118 @@ const Result = ({route}) => {
       text1: 'Processing',
     });
   };
+
+    // FOR DOWNLOAD PDF
+
+    const htmlContent = `
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Result</title>
+        <link rel="license" href="https://www.opensource.org/licenses/mit-license/">
+        <style>
+          ${htmlStyles}
+        </style>
+      </head>
+      <body>
+        <header>
+          <h1>RESULT</h1>
+        </header>
+        <article>
+      
+          <table class="inventory">
+            <thead>
+              <tr>
+                <th><span>Location</span></th>
+                <th><span>Date</span></th>
+                <th><span>Time</span></th>
+                <th><span>Result</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span>${filteredData[0]?.lotlocation?.lotlocation}</span></td>
+                <td><span>${filteredData[0]?.lotdate?.lotdate}</span></td>
+                <td><span>${getTimeAccordingToTimezone(filteredData[0]?.lottime?.lottime, user?.country?.timezone)}</span></td>
+                <td><span>${filteredData[0]?.resultNumber}</span></td>
+              </tr>
+            </tbody>
+          </table>
+          
+        </article>
+        <aside>
+          <h1><span>Since 1927</span></h1>
+          <div>
+            <p>Thank you for download</p>
+          </div>
+        </aside>
+      </body>
+    </html>
+  `;
+  
+    const checkAndRequestPermission = async () => {
+      const result = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+  
+      if (result === RESULTS.DENIED) {
+        if (Platform.OS === 'android' && Platform.Version <= 29) {
+          // Target Android 10 and above
+          const permissionResult = await request(
+            PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+          );
+          if (permissionResult !== RESULTS.GRANTED) {
+            console.log('Permission not granted!');
+            Toast.show({
+              type: 'info',
+              text1: 'Permission not granted!',
+            });
+            return;
+          }
+        }
+      }
+  
+      // Call your DocumentPicker.pick() function here
+  
+      console.log('Permission status');
+      createPDF();
+    };
+  
+    const createPDF = async () => {
+      let options = {
+        //Content to print
+        html: htmlContent,
+        //File Name
+        fileName: `${filteredData[0]?.lotdate?.lotdate}${getTimeAccordingToTimezone(filteredData[0]?.lottime?.lottime, user?.country?.timezone)}`,
+        //File directory
+        directory: 'Download',
+  
+        base64: true,
+      };
+  
+      let file = await RNHTMLtoPDF.convert(options);
+      // console.log(file.filePath);
+      Alert.alert(
+        'Successfully Exported',
+        'Path:' + file.filePath,
+        [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Open', onPress: () => openFile(file.filePath)},
+        ],
+        {cancelable: true},
+      );
+    };
+  
+    const openFile = filepath => {
+      const path = filepath; // absolute-path-to-my-local-file.
+      FileViewer.open(path)
+        .then(() => {
+          // success
+          console.log('All Good no error found');
+        })
+        .catch(error => {
+          // error
+          console.log('Found error :: ' + error);
+        });
+    };
 
   return (
     <View style={{flex: 1}}>
@@ -191,7 +309,7 @@ const Result = ({route}) => {
                             fontFamily: FONT.Montserrat_SemiBold,
                             fontSize: heightPercentageToDP(2),
                           }}>
-                          {filteredData[0].lottime.lottime}
+                          {getTimeAccordingToTimezone(filteredData[0].lottime.lottime, user?.country?.timezone)}
                         </Text>
                       </View>
                     </View>
@@ -234,7 +352,7 @@ const Result = ({route}) => {
                   </View>
 
                   <TouchableOpacity
-                    onPress={submitHandler}
+                    onPress={checkAndRequestPermission}
                     style={{
                       backgroundColor: COLORS.blue,
                       padding: heightPercentageToDP(2),
@@ -268,3 +386,91 @@ const styles = StyleSheet.create({
     color: COLORS.black,
   },
 });
+
+const htmlStyles = `
+*{
+  border: 0;
+  box-sizing: content-box;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  vertical-align: top;
+}
+
+h1 { font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase; }
+
+/* table */
+
+table { font-size: 75%; table-layout: fixed; width: 100%; }
+table { border-collapse: separate; border-spacing: 2px; }
+th, td { border-width: 1px; padding: 0.5em; position: relative; text-align: center; }
+th, td { border-radius: 0.25em; border-style: solid; }
+th { background: #EEE; border-color: #BBB; }
+td { border-color: #DDD; }
+
+/* page */
+
+html { font: 16px/1 'Open Sans', sans-serif; overflow: auto; }
+html { background: #999; cursor: default; }
+
+body { box-sizing: border-box;margin: 0 auto; overflow: hidden; padding: 0.25in; }
+body { background: #FFF; border-radius: 1px; box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5); }
+
+/* header */
+
+header { margin: 0 0 3em; }
+header:after { clear: both; content: ""; display: table; }
+
+header h1 { background: #000; border-radius: 0.25em; color: #FFF; margin: 0 0 1em; padding: 0.5em 0; }
+header address { float: left; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; }
+header address p { margin: 0 0 0.25em; }
+header span, header img { display: block; float: right; }
+header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
+header img { max-height: 100%; max-width: 100%; }
+
+/* article */
+
+article, article address, table.meta, table.inventory { margin: 0 0 3em; }
+article:after { clear: both; content: ""; display: table; }
+article h1 { clip: rect(0 0 0 0); position: absolute; }
+
+article address { float: left; font-size: 125%; font-weight: bold; }
+
+/* table meta & balance */
+
+table.meta, table.balance { float: right; width: 36%; }
+table.meta:after, table.balance:after { clear: both; content: ""; display: table; }
+
+/* table meta */
+
+table.meta th { width: 40%; }
+table.meta td { width: 60%; }
+
+/* table items */
+
+table.inventory { clear: both; width: 100%; }
+table.inventory th { font-weight: bold; text-align: center; }
+
+table.inventory td:nth-child(1) { width: 26%; }
+table.inventory td:nth-child(2) { width: 38%; }
+table.inventory td:nth-child(3) { text-align: center; width: 12%; }
+table.inventory td:nth-child(4) { text-align: center; width: 12%; }
+table.inventory td:nth-child(5) { text-align: center; width: 12%; }
+
+/* table balance */
+
+table.balance th, table.balance td { width: 50%; }
+table.balance td { text-align: right; }
+
+/* aside */
+
+aside h1 { border: none; border-width: 0 0 1px; margin: 0 0 1em; }
+aside h1 { border-color: #999; border-bottom-style: solid; }
+`;

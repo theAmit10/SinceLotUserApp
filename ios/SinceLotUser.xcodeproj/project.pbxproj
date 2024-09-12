@@ -36,6 +36,7 @@
 		F5C68438D52B4D75AC4BE9B5 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */; };
 		F723CADF2E70430A8EF29CAD /* Elephant.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F1B458E341A46BA8FF43DFC /* Elephant.ttf */; };
 		FB76C8E31E1F4DA28E025367 /* tlwbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C8E191CD58C24B35BD52FFAD /* tlwbg.jpg */; };
+		532574AA5826410380A6313A /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = D89DA867B68F432AB605C2F2 /* play.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "ZCOOL-Regular.ttf"; path = "../assets/fonts/ZCOOL-Regular.ttf"; sourceTree = "<group>"; };
 		FC098421A44144E6A865034B /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		D89DA867B68F432AB605C2F2 /* play.png */ = {isa = PBXFileReference; name = "play.png"; path = "../assets/image/play.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +220,7 @@
 				C7044A0783BC46E59B2D22CA /* skrill.png */,
 				31E20EC789324D03B0172843 /* deposit.png */,
 				8244E40274444AEC92F8FDF1 /* withdraw.png */,
+				D89DA867B68F432AB605C2F2 /* play.png */,
 			);
 			name = Resources;
 			path = "";
@@ -341,6 +344,7 @@
 				ECAB3AC066F4466CA1D66F62 /* skrill.png in Resources */,
 				BC61A2A200AE4083B9CEF46C /* deposit.png in Resources */,
 				6A479801F98E44C58C1A76C0 /* withdraw.png in Resources */,
+				532574AA5826410380A6313A /* play.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -78,10 +78,10 @@ export const loadProfile = accesstoken => async dispatch => {
   } catch (error) {
     console.log(error);
     console.log(error.response);
-    Toast.show({
-      type: 'error',
-      text1: error.response.data.message
-    })
+    // Toast.show({
+    //   type: 'error',
+    //   text1: error.response.data.message
+    // })
 
     dispatch({
       type: 'loadUserFail',
@@ -319,13 +319,15 @@ export const loadAllAboutUs = (accesstoken) => async dispatch => {
 
 
   // Load All Notification
-export const loadAllNotification = (accesstoken) => async dispatch => {
+export const loadAllNotification = (accesstoken,id) => async dispatch => {
   try {
     dispatch({
       type: 'getAllNotificationRequest',
   });
+
+  const url = `${UrlHelper.NOTIFICATION_API}${id}/notifications`
   
-    const {data} = await axios.get(UrlHelper.NOTIFICATION_API, {
+    const {data} = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${accesstoken}`,
       },

@@ -27,20 +27,51 @@ import {getAllResult} from '../redux/actions/resultAction';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 import {loadAllNotification} from '../redux/actions/userAction';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import { useCheckNotificationSeenMutation } from '../helper/Networkcall';
 
 const Notification = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken, notifications, loadingNotification} = useSelector(
+  const {accesstoken, user, notifications, loadingNotification} = useSelector(
     state => state.user,
   );
 
   const focused = useIsFocused();
 
   useEffect(() => {
-    dispatch(loadAllNotification(accesstoken));
+    dispatch(loadAllNotification(accesstoken, user._id));
   }, [dispatch, focused]);
+
+
+  useEffect(() => {
+    if (!loadingNotification && notifications) {
+      submitHandler();
+    }
+  }, [loadingNotification, notifications]);
+
+  const [checkNotificationSeen, { isLoading, error }] =
+    useCheckNotificationSeenMutation();
+
+  const submitHandler = async () => {
+    try {
+      const res = await checkNotificationSeen({
+        accessToken: accesstoken,
+        id: user._id,
+      }).unwrap();
+
+      console.log('seen status res :: ' + JSON.stringify(res));
+    } catch (error) {
+      console.log('Error during submitHandler:', error);
+    }
+  };
+
+
+  
+
+  
+  
+
 
   return (
     <View style={{flex: 1}}>
@@ -51,7 +82,7 @@ const Notification = () => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(70),
+            height: heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -59,7 +90,7 @@ const Notification = () => {
           }}>
           <View
             style={{
-              height: heightPercentageToDP(70),
+              height: heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -105,13 +136,13 @@ const Notification = () => {
                   }}>
                   <Loading />
                 </View>
-              ) : notifications && notifications.length == 0 ? (
+              ) : notifications && notifications.length === 0 ? (
                 <View
                   style={{
-                    height: heightPercentageToDP(10),
+                    height: heightPercentageToDP(30),
                     margin: heightPercentageToDP(2),
                   }}>
-                  <NoDataFound data={'No data found '} />
+                  <NoDataFound data={'No data available '} />
                 </View>
               ) : (
                 notifications?.map((item, index) => (

@@ -57,7 +57,7 @@ const GameDescritptionDetails = ({route}) => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(75),
+            height: heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -65,7 +65,7 @@ const GameDescritptionDetails = ({route}) => {
           }}>
           <View
             style={{
-              height: heightPercentageToDP(75),
+              height: heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),

@@ -1,5 +1,6 @@
 import {
   Alert,
+  ImageBackground,
   Platform,
   StyleSheet,
   Text,
@@ -20,10 +21,13 @@ import Background from '../components/background/Background';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import { useSelector } from 'react-redux';
+import { getTimeAccordingToTimezone } from './SearchTime';
 
 const ResultDetails = ({route}) => {
   const {data} = route.params;
 
+  const {accesstoken,user} = useSelector(state => state.user);
   console.log(JSON.stringify(data));
 
   const submitHandler = () => {
@@ -65,7 +69,7 @@ const ResultDetails = ({route}) => {
             <tr>
               <td><span>${data?.lotlocation?.lotlocation}</span></td>
               <td><span>${data?.lotdate?.lotdate}</span></td>
-              <td><span>${data?.lottime?.lottime}</span></td>
+              <td><span>${getTimeAccordingToTimezone(data?.lottime?.lottime, user?.country?.timezone)}</span></td>
               <td><span>${data?.resultNumber}</span></td>
             </tr>
           </tbody>
@@ -113,7 +117,7 @@ const ResultDetails = ({route}) => {
       //Content to print
       html: htmlContent,
       //File Name
-      fileName: `${data.lotdate.lotdate}${data.lottime.lottime}`,
+      fileName: `${data.lotdate.lotdate}${getTimeAccordingToTimezone(data?.lottime?.lottime, user?.country?.timezone)}`,
       //File directory
       directory: 'Download',
 
@@ -150,168 +154,180 @@ const ResultDetails = ({route}) => {
     <View style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Result</GradientText>
-        <GradientText style={styles.textStyle}>Details</GradientText>
-      </View>
-
       {/** Login Cointainer */}
 
-      <View
-        style={{
-          height: heightPercentageToDP(65),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
-
-        {/** Result Main Container */}
-
-        <View
-          style={{
-            flex: 1,
             margin: heightPercentageToDP(2),
+            backgroundColor: 'transparent',
+          }}>
+          <GradientText style={styles.textStyle}>Result</GradientText>
+          <GradientText style={styles.textStyle}>Details</GradientText>
+        </View>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
           <View
             style={{
-              marginTop: heightPercentageToDP(3),
-              paddingVertical: heightPercentageToDP(2),
-              gap: heightPercentageToDP(2),
+              height: heightPercentageToDP(65),
+              width: widthPercentageToDP(100),
+
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
+            {/** Top Style View */}
             <View
               style={{
-                height: heightPercentageToDP(35),
-                backgroundColor: COLORS.grayHalfBg,
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
               <View
                 style={{
-                  height: heightPercentageToDP(25),
-                  borderRadius: heightPercentageToDP(1),
-                  flexDirection: 'row',
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
+
+            {/** Result Main Container */}
+
+            <View
+              style={{
+                flex: 1,
+                margin: heightPercentageToDP(2),
+              }}>
+              <View
+                style={{
+                  marginTop: heightPercentageToDP(3),
+                  paddingVertical: heightPercentageToDP(2),
+                  gap: heightPercentageToDP(2),
                 }}>
-                {/** Top view left container */}
                 <View
                   style={{
-                    flex: 5,
-                    justifyContent: 'center',
+                    height: heightPercentageToDP(35),
+                    backgroundColor: COLORS.grayHalfBg,
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <View
+                    style={{
+                      height: heightPercentageToDP(25),
+                      borderRadius: heightPercentageToDP(1),
+                      flexDirection: 'row',
+                    }}>
+                    {/** Top view left container */}
+                    <View
+                      style={{
+                        flex: 5,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(3),
+                          marginTop: heightPercentageToDP(1),
+                          color: COLORS.black,
+                        }}>
+                        {data.lotlocation.lotlocation}
+                      </Text>
+
+                      <GradientText
+                        style={{
+                          fontSize: heightPercentageToDP(11),
+                          color: COLORS.black,
+                        }}>
+                        {data.resultNumber}
+                      </GradientText>
+                    </View>
+
+                    {/** Top view right container */}
+                    <View
+                      style={{
+                        flex: 1,
+                        backgroundColor: COLORS.gray2,
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          transform: [{rotate: '90deg'}],
+                          color: COLORS.black,
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          fontSize: heightPercentageToDP(1.5),
+                        }}>
+                        {getTimeAccordingToTimezone(data?.lottime?.lottime, user?.country?.timezone)}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/** Big Result bottom container */}
+
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: COLORS.white_s,
+                      margin: heightPercentageToDP(1),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      gap: heightPercentageToDP(1),
+                    }}>
+                    <View
+                      style={{
+                        backgroundColor: COLORS.grayHalfBg,
+                        padding: heightPercentageToDP(1),
+                        borderRadius: heightPercentageToDP(1),
+                        marginStart: heightPercentageToDP(-3),
+                      }}>
+                      <Ionicons
+                        name={'calendar'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </View>
+
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      {data.lotdate.lotdate}
+                    </Text>
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  onPress={checkAndRequestPermission}
+                  style={{
+                    backgroundColor: COLORS.blue,
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
                     alignItems: 'center',
                   }}>
                   <Text
                     style={{
+                      color: COLORS.white,
                       fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(3),
-                      marginTop: heightPercentageToDP(1),
-                      color: COLORS.black
                     }}>
-                    {data.lotlocation.lotlocation}
+                    Download
                   </Text>
-
-                  <GradientText
-                    style={{
-                      fontSize: heightPercentageToDP(11),
-                      color: COLORS.black,
-                    }}>
-                    {data.resultNumber}
-                  </GradientText>
-                </View>
-
-                {/** Top view right container */}
-                <View
-                  style={{
-                    flex: 1,
-                    backgroundColor: COLORS.gray2,
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      transform: [{rotate: '90deg'}],
-                      color: COLORS.black,
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      fontSize: heightPercentageToDP(1.5),
-                    }}>
-                    {data.lottime.lottime}
-                  </Text>
-                </View>
-              </View>
-
-              {/** Big Result bottom container */}
-
-              <View
-                style={{
-                  flex: 1,
-                  backgroundColor: COLORS.white_s,
-                  margin: heightPercentageToDP(1),
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  gap: heightPercentageToDP(1),
-                }}>
-                <View
-                  style={{
-                    backgroundColor: COLORS.grayHalfBg,
-                    padding: heightPercentageToDP(1),
-                    borderRadius: heightPercentageToDP(1),
-                    marginStart: heightPercentageToDP(-3),
-                  }}>
-                  <Ionicons
-                    name={'calendar'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </View>
-
-                <Text
-                  style={{
-                    fontFamily: FONT.Montserrat_Regular,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.black
-                  }}>
-                  {data.lotdate.lotdate}
-                </Text>
+                </TouchableOpacity>
               </View>
             </View>
-
-            <TouchableOpacity
-              onPress={checkAndRequestPermission}
-              style={{
-                backgroundColor: COLORS.blue,
-                padding: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: COLORS.white,
-                  fontFamily: FONT.Montserrat_Regular,
-                }}>
-                Download
-              </Text>
-            </TouchableOpacity>
           </View>
-        </View>
+        </ImageBackground>
       </View>
     </View>
   );
@@ -323,6 +339,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.black,
   },
 });
 
