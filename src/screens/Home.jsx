@@ -1091,7 +1091,8 @@ const Home = () => {
                     <View
                       style={{
                         flex: 1,
-                        paddingEnd: heightPercentageToDP(3.5),
+                        paddingEnd: heightPercentageToDP(2),
+                    
                       }}>
                       <View
                         style={{

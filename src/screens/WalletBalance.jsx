@@ -1,4 +1,11 @@
-import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ImageBackground,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {
   heightPercentageToDP,
@@ -10,7 +17,7 @@ import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Background from '../components/background/Background';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const WalletBalance = ({route}) => {
   const {data} = route.params;
@@ -27,10 +34,8 @@ const WalletBalance = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
-
-      
 
       {/** Login Cointainer */}
 
@@ -45,53 +50,64 @@ const WalletBalance = ({route}) => {
             borderTopLeftRadius: heightPercentageToDP(5),
             borderTopRightRadius: heightPercentageToDP(5),
           }}>
-
-<View
-        style={{
-          height: heightPercentageToDP(75),
-          width: widthPercentageToDP(100),
-
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
-        <View
-          style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
+              height: heightPercentageToDP(75),
+              width: widthPercentageToDP(100),
 
-        <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientTextWhite style={styles.textStyle}>Wallet</GradientTextWhite>
-        <GradientTextWhite style={styles.textStyle}>Balance</GradientTextWhite>
-      </View>
-
-        {/** Result Main Container */}
-
-        <View style={{padding: heightPercentageToDP(2)}}>
-          <GradientText style={{fontFamily: FONT.Montserrat_Regular, fontSize: heightPercentageToDP(3), color: COLORS.black, marginBottom: heightPercentageToDP(1)}}>{data.walletName}</GradientText>
-          <GradientText style={styles.textStyle}>{data.balance} {user.country.countrycurrencysymbol}</GradientText>
-        </View>
-      </View>
-            </ImageBackground>
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
+            }}>
+            {/** Top Style View */}
+            <View
+              style={{
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
             </View>
 
-  
-    </View>
+            <View
+              style={{
+                margin: heightPercentageToDP(2),
+                backgroundColor: 'transparent',
+              }}>
+              <GradientTextWhite style={styles.textStyle}>
+                Wallet
+              </GradientTextWhite>
+              <GradientTextWhite style={styles.textStyle}>
+                Balance
+              </GradientTextWhite>
+            </View>
+
+            {/** Result Main Container */}
+
+            <View style={{padding: heightPercentageToDP(2)}}>
+              <GradientText
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(3),
+                  color: COLORS.black,
+                  marginBottom: heightPercentageToDP(1),
+                }}>
+                {data.walletName}
+              </GradientText>
+              <GradientText style={styles.textStyle}>
+                {data.balance} {user.country.countrycurrencysymbol}
+              </GradientText>
+            </View>
+          </View>
+        </ImageBackground>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -101,6 +117,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
-    color: COLORS.black
+    color: COLORS.black,
   },
 });

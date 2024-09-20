@@ -2,9 +2,10 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -45,7 +46,7 @@ const SelectCountry = ({route}) => {
 
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Main Cointainer */}
@@ -55,7 +56,9 @@ const SelectCountry = ({route}) => {
           source={require('../../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+           height : Platform.OS === 'android'
+            ? heightPercentageToDP(85)
+            : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -63,7 +66,9 @@ const SelectCountry = ({route}) => {
           }}>
           <View
             style={{
-              height: heightPercentageToDP(85),
+              height : Platform.OS === 'android'
+              ? heightPercentageToDP(85)
+              : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -183,7 +188,7 @@ const SelectCountry = ({route}) => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

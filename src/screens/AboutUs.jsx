@@ -1,6 +1,7 @@
 import {
   FlatList,
   ImageBackground,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -49,7 +50,7 @@ const AboutUs = () => {
   }, [abouts]);
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -219,7 +220,7 @@ const AboutUs = () => {
             </View>
 
      
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -597,24 +597,25 @@ const UpiDeposit = () => {
                       style={{
                         borderRadius: heightPercentageToDP(2),
                         flexDirection: 'row',
+                        alignItems: 'center', // Ensures vertical alignment of items
+                        padding: heightPercentageToDP(0.5), // Adjust padding for spacing
                       }}>
                       <Text
                         style={{
                           backgroundColor: 'transparent',
                           fontFamily: FONT.HELVETICA_REGULAR,
                           color: COLORS.black,
-                          height: heightPercentageToDP(7),
-                          textAlignVertical: 'center',
-                          paddingStart: heightPercentageToDP(2),
                           fontSize: heightPercentageToDP(2),
+                          textAlign: 'left',
+                          paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
+                          flex: 1, // Let the text take available space
                         }}>
                         {imageFileName}
                       </Text>
                       <View
                         style={{
-                          flex: 1,
                           justifyContent: 'center',
-                          alignItems: 'flex-end',
+                          alignItems: 'center',
                           paddingEnd: heightPercentageToDP(2),
                         }}>
                         <LinearGradient

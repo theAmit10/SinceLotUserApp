@@ -7,6 +7,7 @@ import {
   Platform,
   Image,
   ImageBackground,
+  SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -187,7 +188,7 @@ const UploadProfilePicture = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       
@@ -353,7 +354,7 @@ const UploadProfilePicture = () => {
             </View>
 
    
-    </View>
+    </SafeAreaView>
   );
 };
 

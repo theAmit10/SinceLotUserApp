@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -29,7 +30,7 @@ const Withdraw = () => {
   const {accesstoken} = useSelector(state => state.user);
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Main Container */}
@@ -186,7 +187,7 @@ const Withdraw = () => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

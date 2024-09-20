@@ -1,5 +1,6 @@
 import {
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -47,7 +48,7 @@ const GameDescritptionDetails = ({route}) => {
   const loading = false;
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** main Cointainer */}
@@ -160,7 +161,7 @@ const GameDescritptionDetails = ({route}) => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

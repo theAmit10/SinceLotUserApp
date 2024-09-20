@@ -2,6 +2,7 @@
 
 import {
     ImageBackground,
+    SafeAreaView,
     StyleSheet,
     Text,
     TextInput,
@@ -92,7 +93,7 @@ import {
     };
   
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <Background />
   
         {/** Login Cointainer */}
@@ -227,7 +228,7 @@ import {
             </View>
           </ImageBackground>
         </View>
-      </View>
+      </SafeAreaView>
     );
   };
   

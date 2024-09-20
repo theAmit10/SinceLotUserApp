@@ -1,5 +1,6 @@
 import {
   ImageBackground,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -137,7 +138,7 @@ const ChangePassword = () => {
  
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background/>
 
       {/** Main Cointainer */}
@@ -332,7 +333,7 @@ const ChangePassword = () => {
             </ImageBackground>
           </View>
     
-    </View>
+    </SafeAreaView>
   );
 };
 

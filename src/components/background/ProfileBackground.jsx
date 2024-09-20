@@ -1,4 +1,4 @@
-import { Image, ImageBackground, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, Platform, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {
   heightPercentageToDP,
@@ -161,7 +161,7 @@ const ProfileBackground = () => {
   };
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
      
@@ -303,7 +303,7 @@ const ProfileBackground = () => {
 
         </ImageBackground>
      
-    </View>
+    </SafeAreaView>
   );
 };
 

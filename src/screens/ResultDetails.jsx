@@ -2,6 +2,7 @@ import {
   Alert,
   ImageBackground,
   Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -151,7 +152,7 @@ const ResultDetails = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Login Cointainer */}
@@ -329,7 +330,7 @@ const ResultDetails = ({route}) => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

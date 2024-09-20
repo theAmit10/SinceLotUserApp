@@ -1,6 +1,9 @@
 import {
   FlatList,
   ImageBackground,
+  Platform,
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -23,9 +26,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useGetAllLocationWithTimeQuery} from '../helper/Networkcall';
 import {loadProfile} from '../redux/actions/userAction';
 import {getTimeAccordingToTimezone} from './SearchTime';
-import moment from "moment-timezone";
+import moment from 'moment-timezone';
 import Toast from 'react-native-toast-message';
-
 
 const PlayArenaLocation = () => {
   const navigation = useNavigation();
@@ -96,39 +98,38 @@ const PlayArenaLocation = () => {
 
   const navigationHandler = (item, timeItem) => {
     const now = moment.tz(user?.country?.timezone);
-    console.log("Current Time: ", now.format("hh:mm A"));
-    console.log("Current Date: ", now.format("DD-MM-YYYY"));
+    console.log('Current Time: ', now.format('hh:mm A'));
+    console.log('Current Date: ', now.format('DD-MM-YYYY'));
 
     const lotTimeMoment = moment.tz(
       timeItem?.time,
-      "hh:mm A",
-      user?.country?.timezone
+      'hh:mm A',
+      user?.country?.timezone,
     );
-    console.log(`Lot Time for location : ${lotTimeMoment.format("hh:mm A")}`);
+    console.log(`Lot Time for location : ${lotTimeMoment.format('hh:mm A')}`);
 
     // Subtract 15 minutes from the lotTimeMoment
     const lotTimeMinus15Minutes = lotTimeMoment.clone().subtract(15, 'minutes');
-    
-    const isLotTimeClose = now.isSameOrAfter(lotTimeMinus15Minutes) && now.isBefore(lotTimeMoment);
+
+    const isLotTimeClose =
+      now.isSameOrAfter(lotTimeMinus15Minutes) && now.isBefore(lotTimeMoment);
     console.log(`Is it within 15 minutes of the lot time? ${isLotTimeClose}`);
 
     if (isLotTimeClose) {
-        console.log("Navigating to PlayArena...");
-        Toast.show({
-          type: 'info',
-          text1: 'Entry is close for this session',
-          text2: 'Please choose next available time'
-        })
-       
+      console.log('Navigating to PlayArena...');
+      Toast.show({
+        type: 'info',
+        text1: 'Entry is close for this session',
+        text2: 'Please choose next available time',
+      });
     } else {
-        console.log("It's too early or past the lot time.");
-         navigation.navigate('PlayArena', {
-          locationdata: item,
-          timedata: timeItem,
-        })
+      console.log("It's too early or past the lot time.");
+      navigation.navigate('PlayArena', {
+        locationdata: item,
+        timedata: timeItem,
+      });
     }
-};
-
+  };
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -231,9 +232,7 @@ const PlayArenaLocation = () => {
                       {pair.map(timeItem => (
                         <TouchableOpacity
                           key={timeItem._id}
-                          onPress={() =>
-                           navigationHandler(item,timeItem)
-                          }>
+                          onPress={() => navigationHandler(item, timeItem)}>
                           <LinearGradient
                             colors={
                               idx % 2 === 0
@@ -286,14 +285,17 @@ const PlayArenaLocation = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <ImageBackground
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+            height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -301,7 +303,10 @@ const PlayArenaLocation = () => {
           }}>
           <View
             style={{
-              height: heightPercentageToDP(85),
+              height:
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -362,7 +367,7 @@ const PlayArenaLocation = () => {
                 />
               </View>
 
-              <View
+              {/* <View
                 style={{
                   height: heightPercentageToDP(7),
                   flexDirection: 'row',
@@ -398,7 +403,48 @@ const PlayArenaLocation = () => {
                     </Text>
                   </TouchableOpacity>
                 ))}
-              </View>
+              </View> */}
+
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(1),
+                }}
+                style={{
+                  height: heightPercentageToDP(7),
+                  backgroundColor: COLORS.white_s,
+                  borderRadius: heightPercentageToDP(3),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                {alldatafiler.map(item => (
+                  <TouchableOpacity
+                    onPress={() => settingFilterData(item)}
+                    key={item._id}
+                    style={{
+                      backgroundColor: COLORS.grayHalfBg,
+                      padding: heightPercentageToDP(1),
+                      margin: heightPercentageToDP(0.2),
+                      borderRadius: heightPercentageToDP(1),
+                      borderColor:
+                        selectedFilter == item._id
+                          ? COLORS.green
+                          : COLORS.grayHalfBg,
+                      borderWidth: 1,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(1.5),
+                        color: COLORS.black,
+                        paddingHorizontal: heightPercentageToDP(0.5),
+                      }}>
+                      {item.maximumReturn}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
             </View>
 
             <View style={{flex: 2}}>
@@ -418,7 +464,7 @@ const PlayArenaLocation = () => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

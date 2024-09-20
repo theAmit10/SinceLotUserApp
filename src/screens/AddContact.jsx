@@ -1,5 +1,6 @@
 import {
   ImageBackground,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -153,7 +154,7 @@ const AddContact = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Login Cointainer */}
@@ -296,7 +297,7 @@ const AddContact = ({route}) => {
           </View>
 
      
-    </View>
+    </SafeAreaView>
   );
 };
 

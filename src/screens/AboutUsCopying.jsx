@@ -8,6 +8,7 @@ import {
     Button,
     TouchableOpacity,
     ImageBackground,
+    SafeAreaView,
   } from 'react-native';
   import React, {useEffect, useState} from 'react';
   import {
@@ -77,7 +78,7 @@ import GradientTextWhite from '../components/helpercComponent/GradientTextWhite'
     };
   
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <Background />
 
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
@@ -229,7 +230,7 @@ import GradientTextWhite from '../components/helpercComponent/GradientTextWhite'
             </View>
   
       
-      </View>
+      </SafeAreaView>
     );
   };
   

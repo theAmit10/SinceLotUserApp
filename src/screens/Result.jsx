@@ -2,6 +2,7 @@ import {
   Alert,
   ImageBackground,
   Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -184,7 +185,7 @@ const Result = ({route}) => {
     };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Result Cointainer */}
@@ -373,7 +374,7 @@ const Result = ({route}) => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

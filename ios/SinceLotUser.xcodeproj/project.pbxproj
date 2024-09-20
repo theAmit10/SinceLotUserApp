@@ -20,6 +20,7 @@
 		3303E6453D50462DBCEBE540 /* SFPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */; };
 		4582426929EA4B059E75FE54 /* logonobg.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCB355B30774D318BC11B8C /* logonobg.png */; };
 		520C77EA857442A6AF3D190F /* ZCOOL-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */; };
+		532574AA5826410380A6313A /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = D89DA867B68F432AB605C2F2 /* play.png */; };
 		6A479801F98E44C58C1A76C0 /* withdraw.png in Resources */ = {isa = PBXBuildFile; fileRef = 8244E40274444AEC92F8FDF1 /* withdraw.png */; };
 		6F2C488BA24F4A63B390AFC3 /* SFPRO-MEDIUM.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 46ACC0214E6949EB9C86A259 /* SFPRO-MEDIUM.OTF */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -29,6 +30,8 @@
 		BC61A2A200AE4083B9CEF46C /* deposit.png in Resources */ = {isa = PBXBuildFile; fileRef = 31E20EC789324D03B0172843 /* deposit.png */; };
 		C72D079817BB485083AA4770 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1355EE2E22664CE8AFDC3223 /* Montserrat-Bold.ttf */; };
 		D0343E40BA904772AD46393A /* upi.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A1EBC94E5BD49559814EFC8 /* upi.png */; };
+		D35B07ED2C944DE900906857 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D35B07EC2C944DE800906857 /* GoogleService-Info.plist */; };
+		D35B07EF2C9457E400906857 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D35B07EE2C9457E400906857 /* GoogleService-Info.plist */; };
 		E1F24E070AEE496B9AD31C91 /* crypto.png in Resources */ = {isa = PBXBuildFile; fileRef = BF37192215614D87B9ECB7E1 /* crypto.png */; };
 		E4919C467CCC0B36268C9013 /* Pods_SinceLotUser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 624956F02C1206A6A7EAF73C /* Pods_SinceLotUser.framework */; };
 		ECAB3AC066F4466CA1D66F62 /* skrill.png in Resources */ = {isa = PBXBuildFile; fileRef = C7044A0783BC46E59B2D22CA /* skrill.png */; };
@@ -36,7 +39,6 @@
 		F5C68438D52B4D75AC4BE9B5 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */; };
 		F723CADF2E70430A8EF29CAD /* Elephant.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F1B458E341A46BA8FF43DFC /* Elephant.ttf */; };
 		FB76C8E31E1F4DA28E025367 /* tlwbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C8E191CD58C24B35BD52FFAD /* tlwbg.jpg */; };
-		532574AA5826410380A6313A /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = D89DA867B68F432AB605C2F2 /* play.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,43 +55,45 @@
 		00E356EE1AD99517003FC87E /* SinceLotUserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SinceLotUserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* SinceLotUserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SinceLotUserTests.m; sourceTree = "<group>"; };
-		00FFBCD6490446F5988E193A /* applogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = applogo.png; path = ../assets/image/applogo.png; sourceTree = "<group>"; };
-		1355EE2E22664CE8AFDC3223 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		00FFBCD6490446F5988E193A /* applogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = applogo.png; path = ../assets/image/applogo.png; sourceTree = "<group>"; };
+		1355EE2E22664CE8AFDC3223 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* SinceLotUser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SinceLotUser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = SinceLotUser/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = SinceLotUser/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SinceLotUser/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SinceLotUser/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SinceLotUser/main.m; sourceTree = "<group>"; };
-		27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-REGULAR.OTF"; path = "../assets/fonts/SFPRO-REGULAR.OTF"; sourceTree = "<group>"; };
-		31E20EC789324D03B0172843 /* deposit.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = deposit.png; path = ../assets/image/deposit.png; sourceTree = "<group>"; };
+		27A16B7CBE5C4E488FC6D284 /* SFPRO-REGULAR.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-REGULAR.OTF"; path = "../assets/fonts/SFPRO-REGULAR.OTF"; sourceTree = "<group>"; };
+		31E20EC789324D03B0172843 /* deposit.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = deposit.png; path = ../assets/image/deposit.png; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-SinceLotUser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser.debug.xcconfig"; path = "Target Support Files/Pods-SinceLotUser/Pods-SinceLotUser.debug.xcconfig"; sourceTree = "<group>"; };
-		46ACC0214E6949EB9C86A259 /* SFPRO-MEDIUM.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-MEDIUM.OTF"; path = "../assets/fonts/SFPRO-MEDIUM.OTF"; sourceTree = "<group>"; };
+		46ACC0214E6949EB9C86A259 /* SFPRO-MEDIUM.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-MEDIUM.OTF"; path = "../assets/fonts/SFPRO-MEDIUM.OTF"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-SinceLotUser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser.release.xcconfig"; path = "Target Support Files/Pods-SinceLotUser/Pods-SinceLotUser.release.xcconfig"; sourceTree = "<group>"; };
-		5A1EBC94E5BD49559814EFC8 /* upi.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = upi.png; path = ../assets/image/upi.png; sourceTree = "<group>"; };
-		5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		5A1EBC94E5BD49559814EFC8 /* upi.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = upi.png; path = ../assets/image/upi.png; sourceTree = "<group>"; };
+		5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig"; path = "Target Support Files/Pods-SinceLotUser-SinceLotUserTests/Pods-SinceLotUser-SinceLotUserTests.debug.xcconfig"; sourceTree = "<group>"; };
 		624956F02C1206A6A7EAF73C /* Pods_SinceLotUser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SinceLotUser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DA158DF48A2B27B7C876AA6 /* Pods_SinceLotUser_SinceLotUserTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SinceLotUser_SinceLotUserTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		779B22062F7649B6995AE8F5 /* sincelogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = sincelogo.png; path = ../assets/image/sincelogo.png; sourceTree = "<group>"; };
+		779B22062F7649B6995AE8F5 /* sincelogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = sincelogo.png; path = ../assets/image/sincelogo.png; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SinceLotUser/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8244E40274444AEC92F8FDF1 /* withdraw.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = withdraw.png; path = ../assets/image/withdraw.png; sourceTree = "<group>"; };
+		8244E40274444AEC92F8FDF1 /* withdraw.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = withdraw.png; path = ../assets/image/withdraw.png; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-SinceLotUser-SinceLotUserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser-SinceLotUserTests.release.xcconfig"; path = "Target Support Files/Pods-SinceLotUser-SinceLotUserTests/Pods-SinceLotUser-SinceLotUserTests.release.xcconfig"; sourceTree = "<group>"; };
-		8A4147FA9DE045C6ABD6F434 /* dark_user.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = dark_user.png; path = ../assets/image/dark_user.png; sourceTree = "<group>"; };
-		9F1B458E341A46BA8FF43DFC /* Elephant.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Elephant.ttf; path = ../assets/fonts/Elephant.ttf; sourceTree = "<group>"; };
-		ACCB355B30774D318BC11B8C /* logonobg.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = logonobg.png; path = ../assets/image/logonobg.png; sourceTree = "<group>"; };
-		B33915C6FFBC4CE98A82DD5B /* bank.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = bank.png; path = ../assets/image/bank.png; sourceTree = "<group>"; };
-		BB881E37BC34482D8EEE655F /* Helvetica.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Helvetica.ttf; path = ../assets/fonts/Helvetica.ttf; sourceTree = "<group>"; };
-		BF37192215614D87B9ECB7E1 /* crypto.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = crypto.png; path = ../assets/image/crypto.png; sourceTree = "<group>"; };
-		C7044A0783BC46E59B2D22CA /* skrill.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = skrill.png; path = ../assets/image/skrill.png; sourceTree = "<group>"; };
-		C75C2CF74ABF42398DE03600 /* Helvetica-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Helvetica-Bold.ttf"; path = "../assets/fonts/Helvetica-Bold.ttf"; sourceTree = "<group>"; };
-		C8E191CD58C24B35BD52FFAD /* tlwbg.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = tlwbg.jpg; path = ../assets/image/tlwbg.jpg; sourceTree = "<group>"; };
-		C8E5C98B2A78453DB2170445 /* profileplaceholder.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = profileplaceholder.jpg; path = ../assets/image/profileplaceholder.jpg; sourceTree = "<group>"; };
-		DDDCDB35E3314533B69D1225 /* paypal.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = paypal.png; path = ../assets/image/paypal.png; sourceTree = "<group>"; };
+		8A4147FA9DE045C6ABD6F434 /* dark_user.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = dark_user.png; path = ../assets/image/dark_user.png; sourceTree = "<group>"; };
+		9F1B458E341A46BA8FF43DFC /* Elephant.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Elephant.ttf; path = ../assets/fonts/Elephant.ttf; sourceTree = "<group>"; };
+		ACCB355B30774D318BC11B8C /* logonobg.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = logonobg.png; path = ../assets/image/logonobg.png; sourceTree = "<group>"; };
+		B33915C6FFBC4CE98A82DD5B /* bank.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = bank.png; path = ../assets/image/bank.png; sourceTree = "<group>"; };
+		BB881E37BC34482D8EEE655F /* Helvetica.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Helvetica.ttf; path = ../assets/fonts/Helvetica.ttf; sourceTree = "<group>"; };
+		BF37192215614D87B9ECB7E1 /* crypto.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = crypto.png; path = ../assets/image/crypto.png; sourceTree = "<group>"; };
+		C7044A0783BC46E59B2D22CA /* skrill.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = skrill.png; path = ../assets/image/skrill.png; sourceTree = "<group>"; };
+		C75C2CF74ABF42398DE03600 /* Helvetica-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Helvetica-Bold.ttf"; path = "../assets/fonts/Helvetica-Bold.ttf"; sourceTree = "<group>"; };
+		C8E191CD58C24B35BD52FFAD /* tlwbg.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = tlwbg.jpg; path = ../assets/image/tlwbg.jpg; sourceTree = "<group>"; };
+		C8E5C98B2A78453DB2170445 /* profileplaceholder.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = profileplaceholder.jpg; path = ../assets/image/profileplaceholder.jpg; sourceTree = "<group>"; };
+		D35B07EC2C944DE800906857 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D35B07EE2C9457E400906857 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D89DA867B68F432AB605C2F2 /* play.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = play.png; path = ../assets/image/play.png; sourceTree = "<group>"; };
+		DDDCDB35E3314533B69D1225 /* paypal.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = paypal.png; path = ../assets/image/paypal.png; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "ZCOOL-Regular.ttf"; path = "../assets/fonts/ZCOOL-Regular.ttf"; sourceTree = "<group>"; };
-		FC098421A44144E6A865034B /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
-		D89DA867B68F432AB605C2F2 /* play.png */ = {isa = PBXFileReference; name = "play.png"; path = "../assets/image/play.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ZCOOL-Regular.ttf"; path = "../assets/fonts/ZCOOL-Regular.ttf"; sourceTree = "<group>"; };
+		FC098421A44144E6A865034B /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +136,8 @@
 		13B07FAE1A68108700A75B9A /* SinceLotUser */ = {
 			isa = PBXGroup;
 			children = (
+				D35B07EC2C944DE800906857 /* GoogleService-Info.plist */,
+				D35B07EE2C9457E400906857 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -223,7 +229,6 @@
 				D89DA867B68F432AB605C2F2 /* play.png */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,6 +303,9 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				D3F2359E2C9537EA008AA2EE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -331,8 +339,10 @@
 				6F2C488BA24F4A63B390AFC3 /* SFPRO-MEDIUM.OTF in Resources */,
 				3303E6453D50462DBCEBE540 /* SFPRO-REGULAR.OTF in Resources */,
 				83FD2889146045F0B2DA311F /* profileplaceholder.jpg in Resources */,
+				D35B07EF2C9457E400906857 /* GoogleService-Info.plist in Resources */,
 				F723CADF2E70430A8EF29CAD /* Elephant.ttf in Resources */,
 				F3B49FA8E472499281A522C2 /* dark_user.png in Resources */,
+				D35B07ED2C944DE900906857 /* GoogleService-Info.plist in Resources */,
 				4582426929EA4B059E75FE54 /* logonobg.png in Resources */,
 				07E8AA3DAB6B4002BD060BD9 /* sincelogo.png in Resources */,
 				074D1B808A8B4722B78A78AE /* applogo.png in Resources */,
@@ -706,10 +716,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -788,10 +795,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -830,6 +834,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D3F2359E2C9537EA008AA2EE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

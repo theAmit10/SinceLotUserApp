@@ -13,10 +13,19 @@ export const useMessageAndErrorUser = (
 
   useEffect(() => {
     if (error) {
-      Toast.show({
-        type: 'error',
-        text1: error,
-      });
+      if(error === 'Invalid user ID')
+      {
+        // Toast.show({
+        //   type: 'error',
+        //   text1: 'Processing',
+        // });
+
+      }else{
+        Toast.show({
+          type: 'error',
+          text1: error,
+        });
+      }
 
       dispatch({
         type: 'clearError',
@@ -59,10 +68,20 @@ export const useUserProfileUpdate = (
     dispatch(updateProfile(name,accesstoken));
 
     if (error) {
-      Toast.show({
-        type: 'error',
-        text1: error,
-      });
+      if(error === 'Invalid user ID')
+      {
+        Toast.show({
+          type: 'error',
+          text1: 'Processing',
+        });
+
+      }else{
+        Toast.show({
+          type: 'error',
+          text1: error,
+        });
+      }
+      
 
       dispatch({
         type: 'clearError',

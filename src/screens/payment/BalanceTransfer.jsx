@@ -220,6 +220,7 @@ const BalanceTransfer = () => {
                             fontFamily: FONT.Montserrat_Bold,
                             color: COLORS.black,
                             paddingStart: heightPercentageToDP(2),
+                            minHeight: heightPercentageToDP(7)
                           }}
                           placeholder="Amount"
                           textColor={COLORS.black}

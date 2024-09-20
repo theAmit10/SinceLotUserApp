@@ -1,6 +1,7 @@
 import {
   FlatList,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -74,7 +75,7 @@ const Notification = () => {
 
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
@@ -183,7 +184,7 @@ const Notification = () => {
       </View>
 
       {/** Main Cointainer */}
-    </View>
+    </SafeAreaView>
   );
 };
 
