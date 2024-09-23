@@ -2,6 +2,8 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -30,7 +32,7 @@ import ImageResizer from '@bam.tech/react-native-image-resizer';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
 import {useCreateDepositMutation} from '../../helper/Networkcall';
-import { serverName } from '../../redux/store';
+import {serverName} from '../../redux/store';
 
 const upiapidata = [
   {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
@@ -104,6 +106,9 @@ const UpiDeposit = () => {
       Toast.show({type: 'error', text1: 'Enter Deposit Amount'});
       return;
     }
+    if (isNaN(amountval)) {
+      Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
+    }
     if (!transactionval) {
       Toast.show({type: 'error', text1: 'Enter Transaction Number'});
       return;
@@ -159,9 +164,7 @@ const UpiDeposit = () => {
 
   useEffect(() => {
     allTheDepositData();
-  }, [isFocused, loadingAllData, allDepositdata]);
-
- 
+  }, [isFocused]);
 
   const allTheDepositData = async () => {
     try {
@@ -187,49 +190,106 @@ const UpiDeposit = () => {
     }
   };
 
+  console.log(allDepositdata.length);
+
   return (
-    <View style={{flex: 1}}>
-      <Background />
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: heightPercentageToDP(85),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
+    <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={-60}>
+        <Background />
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <ImageBackground
+            source={require('../../../assets/image/tlwbg.jpg')}
             style={{
+              width: '100%',
               height: heightPercentageToDP(85),
-              width: widthPercentageToDP(100),
+            }}
+            imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
             }}>
             <View
               style={{
-                height: heightPercentageToDP(5),
+                height: heightPercentageToDP(85),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+                borderTopLeftRadius: heightPercentageToDP(5),
+                borderTopRightRadius: heightPercentageToDP(5),
               }}>
               <View
                 style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}
-              />
-            </View>
-            <View style={{margin: heightPercentageToDP(2)}}>
-              <GradientTextWhite style={styles.textStyle}>
-                UPI Deposit
-              </GradientTextWhite>
+                  height: heightPercentageToDP(5),
+                  width: widthPercentageToDP(100),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    width: widthPercentageToDP(20),
+                    height: heightPercentageToDP(0.8),
+                    backgroundColor: COLORS.grayBg,
+                    borderRadius: heightPercentageToDP(2),
+                  }}
+                />
+              </View>
+              <View style={{margin: heightPercentageToDP(2)}}>
+                <GradientTextWhite style={styles.textStyle}>
+                  UPI Deposit
+                </GradientTextWhite>
 
-              {false ? (
+                {!loadingAllData && allDepositdata.length !== 0 && (
+                  <TouchableOpacity onPress={toggleUpiOptionView}>
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        height: heightPercentageToDP(10),
+                        borderRadius: heightPercentageToDP(2),
+                        alignItems: 'center',
+                        gap: heightPercentageToDP(3),
+                        paddingStart: heightPercentageToDP(2),
+                        marginTop: heightPercentageToDP(2),
+                      }}>
+                      <View
+                        style={{
+                          backgroundColor: COLORS.white_s,
+                          padding: heightPercentageToDP(1.5),
+                          borderRadius: heightPercentageToDP(1),
+                        }}>
+                        <Image
+                          source={require('../../../assets/image/upi.png')}
+                          resizeMode="cover"
+                          style={{
+                            height: 25,
+                            width: 25,
+                          }}
+                        />
+                      </View>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        UPI
+                      </GradientTextWhite>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        {selectedUpiId?.paymentId}
+                      </GradientTextWhite>
+                      <LinearGradient
+                        colors={[COLORS.grayBg, COLORS.white_s]}
+                        style={{borderRadius: 20, padding: 10}}>
+                        <AntDesign
+                          name={'downcircleo'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </LinearGradient>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              {loadingAllData ? (
                 <View
                   style={{
                     height: heightPercentageToDP(10),
@@ -239,474 +299,528 @@ const UpiDeposit = () => {
                   <Loading />
                 </View>
               ) : (
-                <TouchableOpacity onPress={toggleUpiOptionView}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      height: heightPercentageToDP(10),
-                      borderRadius: heightPercentageToDP(2),
-                      alignItems: 'center',
-                      gap: heightPercentageToDP(3),
-                      paddingStart: heightPercentageToDP(2),
-                      marginTop: heightPercentageToDP(2),
-                    }}>
+                <>
+                  {allDepositdata.length === 0 ? (
                     <View
                       style={{
-                        backgroundColor: COLORS.white_s,
-                        padding: heightPercentageToDP(1.5),
-                        borderRadius: heightPercentageToDP(1),
-                      }}>
-                      <Image
-                        source={require('../../../assets/image/upi.png')}
-                        resizeMode="cover"
-                        style={{
-                          height: 25,
-                          width: 25,
-                        }}
-                      />
-                    </View>
-                    <GradientTextWhite style={styles.textStyleContent}>
-                      UPI
-                    </GradientTextWhite>
-                    <GradientTextWhite style={styles.textStyleContent}>
-                      {selectedUpiId?.paymentId}
-                    </GradientTextWhite>
-                    <LinearGradient
-                      colors={[COLORS.grayBg, COLORS.white_s]}
-                      style={{borderRadius: 20, padding: 10}}>
-                      <AntDesign
-                        name={'downcircleo'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
-                      />
-                    </LinearGradient>
-                  </LinearGradient>
-                </TouchableOpacity>
-              )}
-            </View>
-
-            {/** FOR UPI ID DEPOSIT OPTION */}
-            <ScrollView showsVerticalScrollIndicator={false}>
-              {upiVisible &&
-                allDepositdata.length !== 0 &&
-                allDepositdata.map(item => (
-                  <TouchableOpacity
-                    key={item._id}
-                    onPress={() => settingUpiId(item)}>
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        margin: heightPercentageToDP(2),
                         borderRadius: heightPercentageToDP(2),
-                        marginHorizontal: heightPercentageToDP(2),
-                        marginVertical: heightPercentageToDP(1),
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          height: heightPercentageToDP(5),
-                          marginVertical: heightPercentageToDP(1),
-                        }}>
-                        <View
-                          style={{
-                            flex: 1,
-                            flexDirection: 'row',
-                            gap: heightPercentageToDP(3),
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}>
-                          <View
-                            style={{
-                              backgroundColor: COLORS.white_s,
-                              padding: heightPercentageToDP(1),
-                              borderRadius: heightPercentageToDP(1),
-                            }}>
-                            <Image
-                              source={require('../../../assets/image/upi.png')}
-                              resizeMode="cover"
-                              style={{
-                                height: 25,
-                                width: 25,
-                              }}
-                            />
-                          </View>
-                          <GradientTextWhite style={styles.textStyleContent}>
-                            UPI
-                          </GradientTextWhite>
-                          <GradientTextWhite style={styles.textStyleContent}>
-                            {item.paymentId}
-                          </GradientTextWhite>
-                        </View>
-
-                        <View
-                          style={{
-                            flex: 1,
-                            justifyContent: 'flex-end',
-                            alignItems: 'flex-end',
-                            paddingEnd: heightPercentageToDP(2),
-                          }}>
-                          <LinearGradient
-                            colors={[COLORS.grayBg, COLORS.white_s]}
-                            style={{borderRadius: 10, padding: 5}}>
-                            <AntDesign
-                              name={
-                                selectedUpiId._id === item._id
-                                  ? 'checkcircle'
-                                  : 'checkcircleo'
-                              }
-                              size={heightPercentageToDP(3)}
-                              color={
-                                selectedUpiId._id === item._id
-                                  ? COLORS.green
-                                  : COLORS.darkGray
-                              }
-                            />
-                          </LinearGradient>
-                        </View>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          gap: heightPercentageToDP(1),
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          flex: 1,
-                          paddingHorizontal: heightPercentageToDP(2),
-                          borderRadius: heightPercentageToDP(2),
-                        }}>
-                        <View
-                          style={{
-                            flex: 1,
-                            gap: heightPercentageToDP(2),
-                            justifyContent: 'space-between',
-                          }}>
-                          <Text style={styles.copytitle} numberOfLines={2}>
-                            UPI Holder Name
-                          </Text>
-                          <Text style={styles.copytitle}>UPI ID</Text>
-                        </View>
-                        <View
-                          style={{
-                            flex: 2,
-                            gap: heightPercentageToDP(2),
-                          }}>
-                          <Text style={styles.copycontent} numberOfLines={2}>
-                            {item.upiholdername}
-                          </Text>
-                          <Text style={styles.copycontent} numberOfLines={1}>
-                            {item.upiid}
-                          </Text>
-                        </View>
-                        <View style={{gap: heightPercentageToDP(0.5)}}>
-                          <TouchableOpacity
-                            onPress={() => copyToClipboard(item.upiholdername)}>
-                            <LinearGradient
-                              colors={[COLORS.lightWhite, COLORS.white_s]}
-                              style={{
-                                padding: heightPercentageToDP(0.5),
-                                borderRadius: heightPercentageToDP(1),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <AntDesign
-                                name={'copy1'}
-                                size={heightPercentageToDP(2.5)}
-                                color={COLORS.darkGray}
-                              />
-                            </LinearGradient>
-                          </TouchableOpacity>
-                          <TouchableOpacity
-                            onPress={() => copyToClipboard(item.upiid)}>
-                            <LinearGradient
-                              colors={[COLORS.lightWhite, COLORS.white_s]}
-                              style={{
-                                padding: heightPercentageToDP(0.5),
-                                borderRadius: heightPercentageToDP(1),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <AntDesign
-                                name={'copy1'}
-                                size={heightPercentageToDP(2.5)}
-                                color={COLORS.darkGray}
-                              />
-                            </LinearGradient>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                       {/** QR code */}
-                       <View
-                          style={{
-                            flex: 2,
-                            gap: heightPercentageToDP(2),
-                            margin: heightPercentageToDP(2),
-                          }}>
-                          <View
-                            style={{
-                              backgroundColor: COLORS.white_s,
-                              padding: heightPercentageToDP(1),
-                              borderRadius: heightPercentageToDP(1),
-                              justifyContent: 'center',
-                              alignItems: "center"
-                            }}>
-                            {item.qrcode ? (
-                              <Image
-                              source={{uri: `${serverName}/uploads/upiqrcode/${item.qrcode}`}}
-                                resizeMode="cover"
-                                style={{
-                                  height: 150,
-                                  width: 150,
-                                }}
-                              />
-                            ) : (
-                              <Image
-                                source={require('../../../assets/image/upi.png')}
-                                resizeMode="cover"
-                                style={{
-                                  height: 80,
-                                  width: 80,
-                                }}
-                              />
-                            )}
-                          </View>
-                        </View>
-
-                    </LinearGradient>
-                  </TouchableOpacity>
-                ))}
-            </ScrollView>
-
-            {/** FOR UPI DEPOSIT FORM */}
-
-            {!upiVisible && (
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <View
-                  style={{
-                    height: heightPercentageToDP(70),
-                    padding: heightPercentageToDP(2),
-                  }}>
-                  {/** Amount */}
-                  <View
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                      padding: heightPercentageToDP(1),
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: FONT.Montserrat_SemiBold,
-                        color: COLORS.black,
-                        fontSize: heightPercentageToDP(2),
-                        paddingStart: heightPercentageToDP(1),
-                      }}>
-                      Amount
-                    </Text>
-
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={{
-                        borderRadius: heightPercentageToDP(2),
-                      }}>
-                      <TextInput
-                        underlineColor="transparent"
-                        activeUnderlineColor="transparent"
-                        cursorColor={COLORS.white}
-                        placeholderTextColor={COLORS.black}
-                        style={{
-                          backgroundColor: 'transparent',
-                          fontFamily: FONT.Montserrat_Bold,
-                          color: COLORS.black,
-                        }}
-                        textColor={COLORS.black}
-                        fontFamily={FONT.Montserrat_Bold}
-                        value={amountval}
-                        inputMode="decimal"
-                        onChangeText={text => setAmountval(text)}
-                      />
-                    </LinearGradient>
-                  </View>
-
-                  {/** Transaction id */}
-
-                  <View
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                      padding: heightPercentageToDP(1),
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: FONT.Montserrat_SemiBold,
-                        color: COLORS.black,
-                        fontSize: heightPercentageToDP(2),
-                        paddingStart: heightPercentageToDP(1),
-                      }}>
-                      Transaction ID
-                    </Text>
-
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={{
-                        borderRadius: heightPercentageToDP(2),
-                      }}>
-                      <TextInput
-                        underlineColor="transparent"
-                        activeUnderlineColor="transparent"
-                        cursorColor={COLORS.white}
-                        placeholderTextColor={COLORS.black}
-                        style={{
-                          backgroundColor: 'transparent',
-                          fontFamily: FONT.Montserrat_Bold,
-                          color: COLORS.black,
-                        }}
-                        value={transactionval}
-                        onChangeText={text => setTransactionval(text)}
-                      />
-                    </LinearGradient>
-                  </View>
-
-                  {/** Receipt */}
-
-                  <TouchableOpacity
-                    onPress={selectDoc}
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                      padding: heightPercentageToDP(1),
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: FONT.Montserrat_SemiBold,
-                        color: COLORS.black,
-                        fontSize: heightPercentageToDP(2),
-                        paddingStart: heightPercentageToDP(1),
-                      }}>
-                      Receipt
-                    </Text>
-
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={{
-                        borderRadius: heightPercentageToDP(2),
-                        flexDirection: 'row',
-                        alignItems: 'center', // Ensures vertical alignment of items
-                        padding: heightPercentageToDP(0.5), // Adjust padding for spacing
                       }}>
                       <Text
                         style={{
-                          backgroundColor: 'transparent',
-                          fontFamily: FONT.HELVETICA_REGULAR,
-                          color: COLORS.black,
+                          color: COLORS.white_s,
+
+                          padding: heightPercentageToDP(1),
+                          borderRadius: heightPercentageToDP(1),
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          maxWidth: widthPercentageToDP(80),
                           fontSize: heightPercentageToDP(2),
-                          textAlign: 'left',
-                          paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
-                          flex: 1, // Let the text take available space
+                          textAlign: 'center',
                         }}>
-                        {imageFileName}
+                        This payment method is temporarily unavailable.
                       </Text>
-                      <View
-                        style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          paddingEnd: heightPercentageToDP(2),
-                        }}>
-                        <LinearGradient
-                          colors={[COLORS.grayBg, COLORS.white_s]}
-                          style={{borderRadius: 20, padding: 10}}>
-                          <AntDesign
-                            name={'upload'}
-                            size={heightPercentageToDP(3)}
-                            color={COLORS.darkGray}
-                          />
-                        </LinearGradient>
-                      </View>
-                    </LinearGradient>
-                  </TouchableOpacity>
-
-                  {/** Remark */}
-
-                  <View
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                      padding: heightPercentageToDP(1),
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: FONT.Montserrat_SemiBold,
-                        color: COLORS.black,
-                        fontSize: heightPercentageToDP(2),
-                        paddingStart: heightPercentageToDP(1),
-                      }}>
-                      Remark
-                    </Text>
-
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={{
-                        borderRadius: heightPercentageToDP(2),
-                      }}>
-                      <TextInput
-                        underlineColor="transparent"
-                        activeUnderlineColor="transparent"
-                        cursorColor={COLORS.white}
-                        placeholderTextColor={COLORS.black}
-                        style={{
-                          backgroundColor: 'transparent',
-                          fontFamily: FONT.Montserrat_Bold,
-                          color: COLORS.black,
-                          minHeight: heightPercentageToDP(10),
-                        }}
-                        multiline={true}
-                        value={remarkval}
-                        numberOfLines={4}
-                        onChangeText={text => setRemarkval(text)}
-                      />
-                    </LinearGradient>
-
-                    <View
-                      style={{
-                        marginBottom: heightPercentageToDP(5),
-                        marginTop: heightPercentageToDP(2),
-                      }}>
-                      {isLoading ? (
-                        <Loading />
-                      ) : (
-                        <TouchableOpacity
-                          onPress={submitDeposit}
-                          style={{
-                            backgroundColor: COLORS.blue,
-                            padding: heightPercentageToDP(2),
-                            borderRadius: heightPercentageToDP(1),
-                            alignItems: 'center',
-                          }}>
-                          <Text
-                            style={{
-                              color: COLORS.white,
-                              fontFamily: FONT.Montserrat_Regular,
-                            }}>
-                            Submit
-                          </Text>
-                        </TouchableOpacity>
-                      )}
                     </View>
-                  </View>
-                </View>
-              </ScrollView>
-            )}
-          </View>
-        </ImageBackground>
-      </View>
-    </View>
+                  ) : (
+                    <>
+                      {/** FOR UPI ID DEPOSIT OPTION */}
+                      <ScrollView showsVerticalScrollIndicator={false}>
+                        {upiVisible &&
+                          allDepositdata.length !== 0 &&
+                          allDepositdata.map(item => (
+                            <TouchableOpacity
+                              key={item._id}
+                              onPress={() => settingUpiId(item)}>
+                              <LinearGradient
+                                colors={[
+                                  COLORS.time_firstblue,
+                                  COLORS.time_secondbluw,
+                                ]}
+                                start={{x: 0, y: 0}} // start from left
+                                end={{x: 1, y: 0}} // end at right
+                                style={{
+                                  borderRadius: heightPercentageToDP(2),
+                                  marginHorizontal: heightPercentageToDP(2),
+                                  marginVertical: heightPercentageToDP(1),
+                                }}>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    height: heightPercentageToDP(5),
+                                    marginVertical: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                      flexDirection: 'row',
+                                      gap: heightPercentageToDP(3),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <View
+                                      style={{
+                                        backgroundColor: COLORS.white_s,
+                                        padding: heightPercentageToDP(1),
+                                        borderRadius: heightPercentageToDP(1),
+                                      }}>
+                                      <Image
+                                        source={require('../../../assets/image/upi.png')}
+                                        resizeMode="cover"
+                                        style={{
+                                          height: 25,
+                                          width: 25,
+                                        }}
+                                      />
+                                    </View>
+                                    <GradientTextWhite
+                                      style={styles.textStyleContent}>
+                                      UPI
+                                    </GradientTextWhite>
+                                    <GradientTextWhite
+                                      style={styles.textStyleContent}>
+                                      {item.paymentId}
+                                    </GradientTextWhite>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                      justifyContent: 'flex-end',
+                                      alignItems: 'flex-end',
+                                      paddingEnd: heightPercentageToDP(2),
+                                    }}>
+                                    <LinearGradient
+                                      colors={[COLORS.grayBg, COLORS.white_s]}
+                                      style={{borderRadius: 10, padding: 5}}>
+                                      <AntDesign
+                                        name={
+                                          selectedUpiId._id === item._id
+                                            ? 'checkcircle'
+                                            : 'checkcircleo'
+                                        }
+                                        size={heightPercentageToDP(3)}
+                                        color={
+                                          selectedUpiId._id === item._id
+                                            ? COLORS.green
+                                            : COLORS.darkGray
+                                        }
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    gap: heightPercentageToDP(1),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flex: 1,
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(2),
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                      gap: heightPercentageToDP(2),
+                                      justifyContent: 'space-between',
+                                    }}>
+                                    <Text
+                                      style={styles.copytitle}
+                                      numberOfLines={2}>
+                                      UPI Holder Name
+                                    </Text>
+                                    <Text style={styles.copytitle}>UPI ID</Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      gap: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={styles.copycontent}
+                                      numberOfLines={2}>
+                                      {item.upiholdername}
+                                    </Text>
+                                    <Text
+                                      style={styles.copycontent}
+                                      numberOfLines={1}>
+                                      {item.upiid}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{gap: heightPercentageToDP(0.5)}}>
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        copyToClipboard(item.upiholdername)
+                                      }>
+                                      <LinearGradient
+                                        colors={[
+                                          COLORS.lightWhite,
+                                          COLORS.white_s,
+                                        ]}
+                                        style={{
+                                          padding: heightPercentageToDP(0.5),
+                                          borderRadius: heightPercentageToDP(1),
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                        }}>
+                                        <AntDesign
+                                          name={'copy1'}
+                                          size={heightPercentageToDP(2.5)}
+                                          color={COLORS.darkGray}
+                                        />
+                                      </LinearGradient>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        copyToClipboard(item.upiid)
+                                      }>
+                                      <LinearGradient
+                                        colors={[
+                                          COLORS.lightWhite,
+                                          COLORS.white_s,
+                                        ]}
+                                        style={{
+                                          padding: heightPercentageToDP(0.5),
+                                          borderRadius: heightPercentageToDP(1),
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                        }}>
+                                        <AntDesign
+                                          name={'copy1'}
+                                          size={heightPercentageToDP(2.5)}
+                                          color={COLORS.darkGray}
+                                        />
+                                      </LinearGradient>
+                                    </TouchableOpacity>
+                                  </View>
+                                </View>
+                                {/** QR code */}
+                                <View
+                                  style={{
+                                    flex: 2,
+                                    gap: heightPercentageToDP(2),
+                                    margin: heightPercentageToDP(2),
+                                  }}>
+                                  <View
+                                    style={{
+                                      backgroundColor: COLORS.white_s,
+                                      padding: heightPercentageToDP(1),
+                                      borderRadius: heightPercentageToDP(1),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    {item.qrcode ? (
+                                      <Image
+                                        source={{
+                                          uri: `${serverName}/uploads/upiqrcode/${item.qrcode}`,
+                                        }}
+                                        resizeMode="cover"
+                                        style={{
+                                          height: 150,
+                                          width: 150,
+                                        }}
+                                      />
+                                    ) : (
+                                      <Image
+                                        source={require('../../../assets/image/upi.png')}
+                                        resizeMode="cover"
+                                        style={{
+                                          height: 80,
+                                          width: 80,
+                                        }}
+                                      />
+                                    )}
+                                  </View>
+                                </View>
+
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flex: 1,
+                                    paddingBottom: heightPercentageToDP(2),
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 0.75,
+                                      display: 'flex',
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'flex-start',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        ...styles.copytitle,
+                                        paddingLeft: heightPercentageToDP(1),
+                                        textAlignVertical: 'center',
+                                      }}
+                                      numberOfLines={2}>
+                                      {item.paymentnote ? 'Note' : ''}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      paddingEnd: heightPercentageToDP(1),
+                                    }}>
+                                    <Text style={styles.copycontent}>
+                                      {item.paymentnote}
+                                    </Text>
+                                  </View>
+                                </View>
+                              </LinearGradient>
+                            </TouchableOpacity>
+                          ))}
+                      </ScrollView>
+
+                      {/** FOR UPI DEPOSIT FORM */}
+
+                      {!upiVisible && (
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                          <View
+                            style={{
+                              height: heightPercentageToDP(70),
+                              padding: heightPercentageToDP(2),
+                            }}>
+                            {/** Amount */}
+                            <View
+                              style={{
+                                borderRadius: heightPercentageToDP(2),
+                                padding: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  color: COLORS.black,
+                                  fontSize: heightPercentageToDP(2),
+                                  paddingStart: heightPercentageToDP(1),
+                                }}>
+                                Send Amount
+                              </Text>
+
+                              <LinearGradient
+                                colors={[
+                                  COLORS.time_firstblue,
+                                  COLORS.time_secondbluw,
+                                ]}
+                                start={{x: 0, y: 0}} // start from left
+                                end={{x: 1, y: 0}} // end at right
+                                style={{
+                                  borderRadius: heightPercentageToDP(2),
+                                }}>
+                                <TextInput
+                                  underlineColor="transparent"
+                                  activeUnderlineColor="transparent"
+                                  cursorColor={COLORS.white}
+                                  placeholderTextColor={COLORS.black}
+                                  style={{
+                                    backgroundColor: 'transparent',
+                                    fontFamily: FONT.Montserrat_Bold,
+                                    color: COLORS.black,
+                                  }}
+                                  textColor={COLORS.black}
+                                  fontFamily={FONT.Montserrat_Bold}
+                                  value={amountval}
+                                  inputMode="decimal"
+                                  onChangeText={text => setAmountval(text)}
+                                />
+                              </LinearGradient>
+                            </View>
+
+                            {/** Transaction id */}
+
+                            <View
+                              style={{
+                                borderRadius: heightPercentageToDP(2),
+                                padding: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  color: COLORS.black,
+                                  fontSize: heightPercentageToDP(2),
+                                  paddingStart: heightPercentageToDP(1),
+                                }}>
+                                Transaction ID
+                              </Text>
+
+                              <LinearGradient
+                                colors={[
+                                  COLORS.time_firstblue,
+                                  COLORS.time_secondbluw,
+                                ]}
+                                start={{x: 0, y: 0}} // start from left
+                                end={{x: 1, y: 0}} // end at right
+                                style={{
+                                  borderRadius: heightPercentageToDP(2),
+                                }}>
+                                <TextInput
+                                  underlineColor="transparent"
+                                  activeUnderlineColor="transparent"
+                                  cursorColor={COLORS.white}
+                                  placeholderTextColor={COLORS.black}
+                                  style={{
+                                    backgroundColor: 'transparent',
+                                    fontFamily: FONT.Montserrat_Bold,
+                                    color: COLORS.black,
+                                  }}
+                                  value={transactionval}
+                                  onChangeText={text => setTransactionval(text)}
+                                />
+                              </LinearGradient>
+                            </View>
+
+                            {/** Receipt */}
+
+                            <TouchableOpacity
+                              onPress={selectDoc}
+                              style={{
+                                borderRadius: heightPercentageToDP(2),
+                                padding: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  color: COLORS.black,
+                                  fontSize: heightPercentageToDP(2),
+                                  paddingStart: heightPercentageToDP(1),
+                                }}>
+                                Upload Receipt
+                              </Text>
+
+                              <LinearGradient
+                                colors={[
+                                  COLORS.time_firstblue,
+                                  COLORS.time_secondbluw,
+                                ]}
+                                start={{x: 0, y: 0}} // start from left
+                                end={{x: 1, y: 0}} // end at right
+                                style={{
+                                  borderRadius: heightPercentageToDP(2),
+                                  flexDirection: 'row',
+                                  alignItems: 'center', // Ensures vertical alignment of items
+                                  padding: heightPercentageToDP(0.5), // Adjust padding for spacing
+                                }}>
+                                <Text
+                                  style={{
+                                    backgroundColor: 'transparent',
+                                    fontFamily: FONT.HELVETICA_REGULAR,
+                                    color: COLORS.black,
+                                    fontSize: heightPercentageToDP(2),
+                                    textAlign: 'left',
+                                    paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
+                                    flex: 1, // Let the text take available space
+                                  }}>
+                                  {imageFileName}
+                                </Text>
+                                <View
+                                  style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    paddingEnd: heightPercentageToDP(2),
+                                  }}>
+                                  <LinearGradient
+                                    colors={[COLORS.grayBg, COLORS.white_s]}
+                                    style={{borderRadius: 20, padding: 10}}>
+                                    <AntDesign
+                                      name={'upload'}
+                                      size={heightPercentageToDP(3)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  </LinearGradient>
+                                </View>
+                              </LinearGradient>
+                            </TouchableOpacity>
+
+                            {/** Remark */}
+
+                            <View
+                              style={{
+                                borderRadius: heightPercentageToDP(2),
+                                padding: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  color: COLORS.black,
+                                  fontSize: heightPercentageToDP(2),
+                                  paddingStart: heightPercentageToDP(1),
+                                }}>
+                                Remark
+                              </Text>
+
+                              <LinearGradient
+                                colors={[
+                                  COLORS.time_firstblue,
+                                  COLORS.time_secondbluw,
+                                ]}
+                                start={{x: 0, y: 0}} // start from left
+                                end={{x: 1, y: 0}} // end at right
+                                style={{
+                                  borderRadius: heightPercentageToDP(2),
+                                }}>
+                                <TextInput
+                                  underlineColor="transparent"
+                                  activeUnderlineColor="transparent"
+                                  cursorColor={COLORS.white}
+                                  placeholderTextColor={COLORS.black}
+                                  style={{
+                                    backgroundColor: 'transparent',
+                                    fontFamily: FONT.Montserrat_Bold,
+                                    color: COLORS.black,
+                                    minHeight: heightPercentageToDP(10),
+                                  }}
+                                  multiline={true}
+                                  value={remarkval}
+                                  numberOfLines={4}
+                                  onChangeText={text => setRemarkval(text)}
+                                />
+                              </LinearGradient>
+
+                              <View
+                                style={{
+                                  marginBottom: heightPercentageToDP(5),
+                                  marginTop: heightPercentageToDP(2),
+                                }}>
+                                {isLoading ? (
+                                  <Loading />
+                                ) : (
+                                  <TouchableOpacity
+                                    onPress={submitDeposit}
+                                    style={{
+                                      backgroundColor: COLORS.blue,
+                                      padding: heightPercentageToDP(2),
+                                      borderRadius: heightPercentageToDP(1),
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        color: COLORS.white,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                      }}>
+                                      Submit
+                                    </Text>
+                                  </TouchableOpacity>
+                                )}
+                              </View>
+                            </View>
+                          </View>
+                        </ScrollView>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </View>
+          </ImageBackground>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

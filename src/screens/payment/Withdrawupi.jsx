@@ -42,7 +42,11 @@ const Withdrawupi = () => {
   const submitHandler = async () => {
     if (!amountval) {
       Toast.show({type: 'error', text1: 'Enter Amount'});
-    } else if (!upiHolderName) {
+    } 
+    else if (isNaN(amountval)) {
+      Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
+    }
+    else if (!upiHolderName) {
       Toast.show({type: 'error', text1: 'Enter UPI Holder Name'});
     } else if (!upiId) {
       Toast.show({type: 'error', text1: 'Enter UPI ID'});

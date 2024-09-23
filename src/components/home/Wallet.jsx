@@ -15,7 +15,7 @@ const Wallet = ({wallet}) => {
     <View
       style={{
         height: heightPercentageToDP(15),
-        width: widthPercentageToDP(85),
+        width: widthPercentageToDP(82),
         backgroundColor: COLORS.grayHalfBg,
         marginTop: heightPercentageToDP(2),
         borderRadius: heightPercentageToDP(1),

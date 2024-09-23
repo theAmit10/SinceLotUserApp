@@ -250,7 +250,7 @@ const PlayHistory = () => {
                                   fontSize: heightPercentageToDP(1.6),
                                   color: COLORS.black,
                                 }}>
-                                Amount
+                                {`Amount \u00A0`}
                               </Text>
                               <Text
                                 style={{

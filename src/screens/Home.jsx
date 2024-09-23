@@ -87,7 +87,7 @@ const COLORS_LIST = [
 
 const Home = () => {
   const {user, accesstoken, loading} = useSelector(state => state.user);
-
+  const focused = useIsFocused();
   const [showDate, setShowDate] = useState(true);
 
   const [nextResultTime, setNextResultTime] = useState(10);
@@ -103,7 +103,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(loadProfile(accesstoken));
-  }, [dispatch]);
+  }, [dispatch,focused]);
 
   const [currentScreen, setCurrentScreen] = useState('');
   const [firstTimeClick, setFirstTimeClick] = useState(true);
@@ -168,7 +168,7 @@ const Home = () => {
   // For Big Result
   const [homeResult, setHomeResult] = useState([]);
 
-  const focused = useIsFocused();
+  
 
   useEffect(() => {
     dispatch(getAllResult(accesstoken));

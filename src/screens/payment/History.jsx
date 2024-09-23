@@ -26,6 +26,7 @@ import Loading from '../../components/helpercComponent/Loading';
 import {useGetHistoryQuery} from '../../helper/Networkcall';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
 import moment from 'moment';
+import CustomReceiptViewer from '../../components/helpercComponent/CustomReceiptViewer';
 
 const History = () => {
   const {accesstoken, user} = useSelector(state => state.user);
@@ -39,7 +40,7 @@ const History = () => {
     error,
     isLoading,
     refetch,
-  } = useGetHistoryQuery({accesstoken : accesstoken, userId : user.userId })
+  } = useGetHistoryQuery({accesstoken: accesstoken, userId: user.userId});
 
   console.log('History isloading :: ' + isLoading);
   console.log('History :: ' + JSON.stringify(error));
@@ -63,6 +64,22 @@ const History = () => {
     return moment(dateTimeString).format('MMMM DD, YYYY');
   };
 
+  const [alertVisibleReceipt, setAlertVisibleReceipt] = useState(false);
+
+  const showAlertReceipt = item => {
+    setAlertVisibleReceipt(true);
+  };
+
+  const closeAlertReceipt = () => {
+    setAlertVisibleReceipt(false);
+  };
+
+  const handleYesReceipt = () => {
+    // Handle the Yes action here
+    setAlertVisibleReceipt(false);
+    console.log('Yes pressed');
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -73,9 +90,9 @@ const History = () => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -84,9 +101,9 @@ const History = () => {
           <View
             style={{
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -110,7 +127,7 @@ const History = () => {
 
             <View style={{margin: heightPercentageToDP(2)}}>
               <GradientTextWhite style={styles.textStyle}>
-                History
+                Transaction History
               </GradientTextWhite>
 
               {isLoading ? (
@@ -136,9 +153,7 @@ const History = () => {
                       end={{x: 1, y: 0}} // end at right
                       style={{
                         justifyContent: 'flex-start',
-                        height: expandedItems[item._id]
-                          ? heightPercentageToDP(20)
-                          : heightPercentageToDP(10),
+
                         borderRadius: heightPercentageToDP(2),
                         marginTop: heightPercentageToDP(2),
                       }}>
@@ -193,7 +208,7 @@ const History = () => {
                                   fontSize: heightPercentageToDP(1.6),
                                   color: COLORS.black,
                                 }}>
-                                Amount
+                                {`Amount : \u00A0`}
                               </Text>
                               <Text
                                 style={{
@@ -203,7 +218,8 @@ const History = () => {
                                   width: '70%',
                                 }}
                                 numberOfLines={2}>
-                                : {item.amount} {user.country.countrycurrencysymbol}
+                                {item.amount}{' '}
+                                {user.country.countrycurrencysymbol}
                               </Text>
                             </View>
 
@@ -241,10 +257,16 @@ const History = () => {
                                 name={
                                   item.paymentStatus === 'Completed'
                                     ? 'check'
+                                    : item.paymentStatus === 'Cancelled'
+                                    ? 'closecircleo'
                                     : 'clockcircleo'
                                 }
                                 size={heightPercentageToDP(2)}
-                                color={COLORS.darkGray}
+                                color={ item.paymentStatus === 'Completed'
+                                ? COLORS.green
+                                : item.paymentStatus === 'Cancelled'
+                                ? COLORS.red
+                                : COLORS.orange}
                               />
                             </LinearGradient>
                             <Text
@@ -290,6 +312,8 @@ const History = () => {
                               height: 1,
                               backgroundColor: COLORS.white_s,
                               marginHorizontal: heightPercentageToDP(2),
+                              display: 'flex',
+                              flexDirection: 'column',
                             }}
                           />
                           <View
@@ -319,6 +343,66 @@ const History = () => {
                               </Text>
                             </View>
                           </View>
+                          {item.paymentupdatereceipt && (
+                            <>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  borderBottomLeftRadius:
+                                    heightPercentageToDP(2),
+                                  borderBottomEndRadius:
+                                    heightPercentageToDP(2),
+                                  flexDirection: 'row',
+                                  padding: heightPercentageToDP(1),
+                                }}>
+                                <TouchableOpacity
+                                  onPress={() => showAlertReceipt()}
+                                  style={{
+                                    ...styles.detailContainer,
+                                    width: '90%',
+                                  }}>
+                                  <Text style={styles.detailLabel}>
+                                    Receipt
+                                  </Text>
+                                  <Text style={styles.detailValue}>
+                                    {item.paymentupdatereceipt
+                                      ? 'Show Receipt'
+                                      : ''}
+                                  </Text>
+                                </TouchableOpacity>
+                              </View>
+
+                              <CustomReceiptViewer
+                                visible={alertVisibleReceipt}
+                                onClose={closeAlertReceipt}
+                                onYes={handleYesReceipt}
+                                data={item}
+                                img={item.paymentupdatereceipt}
+                              />
+                            </>
+                          )}
+
+                          {item.paymentUpdateNote && (
+                            <View
+                              style={{
+                                flex: 1,
+                                borderBottomLeftRadius: heightPercentageToDP(2),
+                                borderBottomEndRadius: heightPercentageToDP(2),
+                                flexDirection: 'row',
+                                padding: heightPercentageToDP(1),
+                              }}>
+                              <View
+                                style={{
+                                  ...styles.detailContainer,
+                                  width: '90%',
+                                }}>
+                                <Text style={styles.detailLabel}>Note</Text>
+                                <Text style={styles.detailValue}>
+                                  {item.paymentUpdateNote}
+                                </Text>
+                              </View>
+                            </View>
+                          )}
                         </>
                       )}
                     </LinearGradient>

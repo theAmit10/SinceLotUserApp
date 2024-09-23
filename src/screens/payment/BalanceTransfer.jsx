@@ -41,7 +41,11 @@ const BalanceTransfer = () => {
   const submitHandler = async () => {
     if (!amountval) {
       Toast.show({type: 'error', text1: 'Enter Amount'});
-    } else {
+    }
+    if (isNaN(amountval)) {
+      Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
+    }
+     else {
       try {
         const body = {
           amount: amountval,

@@ -328,7 +328,7 @@ const Setting = () => {
                       fontSize: heightPercentageToDP(2),
                       color: COLORS.black,
                     }}>
-                    History
+                    Transaction History
                   </Text>
 
                   <Ionicons

@@ -74,7 +74,7 @@ const COLORS = {
   red: '#FF4A5C',
   green: '#00ba87',
   skyBlue: '#152733',
-  orange: 'FF810D',
+  orange: '#FF810D',
 
   // light
   title: '#20212D',

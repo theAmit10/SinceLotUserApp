@@ -1,5 +1,6 @@
 import {
   ImageBackground,
+  KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -43,7 +44,11 @@ const Withdrawskrill = () => {
   const submitHandler = async () => {
     if (!amountval) {
       Toast.show({type: 'error', text1: 'Enter Amount'});
-    } else if (!skrillContact) {
+    } 
+    else if (isNaN(amountval)) {
+      Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
+    }
+    else if (!skrillContact) {
       Toast.show({type: 'error', text1: 'Please enter phone number or email address' });
     }else if (!canPlaceWithdraw(user.walletOne.balance, amountval)) {
       Toast.show({
@@ -94,6 +99,10 @@ const Withdrawskrill = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
+       <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={-60}>
       <Background />
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <ImageBackground
@@ -307,6 +316,7 @@ const Withdrawskrill = () => {
           </View>
         </ImageBackground>
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

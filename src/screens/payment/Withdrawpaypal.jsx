@@ -1,6 +1,6 @@
-
 import {
   ImageBackground,
+  KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -24,9 +24,7 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import Loading from '../../components/helpercComponent/Loading';
 import {TextInput} from 'react-native-paper';
 
-import {
-  useCreateWithdrawMutation,
-} from '../../helper/Networkcall';
+import {useCreateWithdrawMutation} from '../../helper/Networkcall';
 
 export function canPlaceWithdraw(walletBalanceStr, bettingAmountStr) {
   const walletBalance = parseFloat(walletBalanceStr);
@@ -54,16 +52,19 @@ const Withdrawpaypal = () => {
   const submitHandler = async () => {
     if (!amountval) {
       Toast.show({type: 'error', text1: 'Enter Amount'});
-    } else if (!paypalEmail) {
+    } 
+    else if (isNaN(amountval)) {
+      Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
+    }
+    else if (!paypalEmail) {
       Toast.show({type: 'error', text1: 'Enter paypal email address'});
     } else if (!canPlaceWithdraw(user.walletOne.balance, amountval)) {
       Toast.show({
         type: 'error',
         text1: 'Insufficent Balance',
-        text2: 'Add balance to '+user.walletOne.walletName,
+        text2: 'Add balance to ' + user.walletOne.walletName,
       });
-    } 
-     else {
+    } else {
       setProgressBar(true);
       try {
         const body = {
@@ -75,7 +76,6 @@ const Withdrawpaypal = () => {
           paymentstatus: 'Pending',
           transactionType: 'Withdraw',
           paypalEmail,
-   
         };
 
         console.log('Request body :: ' + JSON.stringify(body));
@@ -106,222 +106,223 @@ const Withdrawpaypal = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Background />
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={-60}>
+        <Background />
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <ImageBackground
+            source={require('../../../assets/image/tlwbg.jpg')}
             style={{
+              width: '100%',
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
+            }}
+            imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
             }}>
             <View
               style={{
-                height: heightPercentageToDP(5),
+                height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+                borderTopLeftRadius: heightPercentageToDP(5),
+                borderTopRightRadius: heightPercentageToDP(5),
               }}>
               <View
                 style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}
-              />
-            </View>
-            <View style={{margin: heightPercentageToDP(2)}}>
-              <GradientTextWhite style={styles.textStyle}>
-                Paypal Withdraw
-              </GradientTextWhite>
-            </View>
-
-            {/** FOR UPI DEPOSIT FORM */}
-
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View
-                style={{
-                  height: heightPercentageToDP(70),
-                  padding: heightPercentageToDP(2),
+                  height: heightPercentageToDP(5),
+                  width: widthPercentageToDP(100),
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                {/** Amount */}
                 <View
                   style={{
+                    width: widthPercentageToDP(20),
+                    height: heightPercentageToDP(0.8),
+                    backgroundColor: COLORS.grayBg,
                     borderRadius: heightPercentageToDP(2),
-                    padding: heightPercentageToDP(1),
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                      paddingStart: heightPercentageToDP(1),
-                    }}>
-                    Amount
-                  </Text>
-
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                    }}>
-                    <TextInput
-                      underlineColor="transparent"
-                      activeUnderlineColor="transparent"
-                      cursorColor={COLORS.white}
-                      placeholderTextColor={COLORS.black}
-                      style={{
-                        backgroundColor: 'transparent',
-                        fontFamily: FONT.Montserrat_Bold,
-                        color: COLORS.black,
-                      }}
-                      textColor={COLORS.black}
-                      fontFamily={FONT.Montserrat_Bold}
-                      value={amountval}
-                      inputMode="decimal"
-                      onChangeText={text => setAmountval(text)}
-                    />
-                  </LinearGradient>
-                </View>
-
-                {/** Paypal email address */}
-                <View
-                  style={{
-                    borderRadius: heightPercentageToDP(2),
-                    padding: heightPercentageToDP(1),
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                      paddingStart: heightPercentageToDP(1),
-                    }}>
-                    Paypal email address
-                  </Text>
-
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                    }}>
-                    <TextInput
-                      underlineColor="transparent"
-                      activeUnderlineColor="transparent"
-                      cursorColor={COLORS.white}
-                      placeholderTextColor={COLORS.black}
-                      style={{
-                        backgroundColor: 'transparent',
-                        fontFamily: FONT.Montserrat_Bold,
-                        color: COLORS.black,
-                      }}
-                      value={paypalEmail}
-                      onChangeText={text => setpaypalEmail(text)}
-                    />
-                  </LinearGradient>
-                </View>
-
-                
-
-                {/** Remark */}
-
-                <View
-                  style={{
-                    borderRadius: heightPercentageToDP(2),
-                    padding: heightPercentageToDP(1),
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                      paddingStart: heightPercentageToDP(1),
-                    }}>
-                    Remark
-                  </Text>
-
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={{
-                      borderRadius: heightPercentageToDP(2),
-                    }}>
-                    <TextInput
-                      underlineColor="transparent"
-                      activeUnderlineColor="transparent"
-                      cursorColor={COLORS.white}
-                      placeholderTextColor={COLORS.black}
-                      style={{
-                        backgroundColor: 'transparent',
-                        fontFamily: FONT.Montserrat_Bold,
-                        color: COLORS.black,
-                        minHeight: heightPercentageToDP(10),
-                      }}
-                      multiline={true}
-                      value={remarkval}
-                      numberOfLines={4}
-                      onChangeText={text => setRemarkval(text)}
-                    />
-                  </LinearGradient>
-                </View>
-
-                {/** SUBMIT CONTAINER */}
-                <View
-                  style={{
-                    marginBottom: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                  }}>
-                  {showProgressBar ? (
-                    <Loading />
-                  ) : (
-                   
-                    <TouchableOpacity
-                      onPress={submitHandler}
-                      style={{
-                        backgroundColor: COLORS.blue,
-                        padding: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                        alignItems: 'center',
-                        marginTop: heightPercentageToDP(2)
-                      }}>
-                      <Text
-                        style={{
-                          color: COLORS.white,
-                          fontFamily: FONT.Montserrat_Regular,
-                        }}>
-                        Submit
-                      </Text>
-                    </TouchableOpacity>
-                 
-                  )}
-                </View>
+                  }}
+                />
               </View>
-            </ScrollView>
-          </View>
-        </ImageBackground>
-      </View>
+              <View style={{margin: heightPercentageToDP(2)}}>
+                <GradientTextWhite style={styles.textStyle}>
+                  Paypal Withdraw
+                </GradientTextWhite>
+              </View>
+
+              {/** FOR UPI DEPOSIT FORM */}
+
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <View
+                  style={{
+                    height: heightPercentageToDP(70),
+                    padding: heightPercentageToDP(2),
+                  }}>
+                  {/** Amount */}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Amount
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        textColor={COLORS.black}
+                        fontFamily={FONT.Montserrat_Bold}
+                        value={amountval}
+                        inputMode="decimal"
+                        onChangeText={text => setAmountval(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** Paypal email address */}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Paypal email address
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={paypalEmail}
+                        onChangeText={text => setpaypalEmail(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** Remark */}
+
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Remark
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                          minHeight: heightPercentageToDP(10),
+                        }}
+                        multiline={true}
+                        value={remarkval}
+                        numberOfLines={4}
+                        onChangeText={text => setRemarkval(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** SUBMIT CONTAINER */}
+                  <View
+                    style={{
+                      marginBottom: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                    }}>
+                    {showProgressBar ? (
+                      <Loading />
+                    ) : (
+                      <TouchableOpacity
+                        onPress={submitHandler}
+                        style={{
+                          backgroundColor: COLORS.blue,
+                          padding: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          alignItems: 'center',
+                          marginTop: heightPercentageToDP(2),
+                        }}>
+                        <Text
+                          style={{
+                            color: COLORS.white,
+                            fontFamily: FONT.Montserrat_Regular,
+                          }}>
+                          Submit
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              </ScrollView>
+            </View>
+          </ImageBackground>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
