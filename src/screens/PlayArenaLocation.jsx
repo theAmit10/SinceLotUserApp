@@ -223,6 +223,9 @@ const PlayArenaLocation = () => {
                       ...styles.textStyle,
                       height: heightPercentageToDP(15),
                       textAlignVertical: 'center',
+                      textAlign: 'center',
+                      alignItems: 'center'
+                      
                     }}>
                     No Available time
                   </GradientTextWhite>

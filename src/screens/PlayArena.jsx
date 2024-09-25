@@ -4,6 +4,7 @@ import {
   Image,
   ImageBackground,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -39,7 +40,7 @@ import {getTimeAccordingToTimezone} from './SearchTime';
 import PlayBackground from '../components/background/PlayBackground';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
-import moment from "moment-timezone";
+import moment from 'moment-timezone';
 
 const getCurrentDate = () => {
   const today = new Date();
@@ -50,9 +51,8 @@ const getCurrentDate = () => {
 };
 
 // Function to find the object with the current date
-const findCurrentDateObject = (data,currentDate) => {
+const findCurrentDateObject = (data, currentDate) => {
   console.log('Checking for the current date is availble in the database');
-
 
   console.log('current data : ' + currentDate);
   const lotdates = data.lotdates || [];
@@ -164,7 +164,7 @@ const PlayArena = ({route}) => {
     lottimeId: timedata._id,
     lotlocationId: locationdata._id,
   });
- 
+
   useFocusEffect(
     useCallback(() => {
       // Refetch the data when the screen is focused
@@ -173,43 +173,49 @@ const PlayArena = ({route}) => {
   );
 
   const [result, setResult] = useState(null);
-  const [currentDate, setCurrentDate] = useState(null)
+  const [currentDate, setCurrentDate] = useState(null);
   const [showPlay, setShowPlay] = useState(false);
 
   // Function to call the API and fetch the results
-  const getResultAccordingToLocationTimeDate = async (lotdateId, lottimeId, lotlocationId) => {
+  const getResultAccordingToLocationTimeDate = async (
+    lotdateId,
+    lottimeId,
+    lotlocationId,
+  ) => {
     try {
       const url = `${UrlHelper.RESULT_API}?lotdateId=${lotdateId}&lottimeId=${lottimeId}&lotlocationId=${lotlocationId}`;
-      console.log("URL :: " + url);
+      console.log('URL :: ' + url);
 
-      const { data } = await axios.get(url, {
+      const {data} = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
       });
 
-      console.log("ACTION result :: " + JSON.stringify(data.results));
+      console.log('ACTION result :: ' + JSON.stringify(data.results));
 
       // Check if the results array is empty
       if (data.results.length !== 0) {
-        setResult("Current date not found");
-      }
-       else {
+        setResult('Current date not found');
+      } else {
         // setResult(currentDate); // Set to the current date object if results are found
-        console.log("Setting to Result ELSE :: " + JSON.stringify(currentDate));
-        console.log("Setting to Location ELSE :: " + JSON.stringify(locationdata.maximumNumber));
+        console.log('Setting to Result ELSE :: ' + JSON.stringify(currentDate));
+        console.log(
+          'Setting to Location ELSE :: ' +
+            JSON.stringify(locationdata.maximumNumber),
+        );
         const maximumNumber = locationdata.maximumNumber; // Ensure `maximumNumber` exists in the data
         if (maximumNumber) {
           const generatedArray = createLocationDataArray(maximumNumber);
           setBetnumberdata(generatedArray);
         }
-        setResult("yes"); // Set to the current date object if results are found
+        setResult('yes'); // Set to the current date object if results are found
       }
       setShowPlay(false);
     } catch (error) {
       setShowPlay(false);
-      console.log(error)
-      console.log("Error message:", error.response?.data?.message);
+      console.log(error);
+      console.log('Error message:', error.response?.data?.message);
     }
   };
 
@@ -221,60 +227,56 @@ const PlayArena = ({route}) => {
       setShowPlay(true);
 
       const now = moment.tz(user?.country?.timezone);
-      console.log("Current Time: ", now.format("hh:mm A"));
-      console.log("Current Date: ", now.format("DD-MM-YYYY"));
+      console.log('Current Time: ', now.format('hh:mm A'));
+      console.log('Current Date: ', now.format('DD-MM-YYYY'));
 
       const lotTimeMoment = moment.tz(
         timedata?.time,
-        "hh:mm A",
-        user?.country?.timezone
+        'hh:mm A',
+        user?.country?.timezone,
       );
-      console.log(`Lot Time for location : ${lotTimeMoment.format("hh:mm A")}`);
+      console.log(`Lot Time for location : ${lotTimeMoment.format('hh:mm A')}`);
       const isLotTimePassed = now.isSameOrAfter(lotTimeMoment);
-      const nextDay = now.clone().add(1, "day");
+      const nextDay = now.clone().add(1, 'day');
 
       console.log(`Checking times Lot Time Passed: ${isLotTimePassed}`);
-      console.log("Next Date: ", nextDay.format("DD-MM-YYYY"));
+      console.log('Next Date: ', nextDay.format('DD-MM-YYYY'));
 
       if (isLotTimePassed) {
-        const currentDate = nextDay.format("DD-MM-YYYY");
-        const currentDateObject = findCurrentDateObject(data,currentDate);
+        const currentDate = nextDay.format('DD-MM-YYYY');
+        const currentDateObject = findCurrentDateObject(data, currentDate);
         setResult(currentDateObject); // Set the result to the current date object
-        setCurrentDate(currentDateObject)
+        setCurrentDate(currentDateObject);
         console.log('Today Play :: ' + JSON.stringify(currentDateObject));
-  
+
         if (currentDateObject !== 'Current date not found') {
           console.log('result !== "Current date not found"');
           // Fetch results using the API function
           getResultAccordingToLocationTimeDate(
             currentDateObject._id,
             timedata._id,
-            locationdata._id
+            locationdata._id,
           );
         }
-
-      }else{
+      } else {
         const currentDate = getCurrentDate();
-        const currentDateObject = findCurrentDateObject(data,currentDate);
+        const currentDateObject = findCurrentDateObject(data, currentDate);
         setResult(currentDateObject); // Set the result to the current date object
-        setCurrentDate(currentDateObject)
+        setCurrentDate(currentDateObject);
         console.log('Today Play :: ' + JSON.stringify(currentDateObject));
-  
+
         if (currentDateObject !== 'Current date not found') {
           console.log('result !== "Current date not found"');
           // Fetch results using the API function
           getResultAccordingToLocationTimeDate(
             currentDateObject._id,
             timedata._id,
-            locationdata._id
+            locationdata._id,
           );
         }
       }
-
-     
     }
   }, [isLoading, data]);
-  
 
   const addingNumberForBetting = number => {
     console.log('ADDING NUMBER TO LIST');
@@ -418,8 +420,8 @@ const PlayArena = ({route}) => {
         // navigation.goBack();
         dispatch(loadProfile(accesstoken));
         setInputValues({});
-        setSelectedNumber([])
-        showingSeletedContainer()
+        setSelectedNumber([]);
+        showingSeletedContainer();
       } catch (error) {
         console.log('Error during withdraw:', error);
         Toast.show({
@@ -496,8 +498,10 @@ const PlayArena = ({route}) => {
         style={{flex: 1}}
         behavior="height"
         keyboardVerticalOffset={-60}>
-        <PlayBackground  showSelectedVisible={showSelectedVisible}
-              showingSeletedContainer={showingSeletedContainer}/>
+        <PlayBackground
+          showSelectedVisible={showSelectedVisible}
+          showingSeletedContainer={showingSeletedContainer}
+        />
         <View style={styles.innerContainer}>
           {/** Top header wollet container */}
 
@@ -600,7 +604,7 @@ const PlayArena = ({route}) => {
                         color: COLORS.black,
                       }}>
                       {getTimeAccordingToTimezone(
-                         timedata.time ? timedata.time : timedata.lottime,
+                        timedata.time ? timedata.time : timedata.lottime,
                         user?.country?.timezone,
                       )}
                     </Text>
@@ -649,7 +653,9 @@ const PlayArena = ({route}) => {
             imageStyle={styles.imageBackgroundStyle}>
             <View style={styles.topBar}>
               <GradientTextWhite style={styles.locationText}>
-                {locationdata.name ? locationdata.name : locationdata.lotlocation}
+                {locationdata.name
+                  ? locationdata.name
+                  : locationdata.lotlocation}
               </GradientTextWhite>
               <View style={styles.divider} />
               <GradientTextWhite style={styles.timeText}>
@@ -802,6 +808,7 @@ const PlayArena = ({route}) => {
                               fontFamily: FONT.Montserrat_Bold,
                               color: COLORS.black,
                               textAlign: 'center',
+                              padding: heightPercentageToDP(1)
                             }}
                             placeholder={'Amount'}
                             placeholderTextColor={COLORS.darkGray}
@@ -886,6 +893,7 @@ const PlayArena = ({route}) => {
                         alignItems: 'center',
                         gap: heightPercentageToDP(3),
                         paddingStart: heightPercentageToDP(2),
+                        paddingEnd: heightPercentageToDP(2),
                         margin: heightPercentageToDP(2),
                       }}>
                       <Text
@@ -1026,7 +1034,10 @@ const styles = StyleSheet.create({
   },
   imageBackground: {
     width: '100%',
-    height: heightPercentageToDP(70),
+    height:
+    Platform.OS === 'android'
+      ? heightPercentageToDP(70)
+      : heightPercentageToDP(65),
   },
   imageBackgroundStyle: {
     borderTopLeftRadius: heightPercentageToDP(5),
@@ -1082,4 +1093,3 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP(0.5),
   },
 });
-
