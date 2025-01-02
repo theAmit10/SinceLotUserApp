@@ -23,7 +23,7 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import { useSelector } from 'react-redux';
-import { getTimeAccordingToTimezone } from './SearchTime';
+import { getDateTimeAccordingToUserTimezone, getTimeAccordingToTimezone } from './SearchTime';
 
 const ResultDetails = ({route}) => {
   const {data} = route.params;
@@ -69,7 +69,11 @@ const ResultDetails = ({route}) => {
           <tbody>
             <tr>
               <td><span>${data?.lotlocation?.lotlocation}</span></td>
-              <td><span>${data?.lotdate?.lotdate}</span></td>
+              <td><span>${getDateTimeAccordingToUserTimezone(
+                data?.lottime?.lottime,
+                data?.lotdate?.lotdate,
+                user?.country?.timezone,
+              )}</span></td>
               <td><span>${getTimeAccordingToTimezone(data?.lottime?.lottime, user?.country?.timezone)}</span></td>
               <td><span>${data?.resultNumber}</span></td>
             </tr>
@@ -78,7 +82,7 @@ const ResultDetails = ({route}) => {
         
       </article>
       <aside>
-        <h1><span>Since 1927</span></h1>
+        <h1><span>Since 2001</span></h1>
         <div>
           <p>Thank you for download</p>
         </div>
@@ -304,7 +308,14 @@ const ResultDetails = ({route}) => {
                         fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
                       }}>
-                      {data.lotdate.lotdate}
+                      {/* {data.lotdate.lotdate} */}
+                      {
+                        getDateTimeAccordingToUserTimezone(
+                          data.lottime.lottime,
+                          data.lotdate.lotdate,
+                          user?.country?.timezone,
+                        )
+                      }
                     </Text>
                   </View>
                 </View>

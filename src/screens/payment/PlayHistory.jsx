@@ -26,6 +26,7 @@ import Loading from '../../components/helpercComponent/Loading';
 import {useGetPlayHistoryQuery} from '../../helper/Networkcall';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
 import {getTimeAccordingToTimezone} from '../SearchTime';
+import moment from "moment-timezone"
 
 const historyapidata = [
   {
@@ -130,6 +131,42 @@ const PlayHistory = () => {
     }));
   };
 
+  function extractNumberFromString(input) {
+    // Remove the last character (assuming it's always 'X') and convert the result to a number
+    return parseInt(input.slice(0, -1), 10);
+  }
+
+  function formatAmount(value) {
+    if (typeof value === 'string') {
+      value = parseFloat(value); // Convert string to float if necessary
+    }
+
+    // Check if the number has decimals
+    if (value % 1 === 0) {
+      return value; // Return as is if it's a whole number
+    } else {
+      return parseFloat(value.toFixed(1)); // Return with one decimal point if it has decimals
+    }
+  }
+
+  function getDateTimeAccordingToUserTimezone(time, date, userTimeZone) {
+    // Combine the passed date and time into a full datetime string in IST
+    const dateTimeIST = `${date} ${time}`;
+
+    // Convert the combined date and time to a moment object in the IST timezone
+    const istDateTime = moment.tz(
+      dateTimeIST,
+      'DD-MM-YYYY hh:mm A',
+      'Asia/Kolkata',
+    );
+
+    // Convert the IST datetime to the user's target timezone
+    const userTimeDateTime = istDateTime.clone().tz(userTimeZone);
+
+    // Format the date and time in the target timezone and return it
+    return userTimeDateTime.format('DD-MM-YYYY');
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -140,9 +177,9 @@ const PlayHistory = () => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -151,9 +188,9 @@ const PlayHistory = () => {
           <View
             style={{
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -232,7 +269,11 @@ const PlayHistory = () => {
                             <MaterialCommunityIcons
                               name={'play-circle-outline'}
                               size={heightPercentageToDP(3)}
-                              color={COLORS.darkGray}
+                              color={
+                                item?.walletName
+                                  ? COLORS.green
+                                  : COLORS.darkGray
+                              }
                             />
                           </View>
 
@@ -260,8 +301,11 @@ const PlayHistory = () => {
                                   width: '70%',
                                 }}
                                 numberOfLines={2}>
-                                : {calculateTotalAmount(item.playnumbers)}{' '}
-                                {user.country.countrycurrencysymbol}
+                                :{' '}
+                                {formatAmount(
+                                  calculateTotalAmount(item?.playnumbers),
+                                )}{' '}
+                                {user?.country?.countrycurrencysymbol}
                               </Text>
                             </View>
 
@@ -278,7 +322,15 @@ const PlayHistory = () => {
                                   fontSize: heightPercentageToDP(1.8),
                                   color: COLORS.black,
                                 }}>
-                                {formatDate(item.lotdate.lotdate)}
+                                {item?.lotdate?.lotdate
+                                  ? formatDate(
+                                      getDateTimeAccordingToUserTimezone(
+                                        item?.lottime?.lottime,
+                                        item?.lotdate?.lotdate,
+                                        user?.country?.timezone,
+                                      ),
+                                    )
+                                  : ''}
                               </Text>
                             </View>
                           </View>
@@ -316,7 +368,6 @@ const PlayHistory = () => {
                               height: 1,
                               backgroundColor: COLORS.white_s,
                               marginHorizontal: heightPercentageToDP(2),
-                             
                             }}
                           />
                           <View
@@ -332,7 +383,7 @@ const PlayHistory = () => {
                               <Text
                                 numberOfLines={1}
                                 style={styles.detailLabel}>
-                                {item.lotlocation.lotlocation}
+                                {item?.lotlocation?.lotlocation}
                               </Text>
                             </View>
                             <View style={styles.detailContainer}>
@@ -341,17 +392,23 @@ const PlayHistory = () => {
                                 numberOfLines={1}
                                 style={styles.detailLabel}>
                                 {getTimeAccordingToTimezone(
-                                  item.lottime.lottime,
+                                  item?.lottime?.lottime,
                                   user?.country?.timezone,
                                 )}
                               </Text>
                             </View>
                             <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>Total Bets</Text>
+                              <Text style={styles.detailValue}>
+                                {item?.walletName
+                                  ? 'Winning No.'
+                                  : 'Total bets'}
+                              </Text>
                               <Text
                                 numberOfLines={3}
                                 style={styles.detailLabel}>
-                                {item.playnumbers.length}
+                                {item?.walletName
+                                  ? item.playnumbers[0]?.playnumber
+                                  : item?.playnumbers.length}
                               </Text>
                             </View>
                           </View>
@@ -363,7 +420,6 @@ const PlayHistory = () => {
                               borderBottomEndRadius: heightPercentageToDP(2),
                               flexDirection: 'row',
                               padding: heightPercentageToDP(1),
-                              
                             }}>
                             <View style={styles.detailContainer}>
                               <Text style={styles.detailValue}>Number</Text>
@@ -372,9 +428,7 @@ const PlayHistory = () => {
                               <Text style={styles.detailValue}>Amount</Text>
                             </View>
                             <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>
-                                Win Amt.
-                              </Text>
+                              <Text style={styles.detailValue}>Win Amt.</Text>
                             </View>
                           </View>
                           {item.playnumbers.map((pitem, pindex) => (
@@ -385,36 +439,43 @@ const PlayHistory = () => {
                                 borderBottomEndRadius: heightPercentageToDP(2),
                                 flexDirection: 'row',
                                 padding: heightPercentageToDP(1),
-                               
                               }}>
                               <View style={styles.detailContainer}>
-                                <Text style={{...styles.detailLabel,fontFamily: FONT.Montserrat_SemiBold}}>
-                                  {pitem.playnumber}
+                                <Text
+                                  style={{
+                                    ...styles.detailLabel,
+                                    fontFamily: FONT.Montserrat_SemiBold,
+                                  }}>
+                                  {pitem?.playnumber}
                                 </Text>
                               </View>
                               <View style={styles.detailContainer}>
                                 <Text style={styles.detailLabel}>
-                                  {pitem.amount}
+                                  {/* {pitem?.amount} */}
+                                  {item?.walletName
+                                    ? formatAmount(pitem?.amount /
+                                      extractNumberFromString(
+                                        item?.lotlocation?.maximumReturn,
+                                      ))
+                                    : formatAmount(pitem?.amount)}
                                 </Text>
                               </View>
                               <View style={styles.detailContainer}>
                                 <Text style={styles.detailLabel}>
-                                  {pitem.winningamount}
+                                  {formatAmount(pitem?.winningamount)}
                                 </Text>
                               </View>
                             </View>
                           ))}
-                           <View
+                          <View
                             style={{
                               height: 1,
                               backgroundColor: COLORS.white_s,
                               marginHorizontal: heightPercentageToDP(2),
                               marginBottom: heightPercentageToDP(3),
-                              marginTop: heightPercentageToDP(1)
-                             
+                              marginTop: heightPercentageToDP(1),
                             }}
                           />
-
                         </>
                       )}
                     </LinearGradient>
@@ -466,12 +527,12 @@ const styles = StyleSheet.create({
     fontFamily: FONT.Montserrat_Regular,
     color: COLORS.black,
     fontSize: heightPercentageToDP(2),
-    textAlign : 'center'
+    textAlign: 'center',
   },
   detailValue: {
     fontFamily: FONT.Montserrat_SemiBold,
     color: COLORS.black,
     fontSize: heightPercentageToDP(2),
-    textAlign : 'center'
+    textAlign: 'center',
   },
 });

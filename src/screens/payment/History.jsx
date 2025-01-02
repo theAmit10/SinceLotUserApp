@@ -80,6 +80,19 @@ const History = () => {
     console.log('Yes pressed');
   };
 
+  function formatAmount(value) {
+    if (typeof value === "string") {
+      value = parseFloat(value); // Convert string to float if necessary
+    }
+  
+    // Check if the number has decimals
+    if (value % 1 === 0) {
+      return value; // Return as is if it's a whole number
+    } else {
+      return parseFloat(value.toFixed(1)); // Return with one decimal point if it has decimals
+    }
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -190,6 +203,12 @@ const History = () => {
                               style={{
                                 height: 25,
                                 width: 25,
+                                tintColor:
+                                  item.transactionType === 'Deposit'
+                                    ? COLORS.result_lightblue
+                                    : item.transactionType === 'Withdraw'
+                                    ? COLORS.orange
+                                    : COLORS.green,
                               }}
                             />
                           </View>
@@ -218,7 +237,7 @@ const History = () => {
                                   width: '70%',
                                 }}
                                 numberOfLines={2}>
-                                {item.amount}{' '}
+                                {formatAmount(item.amount)}{' '}
                                 {user.country.countrycurrencysymbol}
                               </Text>
                             </View>
@@ -262,11 +281,13 @@ const History = () => {
                                     : 'clockcircleo'
                                 }
                                 size={heightPercentageToDP(2)}
-                                color={ item.paymentStatus === 'Completed'
-                                ? COLORS.green
-                                : item.paymentStatus === 'Cancelled'
-                                ? COLORS.red
-                                : COLORS.orange}
+                                color={
+                                  item.paymentStatus === 'Completed'
+                                    ? COLORS.green
+                                    : item.paymentStatus === 'Cancelled'
+                                    ? COLORS.red
+                                    : COLORS.orange
+                                }
                               />
                             </LinearGradient>
                             <Text
@@ -326,20 +347,29 @@ const History = () => {
                             }}>
                             <View style={styles.detailContainer}>
                               <Text style={styles.detailLabel}>
-                                Payment Method
+                                Payment{' '}
+                                {item.transactionType === 'AdminUpdate'
+                                  ? 'Type'
+                                  : 'Method'}
                               </Text>
                               <Text style={styles.detailValue}>
-                                {item.paymentType}
+                                {item.transactionType === 'AdminUpdate'
+                                  ? `${item?.walletName} W. ${item.paymentType}`
+                                  : item.paymentType}
                               </Text>
                             </View>
                             <View style={styles.detailContainer}>
                               <Text style={styles.detailLabel}>
                                 {item.transactionType === 'Deposit'
                                   ? 'Transaction ID'
-                                  : ''}
+                                  : 'Transaction type'}
                               </Text>
                               <Text style={styles.detailValue}>
-                                {item.transactionId}
+                              {item.transactionId
+                                  ? item.transactionId
+                                  : item.transactionType === 'Transfer'
+                                  ? 'Game to Withdraw W.'
+                                  : item.transactionType}
                               </Text>
                             </View>
                           </View>

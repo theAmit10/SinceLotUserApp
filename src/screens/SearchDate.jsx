@@ -26,14 +26,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getDateAccordingToLocationAndTime} from '../redux/actions/dateAction';
 import LinearGradient from 'react-native-linear-gradient';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-import { getTimeAccordingToTimezone } from './SearchTime';
+import {getDateTimeAccordingToUserTimezone, getTimeAccordingToTimezone} from './SearchTime';
+import moment from 'moment-timezone';
 
 const SearchDate = ({route}) => {
   const navigation = useNavigation();
- 
+
   const {timedata, locationdata} = route.params;
 
- 
   const [searchData, setSearchData] = useState('');
   const [showLoading, setLoading] = useState(false);
   const [data, setData] = useState([
@@ -49,7 +49,7 @@ const SearchDate = ({route}) => {
 
   const dispatch = useDispatch();
 
-  const {accesstoken,user} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
   const {loading, dates} = useSelector(state => state.date);
   const [filteredData, setFilteredData] = useState([]);
 
@@ -72,14 +72,169 @@ const SearchDate = ({route}) => {
     );
   }, [dispatch, focused]);
 
+
+function convertUTCToIST12Hour(utcTime) {
+  // Create a moment object from the UTC time string
+  const momentObj = moment.utc(utcTime);
+
+  // Set the timezone to IST
+  momentObj.tz('Asia/Kolkata');
+
+  // Format the date and time in 12-hour format
+  const istDateTime = momentObj.format('YYYY-MM-DD h:mm:ss A');
+
+  return istDateTime;
+}
+
   useEffect(() => {
-    setFilteredData(dates); // Update filteredData whenever locations change
+    if(dates)
+    {
+      const modifiedData = convertToUserTimezone(dates, user?.country?.timezone);
+      
+      console.log("created at time gimini"); 
+      dates.map((item) => {
+        const istDateTime = convertUTCToIST12Hour(item.createdAt);
+        console.log("Created At :: ",istDateTime); 
+      })
+
+      // Output: 2024-10-24 12:14:16 AM
+      setFilteredData(modifiedData); // Update filteredData whenever locations change
+    }
+   
   }, [dates]);
 
-  const submitHandler = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Searching',
+  const navigationController = item => {
+    // const lotTimeMoment = moment.tz(
+    //   timedata.time ? timedata.time : timedata.lottime,
+    //   'hh:mm A',
+    //   'Asia/Kolkata',
+    // );
+
+    // console.log(`Lot Time for location : ${lotTimeMoment.format('hh:mm A')}`);
+    // const isLotTimePassed = now.isSameOrAfter(lotTimeMoment);
+    // const nextDay = now.clone().add(1, 'day');
+
+    // console.log(`Checking times Lot Time Passed: ${isLotTimePassed}`);
+    // console.log('Next Date: ', nextDay.format('DD-MM-YYYY'));
+
+    // item._id,
+    // item.lottime._id,
+    // item.lottime.lotlocation._id,
+
+     // if (isLotTimePassed) {
+    //   console.log('YOU ARE INSIDE IF BLOCK');
+    //   const currentDate = nextDay.format('DD-MM-YYYY');
+    //   const currentDateObject = findCurrentDateObject(data, currentDate);
+
+    //   console.log(
+    //     'IF currentDateObject :: ',
+    //     JSON.stringify(currentDateObject),
+    //   );
+    //   setResult(currentDateObject); // Set the result to the current date object
+    //   setCurrentDate(currentDateObject);
+    //   console.log('Today Play :: ' + JSON.stringify(currentDateObject));
+
+    //   if (currentDateObject !== 'Current date not found') {
+    //     console.log('result !== "Current date not found"');
+    //     // Fetch results using the API function
+    //     // getResultAccordingToLocationTimeDate(
+    //     //   currentDateObject._id,
+    //     //   timedata._id,
+    //     //   locationdata._id,
+    //     // );
+
+    //     // Check if the results array is empty
+    //     const maximumNumber = locationdata.maximumNumber; // Ensure `maximumNumber` exists in the data
+    //     if (maximumNumber) {
+    //       const generatedArray = createLocationDataArray(maximumNumber);
+    //       setBetnumberdata(generatedArray);
+    //     }
+    //     setResult('yes'); // Set to the current date object if results are found
+    //     setShowPlay(false);
+    //   }
+    // } else {
+    //   console.log('YOU ARE INSIDE ELSE BLOCK');
+    //   // const currentDate = getCurrentDate();
+    //   const currentDate = getCurrentDateInTimezone();
+
+    //   // const cISTDate = getCurrentDate();
+    //   // const currentDate = getDateTimeAccordingToUserTimezone(
+    //   //   timedata.time ? timedata.time : timedata.lottime,
+    //   //   cISTDate,
+    //   //   user?.country?.timezone,
+    //   // );
+    //   const currentDateObject = findCurrentDateObject(data, currentDate);
+
+    //   console.log(
+    //     'ELSE currentDateObject :: ',
+    //     JSON.stringify(currentDateObject),
+    //   );
+    //   setResult(currentDateObject); // Set the result to the current date object
+    //   setCurrentDate(currentDateObject);
+    //   console.log('Today Play :: ' + JSON.stringify(currentDateObject));
+
+    //   if (currentDateObject !== 'Current date not found') {
+    //     console.log('result !== "Current date not found"');
+
+    //     const maximumNumber = locationdata.maximumNumber; // Ensure `maximumNumber` exists in the data
+    //     if (maximumNumber) {
+    //       const generatedArray = createLocationDataArray(maximumNumber);
+    //       setBetnumberdata(generatedArray);
+    //     }
+    //     setResult('yes'); // Set to the current date object if results are found
+    //     setShowPlay(false);
+    //   }
+    // }
+
+    const cISTDate = item.lotdate;
+    const currentDate = getDateTimeAccordingToUserTimezone(
+          item.lottime.lottime,
+          cISTDate,
+          user?.country?.timezone,
+        );
+
+    console.log("MINE DATE :: ",currentDate)
+    console.log("MINE DATEE :: ",JSON.stringify(dates))
+    const currentDateObject = findCurrentDateObject(dates, currentDate);
+    console.log("MINE DATA :: ",JSON.stringify(currentDateObject))
+
+   
+
+    // navigation.navigate('Result', {
+    //   datedata: currentDateObject,
+    // });
+    navigation.navigate('Result', {
+      datedata: item,
+    });
+  };
+
+  const findCurrentDateObject = (data, currentDate) => {
+    console.log('Checking for the current date is availble in the database');
+  
+    console.log('current data : ' + currentDate);
+    const lotdates = data || [];
+  
+    const found = lotdates.find(item => item.lotdate === currentDate);
+  
+    return found ? found : 'Current date not found';
+  };
+
+  const convertToUserTimezone = (dataArray, userTimezone) => {
+    return dataArray.map(item => {
+      // Combine the lotdate and lottime to form a complete datetime in IST
+      const istDateTime = moment.tz(`${item.lotdate} ${item.lottime.lottime}`, 'DD-MM-YYYY hh:mm A', 'Asia/Kolkata');
+      
+      // Convert this IST datetime to the user's timezone
+      const userDateTime = istDateTime.clone().tz(userTimezone);
+  
+      // Format the converted datetime into 'DD-MM-YYYY' format
+      const convertedLotdate = userDateTime.format('DD-MM-YYYY');
+  
+      // Return the modified object with the new lotdate
+      return {
+        ...item,
+        lotdate: convertedLotdate,  // Update the lotdate
+      };
     });
   };
 
@@ -135,7 +290,10 @@ const SearchDate = ({route}) => {
                 {locationdata.lotlocation}
               </GradientTextWhite>
               <GradientTextWhite style={styles.textStyle}>
-                {getTimeAccordingToTimezone(timedata.lottime, user?.country?.timezone)}
+                {getTimeAccordingToTimezone(
+                  timedata.lottime,
+                  user?.country?.timezone,
+                )}
               </GradientTextWhite>
 
               <GradientTextWhite style={styles.textStyle}>
@@ -196,9 +354,7 @@ const SearchDate = ({route}) => {
                   renderItem={({item, index}) => (
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate('Result', {
-                          datedata: item,
-                        })
+                        navigationController(item)
                       }>
                       <LinearGradient
                         colors={

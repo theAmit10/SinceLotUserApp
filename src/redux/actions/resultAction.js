@@ -98,17 +98,25 @@ export const getResultDetails = (accesstoken,id) => async dispatch => {
   };
 
 
-  export const getAllResultAccordingToLocation = (accesstoken,locationid) => async dispatch => {
+  export const getAllResultAccordingToLocation = (accesstoken,locationid, year, month) => async dispatch => {
     try {
       dispatch({
         type: 'getAllResultAccordingLocationRequest',
       });
   
-      const {data} = await axios.get(UrlHelper.RESULT_ACCORDING_TO_LOCATION_API+"?locationid="+`${locationid}`, {
+      // const {data} = await axios.get(UrlHelper.RESULT_ACCORDING_TO_LOCATION_API+"?locationid="+`${locationid}`, {
+      //   headers: {
+      //     Authorization: `Bearer ${accesstoken}`,
+      //   },
+      // });
+
+      const {data} = await axios.get(`${UrlHelper.RESULT_MONTH_YEAR}result/resultlmy?locationid=${locationid}&year=${year}&month=${month}`, {
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
       });
+
+      
   
       // console.log("ACTION result accoding to location :: "+data.results)
   

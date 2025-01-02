@@ -170,7 +170,11 @@ const BankDeposit = () => {
       return;
     }
     if (isNaN(amountval)) {
-      Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Amount',
+        text2: 'Please enter valid amount',
+      });
     }
     if (!transactionval) {
       Toast.show({type: 'error', text1: 'Enter Transaction Number'});
@@ -235,9 +239,9 @@ const BankDeposit = () => {
             style={{
               width: '100%',
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
             }}
             imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -246,9 +250,9 @@ const BankDeposit = () => {
             <View
               style={{
                 height:
-                Platform.OS === 'android'
-                  ? heightPercentageToDP(85)
-                  : heightPercentageToDP(80),
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),
@@ -307,9 +311,9 @@ const BankDeposit = () => {
                       <GradientTextWhite style={styles.textStyleContent}>
                         Bank
                       </GradientTextWhite>
-                      <GradientTextWhite style={styles.textStyleContent}>
+                      {/* <GradientTextWhite style={styles.textStyleContent}>
                         {selectedUpiId?.paymentId}
-                      </GradientTextWhite>
+                      </GradientTextWhite> */}
                       <LinearGradient
                         colors={[COLORS.grayBg, COLORS.white_s]}
                         style={{borderRadius: 20, padding: 10}}>
@@ -446,79 +450,48 @@ const BankDeposit = () => {
                                     </LinearGradient>
                                   </View>
                                 </View>
+                                
+
+                                {/** BANK NAME */}
                                 <View
                                   style={{
                                     flexDirection: 'row',
-                                    gap: heightPercentageToDP(1),
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    flex: 1,
-                                    paddingHorizontal: heightPercentageToDP(1),
-                                    borderRadius: heightPercentageToDP(2),
+                                    padding: heightPercentageToDP(1),
                                   }}>
                                   <View
                                     style={{
                                       flex: 1,
-                                      gap: heightPercentageToDP(2),
-                                      justifyContent: 'space-between',
+
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'flex-start',
                                     }}>
                                     <Text style={styles.copytitle}>
                                       Bank Name
-                                    </Text>
-                                    <Text
-                                      style={styles.copytitle}
-                                      numberOfLines={2}>
-                                      Account Holder Name
-                                    </Text>
-                                    <Text style={styles.copytitle}>
-                                      Account No.
-                                    </Text>
-                                    <Text style={styles.copytitle}>
-                                      Swift Code
-                                    </Text>
-                                    <Text style={styles.copytitle}>
-                                      Routing / IFSC Code
                                     </Text>
                                   </View>
                                   <View
                                     style={{
                                       flex: 2,
-                                      gap: heightPercentageToDP(2),
-
-                                      justifyContent: 'space-between',
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'flex-start',
+                                      paddingHorizontal:
+                                        heightPercentageToDP(1),
                                     }}>
                                     <Text
                                       style={styles.copycontent}
                                       numberOfLines={2}>
                                       {item.bankname}
                                     </Text>
-                                    <Text
-                                      style={styles.copycontent}
-                                      numberOfLines={2}>
-                                      {item.accountholdername}
-                                    </Text>
-                                    <Text
-                                      style={styles.copycontent}
-                                      numberOfLines={1}>
-                                      {item.accountnumber}
-                                    </Text>
-                                    <Text
-                                      style={styles.copycontent}
-                                      numberOfLines={1}>
-                                      {item.swiftcode}
-                                    </Text>
-                                    <Text
-                                      style={styles.copycontent}
-                                      numberOfLines={1}>
-                                      {item.ifsccode}
-                                    </Text>
                                   </View>
                                   <View
                                     style={{
-                                      height: '100%',
-                                      width: '10%',
-                                      justifyContent: 'space-between',
-                                      alignItems: 'flex-end',
+                                      flex: 0.5,
+
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
                                     }}>
                                     <TouchableOpacity
                                       onPress={() =>
@@ -542,6 +515,49 @@ const BankDeposit = () => {
                                         />
                                       </LinearGradient>
                                     </TouchableOpacity>
+                                  </View>
+                                </View>
+
+                                {/** ACCOUNT HOLDER NAME */}
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    padding: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 1,
+
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'flex-start',
+                                    }}>
+                                    <Text style={styles.copytitle}>
+                                      Account Holder Name
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'flex-start',
+                                      paddingHorizontal:
+                                        heightPercentageToDP(1),
+                                    }}>
+                                    <Text
+                                      style={styles.copycontent}
+                                      numberOfLines={2}>
+                                      {item.accountholdername}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 0.5,
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
                                     <TouchableOpacity
                                       onPress={() =>
                                         copyToClipboard(item.accountholdername)
@@ -564,6 +580,50 @@ const BankDeposit = () => {
                                         />
                                       </LinearGradient>
                                     </TouchableOpacity>
+                                  </View>
+                                </View>
+                                {/** ACCOUNT NUMBER */}
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    padding: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 1,
+
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'flex-start',
+                                    }}>
+                                    <Text style={styles.copytitle}>
+                                      Account No.
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 2,
+
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'flex-start',
+                                      paddingHorizontal:
+                                        heightPercentageToDP(1),
+                                    }}>
+                                    <Text
+                                      style={styles.copycontent}
+                                      numberOfLines={2}>
+                                      {item.accountnumber}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 0.5,
+
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
                                     <TouchableOpacity
                                       onPress={() =>
                                         copyToClipboard(item.accountnumber)
@@ -586,28 +646,120 @@ const BankDeposit = () => {
                                         />
                                       </LinearGradient>
                                     </TouchableOpacity>
-                                    <TouchableOpacity
-                                      onPress={() =>
-                                        copyToClipboard(item.swiftcode)
-                                      }>
-                                      <LinearGradient
-                                        colors={[
-                                          COLORS.lightWhite,
-                                          COLORS.white_s,
-                                        ]}
-                                        style={{
-                                          padding: heightPercentageToDP(0.5),
-                                          borderRadius: heightPercentageToDP(1),
-                                          justifyContent: 'center',
-                                          alignItems: 'center',
-                                        }}>
-                                        <AntDesign
-                                          name={'copy1'}
-                                          size={heightPercentageToDP(2.5)}
-                                          color={COLORS.darkGray}
-                                        />
-                                      </LinearGradient>
-                                    </TouchableOpacity>
+                                  </View>
+                                </View>
+                                {/** ACCOUNT SWIFT CODE */}
+                                {item.swiftcode ? (
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      padding: heightPercentageToDP(1),
+                                    }}>
+                                    <View
+                                      style={{
+                                        flex: 1,
+
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'flex-start',
+                                      }}>
+                                      <Text style={styles.copytitle}>
+                                        Swift Code
+                                      </Text>
+                                    </View>
+                                    <View
+                                      style={{
+                                        flex: 2,
+
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'flex-start',
+                                        paddingHorizontal:
+                                          heightPercentageToDP(1),
+                                      }}>
+                                      <Text
+                                        style={styles.copycontent}
+                                        numberOfLines={2}>
+                                        {item.swiftcode}
+                                      </Text>
+                                    </View>
+                                    <View
+                                      style={{
+                                        flex: 0.5,
+
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                      }}>
+                                      <TouchableOpacity
+                                        onPress={() =>
+                                          copyToClipboard(item.swiftcode)
+                                        }>
+                                        <LinearGradient
+                                          colors={[
+                                            COLORS.lightWhite,
+                                            COLORS.white_s,
+                                          ]}
+                                          style={{
+                                            padding: heightPercentageToDP(0.5),
+                                            borderRadius:
+                                              heightPercentageToDP(1),
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                          }}>
+                                          <AntDesign
+                                            name={'copy1'}
+                                            size={heightPercentageToDP(2.5)}
+                                            color={COLORS.darkGray}
+                                          />
+                                        </LinearGradient>
+                                      </TouchableOpacity>
+                                    </View>
+                                  </View>
+                                ) : null}
+
+                                {/** ROUTING/ IFSC CODE */}
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    padding: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 1,
+
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'flex-start',
+                                    }}>
+                                    <Text style={styles.copytitle}>
+                                    Routing / IFSC Code
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 2,
+
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'flex-start',
+                                      paddingHorizontal:
+                                        heightPercentageToDP(1),
+                                    }}>
+                                    <Text
+                                      style={styles.copycontent}
+                                      numberOfLines={2}>
+                                      {item.ifsccode}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 0.5,
+
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
                                     <TouchableOpacity
                                       onPress={() =>
                                         copyToClipboard(item.ifsccode)
@@ -632,14 +784,15 @@ const BankDeposit = () => {
                                     </TouchableOpacity>
                                   </View>
                                 </View>
+                                {/** NOTE */}
 
                                 <View
                                   style={{
-                                    flexDirection: 'row',
+                                    flexDirection: 'column',
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                     flex: 1,
-                                    paddingBottom: heightPercentageToDP(2),
+                                    padding: heightPercentageToDP(2),
                                   }}>
                                   <View
                                     style={{
@@ -933,13 +1086,11 @@ const styles = StyleSheet.create({
     fontSize: heightPercentageToDP(2),
     color: COLORS.black,
     fontFamily: FONT.Montserrat_Regular,
-    height: heightPercentageToDP(5),
   },
   copytitle: {
     fontSize: heightPercentageToDP(2),
     color: COLORS.black,
     fontFamily: FONT.Montserrat_SemiBold,
-    height: heightPercentageToDP(5),
   },
   inputContainer: {
     marginTop: heightPercentageToDP(3),

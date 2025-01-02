@@ -135,6 +135,7 @@ const BalanceTransfer = () => {
             <View
               style={{
                 flex: 1,
+                
               }}>
               <View
                 style={{

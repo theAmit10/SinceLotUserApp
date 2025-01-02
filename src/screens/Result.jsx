@@ -29,10 +29,12 @@ import {getResultAccordingToLocationTimeDate} from '../redux/actions/resultActio
 import Loading from '../components/helpercComponent/Loading';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-import { getTimeAccordingToTimezone } from './SearchTime';
+import { getDateTimeAccordingToUserTimezone, getTimeAccordingToTimezone } from './SearchTime';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import UrlHelper from '../helper/UrlHelper';
+import axios from 'axios';
 
 const Result = ({route}) => {
   const {datedata} = route.params;
@@ -44,25 +46,64 @@ const Result = ({route}) => {
   const dispatch = useDispatch();
 
   const {accesstoken,user} = useSelector(state => state.user);
-  const {loadingResult, results} = useSelector(state => state.result);
+  // const {loadingResult, results} = useSelector(state => state.result);
   const [filteredData, setFilteredData] = useState([]);
 
   const focused = useIsFocused();
 
-  useEffect(() => {
-    dispatch(
-      getResultAccordingToLocationTimeDate(
-        accesstoken,
-        datedata._id,
-        datedata.lottime._id,
-        datedata.lottime.lotlocation,
-      ),
-    );
-  }, [dispatch, focused]);
+  const [loadingResult,setloadingResult] = useState(false);
+
+  const getResultAccordingToLocationTimeDate = async (
+    lotdateId,
+    lottimeId,
+    lotlocationId,
+  ) => {
+    try {
+      const url = `${UrlHelper.RESULT_API}?lotdateId=${lotdateId}&lottimeId=${lottimeId}&lotlocationId=${lotlocationId}`;
+      console.log('URL :: ' + url);
+      setloadingResult(true)
+
+      const {data} = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      });
+
+      console.log('ACTION result :: ' + JSON.stringify(data.results));
+      setFilteredData(data.results)
+
+      setloadingResult(false);
+    } catch (error) {
+      setloadingResult(false);
+      console.log(error);
+      console.log('Error message:', error.response?.data?.message);
+    }
+  };
 
   useEffect(() => {
-    setFilteredData(results); // Update filteredData whenever locations change
-  }, [results]);
+    // dispatch(
+    //   getResultAccordingToLocationTimeDate(
+    //     accesstoken,
+    //     datedata._id,
+    //     datedata.lottime._id,
+    //     datedata.lottime.lotlocation._id,
+    //   ),
+    // );
+
+    getResultAccordingToLocationTimeDate(
+      datedata._id,
+      datedata.lottime._id,
+      datedata.lottime.lotlocation._id,
+    )
+
+  }, [focused]);
+
+  // useEffect(() => {
+  //   if(!loadingResult && results){
+  //     setFilteredData(results); // Update filteredData whenever locations change
+  //   }
+
+  // }, [results]);
 
   const submitHandler = () => {
     console.log('Working on login ');
@@ -102,7 +143,11 @@ const Result = ({route}) => {
             <tbody>
               <tr>
                 <td><span>${filteredData[0]?.lotlocation?.lotlocation}</span></td>
-                <td><span>${filteredData[0]?.lotdate?.lotdate}</span></td>
+                <td><span>${getDateTimeAccordingToUserTimezone(
+                  filteredData[0]?.lottime?.lottime,
+                  filteredData[0]?.lotdate?.lotdate,
+                  user?.country?.timezone,
+                )}</span></td>
                 <td><span>${getTimeAccordingToTimezone(filteredData[0]?.lottime?.lottime, user?.country?.timezone)}</span></td>
                 <td><span>${filteredData[0]?.resultNumber}</span></td>
               </tr>
@@ -111,7 +156,7 @@ const Result = ({route}) => {
           
         </article>
         <aside>
-          <h1><span>Since 1927</span></h1>
+          <h1><span>Since 2001</span></h1>
           <div>
             <p>Thank you for download</p>
           </div>
@@ -347,7 +392,14 @@ const Result = ({route}) => {
                           fontSize: heightPercentageToDP(2),
                           color: COLORS.black,
                         }}>
-                        {filteredData[0].lotdate.lotdate}
+                        {/* {filteredData[0].lotdate.lotdate} */}
+                        {
+                          getDateTimeAccordingToUserTimezone(
+                            filteredData[0].lottime.lottime,
+                            filteredData[0].lotdate.lotdate,
+                            user?.country?.timezone,
+                          )
+                        }
                       </Text>
                     </View>
                   </View>

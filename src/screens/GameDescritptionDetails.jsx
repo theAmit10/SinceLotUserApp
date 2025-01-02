@@ -124,7 +124,9 @@ const GameDescritptionDetails = ({route}) => {
                         fontFamily: FONT.Montserrat_SemiBold,
                         fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
-                      }}>
+                      }}
+                      selectable
+                      >
                       {locationdata?.locationTitle === ''
                         ? 'No Title Available'
                         : locationdata?.locationTitle}
@@ -149,7 +151,9 @@ const GameDescritptionDetails = ({route}) => {
                         fontFamily: FONT.Montserrat_Regular,
                         fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
-                      }}>
+                      }}
+                      selectable
+                      >
                       {locationdata?.locationDescription === ''
                         ? 'No Description Available'
                         : locationdata?.locationDescription}

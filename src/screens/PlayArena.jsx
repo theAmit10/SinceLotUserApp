@@ -27,6 +27,7 @@ import {
 import {
   useCreatePlayMutation,
   useGetDateAccToLocTimeQuery,
+  useGetPlayHistoryQuery,
 } from '../helper/Networkcall';
 import {useDispatch, useSelector} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -36,7 +37,11 @@ import NoDataFound from '../components/helpercComponent/NoDataFound';
 import {serverName} from '../redux/store';
 import Toast from 'react-native-toast-message';
 import {loadProfile} from '../redux/actions/userAction';
-import {getTimeAccordingToTimezone} from './SearchTime';
+import {
+  getCurrentDateInTimezone,
+  getDateTimeAccordingToUserTimezone,
+  getTimeAccordingToTimezone,
+} from './SearchTime';
 import PlayBackground from '../components/background/PlayBackground';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
@@ -51,7 +56,7 @@ const getCurrentDate = () => {
 };
 
 // Function to find the object with the current date
-const findCurrentDateObject = (data, currentDate) => {
+export const findCurrentDateObject = (data, currentDate) => {
   console.log('Checking for the current date is availble in the database');
 
   console.log('current data : ' + currentDate);
@@ -175,6 +180,12 @@ const PlayArena = ({route}) => {
   const [result, setResult] = useState(null);
   const [currentDate, setCurrentDate] = useState(null);
   const [showPlay, setShowPlay] = useState(false);
+  // const [playnumberlimit, setplaynumberlimit] = useState(
+  //   locationdata.bettinglimit,
+  // );
+
+  const mineplaynum = parseInt(locationdata.bettinglimit);
+  const [playnumberlimit, setplaynumberlimit] = useState(mineplaynum);
 
   // Function to call the API and fetch the results
   const getResultAccordingToLocationTimeDate = async (
@@ -219,60 +230,288 @@ const PlayArena = ({route}) => {
     }
   };
 
-  // First useEffect to find the current date object and set betnumberdata
+  // // First useEffect to find the current date object and set betnumberdata
+  // // useEffect(() => {
+  // //   if (!isLoading && data) {
+  // //     console.log('WASUZONE');
+  // //     console.log('All Date length :: ' + data.lotdates.length);
+  // //     // console.log('All Date :: ' + JSON.stringify(data));
+  // //     setShowPlay(true);
+
+  // //     const now = moment.tz('Asia/Kolkata');
+  // //     console.log('Current Time: ', now.format('hh:mm A'));
+
+  // //     console.log('Current Date: ', now.format('DD-MM-YYYY'));
+  // //     console.log('IST time timedata?.time :: ', timedata?.time);
+  // //     console.log('ser?.country?.timezone :: ', user?.country?.timezone);
+
+  // //     // const lotTimeMoment = moment.tz(
+  // //     //   timedata.time ? timedata.time : timedata.lottime,
+  // //     //   'hh:mm A',
+  // //     //   user?.country?.timezone,
+  // //     // );
+
+  // //     // const customDate = '2024-10-25T00:30:00'; // Example custom date (29th Sept 2024, 3:30 PM)
+
+  // //     // // Parse the custom date and time and set the timezone to 'Asia/Kolkata'
+  // //     // const now = moment.tz(customDate, 'Asia/Kolkata');
+
+  // //     // Log the custom time and date in IST
+  // //     // console.log('Custom Time (IST): ', now.format('hh:mm A'));
+  // //     // console.log('Custom Date (IST): ', now.format('DD-MM-YYYY'));
+
+  // //     const lotTimeMoment = moment.tz(
+  // //       timedata.time ? timedata.time : timedata.lottime,
+  // //       'hh:mm A',
+  // //       'Asia/Kolkata',
+  // //     );
+
+  // //     // const lotTimeMoment = moment.tz(
+  // //     //   getTimeAccordingToTimezone(
+  // //     //     timedata.time ? timedata.time : timedata.lottime,
+  // //     //     user?.country?.timezone,
+  // //     //   ),
+  // //     //   'hh:mm A',
+  // //     //   user?.country?.timezone,
+  // //     // );
+
+  // //     console.log(`Lot Time for location : ${lotTimeMoment.format('hh:mm A')}`);
+  // //     const isLotTimePassed = now.isSameOrAfter(lotTimeMoment);
+  // //     const nextDay = now.clone().add(1, 'day');
+
+  // //     console.log(`Checking times Lot Time Passed: ${isLotTimePassed}`);
+  // //     console.log('Next Date: ', nextDay.format('DD-MM-YYYY'));
+
+  // //     if (isLotTimePassed) {
+  // //       console.log('YOU ARE INSIDE IF BLOCK');
+  // //       const currentDate = nextDay.format('DD-MM-YYYY');
+  // //       const currentDateObject = findCurrentDateObject(data, currentDate);
+
+  // //       console.log(
+  // //         'IF currentDateObject :: ',
+  // //         JSON.stringify(currentDateObject),
+  // //       );
+  // //       setResult(currentDateObject); // Set the result to the current date object
+  // //       setCurrentDate(currentDateObject);
+  // //       console.log('Today Play :: ' + JSON.stringify(currentDateObject));
+
+  // //       if (currentDateObject !== 'Current date not found') {
+  // //         console.log('result !== "Current date not found"');
+  // //         // Fetch results using the API function
+  // //         // getResultAccordingToLocationTimeDate(
+  // //         //   currentDateObject._id,
+  // //         //   timedata._id,
+  // //         //   locationdata._id,
+  // //         // );
+
+  // //         // Check if the results array is empty
+  // //         const maximumNumber = locationdata.maximumNumber; // Ensure `maximumNumber` exists in the data
+  // //         if (maximumNumber) {
+  // //           const generatedArray = createLocationDataArray(maximumNumber);
+  // //           setBetnumberdata(generatedArray);
+  // //         }
+  // //         setResult('yes'); // Set to the current date object if results are found
+  // //         setShowPlay(false);
+  // //       }
+  // //     } else {
+  // //       console.log('YOU ARE INSIDE ELSE BLOCK');
+  // //       // const currentDate = getCurrentDate();
+  // //       const currentDate = getCurrentDateInTimezone();
+
+  // //       // const cISTDate = getCurrentDate();
+  // //       // const currentDate = getDateTimeAccordingToUserTimezone(
+  // //       //   timedata.time ? timedata.time : timedata.lottime,
+  // //       //   cISTDate,
+  // //       //   user?.country?.timezone,
+  // //       // );
+  // //       const currentDateObject = findCurrentDateObject(data, currentDate);
+
+  // //       console.log(
+  // //         'ELSE currentDateObject :: ',
+  // //         JSON.stringify(currentDateObject),
+  // //       );
+  // //       setResult(currentDateObject); // Set the result to the current date object
+  // //       setCurrentDate(currentDateObject);
+  // //       console.log('Today Play :: ' + JSON.stringify(currentDateObject));
+
+  // //       if (currentDateObject !== 'Current date not found') {
+  // //         console.log('result !== "Current date not found"');
+  // //         // Fetch results using the API function
+  // //         // getResultAccordingToLocationTimeDate(
+  // //         //   currentDateObject._id,
+  // //         //   timedata._id,
+  // //         //   locationdata._id,
+  // //         // );
+
+  // //         const maximumNumber = locationdata.maximumNumber; // Ensure `maximumNumber` exists in the data
+  // //         if (maximumNumber) {
+  // //           const generatedArray = createLocationDataArray(maximumNumber);
+  // //           setBetnumberdata(generatedArray);
+  // //         }
+  // //         setResult('yes'); // Set to the current date object if results are found
+  // //         setShowPlay(false);
+  // //       }
+  // //     }
+  // //   }
+  // // }, [isLoading, data]);
+
+  // useEffect(() => {
+  //   if (!isLoading && data) {
+  //     console.log('WASUZONE');
+  //     console.log('All Date length :: ' + data.lotdates.length);
+  //     setShowPlay(true);
+
+  //     const now = moment.tz('Asia/Kolkata');
+  //     console.log('Current Time: ', now.format('hh:mm A'));
+
+  //     console.log('Current Date: ', now.format('DD-MM-YYYY'));
+  //     console.log('IST time timedata?.time :: ', timedata?.time);
+  //     console.log('ser?.country?.timezone :: ', user?.country?.timezone);
+
+  //     const lotTimeMoment = moment.tz(
+  //       timedata.time ? timedata.time : timedata.lottime,
+  //       'hh:mm A',
+  //       'Asia/Kolkata',
+  //     );
+
+  //     console.log(`Lot Time for location : ${lotTimeMoment.format('hh:mm A')}`);
+  //     const isLotTimePassed = now.isSameOrAfter(lotTimeMoment);
+  //     const nextDay = now.clone().add(1, 'day');
+
+  //     console.log(`Checking times Lot Time Passed: ${isLotTimePassed}`);
+  //     console.log('Next Date: ', nextDay.format('DD-MM-YYYY'));
+
+  //     if (isLotTimePassed) {
+  //       console.log('YOU ARE INSIDE IF BLOCK');
+  //       const currentDate = nextDay.format('DD-MM-YYYY');
+  //       const currentDateObject = findCurrentDateObject(data, currentDate);
+
+  //       console.log(
+  //         'IF currentDateObject :: ',
+  //         JSON.stringify(currentDateObject),
+  //       );
+  //       setResult(currentDateObject); // Set the result to the current date object
+  //       setCurrentDate(currentDateObject);
+  //       console.log('Today Play :: ' + JSON.stringify(currentDateObject));
+
+  //       if (currentDateObject !== 'Current date not found') {
+  //         console.log('result !== "Current date not found"');
+
+  //         // Check if the results array is empty
+  //         const maximumNumber = locationdata.maximumNumber; // Ensure `maximumNumber` exists in the data
+  //         if (maximumNumber) {
+  //           const generatedArray = createLocationDataArray(maximumNumber);
+  //           setBetnumberdata(generatedArray);
+  //         }
+  //         setResult('yes'); // Set to the current date object if results are found
+  //         setShowPlay(false);
+  //       }
+  //     } else {
+  //       console.log('YOU ARE INSIDE ELSE BLOCK');
+  //       // const currentDate = getCurrentDate();
+  //       const currentDate = getCurrentDateInTimezone();
+
+  //       const currentDateObject = findCurrentDateObject(data, currentDate);
+
+  //       console.log(
+  //         'ELSE currentDateObject :: ',
+  //         JSON.stringify(currentDateObject),
+  //       );
+  //       setResult(currentDateObject); // Set the result to the current date object
+  //       setCurrentDate(currentDateObject);
+  //       console.log('Today Play :: ' + JSON.stringify(currentDateObject));
+
+  //       if (currentDateObject !== 'Current date not found') {
+  //         console.log('result !== "Current date not found"');
+
+  //         const maximumNumber = locationdata.maximumNumber; // Ensure `maximumNumber` exists in the data
+  //         if (maximumNumber) {
+  //           const generatedArray = createLocationDataArray(maximumNumber);
+  //           setBetnumberdata(generatedArray);
+  //         }
+  //         setResult('yes'); // Set to the current date object if results are found
+  //         setShowPlay(false);
+  //       }
+  //     }
+  //   }
+  // }, [isLoading, data]);
+
   useEffect(() => {
     if (!isLoading && data) {
+      console.log('WASUZONE');
       console.log('All Date length :: ' + data.lotdates.length);
-      console.log('All Date :: ' + JSON.stringify(data));
       setShowPlay(true);
 
-      const now = moment.tz(user?.country?.timezone);
+      // Get current date and time in IST (Asia/Kolkata)
+      const now = moment.tz('Asia/Kolkata');
       console.log('Current Time: ', now.format('hh:mm A'));
       console.log('Current Date: ', now.format('DD-MM-YYYY'));
 
+      console.log('IST time timedata?.time :: ', timedata?.time);
+      console.log('ser?.country?.timezone :: ', user?.country?.timezone);
+
+      // Get the time from `timedata` and append the current date
+      const currentDateString = now.format('DD-MM-YYYY'); // Current date as a string
+      const lotTimeString = timedata.time || timedata.lottime; // Get the lot time
+
+      // Combine the date with the time (both in IST)
       const lotTimeMoment = moment.tz(
-        timedata?.time,
-        'hh:mm A',
-        user?.country?.timezone,
+        `${currentDateString} ${lotTimeString}`, // Combine date and time
+        'DD-MM-YYYY hh:mm A', // Correct format for parsing
+        'Asia/Kolkata', // Timezone
       );
-      console.log(`Lot Time for location : ${lotTimeMoment.format('hh:mm A')}`);
-      const isLotTimePassed = now.isSameOrAfter(lotTimeMoment);
-      const nextDay = now.clone().add(1, 'day');
 
-      console.log(`Checking times Lot Time Passed: ${isLotTimePassed}`);
-      console.log('Next Date: ', nextDay.format('DD-MM-YYYY'));
+      console.log(
+        `Lot Time Moment: ${lotTimeMoment.format('DD-MM-YYYY hh:mm A')}`,
+      );
 
+      // Compare the full datetime (both date and time)
+      const isLotTimePassed = now.isSameOrAfter(lotTimeMoment); // Compare current time with lot time
+      const nextDay = now.clone().add(1, 'day'); // Get the next day
+
+      console.log(`Is Lot Time Passed: ${isLotTimePassed}`);
+      console.log('Next Day: ', nextDay.format('DD-MM-YYYY'));
+
+      // Logic for if the lot time has passed
       if (isLotTimePassed) {
-        const currentDate = nextDay.format('DD-MM-YYYY');
-        const currentDateObject = findCurrentDateObject(data, currentDate);
-        setResult(currentDateObject); // Set the result to the current date object
+        console.log('Lot time has passed. Processing the next day.');
+        const nextDateString = nextDay.format('DD-MM-YYYY');
+        const currentDateObject = findCurrentDateObject(data, nextDateString);
+
+        console.log('Next Date Object: ', JSON.stringify(currentDateObject));
+        setResult(currentDateObject);
         setCurrentDate(currentDateObject);
-        console.log('Today Play :: ' + JSON.stringify(currentDateObject));
 
         if (currentDateObject !== 'Current date not found') {
-          console.log('result !== "Current date not found"');
-          // Fetch results using the API function
-          getResultAccordingToLocationTimeDate(
-            currentDateObject._id,
-            timedata._id,
-            locationdata._id,
-          );
+          console.log('Valid date found for the next day.');
+          const maximumNumber = locationdata.maximumNumber;
+          if (maximumNumber) {
+            const generatedArray = createLocationDataArray(maximumNumber);
+            setBetnumberdata(generatedArray);
+          }
+          setResult('yes');
+          setShowPlay(false);
         }
       } else {
-        const currentDate = getCurrentDate();
-        const currentDateObject = findCurrentDateObject(data, currentDate);
-        setResult(currentDateObject); // Set the result to the current date object
+        console.log('Lot time has not passed. Checking for current day.');
+        const currentDateObject = findCurrentDateObject(
+          data,
+          currentDateString,
+        );
+
+        console.log('Current Date Object: ', JSON.stringify(currentDateObject));
+        setResult(currentDateObject);
         setCurrentDate(currentDateObject);
-        console.log('Today Play :: ' + JSON.stringify(currentDateObject));
 
         if (currentDateObject !== 'Current date not found') {
-          console.log('result !== "Current date not found"');
-          // Fetch results using the API function
-          getResultAccordingToLocationTimeDate(
-            currentDateObject._id,
-            timedata._id,
-            locationdata._id,
-          );
+          console.log('Valid date found for the current day.');
+          const maximumNumber = locationdata.maximumNumber;
+          if (maximumNumber) {
+            const generatedArray = createLocationDataArray(maximumNumber);
+            setBetnumberdata(generatedArray);
+          }
+          setResult('yes');
+          setShowPlay(false);
         }
       }
     }
@@ -298,18 +537,230 @@ const PlayArena = ({route}) => {
     });
   };
 
+  // locationdata.bettinglimit
+
   const showingSeletedContainer = () => {
-    if (showSelectedVisible) {
-      setshowSelectedVisible(false);
+    // if(parseInt(playnumberlimit) <= 0)
+    // {
+    //   Toast.show({
+    //     type: 'info',
+    //     text1: `Maximum betting limit reached`,
+    //     text2: 'Please select the next available time slot to proceed..',
+    //   });
+    //   return;
+    // }
+
+    // if (selectedNumber.length > playnumberlimit)
+
+    if (
+      checkSelectedNumberLimit(
+        playhistorydata,
+        currentDate.lotdate,
+        timedata.time ? timedata.time : timedata.lottime,
+        locationdata.name ? locationdata.name : locationdata.lotlocation,
+        mineplaynum,
+        selectedNumber,
+      ) > playnumberlimit
+    ) {
+      if (parseInt(playnumberlimit) <= 0) {
+        console.log(locationdata)
+        Toast.show({
+          type: 'info',
+          text1: `${findMissingNumbers(
+            playhistorydata,
+            currentDate.lotdate,
+            timedata.time ? timedata.time : timedata.lottime,
+            locationdata.name ? locationdata.name : locationdata.lotlocation,
+            locationdata.maximumNumber,
+          )}  Not Allowed`,
+          text2: 'Maximum number selection limit reached',
+        });
+      } else {
+        Toast.show({
+          type: 'info',
+          text1: `Kindly select any ${Math.abs(
+            playnumberlimit,
+          )} numbers of your choice`,
+          text2: 'Selecting all numbers is not permitted',
+        });
+      }
     } else {
-      setshowSelectedVisible(true);
+      if (showSelectedVisible) {
+        setshowSelectedVisible(false);
+      } else {
+        setshowSelectedVisible(true);
+      }
     }
   };
 
+  // function checkSelectedNumberLimit(playbet, lotdate, lottime, lotlocation,limit, selectednumber) {
+  //   console.log('Checking Selected Number Limit');
+  //   console.log(playbet.length, lotdate, lottime, lotlocation, selectednumber);
+
+  //   // Ensure selectedNumber is defined and is an array
+  //   if (typeof selectednumber === 'string') {
+  //     try {
+  //       selectedNumber = JSON.parse(selectednumber); // Parse if it's a JSON string
+  //     } catch (error) {
+  //       console.error('Error parsing selectedNumber JSON:', error);
+  //       return 0; // Return 0 or handle the error case
+  //     }
+  //   }
+
+  //   if (!Array.isArray(selectedNumber)) {
+  //     console.error('Error: selectedNumber is not a valid array');
+  //     return 0; // Return 0 or handle the error case
+  //   }
+
+  //   // Step 1: Filter the playbet array based on provided lotdate, lottime, and lotlocation
+  //   const filteredArray = playbet.filter(
+  //     item =>
+  //       item.lotdate.lotdate === lotdate &&
+  //       item.lottime.lottime === lottime &&
+  //       item.lotlocation.lotlocation === lotlocation,
+  //   );
+
+  //   console.log('Filtered array length :: ', filteredArray.length);
+
+  //   // Step 2: Use a Set to store unique playnumbers from the filtered array
+  //   const uniquePlaynumbers = new Set();
+  //   filteredArray.forEach(item => {
+  //     item.playnumbers.forEach(numberObj => {
+  //       uniquePlaynumbers.add(numberObj.playnumber); // Add each playnumber to the Set
+  //     });
+  //   });
+
+  //   console.log('Unique Playnumbers :: ', Array.from(uniquePlaynumbers));
+
+  //   // Step 3: Store the length of the selectedNumber array
+  //   let remainingLimit = selectednumber.length;
+
+  //   // Step 4: Loop through the selectedNumber array
+  //   selectednumber.forEach(selected => {
+  //     const { name } = selected; // Get the 'name' key from the object
+  //     if (uniquePlaynumbers.has(name)) {
+  //       remainingLimit -= 1; // Decrement the remainingLimit if name exists in the Set
+  //     }
+  //   });
+
+  //   console.log(
+  //     'Remaining Limit after processing selected numbers :: ',
+  //     remainingLimit
+  //   );
+
+  //   // Step 5: Return the remainingLimit
+  //   return remainingLimit;
+  // }
+
+  function checkSelectedNumberLimit(
+    playbet,
+    lotdate,
+    lottime,
+    lotlocation,
+    limit,
+    selectedNumber,
+  ) {
+    console.log('Checking Selected Number Limit');
+    console.log(playbet.length, lotdate, lottime, lotlocation, selectedNumber);
+
+    // Ensure selectedNumber is valid
+    if (!Array.isArray(selectedNumber)) {
+      console.error('Error: selectedNumber is not a valid array');
+      return 0;
+    }
+
+    // Step 1: Filter the playbet array based on provided lotdate, lottime, and lotlocation
+    const filteredArray = playbet.filter(
+      item =>
+        item.lotdate.lotdate === lotdate &&
+        item.lottime.lottime === lottime &&
+        item.lotlocation.lotlocation === lotlocation,
+    );
+
+    console.log('Filtered array length :: ', filteredArray.length);
+
+    // Step 2: Use a Set to store unique playnumbers from the filtered array
+    const uniquePlaynumbers = new Set();
+    filteredArray.forEach(item => {
+      item.playnumbers.forEach(numberObj => {
+        uniquePlaynumbers.add(String(numberObj.playnumber)); // Ensure all values are strings
+      });
+    });
+
+    console.log('Unique Playnumbers :: ', Array.from(uniquePlaynumbers));
+
+    // Step 3: Store the length of the selectedNumber array
+    let remainingLimit = selectedNumber.length;
+
+    // Step 4: Loop through the selectedNumber array
+    selectedNumber.forEach(selected => {
+      const name = String(selected.name); // Ensure name is a string for comparison
+      if (uniquePlaynumbers.has(name)) {
+        remainingLimit -= 1; // Decrement the remainingLimit if name exists in the Set
+      }
+    });
+
+    console.log(
+      'Remaining Limit after processing selected numbers :: ',
+      remainingLimit,
+    );
+
+    // Step 5: Return the remainingLimit
+    return remainingLimit;
+  }
+
+  function findMissingNumbers(
+    playbet,
+    lotdate,
+    lottime,
+    lotlocation,
+    maxnumber,
+  ) {
+    console.log('Finding Missing Numbers');
+    console.log(playbet.length, lotdate, lottime, lotlocation, maxnumber);
+
+    // Step 1: Filter the playbet array based on provided lotdate, lottime, and lotlocation
+    const filteredArray = playbet.filter(
+      item =>
+        item.lotdate.lotdate === lotdate &&
+        item.lottime.lottime === lottime &&
+        item.lotlocation.lotlocation === lotlocation,
+    );
+
+    console.log('Filtered array length :: ', filteredArray.length);
+
+    // Step 2: Use a Set to store unique playnumbers from the filtered array
+    const uniquePlaynumbers = new Set();
+    filteredArray.forEach(item => {
+      item.playnumbers.forEach(numberObj => {
+        uniquePlaynumbers.add(Number(numberObj.playnumber)); // Ensure all values are numbers
+      });
+    });
+
+    console.log('Unique Playnumbers :: ', Array.from(uniquePlaynumbers));
+
+    // Step 3: Create an array from 1 to maxnumber
+    const fullRange = Array.from({length: maxnumber}, (_, i) => i + 1);
+    console.log('Full Range :: ', fullRange);
+
+    // Step 4: Find numbers that are in fullRange but not in uniquePlaynumbers
+    const missingNumbers = fullRange.filter(num => !uniquePlaynumbers.has(num));
+    console.log('Missing Numbers :: ', missingNumbers);
+
+    // Step 5: Return the missing numbers as a comma-separated string
+    return missingNumbers.join(',');
+  }
+
+  // const sumObjectValues = obj => {
+  //   // Extract values, convert them to numbers, and sum them up
+  //   return Object.values(obj)
+  //     .map(value => parseFloat(value)) // Convert each value to a number
+  //     .reduce((sum, value) => sum + value, 0); // Sum them up
+  // };
   const sumObjectValues = obj => {
-    // Extract values, convert them to numbers, and sum them up
+    // Extract values, convert empty strings to 0, and sum them up
     return Object.values(obj)
-      .map(value => parseFloat(value)) // Convert each value to a number
+      .map(value => (value === '' ? 0 : parseFloat(value))) // Convert empty strings to 0 and other values to numbers
       .reduce((sum, value) => sum + value, 0); // Sum them up
   };
 
@@ -371,7 +822,127 @@ const PlayArena = ({route}) => {
     return stringValue;
   }
 
+  const {
+    data: userplayhistory,
+    error: userplayhistoryError,
+    isLoading: userplayhistoryLoading,
+    refetch: userplayhistoryRefetch,
+  } = useGetPlayHistoryQuery(accesstoken);
+
+  const [playhistorydata, setPlayhistorydata] = useState([]);
+  useEffect(() => {
+    if (!userplayhistoryLoading && userplayhistory) {
+      setPlayhistorydata(userplayhistory.playbets);
+    }
+  }, [userplayhistory, userplayhistoryLoading]);
+
+  const lotdate = '13-11-2024';
+  const lottime = '09:30 PM';
+  const lotlocation = 'USA';
+  const limit = 3;
+
+  useEffect(() => {
+    console.log('SELECTED NUMBER :: LENTH ::', selectedNumber.length);
+    console.log(playnumberlimit);
+    if (currentDate) {
+      console.log(
+        checkPlaybetLimit(
+          playhistorydata,
+          currentDate.lotdate,
+          timedata.time ? timedata.time : timedata.lottime,
+          locationdata.name ? locationdata.name : locationdata.lotlocation,
+          mineplaynum,
+        ),
+      );
+    }
+  }, [selectedNumber, currentDate, playhistorydata]);
+
+  // USED TO GET SELECTED NUMBER WITH AMOUNT INVESTED
+
+  // function checkPlaybetLimit(playbet, lotdate, lottime, lotlocation, limit) {
+  //   console.log('Checking Playbet Limit');
+  //   console.log(playbet.length, lotdate, lottime, lotlocation, limit);
+
+  //   // Step 1: Filter the playbet array based on provided lotdate, lottime, and lotlocation
+  //   const filteredArray = playbet.filter(
+  //     item =>
+  //       item.lotdate.lotdate === lotdate &&
+  //       item.lottime.lottime === lottime &&
+  //       item.lotlocation.lotlocation === lotlocation,
+  //   );
+
+  //   console.log('Filtered array length :: ', filteredArray.length);
+
+  //   // Step 2: Use a Set to store unique playnumbers from the filtered array
+  //   const uniquePlaynumbers = new Set();
+  //   filteredArray.forEach(item => {
+  //     item.playnumbers.forEach(number => {
+  //       uniquePlaynumbers.add(number); // Add each playnumber to the Set
+  //     });
+  //   });
+
+  //   const totalPlaynumbersCount = uniquePlaynumbers.size; // Get the size of the Set
+  //   console.log('Total Playnumbers Count (unique) :: ' + totalPlaynumbersCount);
+  //   console.log('Unique Playnumbers :: ', Array.from(uniquePlaynumbers));
+
+  //   const forplaycheck =
+  //     parseInt(mineplaynum) - parseInt(totalPlaynumbersCount);
+  //   console.log(
+  //     'FOR PLAY CHECK :: ' + forplaycheck,
+  //     mineplaynum,
+  //     totalPlaynumbersCount,
+  //   );
+
+  //   setplaynumberlimit(forplaycheck);
+  //   console.log(totalPlaynumbersCount <= limit);
+
+  //   // Step 3: Check if the total count is equal to or less than the limit
+  //   return totalPlaynumbersCount <= limit;
+  // }
+
+  function checkPlaybetLimit(playbet, lotdate, lottime, lotlocation, limit) {
+    console.log('Checking Playbet Limit');
+    console.log(playbet.length, lotdate, lottime, lotlocation, limit);
+
+    // Step 1: Filter the playbet array based on provided lotdate, lottime, and lotlocation
+    const filteredArray = playbet.filter(
+      item =>
+        item.lotdate.lotdate === lotdate &&
+        item.lottime.lottime === lottime &&
+        item.lotlocation.lotlocation === lotlocation,
+    );
+
+    console.log('Filtered array length :: ', filteredArray.length);
+
+    // Step 2: Use a Set to store unique playnumbers from the filtered array
+    const uniquePlaynumbers = new Set();
+    filteredArray.forEach(item => {
+      item.playnumbers.forEach(playnumber => {
+        uniquePlaynumbers.add(playnumber.playnumber); // Add the playnumber value to the Set (not the whole object)
+      });
+    });
+
+    const totalPlaynumbersCount = uniquePlaynumbers.size; // Get the size of the Set
+    console.log('Total Playnumbers Count (unique) :: ' + totalPlaynumbersCount);
+    console.log('Unique Playnumbers :: ', Array.from(uniquePlaynumbers));
+
+    const forplaycheck =
+      parseInt(mineplaynum) - parseInt(totalPlaynumbersCount);
+    console.log(
+      'FOR PLAY CHECK :: ' + forplaycheck,
+      mineplaynum,
+      totalPlaynumbersCount,
+    );
+
+    setplaynumberlimit(forplaycheck);
+    console.log(totalPlaynumbersCount <= limit);
+
+    // Step 3: Check if the total count is equal to or less than the limit
+    return totalPlaynumbersCount <= limit;
+  }
+
   const submitHandler = async () => {
+    await userplayhistoryRefetch();
     if (sumObjectValues(inputValues) === 0) {
       Toast.show({
         type: 'error',
@@ -392,45 +963,95 @@ const PlayArena = ({route}) => {
         text1: 'Invalid amount',
         text2: 'Add betting amount for all numbers',
       });
+    } else if (
+      !checkPlaybetLimit(
+        playhistorydata,
+        currentDate?.lotdate,
+        timedata.time ? timedata.time : timedata.lottime,
+        locationdata.name ? locationdata.name : locationdata.lotlocation,
+        mineplaynum,
+      )
+    ) {
+      Toast.show({
+        type: 'info',
+        text1: 'Maximum betting limit reached',
+        text2: 'Please choose next available time',
+      });
     } else {
-      try {
-        const body = {
-          playnumbers: transformData(inputValues, locationdata.maximumReturn),
-          lotdate: currentDate._id,
-          lottime: timedata._id,
-          lotlocation: locationdata._id,
-        };
+      const now = moment.tz(user?.country?.timezone);
+      console.log('Current Time: ', now.format('hh:mm A'));
+      console.log('Current Date: ', now.format('DD-MM-YYYY'));
 
-        console.log('Request body :: ' + JSON.stringify(body));
+      const lotTimeMoment = moment.tz(
+        getTimeAccordingToTimezone(
+          timedata.time ? timedata.time : timedata.lottime,
+          user?.country?.timezone,
+        ),
+        'hh:mm A',
+        user?.country?.timezone,
+      );
+      console.log(`Lot Time for location : ${lotTimeMoment.format('hh:mm A')}`);
 
-        const res = await createPlay({
-          accessToken: accesstoken,
-          body,
-        }).unwrap();
-        console.log('Create Play res :: ' + JSON.stringify(res));
+      // Subtract 15 minutes from the lotTimeMoment
+      const lotTimeMinus15Minutes = lotTimeMoment
+        .clone()
+        .subtract(10, 'minutes');
 
-        if (res.message === 'Playbet entry added successfully') {
+      const isLotTimeClose =
+        now.isSameOrAfter(lotTimeMinus15Minutes) && now.isBefore(lotTimeMoment);
+      console.log(`Is it within 15 minutes of the lot time? ${isLotTimeClose}`);
+
+      if (isLotTimeClose) {
+        console.log('Navigating to PlayArena...');
+        Toast.show({
+          type: 'info',
+          text1: 'Entry is close for this session',
+          text2: 'Please choose next available time',
+        });
+      } else {
+        console.log("It's too early or past the lot time.");
+        try {
+          const body = {
+            playnumbers: transformData(inputValues, locationdata.maximumReturn),
+            lotdate: currentDate._id,
+            lottime: timedata._id,
+            lotlocation: locationdata._id,
+          };
+
+          console.log('Request body :: ' + JSON.stringify(body));
+
+          const res = await createPlay({
+            accessToken: accesstoken,
+            body,
+          }).unwrap();
+          console.log('Create Play res :: ' + JSON.stringify(res));
+
+          if (res.message === 'Playbet entry added successfully') {
+            Toast.show({
+              type: 'success',
+              text1: 'Order Placed Successfully',
+              text2: res.message,
+            });
+          }
+
+          // navigation.goBack();
+          dispatch(loadProfile(accesstoken));
+          await userplayhistoryRefetch();
+          setInputValues({});
+          setSelectedNumber([]);
+          showingSeletedContainer();
+        } catch (error) {
+          console.log('Error during withdraw:', error);
           Toast.show({
-            type: 'success',
-            text1: 'Order Placed Successfully',
-            text2: res.message,
+            type: 'error',
+            text1: 'Something went wrong',
           });
         }
-
-        // navigation.goBack();
-        dispatch(loadProfile(accesstoken));
-        setInputValues({});
-        setSelectedNumber([]);
-        showingSeletedContainer();
-      } catch (error) {
-        console.log('Error during withdraw:', error);
-        Toast.show({
-          type: 'error',
-          text1: 'Something went wrong',
-        });
       }
     }
   };
+
+  const [focusedInputId, setFocusedInputId] = useState(null);
 
   const renderItem = ({item, index}) => (
     <TouchableOpacity
@@ -491,6 +1112,8 @@ const PlayArena = ({route}) => {
       </LinearGradient>
     </TouchableOpacity>
   );
+
+  const cISTDate = getCurrentDate();
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -614,7 +1237,18 @@ const PlayArena = ({route}) => {
                         fontFamily: FONT.Montserrat_Regular,
                         color: COLORS.black,
                       }}>
-                      {currentDate?.lotdate}
+                      {/* {currentDate?.lotdate} */}
+                      {getDateTimeAccordingToUserTimezone(
+                        timedata.time ? timedata.time : timedata.lottime,
+                        currentDate?.lotdate,
+                        user?.country?.timezone,
+                      )
+                        ? getDateTimeAccordingToUserTimezone(
+                            timedata.time ? timedata.time : timedata.lottime,
+                            currentDate?.lotdate,
+                            user?.country?.timezone,
+                          )
+                        : 'loading'}
                     </Text>
                   </View>
                 </View>
@@ -784,10 +1418,8 @@ const PlayArena = ({route}) => {
                             />
                           </LinearGradient>
                         </TouchableOpacity>
-
                         {/** Amont */}
-
-                        <LinearGradient
+                        {/* <LinearGradient
                           colors={[
                             COLORS.time_firstblue,
                             COLORS.time_secondbluw,
@@ -808,7 +1440,7 @@ const PlayArena = ({route}) => {
                               fontFamily: FONT.Montserrat_Bold,
                               color: COLORS.black,
                               textAlign: 'center',
-                              padding: heightPercentageToDP(1)
+                              padding: heightPercentageToDP(1),
                             }}
                             placeholder={'Amount'}
                             placeholderTextColor={COLORS.darkGray}
@@ -818,8 +1450,98 @@ const PlayArena = ({route}) => {
                             }
                             keyboardType="numeric"
                           />
-                        </LinearGradient>
+                        </LinearGradient> */}
 
+                        <LinearGradient
+                          colors={[
+                            COLORS.time_firstblue,
+                            COLORS.time_secondbluw,
+                          ]}
+                          start={{x: 0, y: 0}} // Start from left
+                          end={{x: 1, y: 0}} // End at right
+                          style={{
+                            borderRadius: heightPercentageToDP(2),
+                            width: widthPercentageToDP(30),
+                          }}>
+                          <TextInput
+                            underlineColor="transparent"
+                            activeUnderlineColor="transparent"
+                            cursorColor={COLORS.white} // Ensure the cursor is white
+                            placeholderTextColor={COLORS.darkGray} // Placeholder color
+                            style={{
+                              backgroundColor: 'transparent',
+                              fontFamily: FONT.Montserrat_Bold,
+                              color: COLORS.black, // Text color
+                              textAlign: 'center', // Center the text
+                              padding: heightPercentageToDP(1), // Padding inside the input
+                            }}
+                            placeholder={
+                              focusedInputId === item.id ? '' : 'Amount'
+                            } // Show placeholder when not focused
+                            value={inputValues[item.id]?.toString() || ''} // Show the value or empty string
+                            onChangeText={text =>
+                              handleInputChange(text, item.id)
+                            } // Handle input change
+                            keyboardType="numeric" // Numeric input
+                            showSoftInputOnFocus={true} // Ensure the soft keyboard opens
+                            onFocus={() => setFocusedInputId(item.id)} // Set this input as focused
+                            onBlur={() => {
+                              if (!inputValues[item.id]) {
+                                setInputValues(prevValues => ({
+                                  ...prevValues,
+                                  [item.id]: '', // Reset to empty string to show placeholder
+                                }));
+                              }
+                              setFocusedInputId(null); // Clear focused state
+                            }}
+                          />
+                        </LinearGradient>
+                        {/* <LinearGradient
+                          colors={[
+                            COLORS.time_firstblue,
+                            COLORS.time_secondbluw,
+                          ]}
+                          start={{x: 0, y: 0}} // start from left
+                          end={{x: 1, y: 0}} // end at right
+                          style={{
+                            borderRadius: heightPercentageToDP(2),
+                            width: widthPercentageToDP(30),
+                          }}>
+                         <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white} // Keep the same cursor color
+                          placeholderTextColor={COLORS.black} // Placeholder color
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                            textAlign: 'center',
+                            padding: heightPercentageToDP(1),
+                          }}
+                          placeholder={'Amount'}
+                          placeholderTextColor={COLORS.darkGray}
+                          value={inputValues[item.id]?.toString() || ''}
+                          onChangeText={text =>
+                            handleInputChange(text, item.id)
+                          }
+                          keyboardType="numeric"
+                          showSoftInputOnFocus={true}
+                          onFocus={() => {
+                            if (!inputValues[item.id]) {
+                              setInputValues({...inputValues, [item.id]: ''}); // Ensure input is reset
+                            }
+                          }}
+                          onBlur={() => {
+                            if (inputValues[item.id] === '') {
+                              setInputValues({
+                                ...inputValues,
+                                [item.id]: undefined,
+                              }); // Reset to show placeholder
+                            }
+                          }}
+                        />
+                        </LinearGradient> */}
                         {/** Add */}
                         <TouchableOpacity
                           onPress={() => handleAddClick(item.id)}>
@@ -1035,9 +1757,9 @@ const styles = StyleSheet.create({
   imageBackground: {
     width: '100%',
     height:
-    Platform.OS === 'android'
-      ? heightPercentageToDP(70)
-      : heightPercentageToDP(65),
+      Platform.OS === 'android'
+        ? heightPercentageToDP(70)
+        : heightPercentageToDP(65),
   },
   imageBackgroundStyle: {
     borderTopLeftRadius: heightPercentageToDP(5),

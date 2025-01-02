@@ -65,7 +65,7 @@ const LoginBackground = () => {
             padding: heightPercentageToDP(2),
             color: COLORS.white_s,
           }}>
-          Since 1927
+          Since 2001
         </Text>
 
         <View

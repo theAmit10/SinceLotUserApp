@@ -219,7 +219,7 @@ const SplashScreen = () => {
             marginStart: heightPercentageToDP(1),
             color: COLORS.golden,
           }}>
-          SINCE 1927
+          SINCE 2001
         </SplashScreenGradientText>
       </View>
 
@@ -238,7 +238,7 @@ const SplashScreen = () => {
             fontSize: heightPercentageToDP(2.6),
             color: COLORS.golden,
           }}>
-          THE LION WORLD
+          THE WORLD PLAY
         </Text>
       </View>
     </View>
@@ -462,7 +462,7 @@ const styles = StyleSheet.create({});
 //             marginStart: heightPercentageToDP(1),
 //             color: COLORS.golden,
 //           }}>
-//           SINCE 1927
+//           SINCE 2001
 //         </SplashScreenGradientText>
 //       </View>
 

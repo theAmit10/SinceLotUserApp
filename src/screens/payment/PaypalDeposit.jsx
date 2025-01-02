@@ -280,9 +280,9 @@ const PaypalDeposit = () => {
                       <GradientTextWhite style={styles.textStyleContent}>
                         Paypal
                       </GradientTextWhite>
-                      <GradientTextWhite style={styles.textStyleContent}>
+                      {/* <GradientTextWhite style={styles.textStyleContent}>
                         {selectedUpiId?.paymentId}
-                      </GradientTextWhite>
+                      </GradientTextWhite> */}
                       <LinearGradient
                         colors={[COLORS.grayBg, COLORS.white_s]}
                         style={{borderRadius: 20, padding: 10}}>
@@ -484,11 +484,11 @@ const PaypalDeposit = () => {
 
                                 <View
                                   style={{
-                                    flexDirection: 'row',
+                                    flexDirection: 'column',
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                     flex: 1,
-                                    paddingBottom: heightPercentageToDP(2),
+                                    padding: heightPercentageToDP(2),
                                   }}>
                                   <View
                                     style={{

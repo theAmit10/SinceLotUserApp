@@ -172,7 +172,9 @@ const Notification = () => {
                         fontFamily: FONT.Montserrat_Regular,
                         fontSize: heightPercentageToDP(2),
                       }}
-                      numberOfLines={2}>
+                      numberOfLines={2}
+                      selectable
+                      >
                       {item.description}
                     </Text>
                   </View>

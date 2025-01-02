@@ -165,6 +165,17 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // GET ALL THE RESULT
+    getResultLocMonYear: builder.query({
+      query: ({ accessToken, locationid, year, month }) => ({
+        url: `result/allresultlocmonyear?locationid=${locationid}&year=${year}&month=${month}`,
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    }),
+
 
 
     // ######## END #########
@@ -184,4 +195,5 @@ export const {
   useGetAllCountryQuery,
   useTransferWalletBalanceMutation,
   useCheckNotificationSeenMutation,
+  useGetResultLocMonYearQuery
 } = sincelotUserApi;

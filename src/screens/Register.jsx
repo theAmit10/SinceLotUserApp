@@ -160,7 +160,7 @@ const Register = ({route}) => {
           setProgressBar(false);
           Toast.show({
             type: 'error',
-            text1: 'Something went wrong',
+            text1: error.response.data.message,
           });
           console.log(error);
           console.log(error.response);

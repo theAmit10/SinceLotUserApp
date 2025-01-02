@@ -55,6 +55,8 @@ const CREATE_PLAY_API = server + 'result/playbet/addplybet';
 
 const BALANCE_TRANSFER_TO_WALLET_TWO_API = server + 'user/balancetransfer';
 
+const RESULT_MONTH_YEAR = server;
+
 
 
 
@@ -94,5 +96,6 @@ export default {
   WITHDRAW_PAYMENT_API,
   CREATE_PLAY_API,
   BALANCE_TRANSFER_TO_WALLET_TWO_API,
-  NOTIFICATION_SEEN_API
+  NOTIFICATION_SEEN_API,
+  RESULT_MONTH_YEAR
 };

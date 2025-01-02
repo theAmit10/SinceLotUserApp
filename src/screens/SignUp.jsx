@@ -198,7 +198,7 @@ const SignUp = () => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(60),
+            height: heightPercentageToDP(75),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -206,7 +206,7 @@ const SignUp = () => {
           }}>
           <View
             style={{
-              height: heightPercentageToDP(60),
+              height: heightPercentageToDP(75),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -235,10 +235,9 @@ const SignUp = () => {
                 flex: 1,
                 margin: heightPercentageToDP(2),
               }}>
-             
               <GradientTextWhite style={styles.textStyle}>
-              Sign Up
-            </GradientTextWhite>
+                Sign Up
+              </GradientTextWhite>
 
               <View
                 style={{
@@ -358,12 +357,32 @@ const SignUp = () => {
                     <Text
                       style={{
                         color: COLORS.blue,
-                        fontFamily: FONT.Montserrat_SemiBold
+                        fontFamily: FONT.Montserrat_SemiBold,
                       }}>
                       {' '}
                       Sign In
                     </Text>
                   </TouchableOpacity>
+                </View>
+
+                <View
+                  style={{
+                    padding: heightPercentageToDP(0.5),
+                    borderRadius: heightPercentageToDP(1),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    marginBottom: heightPercentageToDP(2),
+                  }}>
+                  <Text
+                    style={{
+                      color: COLORS.white_s,
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Note : Password reset option is available for accounts with
+                    email signup only .
+                  </Text>
                 </View>
               </View>
             </View>

@@ -54,6 +54,7 @@ import SelectCountry from '../components/helpercComponent/SelectCountry';
 import BalanceTransfer from '../screens/payment/BalanceTransfer';
 import UserProfile from '../screens/UserProfile';
 import ChangeName from '../screens/ChangeName';
+import TimerTest from '../screens/TimerTest';
 
 
 const Stack = createNativeStackNavigator()
@@ -122,6 +123,7 @@ const Main = () => {
                 <Stack.Screen  name="BalanceTransfer" component={BalanceTransfer}/>
                 <Stack.Screen  name="UserProfile" component={UserProfile}/>
                 <Stack.Screen  name="ChangeName" component={ChangeName}/>
+                <Stack.Screen  name="TimerTest" component={TimerTest}/>
 
             </Stack.Group>
         </Stack.Navigator>

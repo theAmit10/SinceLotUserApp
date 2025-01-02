@@ -277,9 +277,9 @@ const Skrill = () => {
                     <GradientTextWhite style={styles.textStyleContent}>
                       Skrill
                     </GradientTextWhite>
-                    <GradientTextWhite style={styles.textStyleContent}>
+                    {/* <GradientTextWhite style={styles.textStyleContent}>
                       {selectedUpiId?.paymentId}
-                    </GradientTextWhite>
+                    </GradientTextWhite> */}
                     <LinearGradient
                       colors={[COLORS.grayBg, COLORS.white_s]}
                       style={{borderRadius: 20, padding: 10}}>
@@ -348,7 +348,6 @@ const Skrill = () => {
                               start={{x: 0, y: 0}} // start from left
                               end={{x: 1, y: 0}} // end at right
                               style={{
-                                height: heightPercentageToDP(20),
                                 borderRadius: heightPercentageToDP(2),
                                 marginHorizontal: heightPercentageToDP(2),
                                 marginVertical: heightPercentageToDP(1),
@@ -482,11 +481,11 @@ const Skrill = () => {
 
                               <View
                           style={{
-                            flexDirection: 'row',
+                            flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'center',
                             flex: 1,
-                            paddingBottom: heightPercentageToDP(2),
+                            padding: heightPercentageToDP(2),
                          
                           }}>
                           <View

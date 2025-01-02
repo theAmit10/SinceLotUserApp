@@ -73,10 +73,31 @@ const PlayArenaLocation = () => {
     }
   }, [isLoading, data]);
 
+  // const settingFilterData = itemf => {
+  //   setSelectedFilter(itemf._id);
+  //   if (itemf.maximumReturn.toLowerCase() === 'all') {
+  //     setFilteredData(data?.locationData);
+  //   } else {
+  //     const filtered = data?.locationData.filter(item =>
+  //       item.maximumReturn
+  //         .toLowerCase()
+  //         .includes(itemf.maximumReturn.toLowerCase()),
+  //     );
+  //     setFilteredData(filtered);
+  //   }
+  // };
+
   const settingFilterData = itemf => {
     setSelectedFilter(itemf._id);
+
     if (itemf.maximumReturn.toLowerCase() === 'all') {
-      setFilteredData(data?.locationData);
+      // Sort the data from highest to lowest when 'All' is selected
+      const sortedData = [...(data?.locationData || [])].sort((a, b) => {
+        const aReturn = parseFloat(a.maximumReturn.replace('x', ''));
+        const bReturn = parseFloat(b.maximumReturn.replace('x', ''));
+        return bReturn - aReturn; // Sort from highest to lowest
+      });
+      setFilteredData(sortedData);
     } else {
       const filtered = data?.locationData.filter(item =>
         item.maximumReturn
@@ -102,14 +123,14 @@ const PlayArenaLocation = () => {
     console.log('Current Date: ', now.format('DD-MM-YYYY'));
 
     const lotTimeMoment = moment.tz(
-      timeItem?.time,
+      getTimeAccordingToTimezone(timeItem?.time, user?.country?.timezone),
       'hh:mm A',
       user?.country?.timezone,
     );
     console.log(`Lot Time for location : ${lotTimeMoment.format('hh:mm A')}`);
 
     // Subtract 15 minutes from the lotTimeMoment
-    const lotTimeMinus15Minutes = lotTimeMoment.clone().subtract(15, 'minutes');
+    const lotTimeMinus15Minutes = lotTimeMoment.clone().subtract(10, 'minutes');
 
     const isLotTimeClose =
       now.isSameOrAfter(lotTimeMinus15Minutes) && now.isBefore(lotTimeMoment);
@@ -140,18 +161,230 @@ const PlayArenaLocation = () => {
     setFilteredData(filtered);
   };
 
+  // const getNextTimeForHighlights = times => {
+  //   if (times.length === 1) {
+  //     return times[0];
+  //   }
+
+  //   const currentISTTime = moment()
+  //     .tz(user?.country?.timezone)
+  //     .format('hh:mm A');
+  //   const sortedTimes = [...times].sort((a, b) =>
+  //     moment(a.time, 'hh:mm A').diff(moment(b.time, 'hh:mm A')),
+  //   );
+
+  //   for (let i = 0; i < sortedTimes.length; i++) {
+  //     if (
+  //       moment(currentISTTime, 'hh:mm A').isBefore(
+  //         moment(sortedTimes[i].time, 'hh:mm A'),
+  //       )
+  //     ) {
+  //       return sortedTimes[i];
+  //     }
+  //   }
+
+  //   return sortedTimes[0];
+  // };
+
   useEffect(() => {
     if (!isLoading && data) {
-      setFilteredData(data?.locationData); // Update filteredData whenever locations change
-      console.log(data);
+      const sortedData = [...(data?.locationData || [])].sort((a, b) => {
+        const aReturn = parseFloat(a.maximumReturn.replace('x', ''));
+        const bReturn = parseFloat(b.maximumReturn.replace('x', ''));
+        return bReturn - aReturn; // Sort from highest to lowest
+      });
+      setFilteredData(sortedData); // Update filteredData whenever locations change
+      // console.log(sortedData);
     }
   }, [data]);
+
+  const mineTime = [
+    {
+      _id: '670e8fd50f88336e66f768f7',
+      time: '09:00 AM',
+      createdAt: '2024-10-15T15:52:53.843Z',
+    },
+    {
+      _id: '670e8fe90f88336e66f7691b',
+      time: '10:00 AM',
+      createdAt: '2024-10-15T15:53:13.431Z',
+    },
+    {
+      _id: '670e8ffd0f88336e66f76944',
+      time: '11:00 AM',
+      createdAt: '2024-10-15T15:53:33.059Z',
+    },
+    {
+      _id: '670e90110f88336e66f76968',
+      time: '12:00 PM',
+      createdAt: '2024-10-15T15:53:53.407Z',
+    },
+    {
+      _id: '670e90250f88336e66f769f4',
+      time: '01:00 PM',
+      createdAt: '2024-10-15T15:54:13.031Z',
+    },
+    {
+      _id: '670e903d0f88336e66f76ad5',
+      time: '02:00 PM',
+      createdAt: '2024-10-15T15:54:37.328Z',
+    },
+    {
+      _id: '670e90530f88336e66f76b02',
+      time: '03:00 PM',
+      createdAt: '2024-10-15T15:54:59.785Z',
+    },
+    {
+      _id: '670e90a70f88336e66f76cdf',
+      time: '04:00 PM',
+      createdAt: '2024-10-15T15:56:23.596Z',
+    },
+    {
+      _id: '670e90be0f88336e66f76d57',
+      time: '05:00 PM',
+      createdAt: '2024-10-15T15:56:46.347Z',
+    },
+    {
+      _id: '670e90d00f88336e66f76d7b',
+      time: '06:00 PM',
+      createdAt: '2024-10-15T15:57:04.009Z',
+    },
+    {
+      _id: '670e90ec0f88336e66f76da9',
+      time: '07:00 PM',
+      createdAt: '2024-10-15T15:57:32.637Z',
+    },
+    {
+      _id: '670e910e0f88336e66f76e07',
+      time: '08:00 PM',
+      createdAt: '2024-10-15T15:58:06.613Z',
+    },
+    {
+      _id: '670e91210f88336e66f76ebc',
+      time: '09:00 PM',
+      createdAt: '2024-10-15T15:58:25.305Z',
+    },
+    {
+      _id: '670e91300f88336e66f76f4c',
+      time: '10:00 PM',
+      createdAt: '2024-10-15T15:58:40.841Z',
+    },
+    {
+      _id: '670e91460f88336e66f76f73',
+      time: '11:00 PM',
+      createdAt: '2024-10-15T15:59:02.819Z',
+    },
+  ];
+
+  // const getNextTimeForHighlights = times => {
+  //   if (times.length === 1) {
+  //     return times[0]; // If only one time, return that
+  //   }
+
+  //   // Get the current time in the user's timezone
+  //   const currentISTTime = moment()
+  //     .tz(user?.country?.timezone)
+  //     .format('hh:mm A');
+
+  //   // console.log("User's Timezone:", user?.country?.timezone); // Log the user's timezone
+  //   console.log("Current Time in User's Timezone:", currentISTTime); // Log the current time
+
+  //   // Sort the times based on the given time values
+  //   const sortedTimes = [...times].sort((a, b) =>
+  //     moment(a.time, 'hh:mm A').diff(moment(b.time, 'hh:mm A')),
+  //   );
+
+  //   // console.log("Sorted Times:", sortedTimes); // Log the sorted times for verification
+
+  //   // Iterate over sorted times to find the next available time
+  //   for (let i = 0; i < sortedTimes.length; i++) {
+  //     const timeToCheck = moment(sortedTimes[i].time, 'hh:mm A');
+  //     // console.log(`Checking time: ${sortedTimes[i].time}, formatted as: ${timeToCheck.format('hh:mm A')}`);
+
+  //     if (moment(currentISTTime, 'hh:mm A').isBefore(timeToCheck)) {
+  //       // console.log("Next available time found:", sortedTimes[i]);
+  //       return sortedTimes[i]; // Return the first future time
+  //     }
+  //   }
+
+  //   console.log(
+  //     'No future time found, returning the first sorted time:',
+  //     sortedTimes[0],
+  //   );
+  //   // If no future time found, return the first time (next day scenario)
+  //   return sortedTimes[0];
+  // };
+
+  const getNextTimeForHighlights = (times, userTimezone) => {
+    if (times.length === 1) {
+      return times[0];
+    }
+
+    // Get the current time in the user's timezone
+    const currentRiyadhTime = moment().tz(userTimezone).format('hh:mm A');
+    console.log('Current time in usertimezone timezone:', currentRiyadhTime);
+
+    // Convert each time from IST to user timezone (Asia/Riyadh)
+    const convertedTimes = times.map(item => {
+      const timeInIST = moment.tz(item.time, 'hh:mm A', 'Asia/Kolkata');
+      const timeInRiyadh = timeInIST.clone().tz(userTimezone).format('hh:mm A');
+      return {...item, convertedTime: timeInRiyadh};
+    });
+
+    // console.log('Converted times to Riyadh timezone:', convertedTimes);
+
+    // Sort the times in the user's timezone
+    const sortedTimes = convertedTimes.sort((a, b) =>
+      moment(a.convertedTime, 'hh:mm A').diff(
+        moment(b.convertedTime, 'hh:mm A'),
+      ),
+    );
+
+    // console.log('Sorted times:', sortedTimes);
+
+    // Find the next available time
+    for (let i = 0; i < sortedTimes.length; i++) {
+      if (
+        moment(currentRiyadhTime, 'hh:mm A').isBefore(
+          moment(sortedTimes[i].convertedTime, 'hh:mm A'),
+        )
+      ) {
+        // console.log('Next available time found:', sortedTimes[i]);
+        return sortedTimes[i]; // Return the first future time
+      }
+    }
+
+    // console.log(
+    //   'No future time found, returning the first sorted time:',
+    //   sortedTimes[0],
+    // );
+    // If no future time found, return the first time (next day scenario)
+    return sortedTimes[0];
+  };
+
+  // // Call the function with mineTime and user timezone
+  // const nextTime = getNextTimeForHighlights(mineTime, 'Asia/Riyadh');
+  // console.log("Next time:", nextTime);
+  // console.log('check time');
+  // console.log('time :: ', JSON.stringify(getNextTimeForHighlights(mineTime,"Asia/Riyadh")));
+  // console.log(
+  //   'time Arabia :: ',
+  //   getTimeAccordingToTimezone(
+  //     getNextTimeForHighlights(mineTime).time,
+  //     user?.country?.timezone,
+  //   ),
+  // );
 
   const renderItem = ({item, index}) => {
     const groupedTimes = [];
     for (let i = 0; i < item.times.length; i += 2) {
       groupedTimes.push(item.times.slice(i, i + 2));
     }
+
+    const nextTime = getNextTimeForHighlights(
+      item?.times,
+      user?.country?.timezone,
+    );
 
     return (
       <>
@@ -224,8 +457,7 @@ const PlayArenaLocation = () => {
                       height: heightPercentageToDP(15),
                       textAlignVertical: 'center',
                       textAlign: 'center',
-                      alignItems: 'center'
-                      
+                      alignItems: 'center',
                     }}>
                     No Available time
                   </GradientTextWhite>
@@ -235,7 +467,17 @@ const PlayArenaLocation = () => {
                       {pair.map(timeItem => (
                         <TouchableOpacity
                           key={timeItem._id}
-                          onPress={() => navigationHandler(item, timeItem)}>
+                          onPress={() => navigationHandler(item, timeItem)}
+                          style={{
+                            borderColor:
+                              timeItem.time === nextTime.time
+                                ? COLORS.red
+                                : 'transparent',
+                            borderWidth:
+                              timeItem.time === nextTime.time ? 2 : 2,
+                            borderRadius: heightPercentageToDP(2),
+                            overflow: 'hidden',
+                          }}>
                           <LinearGradient
                             colors={
                               idx % 2 === 0
@@ -245,12 +487,14 @@ const PlayArenaLocation = () => {
                             start={{x: 0, y: 0}} // start from left
                             end={{x: 1, y: 0}} // end at right
                             style={{
-                              ...styles.item,
                               flexDirection: 'row',
                               justifyContent: 'space-between',
                               alignItems: 'center',
                               gap: heightPercentageToDP(2),
                               opacity: 1,
+                              paddingVertical: heightPercentageToDP(2),
+                              paddingHorizontal: heightPercentageToDP(2),
+                              borderRadius: heightPercentageToDP(1),
                             }}>
                             <Text
                               style={{
@@ -275,6 +519,52 @@ const PlayArenaLocation = () => {
                             </Text>
                           </LinearGradient>
                         </TouchableOpacity>
+                        //   <TouchableOpacity
+                        //   key={timeItem._id}
+                        //   onPress={() => navigationHandler(item, timeItem)}
+                        //   style={{
+                        //     borderRadius: heightPercentageToDP(2), // Move borderRadius here
+                        //     overflow: 'hidden', // Ensure content stays inside rounded corners
+                        //     borderColor:
+                        //       timeItem.time === nextTime.time ? COLORS.red : COLORS.transparent,
+                        //     borderWidth: timeItem.time === nextTime.time ? 2 : 0,
+                        //   }}>
+                        //   <LinearGradient
+                        //     colors={
+                        //       idx % 2 === 0
+                        //         ? [COLORS.lightblue, COLORS.midblue]
+                        //         : [COLORS.lightyellow, COLORS.darkyellow]
+                        //     }
+                        //     start={{ x: 0, y: 0 }}
+                        //     end={{ x: 1, y: 0 }}
+                        //     style={{
+                        //       flexDirection: 'row',
+                        //       justifyContent: 'space-between',
+                        //       alignItems: 'center',
+                        //       // Fixed height for container
+                        //       paddingVertical: heightPercentageToDP(2),
+                        //       paddingHorizontal: heightPercentageToDP(2), // Control horizontal padding for content
+                        //     }}>
+                        //     <Text
+                        //       style={{
+                        //         color: COLORS.black,
+                        //         fontFamily: FONT.Montserrat_Regular,
+                        //         fontSize: heightPercentageToDP(1.8),
+                        //         textAlignVertical: 'center',
+                        //       }}>
+                        //       {getTimeAccordingToTimezone(timeItem.time, user?.country?.timezone)}
+                        //     </Text>
+                        //     <Text
+                        //       style={{
+                        //         color: COLORS.black,
+                        //         fontFamily: FONT.Montserrat_Regular,
+                        //         fontSize: heightPercentageToDP(1.8),
+                        //         textAlignVertical: 'center',
+                        //       }}>
+                        //       Play
+                        //     </Text>
+                        //   </LinearGradient>
+                        // </TouchableOpacity>
                       ))}
                     </View>
                   ))
@@ -370,56 +660,20 @@ const PlayArenaLocation = () => {
                 />
               </View>
 
-              {/* <View
-                style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.white_s,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: heightPercentageToDP(3),
-                  marginTop: heightPercentageToDP(2),
-                }}>
-                {alldatafiler.map(item => (
-                  <TouchableOpacity
-                    onPress={() => settingFilterData(item)}
-                    key={item._id}
-                    style={{
-                      backgroundColor: COLORS.grayHalfBg,
-                      padding: heightPercentageToDP(1),
-                      margin: heightPercentageToDP(0.2),
-                      borderRadius: heightPercentageToDP(1),
-                      borderColor:
-                        selectedFilter == item._id
-                          ? COLORS.green
-                          : COLORS.grayHalfBg,
-                      borderWidth: 1,
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: FONT.Montserrat_Regular,
-                        fontSize: heightPercentageToDP(1.5),
-                        color: COLORS.black,
-                        paddingHorizontal: heightPercentageToDP(0.5),
-                      }}>
-                      {item.maximumReturn}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View> */}
-
-              <ScrollView
+              {/* <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{
                   alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(1),
+                  paddingHorizontal: heightPercentageToDP(3),
+                 
                 }}
                 style={{
                   height: heightPercentageToDP(7),
                   backgroundColor: COLORS.white_s,
                   borderRadius: heightPercentageToDP(3),
                   marginTop: heightPercentageToDP(2),
+                  overflow: 'hidden',
                 }}>
                 {alldatafiler.map(item => (
                   <TouchableOpacity
@@ -447,7 +701,51 @@ const PlayArenaLocation = () => {
                     </Text>
                   </TouchableOpacity>
                 ))}
-              </ScrollView>
+              </ScrollView> */}
+
+              <View
+                style={{
+                  height: heightPercentageToDP(6),
+                  backgroundColor: COLORS.white_s,
+                  borderRadius: heightPercentageToDP(3),
+                  marginTop: heightPercentageToDP(2),
+                  overflow: 'hidden', // Ensures content stays inside the rounded container
+                }}>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(1),
+                  }}>
+                  {alldatafiler.map(item => (
+                    <TouchableOpacity
+                      onPress={() => settingFilterData(item)}
+                      key={item._id}
+                      style={{
+                        backgroundColor: COLORS.grayHalfBg,
+                        padding: heightPercentageToDP(1),
+                        margin: heightPercentageToDP(0.2),
+                        borderRadius: heightPercentageToDP(1),
+                        borderColor:
+                          selectedFilter == item._id
+                            ? COLORS.green
+                            : COLORS.grayHalfBg,
+                        borderWidth: 1,
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(1.5),
+                          color: COLORS.black,
+                          paddingHorizontal: heightPercentageToDP(0.5),
+                        }}>
+                        {item.maximumReturn}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
             </View>
 
             <View style={{flex: 2}}>
@@ -461,6 +759,9 @@ const PlayArenaLocation = () => {
                   initialNumToRender={10}
                   maxToRenderPerBatch={10}
                   windowSize={10}
+                  ListFooterComponent={() => (
+                    <View style={{height: 100}}></View>
+                  )}
                 />
               )}
             </View>
@@ -501,6 +802,8 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     borderRadius: 4,
     padding: 4,
+    gap: heightPercentageToDP(2),
+    margin: heightPercentageToDP(2),
   },
   time: {
     fontSize: 14,

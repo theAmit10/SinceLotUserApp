@@ -41,12 +41,27 @@ const Withdrawskrill = () => {
   const [createWithdraw, {isLoading, error}] = useCreateWithdrawMutation();
   console.log('MOINEE:: ' + isLoading);
 
+  const MIN_WITHDRAW_AMOUNT = 10;
+
   const submitHandler = async () => {
     if (!amountval) {
       Toast.show({type: 'error', text1: 'Enter Amount'});
     } 
     else if (isNaN(amountval)) {
       Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
+    }
+    else if (parseFloat(amountval) < MIN_WITHDRAW_AMOUNT) {
+      Toast.show({
+        type: 'error',
+        text1: `Minimum Amount to withdraw is ${MIN_WITHDRAW_AMOUNT}`,
+      });
+    } 
+    else if(parseFloat(user?.walletOne?.balance) < parseFloat(amountval)){
+      Toast.show({
+        type: 'error',
+        text1: `Insufficent Balance`,
+        text2: `You have insufficent balance in ${user?.walletOne?.walletName} wallet`,
+      });
     }
     else if (!skrillContact) {
       Toast.show({type: 'error', text1: 'Please enter phone number or email address' });

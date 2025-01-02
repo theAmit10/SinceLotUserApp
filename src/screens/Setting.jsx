@@ -27,6 +27,7 @@ import Background from '../components/background/Background';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import moment from "moment-timezone"
 
 const Setting = () => {
   const navigation = useNavigation();
@@ -65,13 +66,58 @@ const Setting = () => {
     }, 1000);
   };
 
-  const submitHandler = () => {
-    console.log('Working on login ');
-    Toast.show({
-      type: 'success',
-      text1: 'Processing',
-    });
-  };
+ 
+function getDateTimeInTimezone(dateString, timezone) {
+  // Parse the input date
+  const date = moment.tz(dateString, 'UTC');
+
+  // Convert the date to the specified timezone
+  const localDate = date.tz(timezone);
+
+  // Format the date and time as needed (e.g., 'YYYY-MM-DD HH:mm:ss')
+  return localDate.format('YYYY-MM-DD HH:mm:ss');
+}
+
+// Example usage
+const dateString = '2024-10-24T06:44:16.416Z';
+const timezone = 'Asia/Kolkata';  // Change this to any desired timezone
+
+const result = getDateTimeInTimezone(dateString, timezone);
+console.log("created at time"); 
+console.log(result); 
+
+function convertUTCToIST12Hour(utcTime) {
+  // Create a moment object from the UTC time string
+  const momentObj = moment.utc(utcTime);
+
+  // Set the timezone to IST
+  momentObj.tz('Asia/Kolkata');
+
+  // Format the date and time in 12-hour format
+  const istDateTime = momentObj.format('YYYY-MM-DD h:mm:ss A');
+
+  return istDateTime;
+}
+
+// Example usage:
+const utcTime = '2024-10-24T06:44:16.416Z';
+const istDateTime = convertUTCToIST12Hour(utcTime);
+console.log("created at time gimini"); 
+console.log(istDateTime); // Output: 2024-10-24 12:14:16 AM
+
+
+const getCurrentDate = () => {
+  return moment.tz('Asia/Kolkata').format('DD-MM-YYYY');
+};
+
+const getNextDate = () => {
+  return moment.tz('Asia/Kolkata').add(1, 'days').format('DD-MM-YYYY');
+};
+
+console.log("setting current date :: ",getCurrentDate())
+console.log("setting next date : ",getNextDate())
+
+// 39860 // 135
 
   return (
     <SafeAreaView style={{flex: 1}}>

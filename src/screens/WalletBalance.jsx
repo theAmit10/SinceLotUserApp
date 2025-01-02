@@ -68,6 +68,24 @@ const WalletBalance = ({route}) => {
     }
   }, [user, forWallet, loading, previousBalance]);
 
+  const roundToInteger = input => {
+    // Convert input to a float
+    const floatValue = parseFloat(input);
+
+    // Check if it's a valid number
+    if (isNaN(floatValue)) {
+      return 'Invalid number'; // Handle invalid input
+    }
+
+    // Check if the number is already an integer
+    if (Number.isInteger(floatValue)) {
+      return floatValue; // Return the number as it is
+    }
+
+    // Return the integer part (without rounding)
+    return Math.floor(floatValue);
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -149,7 +167,7 @@ const WalletBalance = ({route}) => {
                     {selectedWallet.walletName}
                   </GradientText>
                   <GradientText style={styles.textStyle}>
-                    {selectedWallet.balance}{' '}
+                    {roundToInteger(selectedWallet.balance)}{' '}
                     {user.country.countrycurrencysymbol}
                   </GradientText>
                   <View
@@ -158,42 +176,82 @@ const WalletBalance = ({route}) => {
                       display: 'flex',
                       justifyContent: 'flex-end',
                       alignItems: 'center',
+                      paddingBottom: heightPercentageToDP(2),
+                      gap: heightPercentageToDP(2),
                     }}>
                     {forWallet === user.walletOne.walletName ? (
                       // If forWallet matches user.walletOne.walletName, show Transaction History
-                      <Text
-                        onPress={() => navigation.navigate('Withdraw')}
-                        style={{
-                          backgroundColor: COLORS.white_s,
-                          padding: heightPercentageToDP(2),
-                          height: heightPercentageToDP(7),
-                          borderRadius: heightPercentageToDP(1),
-                          color: COLORS.black,
-                          fontFamily: FONT.Montserrat_SemiBold,
-                          width: widthPercentageToDP(90),
-                          textAlign: 'center',
-                          fontSize: heightPercentageToDP(2),
-                        }}>
-                        Withdraw Payment
-                      </Text>
+
+                      <>
+                        <View
+                          style={{
+                            borderRadius: heightPercentageToDP(2),
+                            padding: heightPercentageToDP(2),
+                            height: heightPercentageToDP(7),
+                            backgroundColor: COLORS.white_s,
+                            width: widthPercentageToDP(90),
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <Text
+                            onPress={() =>
+                              navigation.navigate('BalanceTransfer')
+                            }
+                            style={{
+                              color: COLORS.black,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              textAlign: 'center',
+                              fontSize: heightPercentageToDP(2),
+                            }}>
+                            Balance Transfer
+                          </Text>
+                        </View>
+
+                        <View
+                          style={{
+                            borderRadius: heightPercentageToDP(2),
+                            padding: heightPercentageToDP(2),
+                            height: heightPercentageToDP(7),
+                            backgroundColor: COLORS.white_s,
+                            width: widthPercentageToDP(90),
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <Text
+                            onPress={() => navigation.navigate('Withdraw')}
+                            style={{
+                              color: COLORS.black,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              textAlign: 'center',
+                              fontSize: heightPercentageToDP(2),
+                            }}>
+                            Withdraw Payment
+                          </Text>
+                        </View>
+                      </>
                     ) : (
                       // Otherwise, show Withdraw Payment
-
-                      <Text
-                        onPress={() => navigation.navigate('History')}
+                      <View
                         style={{
-                          backgroundColor: COLORS.white_s,
+                          borderRadius: heightPercentageToDP(2),
                           padding: heightPercentageToDP(2),
                           height: heightPercentageToDP(7),
-                          borderRadius: heightPercentageToDP(1),
-                          color: COLORS.black,
-                          fontFamily: FONT.Montserrat_SemiBold,
+                          backgroundColor: COLORS.white_s,
                           width: widthPercentageToDP(90),
-                          textAlign: 'center',
-                          fontSize: heightPercentageToDP(2),
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}>
-                        Transaction History
-                      </Text>
+                        <Text
+                          onPress={() => navigation.navigate('History')}
+                          style={{
+                            color: COLORS.black,
+                            fontFamily: FONT.Montserrat_SemiBold,
+                            textAlign: 'center',
+                            fontSize: heightPercentageToDP(2),
+                          }}>
+                          Transaction History
+                        </Text>
+                      </View>
                     )}
                   </View>
                 </View>

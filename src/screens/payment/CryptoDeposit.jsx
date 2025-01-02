@@ -279,9 +279,9 @@ const CryptoDeposit = () => {
                     <GradientTextWhite style={styles.textStyleContent}>
                       Crypto
                     </GradientTextWhite>
-                    <GradientTextWhite style={styles.textStyleContent}>
+                    {/* <GradientTextWhite style={styles.textStyleContent}>
                       {selectedUpiId?.paymentId}
-                    </GradientTextWhite>
+                    </GradientTextWhite> */}
                     <LinearGradient
                       colors={[COLORS.grayBg, COLORS.white_s]}
                       style={{borderRadius: 20, padding: 10}}>
@@ -550,7 +550,7 @@ const CryptoDeposit = () => {
                               </View>
                               <View
                                 style={{
-                                  flexDirection: 'row',
+                                  flexDirection: 'column',
                                   gap: heightPercentageToDP(1),
                                   justifyContent: 'center',
                                   alignItems: 'center',
@@ -558,6 +558,7 @@ const CryptoDeposit = () => {
                                   paddingHorizontal: heightPercentageToDP(2),
                                   borderRadius: heightPercentageToDP(2),
                                   paddingBottom: heightPercentageToDP(2),
+                                 
                                 }}>
                                 <View
                                   style={{
@@ -608,7 +609,7 @@ const CryptoDeposit = () => {
                                 fontSize: heightPercentageToDP(2),
                                 paddingStart: heightPercentageToDP(1),
                               }}>
-                              Send Amount
+                              Amount In USD
                             </Text>
 
                             <LinearGradient

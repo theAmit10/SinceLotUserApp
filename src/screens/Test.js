@@ -1,127 +1,247 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-import {ImageSlider} from '@pembajak/react-native-image-slider-banner';
-import {heightPercentageToDP} from 'react-native-responsive-screen';
-import {COLORS} from '../../assets/constants';
+import React, { useState, useEffect } from 'react';
+import Countdown from 'react-native-countdown-component';
+import moment from 'moment-timezone';
+import { View, Text } from 'react-native';
+import { useSelector } from 'react-redux';
+import { COLORS, FONT } from '../../assets/constants';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
 
-const Test = () => {
+const Test = ({ timeString = '03:00 PM', timezone = 'Asia/Kolkata' }) => {
+  const { user } = useSelector((state) => state.user);
+  const [timeDifference, setTimeDifference] = useState(null);
+  const [key, setKey] = useState(0); // Add a key to force re-render countdown component
+
+  // Function to parse time string and set countdown based on user's timezone
+  const settingTimerForNextResult = (timeString, timezone) => {
+    console.log("User's Timezone: ", timezone);
+    const [time, period] = timeString.split(' '); // Split time and period
+    const [hour, minute] = time.split(':').map(Number);
+
+    let hour24 = hour;
+    if (period.toLowerCase() === 'pm' && hour24 < 12) {
+      hour24 += 12;
+    } else if (period.toLowerCase() === 'am' && hour24 === 12) {
+      hour24 = 0;
+    }
+
+    // Get current time in user's timezone
+    const currentTime = moment().tz(timezone);
+    console.log('Current Time in User Timezone:', currentTime.format());
+
+    // Get target time
+    const targetTime = moment.tz(
+      `${currentTime.format('YYYY-MM-DD')} ${hour24}:${minute}:00`,
+      'YYYY-MM-DD HH:mm:ss',
+      timezone
+    );
+    console.log('Target Time:', targetTime.format());
+
+    // If target time has passed, move to next day
+    if (targetTime.isBefore(currentTime)) {
+      targetTime.add(1, 'day');
+      console.log('Target Time Updated for Next Day:', targetTime.format());
+    }
+
+    // Calculate difference in seconds
+    const diff = targetTime.diff(currentTime, 'seconds');
+    console.log('Time Difference in Seconds:', diff);
+
+    if (diff > 0) {
+      setTimeDifference(diff); // Only set if the difference is positive
+      setKey((prevKey) => prevKey + 1); // Force Countdown re-render with key change
+      console.log('State Updated with Time Difference:', diff);
+    } else {
+      console.log('The target time is not in the future. Countdown cannot start.');
+    }
+  };
+
+  useEffect(() => {
+    // Start countdown based on passed props
+    if (timezone) {
+      settingTimerForNextResult(timeString, timezone);
+    } else {
+      console.log('Timezone not available');
+    }
+  }, [timeString, timezone]); // Recalculate on timeString or timezone change
+
   return (
-    <View>
-      <Text>Test</Text>
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          borderRadius: heightPercentageToDP(2),
-          overflow: 'hidden',
-      
-        }}>
-        <ImageSlider
-          data={[
-            {
-              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5a5uCP-n4teeW2SApcIqUrcQApev8ZVCJkA&usqp=CAU',
-            },
-            {
-              img: 'https://thumbs.dreamstime.com/b/environment-earth-day-hands-trees-growing-seedlings-bokeh-green-background-female-hand-holding-tree-nature-field-gra-130247647.jpg',
-            },
-            {
-              img: 'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510__340.jpg',
-            },
-          ]}
-          autoPlay={true}
-          onItemChanged={item => console.log('item', item)}
-          closeIconColor="#fff"
-          caroselImageStyle={{resizeMode: 'cover'}}
-          indicatorMainContainerStyle={{
-            justifyContent: 'flex-end',
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        flex: 1,
+      }}>
+      {timeDifference !== null ? (
+        <Countdown
+          key={key} // Use a key to force re-render when the timeDifference changes
+          until={timeDifference}
+          size={12}
+          timeToShow={['H', 'M', 'S']}
+          digitStyle={{
+            backgroundColor: 'transparent', // Set background to transparent
+            borderWidth: 0, // Remove border
+            paddingHorizontal: 0, // Remove horizontal padding
+            paddingVertical: 0, // Remove vertical padding
+            margin: 0, // Remove margin
           }}
-          caroselImageContainerStyle={{
-            height: heightPercentageToDP(20),
+          digitTxtStyle={{ color: COLORS.black }}
+          timeLabelStyle={{
+            color: COLORS.grayHalfBg,
+            fontWeight: 'bold',
           }}
-          indicatorContainerStyle={{
-            position: 'absolute',
-            bottom: 0,
+          separatorStyle={{
+            color: COLORS.black,
+            marginTop: heightPercentageToDP(-2),
+            marginHorizontal: heightPercentageToDP(-8),
+            paddingHorizontal: 0, // Remove horizontal padding
           }}
-          activeIndicatorStyle={{
-            backgroundColor: COLORS.blue,
+          timeLabels={{
+            h: 'Hours',
+            m: 'Minutes',
+            s: 'Seconds',
           }}
-          inActiveIndicatorStyle={{
-            backgroundColor: COLORS.grayHalfBg,
+          showSeparator
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center', // Align items to center
+            transform: [{ rotate: '90deg' }],
+            color: COLORS.black,
+            fontFamily: FONT.Montserrat_SemiBold,
+            fontSize: heightPercentageToDP(3),
+            marginStart: heightPercentageToDP(-2),
+            marginBottom: heightPercentageToDP(9),
           }}
         />
-      </View>
+      ) : (
+        <Text>Loading timer...</Text>
+      )}
     </View>
   );
 };
 
 export default Test;
 
-const styles = StyleSheet.create({});
 
 
-// import {StyleSheet, Text, View} from 'react-native';
-// import React from 'react';
-// import {ImageSlider} from '@pembajak/react-native-image-slider-banner';
+// import React, {useState, useEffect} from 'react';
+// import Countdown from 'react-native-countdown-component';
+// import moment from 'moment-timezone';
+// import {View, Text} from 'react-native';
+// import {useSelector} from 'react-redux';
+// import {COLORS, FONT} from '../../assets/constants';
 // import {heightPercentageToDP} from 'react-native-responsive-screen';
-// import {COLORS} from '../../assets/constants';
 
-// const images = [
-//   'https://imgs.search.brave.com/PvhNVIxs9m8r1whelc9RPX2dMQ371Xcsk3Lf2dCiVHQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvYmlnLXNhbGUt/YmFubmVyLWRlc2ln/bi1zcGVjaWFsLW9m/ZmVyLXVwLTUwLW9m/Zi1yZWFkeS1wcm9t/b3Rpb24tdGVtcGxh/dGUtdXNlLXdlYi1w/cmludC1kZXNpZ25f/MTEwNDY0LTU3MC5q/cGc_c2l6ZT02MjYm/ZXh0PWpwZw',
-//   'https://imgs.search.brave.com/0_WERhkh6NjaGafm4qPeYRM1WbUdabgTpK7LCJ8EKFA/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvaG90LXNhbGUt/aG9yaXpvbnRhbC1i/YW5uZXItd2l0aC1z/ZWFzb25hbC1vZmZl/cl80MTkzNDEtNjA1/LmpwZz9zaXplPTYy/NiZleHQ9anBn',
-//   'https://imgs.search.brave.com/pBRUab3Kras4ziV_cQdR0AtRiSrOuJKwhMTmHY988d8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3Ivc3BlY2lhbC1v/ZmZlci1maW5hbC1z/YWxlLXRhZy1iYW5u/ZXItZGVzaWduLXRl/bXBsYXRlLW1hcmtl/dGluZy1zcGVjaWFs/LW9mZmVyLXByb21v/dGlvbl82ODA1OTgt/MTk1LmpwZz9zaXpl/PTYyNiZleHQ9anBn',
-// ];
+// const Test = ({timeString = '03:00 PM', timezone = 'Asia/Kolkata'}) => {
+//   const {user} = useSelector(state => state.user);
+//   const [timeDifference, setTimeDifference] = useState(null);
 
-// const Test = () => {
+//   // Function to parse time string and set countdown based on user's timezone
+//   const settingTimerForNextResult = (timeString, timezone) => {
+//     console.log("User's Timezone: ", timezone);
+//     const [time, period] = timeString.split(' '); // Split time and period
+//     const [hour, minute] = time.split(':').map(Number);
+
+//     let hour24 = hour;
+//     if (period.toLowerCase() === 'pm' && hour24 < 12) {
+//       hour24 += 12;
+//     } else if (period.toLowerCase() === 'am' && hour24 === 12) {
+//       hour24 = 0;
+//     }
+
+//     // Get current time in user's timezone
+//     const currentTime = moment().tz(timezone);
+//     console.log('Current Time in User Timezone:', currentTime.format());
+
+//     // Get target time
+//     const targetTime = moment.tz(
+//       `${currentTime.format('YYYY-MM-DD')} ${hour24}:${minute}:00`,
+//       'YYYY-MM-DD HH:mm:ss',
+//       timezone,
+//     );
+//     console.log('Target Time:', targetTime.format());
+
+//     // If target time has passed, move to next day
+//     if (targetTime.isBefore(currentTime)) {
+//       targetTime.add(1, 'day');
+//       console.log('Target Time Updated for Next Day:', targetTime.format());
+//     }
+
+//     // Calculate difference in seconds
+//     const diff = targetTime.diff(currentTime, 'seconds');
+//     console.log('Time Difference in Seconds:', diff);
+
+//     if (diff > 0) {
+//       setTimeDifference(diff); // Only set if the difference is positive
+//     } else {
+//       console.log(
+//         'The target time is not in the future. Countdown cannot start.',
+//       );
+//     }
+//   };
+
+//   useEffect(() => {
+//     // Start countdown based on passed props
+//     if (timezone) {
+//       settingTimerForNextResult(timeString, timezone);
+//     } else {
+//       console.log('Timezone not available');
+//     }
+//   }, [timeString, timezone]);
+
 //   return (
-//     <View>
-//       <Text>Test</Text>
-//       <View
-//         style={{
-//           margin: heightPercentageToDP(2),
-//           borderRadius: heightPercentageToDP(2),
-//           overflow: 'hidden'
-//         }}>
-//         <ImageSlider
-//           data={[
-//             {
-//               img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5a5uCP-n4teeW2SApcIqUrcQApev8ZVCJkA&usqp=CAU',
-//             },
-//             {
-//               img: 'https://thumbs.dreamstime.com/b/environment-earth-day-hands-trees-growing-seedlings-bokeh-green-background-female-hand-holding-tree-nature-field-gra-130247647.jpg',
-//             },
-//             {
-//               img: 'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510__340.jpg',
-//             },
-//           ]}
-//           autoPlay={true}
-//           onItemChanged={item => console.log('item', item)}
-//           closeIconColor="#fff"
-//           caroselImageStyle={{resizeMode: 'contain'}}
-//           indicatorMainContainerStyle={{
-//             justifyContent: 'flex-end',
-//           }}
-//           caroselImageContainerStyle={{
-//             height: heightPercentageToDP(25),
-            
-            
-//           }}
-//           indicatorContainerStyle={{
-//             position: 'absolute',
-//             bottom: 0,
-//           }}
-//           activeIndicatorStyle={{
-//             backgroundColor: COLORS.blue,
-//           }}
-//           inActiveIndicatorStyle={{
-//             backgroundColor: COLORS.grayHalfBg,
-//           }}
+//     <View
+//       style={{
+//         alignItems: 'center',
+//         justifyContent: 'flex-end',
+//         flex: 1,
 
-          
+//       }}>
+//       {timeDifference !== null ? (
+//         <Countdown
+//           until={timeDifference}
+//           size={12}
+//           timeToShow={['H', 'M', 'S']}
+//           digitStyle={{
+//             backgroundColor: 'transparent', // Set background to transparent
+//             borderWidth: 0, // Remove border
+//             paddingHorizontal: 0, // Remove horizontal padding
+//             paddingVertical: 0, // Remove vertical padding
+//             margin: 0, // Remove margin
+//           }}
+//           digitTxtStyle={{color: COLORS.black}}
+//           timeLabelStyle={{
+//             color: COLORS.grayHalfBg,
+//             fontWeight: 'bold',
+//           }}
+//           separatorStyle={{
+//             color: COLORS.black,
+//             marginTop: heightPercentageToDP(-2),
+//             marginHorizontal: heightPercentageToDP(-8),
+
+//             paddingHorizontal: 0, // Remove horizontal padding
+//           }}
+//           timeLabels={{
+//             h: 'Hours',
+//             m: 'Minutes',
+//             s: 'Seconds',
+//           }}
+//           showSeparator
+//           style={{
+//             flexDirection: 'row',
+//             alignItems: 'center', // Align items to center
+//             transform: [{rotate: '90deg'}],
+//             color: COLORS.black,
+//             fontFamily: FONT.Montserrat_SemiBold,
+//             fontSize: heightPercentageToDP(3),
+//             marginStart: heightPercentageToDP(-2),
+//             marginBottom: heightPercentageToDP(9),
+//           }}
 //         />
-//       </View>
+//       ) : (
+//         <Text>Loading timer...</Text>
+//       )}
 //     </View>
 //   );
 // };
 
 // export default Test;
-
-// const styles = StyleSheet.create({});

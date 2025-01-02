@@ -32,7 +32,7 @@ const Withdrawbank = () => {
   const {accesstoken, user} = useSelector(state => state.user);
 
   const [amountval, setAmountval] = useState('');
-
+  const [swiftcode, setswiftcode] = useState('');
   const [remarkval, setRemarkval] = useState('');
   const [bankName, setBankName] = useState('');
   const [accountHolderName, setAccountHolderName] = useState('');
@@ -42,13 +42,31 @@ const Withdrawbank = () => {
   const [showProgressBar, setProgressBar] = useState(false);
   const [createWithdraw, {isLoading, error}] = useCreateWithdrawMutation();
 
+  const MIN_WITHDRAW_AMOUNT = 100;
+
   const submitHandler = async () => {
     if (!amountval) {
       Toast.show({type: 'error', text1: 'Enter Amount'});
-    }else if (isNaN(amountval)) {
-      Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
+    } else if (isNaN(amountval)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Amount',
+        text2: 'Please enter valid amount',
+      });
+    } else if (parseFloat(amountval) < MIN_WITHDRAW_AMOUNT) {
+      Toast.show({
+        type: 'error',
+        text1: `Minimum Amount to withdraw is ${MIN_WITHDRAW_AMOUNT}`,
+      });
     }
-     else if (!bankName) {
+    else if(parseFloat(user?.walletOne?.balance) < parseFloat(amountval)){
+      Toast.show({
+        type: 'error',
+        text1: `Insufficent Balance`,
+        text2: `You have insufficent balance in ${user?.walletOne?.walletName} wallet`,
+      });
+    }
+    else if (!bankName) {
       Toast.show({type: 'error', text1: 'Enter Bank Name'});
     } else if (!accountHolderName) {
       Toast.show({type: 'error', text1: 'Enter account holder name'});
@@ -64,41 +82,83 @@ const Withdrawbank = () => {
       });
     } else {
       setProgressBar(true);
-      try {
-        const body = {
-          amount: amountval,
-          remark: remarkval,
-          paymenttype: 'Bank',
-          username: user.name,
-          userid: user.userId,
-          paymentstatus: 'Pending',
-          transactionType: 'Withdraw',
-          bankName,
-          accountHolderName,
-          bankIFSC,
-          bankAccountNumber,
-        };
+      if(swiftcode)
+      {
+        try {
+          const body = {
+            amount: amountval,
+            remark: remarkval,
+            paymenttype: 'Bank',
+            username: user.name,
+            userid: user.userId,
+            paymentstatus: 'Pending',
+            transactionType: 'Withdraw',
+            bankName,
+            accountHolderName,
+            bankIFSC,
+            bankAccountNumber,
+            swiftcode
+          };
+  
+          const res = await createWithdraw({
+            accessToken: accesstoken,
+            body,
+          }).unwrap();
+  
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res.message,
+          });
+  
+          navigation.goBack();
+          setProgressBar(false);
+        } catch (error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Something went wrong',
+          });
+          setProgressBar(false);
+        }
 
-        const res = await createWithdraw({
-          accessToken: accesstoken,
-          body,
-        }).unwrap();
-
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: res.message,
-        });
-
-        navigation.goBack();
-        setProgressBar(false);
-      } catch (error) {
-        Toast.show({
-          type: 'error',
-          text1: 'Something went wrong',
-        });
-        setProgressBar(false);
+      }else{
+        try {
+          const body = {
+            amount: amountval,
+            remark: remarkval,
+            paymenttype: 'Bank',
+            username: user.name,
+            userid: user.userId,
+            paymentstatus: 'Pending',
+            transactionType: 'Withdraw',
+            bankName,
+            accountHolderName,
+            bankIFSC,
+            bankAccountNumber,
+          };
+  
+          const res = await createWithdraw({
+            accessToken: accesstoken,
+            body,
+          }).unwrap();
+  
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res.message,
+          });
+  
+          navigation.goBack();
+          setProgressBar(false);
+        } catch (error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Something went wrong',
+          });
+          setProgressBar(false);
+        }
       }
+      
     }
   };
 
@@ -294,7 +354,7 @@ const Withdrawbank = () => {
                         fontSize: heightPercentageToDP(2),
                         paddingStart: heightPercentageToDP(1),
                       }}>
-                      Bank IFSC
+                      IFSC / Routing No.
                     </Text>
 
                     <LinearGradient
@@ -354,6 +414,45 @@ const Withdrawbank = () => {
                         }}
                         value={bankAccountNumber}
                         onChangeText={text => setBankAccountNumber(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                   {/** SWIFT CODE */}
+                   <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Swift code (optional)
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={swiftcode}
+                        onChangeText={text => setswiftcode(text)}
                       />
                     </LinearGradient>
                   </View>
