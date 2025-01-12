@@ -131,7 +131,9 @@ const COLORS = {
   time_secondbluw: '#7DD3F3',
 
   time_firstgreen: '#6D8341',
-  time_secondgreen: '#C0D98A'
+  time_secondgreen: '#C0D98A',
+  user_firstgreen: '#7EC630',
+  user_secondgreen: '#C0D98A',
 
   
 
