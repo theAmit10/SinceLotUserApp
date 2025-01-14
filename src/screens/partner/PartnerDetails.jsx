@@ -94,9 +94,9 @@ import {
                 <ScrollView
                   contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
                   showsVerticalScrollIndicator={false}>
-                  {/** PROFIT DETAILS */}
+                  {/** USER PLAY HISTORY DETAILS */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('ProfitDetails')}>
+                    onPress={() => navigation.navigate('UserPlayHistory')}>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left
@@ -126,7 +126,7 @@ import {
   
                   {/** ALL PARTNER */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('AllPartner')}>
+                    onPress={() => navigation.navigate('UserTransactionHistory')}>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left
@@ -158,7 +158,7 @@ import {
   
                   {/** All Profit Decrease */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('CryptoDeposit')}>
+                    onPress={() => navigation.navigate('CreateNotification')}>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left
@@ -188,9 +188,9 @@ import {
                     </LinearGradient>
                   </TouchableOpacity>
   
-                  {/** Decrease Percentage */}
+                  {/** Increse Percentage */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('CryptoDeposit')}>
+                    onPress={() => navigation.navigate('UpdatePercentage')}>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left
@@ -202,7 +202,39 @@ import {
                           gap: heightPercentageToDP(2),
                         }}>
                         <GradientText style={styles.textStyleContent}>
-                        Update Percentage
+                        Increase Percentage
+                        </GradientText>
+                        <Text style={styles.subtitle}>
+                        Update Partner Percentage 
+                        </Text>
+                      </View>
+  
+                      <View style={styles.iconContainer}>
+                        <MaterialCommunityIcons
+                          name={'brightness-percent'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                          style={styles.icon}
+                        />
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+
+                   {/** Decrease Percentage */}
+                   <TouchableOpacity
+                    onPress={() => navigation.navigate('DecresePercentage')}>
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={styles.paymentOption}>
+                      <View
+                        style={{
+                          flex: 1,
+                          gap: heightPercentageToDP(2),
+                        }}>
+                        <GradientText style={styles.textStyleContent}>
+                        Decrease Percentage
                         </GradientText>
                         <Text style={styles.subtitle}>
                         Update Partner Percentage 

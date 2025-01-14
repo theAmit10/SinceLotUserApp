@@ -188,7 +188,7 @@ const PartnerDashboard = () => {
                 </TouchableOpacity>
 
                 {/** Decrease Percentage */}
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={() => navigation.navigate('CryptoDeposit')}>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -217,7 +217,7 @@ const PartnerDashboard = () => {
                       />
                     </View>
                   </LinearGradient>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 {/** All Users */}
                 <TouchableOpacity

@@ -67,10 +67,23 @@ import LiveResult from '../screens/LiveResult';
 import PowerballTimes from '../screens/powerball/PowerballTimes';
 import PowerballGame from '../screens/powerball/PowerballGame';
 import PowerballDashboard from '../screens/powerball/PowerballDashboard';
-
-
-
-
+import ResultDashboard from '../screens/powerball/ResultDashboard';
+import ResultPowerball from '../screens/powerball/ResultPowerball';
+import CreateNotification from '../screens/partner/CreateNotification';
+import UserPlayHistory from '../screens/partner/userdetails/UserPlayHistory';
+import UserTransactionHistory from '../screens/partner/userdetails/UserTransactionHistory';
+import UpdatePercentage from '../screens/partner/UpdatePercentage';
+import DecresePercentage from '../screens/partner/DecresePercentage';
+import AllUpiDepositPayment from '../screens/partner/recharge/AllUpiDepositPayment';
+import CreateUpi from '../screens/partner/recharge/CreateUpi';
+import CreateBank from '../screens/partner/recharge/CreateBank';
+import CreatePaypal from '../screens/partner/recharge/CreatePaypal';
+import CreateSkrill from '../screens/partner/recharge/CreateSkrill';
+import CreateCrypto from '../screens/partner/recharge/CreateCrypto';
+import AllBankDepositPayment from '../screens/partner/recharge/AllBankDepositPayment';
+import AllPaypalDepositPayment from '../screens/partner/recharge/AllPaypalDepositPayment';
+import AllSkrillPaymentPayment from '../screens/partner/recharge/AllSkrillPaymentPayment';
+import AllCryptoDepositPayment from '../screens/partner/recharge/AllCryptoDepositPayment';
 
 const Stack = createNativeStackNavigator();
 
@@ -165,7 +178,11 @@ const Main = () => {
           <Stack.Screen name="ProfitDetails" component={ProfitDetails} />
           <Stack.Screen name="RechargeMethod" component={RechargeMethod} />
           <Stack.Screen name="PartnerDetails" component={PartnerDetails} />
-         
+          <Stack.Screen name="UpdatePercentage" component={UpdatePercentage} />
+          <Stack.Screen
+            name="DecresePercentage"
+            component={DecresePercentage}
+          />
 
           {/** LIVE RESULT */}
           <Stack.Screen name="LiveResult" component={LiveResult} />
@@ -173,8 +190,50 @@ const Main = () => {
           {/* PowerBall */}
           <Stack.Screen name="PowerballTimes" component={PowerballTimes} />
           <Stack.Screen name="PowerballGame" component={PowerballGame} />
-          <Stack.Screen name="PowerballDashboard" component={PowerballDashboard} />
+          <Stack.Screen
+            name="PowerballDashboard"
+            component={PowerballDashboard}
+          />
+          <Stack.Screen name="ResultDashboard" component={ResultDashboard} />
+          <Stack.Screen name="ResultPowerball" component={ResultPowerball} />
 
+          {/** USER DETAILS */}
+          <Stack.Screen
+            name="CreateNotification"
+            component={CreateNotification}
+          />
+          <Stack.Screen name="UserPlayHistory" component={UserPlayHistory} />
+          <Stack.Screen
+            name="UserTransactionHistory"
+            component={UserTransactionHistory}
+          />
+
+          {/** RECHARGE MODULE */}
+          <Stack.Screen
+            name="AllUpiDepositPayment"
+            component={AllUpiDepositPayment}
+          />
+          <Stack.Screen
+            name="AllBankDepositPayment"
+            component={AllBankDepositPayment}
+          />
+          <Stack.Screen
+            name="AllPaypalDepositPayment"
+            component={AllPaypalDepositPayment}
+          />
+          <Stack.Screen
+            name="AllSkrillPaymentPayment"
+            component={AllSkrillPaymentPayment}
+          />
+          <Stack.Screen
+            name="AllCryptoDepositPayment"
+            component={AllCryptoDepositPayment}
+          />
+          <Stack.Screen name="CreateUpi" component={CreateUpi} />
+          <Stack.Screen name="CreateBank" component={CreateBank} />
+          <Stack.Screen name="CreatePaypal" component={CreatePaypal} />
+          <Stack.Screen name="CreateSkrill" component={CreateSkrill} />
+          <Stack.Screen name="CreateCrypto" component={CreateCrypto} />
         </Stack.Group>
       </Stack.Navigator>
 

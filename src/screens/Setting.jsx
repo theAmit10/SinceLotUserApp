@@ -218,6 +218,45 @@ console.log("setting next date : ",getNextDate())
                   />
                 </TouchableOpacity>
 
+                {/** RESULTS */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ResultDashboard')}
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.grayBg, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <MaterialCommunityIcons
+                      name={'trophy-award'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </LinearGradient>
+                  <Text
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}>
+                    Results
+                  </Text>
+
+                  <Ionicons
+                    name={'chevron-forward-outline'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </TouchableOpacity>
+
                 {/** PLAYBET HISTORY */}
 
                 <TouchableOpacity

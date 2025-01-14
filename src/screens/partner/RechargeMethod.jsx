@@ -79,7 +79,7 @@ const RechargeMethod = () => {
                 showsVerticalScrollIndicator={false}>
                 {/** Crypto */}
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('CryptoDeposit')}>
+                  onPress={() => navigation.navigate('AllCryptoDepositPayment')}>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                     start={{x: 0, y: 0}} // start from left
@@ -100,7 +100,7 @@ const RechargeMethod = () => {
 
                 {/** Paypal */}
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('PaypalDeposit')}>
+                  onPress={() => navigation.navigate('AllPaypalDepositPayment')}>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                     start={{x: 0, y: 0}} // start from left
@@ -120,7 +120,7 @@ const RechargeMethod = () => {
                 </TouchableOpacity>
 
                 {/** Skrill */}
-                <TouchableOpacity onPress={() => navigation.navigate('Skrill')}>
+                <TouchableOpacity onPress={() => navigation.navigate('AllSkrillPaymentPayment')}>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                     start={{x: 0, y: 0}} // start from left
@@ -141,7 +141,7 @@ const RechargeMethod = () => {
 
                 {/** BANK */}
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('BankDeposit')}>
+                  onPress={() => navigation.navigate('AllBankDepositPayment')}>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                     start={{x: 0, y: 0}} // start from left
@@ -162,7 +162,7 @@ const RechargeMethod = () => {
 
                 {/** UPI */}
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('UpiDeposit')}>
+                  onPress={() => navigation.navigate('AllUpiDepositPayment')}>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                     style={styles.paymentOption}

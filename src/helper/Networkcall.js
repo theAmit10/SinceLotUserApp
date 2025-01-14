@@ -176,6 +176,130 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // FOR DELETE A UPI ACCOUNT
+    deleteUpiAccount: builder.mutation({
+      query: ({accesstoken, id}) => ({
+        url: `result/removeupipayment/${id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // FOR CREATE A UPI ACCOUNT
+    createUPIAccount: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'result/addupipayment',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        body,
+      }),
+    }),
+
+     // FOR CREATE A BANK ACCOUNT
+     createBankAccount: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'result/addbankpayment',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+    }),
+
+    // FOR DELETE A BANK ACCOUNT
+    deleteBankAccount: builder.mutation({
+      query: ({accesstoken, id}) => ({
+        url: `result/removebankpayment/${id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+     // FOR CREATE A PAYPAL ACCOUNT
+     createPaypalAccount: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'result/addpaypalpayment',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+    }),
+
+    // FOR DELETE A PAYPAL ACCOUNT
+    deletePaypalAccount: builder.mutation({
+      query: ({accesstoken, id}) => ({
+        url: `result/removepaypalpayment/${id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // FOR CREATE A SKRILL ACCOUNT
+    createSkrillAccount: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'result/addskrillpayment',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+    }),
+
+    // FOR DELETE A SKRILL ACCOUNT
+    deleteSkrillAccount: builder.mutation({
+      query: ({accesstoken, id}) => ({
+        url: `result/removeskrillpayment/${id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+
+    // FOR CREATE A CRYPTO ACCOUNT
+    createCryptoAccount: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'result/addcryptopayment',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        body,
+      }),
+    }),
+
+    // FOR DELETE A CRYPTO ACCOUNT
+    deleteCryptoAccount: builder.mutation({
+      query: ({accesstoken, id}) => ({
+        url: `result/removecryptopayment/${id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+
+
+
 
 
     // ######## END #########
@@ -195,5 +319,18 @@ export const {
   useGetAllCountryQuery,
   useTransferWalletBalanceMutation,
   useCheckNotificationSeenMutation,
-  useGetResultLocMonYearQuery
+  useGetResultLocMonYearQuery,
+  useDeleteUpiAccountMutation,
+  useCreateUPIAccountMutation,
+  useCreateBankAccountMutation,
+  useDeleteBankAccountMutation,
+  useCreatePaypalAccountMutation,
+  useDeletePaypalAccountMutation,
+  useCreateSkrillAccountMutation,
+  useDeleteSkrillAccountMutation,
+  useCreateCryptoAccountMutation,
+  useDeleteCryptoAccountMutation,
+
+
+
 } = sincelotUserApi;
