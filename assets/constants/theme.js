@@ -72,7 +72,11 @@ const COLORS = {
   purpleDark: '#080911',
   purple: '#161724',
   red: '#FF4A5C',
+  firstred: '#FF2119',
+  secondred: '#99140F',
   green: '#00ba87',
+  firstgreen: '#E0F4CB',
+  secondgreen: '#7EC630',
   skyBlue: '#152733',
   orange: '#FF810D',
 
@@ -108,6 +112,7 @@ const COLORS = {
   black: "#000000",
   blue: "#246BFD",
   darkGray: '#4E4B4B',
+  ballGray: '#808080',
   lightDarkGray: "#A7A5B1",
   profileDarkGray: '#7E7D84',
 

@@ -64,6 +64,9 @@ import ProfitDetails from '../screens/partner/ProfitDetails';
 import RechargeMethod from '../screens/partner/RechargeMethod';
 import PartnerDetails from '../screens/partner/PartnerDetails';
 import LiveResult from '../screens/LiveResult';
+import PowerballTimes from '../screens/powerball/PowerballTimes';
+import PowerballGame from '../screens/powerball/PowerballGame';
+import PowerballDashboard from '../screens/powerball/PowerballDashboard';
 
 
 
@@ -166,6 +169,11 @@ const Main = () => {
 
           {/** LIVE RESULT */}
           <Stack.Screen name="LiveResult" component={LiveResult} />
+
+          {/* PowerBall */}
+          <Stack.Screen name="PowerballTimes" component={PowerballTimes} />
+          <Stack.Screen name="PowerballGame" component={PowerballGame} />
+          <Stack.Screen name="PowerballDashboard" component={PowerballDashboard} />
 
         </Stack.Group>
       </Stack.Navigator>

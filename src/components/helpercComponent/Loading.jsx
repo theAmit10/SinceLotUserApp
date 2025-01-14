@@ -3,7 +3,13 @@ import React from 'react'
 
 const Loading = ({props}) => {
   return (
-    <View className="flex-1 flex justify-center items-center">
+    <View 
+    style={{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+    >
       <ActivityIndicator {...props}/>
     </View>
   )

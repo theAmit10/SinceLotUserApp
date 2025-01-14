@@ -179,9 +179,9 @@ console.log("setting next date : ",getNextDate())
 
               <ScrollView showsVerticalScrollIndicator={false}>
 
-                {/** POWER BALL GAME */}
+                {/** POWER BALL */}
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('PlayHistory')}
+                  onPress={() => navigation.navigate('PowerballDashboard')}
                   style={{
                     height: heightPercentageToDP(7),
                     flexDirection: 'row',
