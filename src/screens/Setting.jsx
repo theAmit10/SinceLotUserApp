@@ -274,11 +274,12 @@ console.log("setting next date : ",getNextDate())
                     colors={[COLORS.grayBg, COLORS.white_s]}
                     className="rounded-xl p-1">
                     <MaterialCommunityIcons
-                      name={'play-circle-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
-                    />
+                      name={'play-circle-outline'}
+                      />
                   </LinearGradient>
+                
                   <Text
                     style={{
                       marginStart: heightPercentageToDP(1),

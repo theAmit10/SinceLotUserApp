@@ -845,7 +845,7 @@ const Home = () => {
                     alignItems: 'center',
                   }}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('PlayArenaLocation')}>
+                    onPress={() => navigation.navigate('Play')}>
                     <Image
                       source={require('../../assets/image/playbtn.png')}
                       resizeMode="stretch"

@@ -84,6 +84,7 @@ import AllBankDepositPayment from '../screens/partner/recharge/AllBankDepositPay
 import AllPaypalDepositPayment from '../screens/partner/recharge/AllPaypalDepositPayment';
 import AllSkrillPaymentPayment from '../screens/partner/recharge/AllSkrillPaymentPayment';
 import AllCryptoDepositPayment from '../screens/partner/recharge/AllCryptoDepositPayment';
+import Play from '../screens/Play';
 
 const Stack = createNativeStackNavigator();
 
@@ -234,6 +235,8 @@ const Main = () => {
           <Stack.Screen name="CreatePaypal" component={CreatePaypal} />
           <Stack.Screen name="CreateSkrill" component={CreateSkrill} />
           <Stack.Screen name="CreateCrypto" component={CreateCrypto} />
+          <Stack.Screen name="Play" component={Play} />
+          
         </Stack.Group>
       </Stack.Navigator>
 

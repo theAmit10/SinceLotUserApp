@@ -20,7 +20,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {findFocusedRoute, useIsFocused, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
@@ -29,10 +29,17 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import GradientText from '../../components/helpercComponent/GradientText';
 import Loading from '../../components/helpercComponent/Loading';
 
+
+
 const ResultPowerball = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+
+
+
+  
+  
   const {accesstoken} = useSelector(state => state.user);
 
   const dummeyAllUsers = [
