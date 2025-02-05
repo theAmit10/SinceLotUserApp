@@ -93,15 +93,25 @@ const Play = () => {
                 start={{x: 0, y: 0}} // start from left
                 end={{x: 1, y: 0}} // end at right
                 style={styles.paymentOption}>
-                <GradientTextWhite style={styles.textStyleContent}>
-                  Play Arena
-                </GradientTextWhite>
+                <View>
+                  <GradientTextWhite style={styles.textStyleContent}>
+                    Play Arena
+                  </GradientTextWhite>
+                  <Text
+                    style={{
+                      color: COLORS.white_s,
+                      fontSize: heightPercentageToDP(2),
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Get your lucky number
+                  </Text>
+                </View>
 
                 <LinearGradient
                   colors={[COLORS.grayBg, COLORS.white_s]}
                   className="rounded-xl p-1">
                   <MaterialCommunityIcons
-                    size={heightPercentageToDP(3)}
+                    size={heightPercentageToDP(4)}
                     color={COLORS.darkGray}
                     name={'play-circle-outline'}
                   />
@@ -117,16 +127,27 @@ const Play = () => {
                 start={{x: 0, y: 0}} // start from left
                 end={{x: 1, y: 0}} // end at right
                 style={styles.paymentOption}>
-                <GradientTextWhite style={styles.textStyleContent}>
-                  Powerball
-                </GradientTextWhite>
+                <View>
+                  <GradientTextWhite style={styles.textStyleContent}>
+                    Powerball
+                  </GradientTextWhite>
+                  <Text
+                    style={{
+                      color: COLORS.white_s,
+                      fontSize: heightPercentageToDP(2),
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Get your tickets
+                  </Text>
+                </View>
+
                 <LinearGradient
                   colors={[COLORS.grayBg, COLORS.white_s]}
                   className="rounded-xl p-1">
                   <MaterialCommunityIcons
-                    size={heightPercentageToDP(3)}
+                    name={'trophy-award'}
+                    size={heightPercentageToDP(4)}
                     color={COLORS.darkGray}
-                    name={'play-circle-outline'}
                   />
                 </LinearGradient>
               </LinearGradient>

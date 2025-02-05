@@ -1138,7 +1138,6 @@ const styles = StyleSheet.create({
     padding: heightPercentageToDP(0.5),
     textAlign: 'center',
     color: COLORS.black,
-    placeholderTextColor: COLORS.black,
     fontFamily: FONT.Montserrat_Bold,
   },
   ticketCount: {

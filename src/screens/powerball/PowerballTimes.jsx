@@ -31,12 +31,11 @@ import PrizeComponent from './PrizeComponent';
 import TimesComp from './TimesComp';
 import Loading from '../../components/helpercComponent/Loading';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
+import {useGetPowetTimesQuery} from '../../helper/Networkcall';
 
 const PowerballTimes = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const {accesstoken} = useSelector(state => state.user);
 
   const timedata = [
     {
@@ -50,6 +49,23 @@ const PowerballTimes = () => {
   ];
 
   const loading = false;
+
+  const {user, accesstoken} = useSelector(state => state.user);
+  const id = '67a38904b00aa387719533b9';
+  const [powertimes, setPowertimes] = useState(null);
+  // Network call
+  const {data, error, isLoading} = useGetPowetTimesQuery({accesstoken});
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setPowertimes(data.powerTimes);
+      console.log(data);
+    }
+
+    if (error) {
+      console.error('Error fetching powerball data:', error);
+    }
+  }, [data, isLoading, error]); // Correct dependencies
 
   return (
     <View style={{flex: 1}}>
@@ -112,13 +128,15 @@ const PowerballTimes = () => {
                 contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
                 showsVerticalScrollIndicator={false}>
                 {/** ALLTIMES DETAILS */}
-                {loading ? (
+                {isLoading ? (
                   <Loading />
-                ) : timedata.length === 0 ? (
+                ) : powertimes?.length === 0 ? (
                   <NoDataFound data={'No Data Available'} />
                 ) : (
-                  timedata.map((item, index) => {
-                    return <TimesComp key={index} powertime={item.powertime} />;
+                  powertimes?.map((item, index) => {
+                    return (
+                      <TimesComp key={item._id} powertime={item.powertime} />
+                    );
                   })
                 )}
               </ScrollView>

@@ -2,10 +2,13 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import UrlHelper from './UrlHelper';
 import { server } from '../redux/store';
 
+
+// baseUrl: 'https://jenny.worldgames55fhgfg7sd8fvgsd8f6gs8dfgdsfgds6onion.ru/api/v1/',
+
 export const sincelotUserApi = createApi({
   reducerPath: 'sincelotUserApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://jenny.worldgames55fhgfg7sd8fvgsd8f6gs8dfgdsfgds6onion.ru/api/v1/',
+    baseUrl: 'https://adminbackend-apsw.onrender.com/api/v1/',
   }),
   endpoints: builder => ({
     getData: builder.query({
@@ -297,7 +300,40 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // Partner Module 
 
+    // GET POWERBALL GAME DETAILS
+    getPowerball: builder.query({
+      query: ({ accesstoken , id}) => ({
+        url: `user/getpowerball/${id}`,
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // GET ALL POWER TIMES
+    getPowetTimes: builder.query({
+      query: ({accesstoken}) => ({
+        url: 'user/getallpowertime',
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      })
+    }),
+
+    // GET POWER DATES
+    getPowerDates: builder.query({
+      query: ({accessToken, id}) => ({
+        url: `user/getpowerdate${id}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+    })
 
 
 
@@ -307,6 +343,9 @@ export const sincelotUserApi = createApi({
 });
 
 export const {
+  useGetPowerDatesQuery,
+  useGetPowetTimesQuery,
+  useGetPowerballQuery,
   useGetDataQuery,
   useCreateWithdrawMutation,
   useGetAllLocationWithTimeQuery,

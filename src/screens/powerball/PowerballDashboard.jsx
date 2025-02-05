@@ -28,13 +28,10 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import GradientText from '../../components/helpercComponent/GradientText';
 import CircleContainer from '../../components/powerball/CircleContainer';
 import PrizeComponent from './PrizeComponent';
+import {useGetPowerballQuery} from '../../helper/Networkcall';
+import Loading from '../../components/helpercComponent/Loading';
 
 const PowerballDashboard = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-
-  const {accesstoken} = useSelector(state => state.user);
-
   const resultdata = {
     id: 1,
     time: '09:00 AM',
@@ -91,6 +88,30 @@ const PowerballDashboard = () => {
       },
     ],
   };
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const {user, accesstoken} = useSelector(state => state.user);
+  const id = '67a38904b00aa387719533b9';
+  const [powerball, setPowerball] = useState(null);
+  // Network call
+  const {data, error, isLoading} = useGetPowerballQuery({accesstoken,id});
+
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setPowerball(data.game);
+      console.log(data?.game);  
+    }
+  
+    if (error) {
+      console.error("Error fetching powerball data:", error);
+    }
+  }, [data, isLoading, error]);  // Correct dependencies
+
+  console.log("Starting powerball");
+  console.log(powerball?.game)
+  console.log(error)
 
   return (
     <View style={{flex: 1}}>
@@ -139,7 +160,7 @@ const PowerballDashboard = () => {
                 ...styles.textStyle,
                 paddingLeft: heightPercentageToDP(2),
               }}>
-              PowerBall
+              {powerball?.name}
             </GradientTextWhite>
 
             {/** Content Container */}
@@ -149,157 +170,163 @@ const PowerballDashboard = () => {
                 flex: 1,
                 padding: heightPercentageToDP(1),
               }}>
-              <ScrollView
-                contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
-                showsVerticalScrollIndicator={false}>
-                {/** BANNER DETAILS */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('PowerballTimes')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <GradientText style={styles.textStyleContent}>
-                        LOTTERY JACKPOT
-                      </GradientText>
-
-                      <MaterialCommunityIcons
-                        name={'trophy-award'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.white_s}
-                        style={styles.icon}
-                      />
-                    </View>
-                    <Text style={styles.subtitle}>
-                      PLAY FOR JUST{' '}
-                      <Text style={{fontFamily: FONT.Montserrat_Bold}}>
-                        100INR
-                      </Text>
-                    </Text>
-                    <View
-                      style={{
-                        justifyContent: 'flex-end',
-                        alignItems: 'flex-end',
-                        padding: heightPercentageToDP(1),
-                      }}>
-                      <LinearGradient
-                        colors={[COLORS.green, COLORS.green]}
-                        start={{x: 0, y: 0}} // start from left
-                        end={{x: 10, y: 0}} // end at right
-                        style={{
-                          padding: heightPercentageToDP(1),
-                          borderRadius: heightPercentageToDP(2),
-                          paddingHorizontal: heightPercentageToDP(4),
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: FONT.Montserrat_SemiBold,
-                            fontSize: heightPercentageToDP(2),
-                            color: COLORS.white_s,
-                          }}>
-                          BUY TICKETS
-                        </Text>
-                      </LinearGradient>
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-
-                        flexDirection: 'row',
-                      }}>
+              {isLoading ? (
+                <Loading />
+              ) : (
+                <ScrollView
+                  contentContainerStyle={{
+                    paddingBottom: heightPercentageToDP(2),
+                  }}
+                  showsVerticalScrollIndicator={false}>
+                  {/** BANNER DETAILS */}
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('PowerballTimes')}>
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={styles.paymentOption}>
                       <View
                         style={{
-                          flex: 2,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
                         }}>
-                        <Text style={styles.subtitle}>
-                          WIN{' '}
+                        <GradientText style={styles.textStyleContent}>
+                          LOTTERY JACKPOT
+                        </GradientText>
+
+                        <MaterialCommunityIcons
+                          name={'trophy-award'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.white_s}
+                          style={styles.icon}
+                        />
+                      </View>
+                      <Text style={styles.subtitle}>
+                        PLAY FOR JUST{' '}
+                        <Text style={{fontFamily: FONT.Montserrat_Bold}}>
+                          100INR
+                        </Text>
+                      </Text>
+                      <View
+                        style={{
+                          justifyContent: 'flex-end',
+                          alignItems: 'flex-end',
+                          padding: heightPercentageToDP(1),
+                        }}>
+                        <LinearGradient
+                          colors={[COLORS.green, COLORS.green]}
+                          start={{x: 0, y: 0}} // start from left
+                          end={{x: 10, y: 0}} // end at right
+                          style={{
+                            padding: heightPercentageToDP(1),
+                            borderRadius: heightPercentageToDP(2),
+                            paddingHorizontal: heightPercentageToDP(4),
+                          }}>
                           <Text
                             style={{
-                              fontFamily: FONT.Montserrat_Bold,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              fontSize: heightPercentageToDP(2),
                               color: COLORS.white_s,
                             }}>
-                            MEGA JACKPOT
+                            BUY TICKETS
                           </Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: FONT.Montserrat_Bold,
-                            fontSize: heightPercentageToDP(3),
-                            color: COLORS.black,
-                          }}>
-                          1000000 INR
-                        </Text>
+                        </LinearGradient>
                       </View>
                       <View
                         style={{
                           flex: 1,
 
-                          justifyContent: 'flex-end',
-                          alignItems: 'flex-end',
+                          flexDirection: 'row',
                         }}>
-                        <Image
-                          source={require('../../../assets/image/cat.png')}
-                          style={{width: 55, height: 55}}
-                        />
+                        <View
+                          style={{
+                            flex: 2,
+                          }}>
+                          <Text style={styles.subtitle}>
+                            WIN{' '}
+                            <Text
+                              style={{
+                                fontFamily: FONT.Montserrat_Bold,
+                                color: COLORS.white_s,
+                              }}>
+                              MEGA JACKPOT
+                            </Text>
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: FONT.Montserrat_Bold,
+                              fontSize: heightPercentageToDP(3),
+                              color: COLORS.black,
+                            }}>
+                            1000000 INR
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            flex: 1,
+
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                          }}>
+                          <Image
+                            source={require('../../../assets/image/cat.png')}
+                            style={{width: 55, height: 55}}
+                          />
+                        </View>
                       </View>
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
+                    </LinearGradient>
+                  </TouchableOpacity>
 
-                {/** LATEST RESULT DETAILS */}
-                <LinearGradient
-                  colors={[COLORS.lightyellow, COLORS.darkyellow]}
-                  start={{x: 0, y: 0}} // start from left
-                  end={{x: 1, y: 0}} // end at right
-                  style={styles.resultOption}>
-                  <View
-                    style={{
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                    }}>
-                    <Text style={styles.semibold}>09 : 00 PM</Text>
-                    <Text style={styles.semibold}>23-12-2024</Text>
-                  </View>
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                    }}>
-                    <Text
+                  {/** LATEST RESULT DETAILS */}
+                  <LinearGradient
+                    colors={[COLORS.lightyellow, COLORS.darkyellow]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.resultOption}>
+                    <View
                       style={{
-                        fontFamily: FONT.Montserrat_Bold,
-                        fontSize: heightPercentageToDP(3),
-                        color: COLORS.black,
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexDirection: 'row',
                       }}>
-                      JACKPOT WINNER
-                    </Text>
-                  </View>
+                      <Text style={styles.semibold}>09 : 00 PM</Text>
+                      <Text style={styles.semibold}>23-12-2024</Text>
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_Bold,
+                          fontSize: heightPercentageToDP(3),
+                          color: COLORS.black,
+                        }}>
+                        JACKPOT WINNER
+                      </Text>
+                    </View>
 
-                  <CircleContainer jackpotnumber={resultdata.number} />
-                </LinearGradient>
+                    <CircleContainer jackpotnumber={resultdata.number} />
+                  </LinearGradient>
 
-                {/* PRIZE DISTRIBUTION */}
+                  {/* PRIZE DISTRIBUTION */}
 
-                {resultdata.prize.map((item, index) => {
-                  return (
-                    <PrizeComponent
-                      key={index}
-                      title={item.title}
-                      description={item.description}
-                      numberofwinner={item.numberofwinner}
-                      amount={item.amount}
-                    />
-                  );
-                })}
-              </ScrollView>
+                  {resultdata.prize.map((item, index) => {
+                    return (
+                      <PrizeComponent
+                        key={index}
+                        title={item.title}
+                        description={item.description}
+                        numberofwinner={item.numberofwinner}
+                        amount={item.amount}
+                      />
+                    );
+                  })}
+                </ScrollView>
+              )}
             </View>
           </View>
         </ImageBackground>
