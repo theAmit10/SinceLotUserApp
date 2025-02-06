@@ -1,98 +1,122 @@
 import {
-    FlatList,
-    Image,
-    ImageBackground,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-  } from 'react-native';
-  import React, {useEffect, useState} from 'react';
-  import {
-    heightPercentageToDP,
-    widthPercentageToDP,
-  } from 'react-native-responsive-screen';
-  import Entypo from 'react-native-vector-icons/Entypo';
-  import Ionicons from 'react-native-vector-icons/Ionicons';
-  import Fontisto from 'react-native-vector-icons/Fontisto';
-  import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-  import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-  import Toast from 'react-native-toast-message';
-  import {useIsFocused, useNavigation} from '@react-navigation/native';
-  import {useDispatch, useSelector} from 'react-redux';
-  import LinearGradient from 'react-native-linear-gradient';
-  import Background from '../../components/background/Background';
-  import {COLORS, FONT} from '../../../assets/constants';
-  import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
-  import GradientText from '../../components/helpercComponent/GradientText';
-  
-  const PartnerDetails = () => {
-    const navigation = useNavigation();
-    const dispatch = useDispatch();
-  
-    const {accesstoken} = useSelector(state => state.user);
-  
-    return (
-      <View style={{flex: 1}}>
-        <Background />
-  
-        {/** Main Cointainer */}
-  
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
-          <ImageBackground
-            source={require('../../../assets/image/tlwbg.jpg')}
+  FlatList,
+  Image,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Toast from 'react-native-toast-message';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
+import Background from '../../components/background/Background';
+import {COLORS, FONT} from '../../../assets/constants';
+import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
+import GradientText from '../../components/helpercComponent/GradientText';
+import {useGetAboutPartnerQuery} from '../../helper/Networkcall';
+import Loading from '../../components/helpercComponent/Loading';
+
+const PartnerDetails = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const {accesstoken, user} = useSelector(state => state.user);
+
+ const userid = user.userId;
+
+  const {isLoading, error, data} = useGetAboutPartnerQuery({accesstoken, userid});
+  const [partner, setpartner] = useState(null);
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setpartner(data);
+
+      console.log('Hey data');
+      console.log('Hey data', data);
+    }
+    if(error){
+      console.log(error)
+    }
+  }, [data, isLoading,error]);
+
+  return (
+    <View style={{flex: 1}}>
+      <Background />
+
+      {/** Main Cointainer */}
+
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(80),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+          <View
             style={{
-              width: '100%',
               height: heightPercentageToDP(80),
-            }}
-            imageStyle={{
+              width: widthPercentageToDP(100),
+
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
             }}>
+            {/** Top Style View */}
             <View
               style={{
-                height: heightPercentageToDP(80),
+                height: heightPercentageToDP(5),
                 width: widthPercentageToDP(100),
-  
-                borderTopLeftRadius: heightPercentageToDP(5),
-                borderTopRightRadius: heightPercentageToDP(5),
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
-              {/** Top Style View */}
               <View
                 style={{
-                  height: heightPercentageToDP(5),
-                  width: widthPercentageToDP(100),
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{
-                    width: widthPercentageToDP(20),
-                    height: heightPercentageToDP(0.8),
-                    backgroundColor: COLORS.grayBg,
-                    borderRadius: heightPercentageToDP(2),
-                  }}></View>
-              </View>
-  
-              <GradientTextWhite
-                style={{
-                  ...styles.textStyle,
-                  paddingLeft: heightPercentageToDP(2),
-                }}>
-                Partner Details
-              </GradientTextWhite>
-  
-              {/** Content Container */}
-  
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
+
+            <GradientTextWhite
+              style={{
+                ...styles.textStyle,
+                paddingLeft: heightPercentageToDP(2),
+              }}>
+              Partner Details
+            </GradientTextWhite>
+
+            {/** Content Container */}
+
+            {isLoading ? (
+              <Loading />
+            ) : (
               <View
                 style={{
                   flex: 1,
                   padding: heightPercentageToDP(1),
                 }}>
                 <ScrollView
-                  contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
+                  contentContainerStyle={{
+                    paddingBottom: heightPercentageToDP(2),
+                  }}
                   showsVerticalScrollIndicator={false}>
                   {/** USER PLAY HISTORY DETAILS */}
                   <TouchableOpacity
@@ -110,9 +134,11 @@ import {
                         <GradientText style={styles.textStyleContent}>
                           Play History
                         </GradientText>
-                        <Text style={styles.subtitle}>User’s Play History Details</Text>
+                        <Text style={styles.subtitle}>
+                          User’s Play History Details
+                        </Text>
                       </View>
-  
+
                       <View style={styles.iconContainer}>
                         <MaterialCommunityIcons
                           name={'history'}
@@ -123,10 +149,12 @@ import {
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>
-  
+
                   {/** ALL PARTNER */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('UserTransactionHistory')}>
+                    onPress={() =>
+                      navigation.navigate('UserTransactionHistory')
+                    }>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left
@@ -138,13 +166,13 @@ import {
                           gap: heightPercentageToDP(2),
                         }}>
                         <GradientText style={styles.textStyleContent}>
-                        Transaction History
+                          Transaction History
                         </GradientText>
                         <Text style={styles.subtitle}>
-                        User’s Transaction details
+                          User’s Transaction details
                         </Text>
                       </View>
-  
+
                       <View style={styles.iconContainer}>
                         <MaterialCommunityIcons
                           name={'history'}
@@ -155,7 +183,7 @@ import {
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>
-  
+
                   {/** All Profit Decrease */}
                   <TouchableOpacity
                     onPress={() => navigation.navigate('CreateNotification')}>
@@ -170,13 +198,13 @@ import {
                           gap: heightPercentageToDP(2),
                         }}>
                         <GradientText style={styles.textStyleContent}>
-                        Send Notification
+                          Send Notification
                         </GradientText>
                         <Text style={styles.subtitle}>
-                        Send Notification for User’s
+                          Send Notification for User’s
                         </Text>
                       </View>
-  
+
                       <View style={styles.iconContainer}>
                         <Ionicons
                           name={'notifications'}
@@ -187,7 +215,7 @@ import {
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>
-  
+
                   {/** Increse Percentage */}
                   <TouchableOpacity
                     onPress={() => navigation.navigate('UpdatePercentage')}>
@@ -202,13 +230,13 @@ import {
                           gap: heightPercentageToDP(2),
                         }}>
                         <GradientText style={styles.textStyleContent}>
-                        Increase Percentage
+                          Increase Percentage
                         </GradientText>
                         <Text style={styles.subtitle}>
-                        Update Partner Percentage 
+                          Update Partner Percentage
                         </Text>
                       </View>
-  
+
                       <View style={styles.iconContainer}>
                         <MaterialCommunityIcons
                           name={'brightness-percent'}
@@ -220,8 +248,8 @@ import {
                     </LinearGradient>
                   </TouchableOpacity>
 
-                   {/** Decrease Percentage */}
-                   <TouchableOpacity
+                  {/** Decrease Percentage */}
+                  <TouchableOpacity
                     onPress={() => navigation.navigate('DecresePercentage')}>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -234,13 +262,13 @@ import {
                           gap: heightPercentageToDP(2),
                         }}>
                         <GradientText style={styles.textStyleContent}>
-                        Decrease Percentage
+                          Decrease Percentage
                         </GradientText>
                         <Text style={styles.subtitle}>
-                        Update Partner Percentage 
+                          Update Partner Percentage
                         </Text>
                       </View>
-  
+
                       <View style={styles.iconContainer}>
                         <MaterialCommunityIcons
                           name={'brightness-percent'}
@@ -251,68 +279,65 @@ import {
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>
-  
-                 
                 </ScrollView>
               </View>
-            </View>
-          </ImageBackground>
-        </View>
+            )}
+          </View>
+        </ImageBackground>
       </View>
-    );
-  };
-  
-  export default PartnerDetails;
-  
-  const styles = StyleSheet.create({
-    textStyle: {
-      fontSize: heightPercentageToDP(4),
-      fontFamily: FONT.Montserrat_Bold,
-      color: COLORS.black,
-    },
-    container: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 20,
-      height: heightPercentageToDP(20),
-    },
-    item: {
-      padding: heightPercentageToDP(2),
-      marginVertical: heightPercentageToDP(1),
-      marginHorizontal: heightPercentageToDP(2),
-      borderRadius: heightPercentageToDP(1),
-    },
-    paymentOption: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      height: heightPercentageToDP(15),
-      borderRadius: heightPercentageToDP(2),
-      alignItems: 'center',
-      gap: heightPercentageToDP(3),
-      paddingStart: heightPercentageToDP(2),
-      marginTop: heightPercentageToDP(2),
-    },
-    iconContainer: {
-      backgroundColor: COLORS.white_s,
-      padding: heightPercentageToDP(1.5),
-      borderRadius: heightPercentageToDP(1),
-    },
-    icon: {
-      height: 25,
-      width: 25,
-      justifyContent: 'center',
-      alignItems: 'center',
-  
-    },
-    textStyleContent: {
-      fontSize: heightPercentageToDP(3),
-      fontFamily: FONT.Montserrat_Bold,
-      color: COLORS.black,
-    },
-    subtitle: {
-      fontSize: heightPercentageToDP(1.5),
-      color: COLORS.black,
-      fontFamily: FONT.Montserrat_Regular,
-    },
-  });
-  
+    </View>
+  );
+};
+
+export default PartnerDetails;
+
+const styles = StyleSheet.create({
+  textStyle: {
+    fontSize: heightPercentageToDP(4),
+    fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.black,
+  },
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    height: heightPercentageToDP(20),
+  },
+  item: {
+    padding: heightPercentageToDP(2),
+    marginVertical: heightPercentageToDP(1),
+    marginHorizontal: heightPercentageToDP(2),
+    borderRadius: heightPercentageToDP(1),
+  },
+  paymentOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: heightPercentageToDP(15),
+    borderRadius: heightPercentageToDP(2),
+    alignItems: 'center',
+    gap: heightPercentageToDP(3),
+    paddingStart: heightPercentageToDP(2),
+    marginTop: heightPercentageToDP(2),
+  },
+  iconContainer: {
+    backgroundColor: COLORS.white_s,
+    padding: heightPercentageToDP(1.5),
+    borderRadius: heightPercentageToDP(1),
+  },
+  icon: {
+    height: 25,
+    width: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textStyleContent: {
+    fontSize: heightPercentageToDP(3),
+    fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.black,
+  },
+  subtitle: {
+    fontSize: heightPercentageToDP(1.5),
+    color: COLORS.black,
+    fontFamily: FONT.Montserrat_Regular,
+  },
+});

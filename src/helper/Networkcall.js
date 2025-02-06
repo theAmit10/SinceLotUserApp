@@ -316,7 +316,7 @@ export const sincelotUserApi = createApi({
     // GET ALL POWER TIMES
     getPowetTimes: builder.query({
       query: ({accesstoken}) => ({
-        url: 'user/getallpowertime',
+        url: 'user/getallpowertime',  
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -327,22 +327,68 @@ export const sincelotUserApi = createApi({
     // GET POWER DATES
     getPowerDates: builder.query({
       query: ({accessToken, id}) => ({
-        url: `user/getpowerdate${id}`,
+        url: `user/getpowerdate/${id}`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-    })
+    }),
 
 
+     // GET ABOUT PARTNER
+     getAboutPartner: builder.query({
+      query: ({accesstoken,userid}) => ({
+        url: `user/getpartnerbyuserid/${userid}`,  
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      })
+    }),
+
+    // GET PARTNER PARTNERLIST
+    getPartnerPartnerList: builder.query({
+      query: ({accesstoken,userid}) => ({
+        url: `user/getpartnerpartnerlist/${userid}`,  
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      })
+    }),
+
+    // GET PARTNER USERLIST
+    getPartnerUserList: builder.query({
+      query: ({accesstoken,userid}) => ({
+        url: `user/getpartneruserlist/${userid}`,  
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      })
+    }),
+
+     // GET PARTNER PROFIT DEDUCTION LIST
+     getPartnerUserList: builder.query({
+      query: ({accesstoken,userid}) => ({
+        url: `user/getprofitdeduction/${userid}`,  
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+
+        },
+      })
+    }),
 
 
     // ######## END #########
   }),
 });
-
 export const {
+  useGetPartnerPartnerListQuery,
+  useGetPartnerUserListQuery,
+  useGetAboutPartnerQuery,
   useGetPowerDatesQuery,
   useGetPowetTimesQuery,
   useGetPowerballQuery,
@@ -369,6 +415,7 @@ export const {
   useDeleteSkrillAccountMutation,
   useCreateCryptoAccountMutation,
   useDeleteCryptoAccountMutation,
+
 
 
 

@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoginBackground from '../components/login/LoginBackground';
 import {
   heightPercentageToDP,
@@ -27,10 +27,24 @@ import Background from '../components/background/Background';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-import moment from "moment-timezone"
+import moment from 'moment-timezone';
+import {useSelector} from 'react-redux';
+import {useGetAboutPartnerQuery} from '../helper/Networkcall';
 
 const Setting = () => {
   const navigation = useNavigation();
+
+  const {user, accesstoken} = useSelector(state => state.user);
+
+  const [partner, setPartner] = useState(false);
+
+  const {isLoading, error, data} = useGetAboutPartnerQuery({accesstoken});
+
+  useEffect(() => {
+    if (user && user.partnerModule) {
+      setPartner(true);
+    }
+  }, [user]);
 
   const [searchData, setSearchData] = useState('');
 
@@ -66,58 +80,56 @@ const Setting = () => {
     }, 1000);
   };
 
- 
-function getDateTimeInTimezone(dateString, timezone) {
-  // Parse the input date
-  const date = moment.tz(dateString, 'UTC');
+  function getDateTimeInTimezone(dateString, timezone) {
+    // Parse the input date
+    const date = moment.tz(dateString, 'UTC');
 
-  // Convert the date to the specified timezone
-  const localDate = date.tz(timezone);
+    // Convert the date to the specified timezone
+    const localDate = date.tz(timezone);
 
-  // Format the date and time as needed (e.g., 'YYYY-MM-DD HH:mm:ss')
-  return localDate.format('YYYY-MM-DD HH:mm:ss');
-}
+    // Format the date and time as needed (e.g., 'YYYY-MM-DD HH:mm:ss')
+    return localDate.format('YYYY-MM-DD HH:mm:ss');
+  }
 
-// Example usage
-const dateString = '2024-10-24T06:44:16.416Z';
-const timezone = 'Asia/Kolkata';  // Change this to any desired timezone
+  // Example usage
+  const dateString = '2024-10-24T06:44:16.416Z';
+  const timezone = 'Asia/Kolkata'; // Change this to any desired timezone
 
-const result = getDateTimeInTimezone(dateString, timezone);
-console.log("created at time"); 
-console.log(result); 
+  const result = getDateTimeInTimezone(dateString, timezone);
+  console.log('created at time');
+  console.log(result);
 
-function convertUTCToIST12Hour(utcTime) {
-  // Create a moment object from the UTC time string
-  const momentObj = moment.utc(utcTime);
+  function convertUTCToIST12Hour(utcTime) {
+    // Create a moment object from the UTC time string
+    const momentObj = moment.utc(utcTime);
 
-  // Set the timezone to IST
-  momentObj.tz('Asia/Kolkata');
+    // Set the timezone to IST
+    momentObj.tz('Asia/Kolkata');
 
-  // Format the date and time in 12-hour format
-  const istDateTime = momentObj.format('YYYY-MM-DD h:mm:ss A');
+    // Format the date and time in 12-hour format
+    const istDateTime = momentObj.format('YYYY-MM-DD h:mm:ss A');
 
-  return istDateTime;
-}
+    return istDateTime;
+  }
 
-// Example usage:
-const utcTime = '2024-10-24T06:44:16.416Z';
-const istDateTime = convertUTCToIST12Hour(utcTime);
-console.log("created at time gimini"); 
-console.log(istDateTime); // Output: 2024-10-24 12:14:16 AM
+  // Example usage:
+  const utcTime = '2024-10-24T06:44:16.416Z';
+  const istDateTime = convertUTCToIST12Hour(utcTime);
 
+  console.log(istDateTime); // Output: 2024-10-24 12:14:16 AM
 
-const getCurrentDate = () => {
-  return moment.tz('Asia/Kolkata').format('DD-MM-YYYY');
-};
+  const getCurrentDate = () => {
+    return moment.tz('Asia/Kolkata').format('DD-MM-YYYY');
+  };
 
-const getNextDate = () => {
-  return moment.tz('Asia/Kolkata').add(1, 'days').format('DD-MM-YYYY');
-};
+  const getNextDate = () => {
+    return moment.tz('Asia/Kolkata').add(1, 'days').format('DD-MM-YYYY');
+  };
 
-console.log("setting current date :: ",getCurrentDate())
-console.log("setting next date : ",getNextDate())
+  console.log('setting current date :: ', getCurrentDate());
+  console.log('setting next date : ', getNextDate());
 
-// 39860 // 135
+  // 39860 // 135
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -178,7 +190,6 @@ console.log("setting next date : ",getNextDate())
               </GradientTextWhite>
 
               <ScrollView showsVerticalScrollIndicator={false}>
-
                 {/** POWER BALL */}
                 <TouchableOpacity
                   onPress={() => navigation.navigate('PowerballDashboard')}
@@ -277,9 +288,9 @@ console.log("setting next date : ",getNextDate())
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                       name={'play-circle-outline'}
-                      />
+                    />
                   </LinearGradient>
-                
+
                   <Text
                     style={{
                       marginStart: heightPercentageToDP(1),
@@ -504,9 +515,9 @@ console.log("setting next date : ",getNextDate())
                   />
                 </TouchableOpacity>
 
-                   {/** Change Password */}
+                {/** Change Password */}
 
-                   <TouchableOpacity
+                <TouchableOpacity
                   onPress={() => navigation.navigate('ChangePassword')}
                   style={{
                     height: heightPercentageToDP(7),
@@ -584,9 +595,9 @@ console.log("setting next date : ",getNextDate())
                   />
                 </TouchableOpacity>
 
-                 {/** Live Result container */}
+                {/** Live Result container */}
 
-                 <TouchableOpacity
+                <TouchableOpacity
                   onPress={() => navigation.navigate('LiveResult')}
                   style={{
                     height: heightPercentageToDP(7),
@@ -624,45 +635,47 @@ console.log("setting next date : ",getNextDate())
                   />
                 </TouchableOpacity>
 
-                 {/** Partner container */}
+                {/** Partner container */}
 
-                 <TouchableOpacity
-                  onPress={() => navigation.navigate('PartnerDashboard')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.grayBg, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <MaterialCommunityIcons
-                      name={'account-group-outline'}
+                {partner && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('PartnerDashboard')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'account-group-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Partner
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
-                    style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
-                    }}>
-                    Partner
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                )}
 
                 {/** About us container */}
 
@@ -703,10 +716,6 @@ console.log("setting next date : ",getNextDate())
                     color={COLORS.darkGray}
                   />
                 </TouchableOpacity>
-
-             
-
-               
 
                 {/** Logout container */}
                 <TouchableOpacity

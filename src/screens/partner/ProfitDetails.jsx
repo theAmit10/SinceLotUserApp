@@ -28,13 +28,14 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import GradientText from '../../components/helpercComponent/GradientText';
 import ProfitDetailContent from '../../components/profitdetails/ProfitDetailContent';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {useGetAboutPartnerQuery} from '../../helper/Networkcall';
+import Loading from '../../components/helpercComponent/Loading';
 
 const ProfitDetails = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
-
+  // TODO : Copy to clipboard
   const copyToClipboard = val => {
     Clipboard.setString(val);
     Toast.show({
@@ -43,6 +44,26 @@ const ProfitDetails = () => {
       text2: 'The text has been copied to your clipboard!',
     });
   };
+  const {accesstoken, user} = useSelector(state => state.user);
+
+  const userid = user.userId;
+
+  const {isLoading, error, data} = useGetAboutPartnerQuery({
+    accesstoken,
+    userid,
+  });
+  const [partner, setpartner] = useState(null);
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setpartner(data.partner);
+      console.log('Hey data');
+      console.log('Hey data', data);
+    }
+    if (error) {
+      console.log(error);
+    }
+  }, [data, isLoading, error]);
 
   return (
     <View style={{flex: 1}}>
@@ -96,89 +117,101 @@ const ProfitDetails = () => {
 
             {/** Content Container */}
 
-            <View
-              style={{
-                flex: 1,
-                padding: heightPercentageToDP(1),
-              }}>
-              <ScrollView
-                contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
-                showsVerticalScrollIndicator={false}>
-                {/** PARTNER ID */}
-                <Text style={styles.textTitle}>Partner ID</Text>
-                <LinearGradient
-                  colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                  start={{x: 0, y: 0}} // start from left
-                  end={{x: 1, y: 0}} // end at right
-                  style={styles.paymentOption}>
-                  <View
-                    style={{
-                      flex: 1,
-                      gap: heightPercentageToDP(2),
-                    }}>
-                    <Text style={styles.textTitle}>1090</Text>
-                  </View>
+            {isLoading || !partner ? (
+              Loading
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  padding: heightPercentageToDP(1),
+                }}>
+                <ScrollView
+                  contentContainerStyle={{
+                    paddingBottom: heightPercentageToDP(2),
+                  }}
+                  showsVerticalScrollIndicator={false}>
+                  {/** PARTNER ID */}
+                  <Text style={styles.textTitle}>Partner ID</Text>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.paymentOption}>
+                    <View
+                      style={{
+                        flex: 1,
+                        gap: heightPercentageToDP(2),
+                      }}>
+                      <Text style={styles.textTitle}>{partner.userId}</Text>
+                    </View>
 
-                  <TouchableOpacity
-                    onPress={() => copyToClipboard('user id')}
-                    style={styles.iconContainer}>
-                    <MaterialCommunityIcons
-                      name={'content-copy'}
-                      size={heightPercentageToDP(2.5)}
-                      color={COLORS.darkGray}
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </LinearGradient>
-                {/** PARTNER PROFIT PERCENTAGE */}
-                <Text style={styles.textTitle}>Profit Percentage</Text>
-                <LinearGradient
-                  colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                  start={{x: 0, y: 0}} // start from left
-                  end={{x: 1, y: 0}} // end at right
-                  style={styles.paymentOption}>
-                  <View
-                    style={{
-                      flex: 1,
-                      gap: heightPercentageToDP(2),
-                    }}>
-                    <Text style={styles.textTitle}>10%</Text>
-                  </View>
-                </LinearGradient>
+                    <TouchableOpacity
+                      onPress={() => copyToClipboard(partner.userId.toString())}
+                      style={styles.iconContainer}>
+                      <MaterialCommunityIcons
+                        name={'content-copy'}
+                        size={heightPercentageToDP(2.5)}
+                        color={COLORS.darkGray}
+                        style={styles.icon}
+                      />
+                    </TouchableOpacity>
+                  </LinearGradient>
+                  {/** PARTNER PROFIT PERCENTAGE */}
+                  <Text style={styles.textTitle}>Profit Percentage</Text>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.paymentOption}>
+                    <View
+                      style={{
+                        flex: 1,
+                        gap: heightPercentageToDP(2),
+                      }}>
+                      <Text style={styles.textTitle}>
+                        {partner.profitPercentage}
+                      </Text>
+                    </View>
+                  </LinearGradient>
 
-                {/** PARTNER  Recharge Percentage */}
-                <Text style={styles.textTitle}>Recharge Percentage</Text>
-                <LinearGradient
-                  colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                  start={{x: 0, y: 0}} // start from left
-                  end={{x: 1, y: 0}} // end at right
-                  style={styles.paymentOption}>
-                  <View
-                    style={{
-                      flex: 1,
-                      gap: heightPercentageToDP(2),
-                    }}>
-                    <Text style={styles.textTitle}>10%</Text>
-                  </View>
-                </LinearGradient>
+                  {/** PARTNER  Recharge Percentage */}
+                  <Text style={styles.textTitle}>Recharge Percentage</Text>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.paymentOption}>
+                    <View
+                      style={{
+                        flex: 1,
+                        gap: heightPercentageToDP(2),
+                      }}>
+                      <Text style={styles.textTitle}>
+                        {partner.rechargePercentage}
+                      </Text>
+                    </View>
+                  </LinearGradient>
 
-                {/** PARTNER  Total no. of User’s */}
-                <Text style={styles.textTitle}>Total no. of User’s</Text>
-                <LinearGradient
-                  colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                  start={{x: 0, y: 0}} // start from left
-                  end={{x: 1, y: 0}} // end at right
-                  style={styles.paymentOption}>
-                  <View
-                    style={{
-                      flex: 1,
-                      gap: heightPercentageToDP(2),
-                    }}>
-                    <Text style={styles.textTitle}>10</Text>
-                  </View>
-                </LinearGradient>
-              </ScrollView>
-            </View>
+                  {/** PARTNER  Total no. of User’s */}
+                  <Text style={styles.textTitle}>Total no. of User’s</Text>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.paymentOption}>
+                    <View
+                      style={{
+                        flex: 1,
+                        gap: heightPercentageToDP(2),
+                      }}>
+                      <Text style={styles.textTitle}>
+                        {partner.userList.length}
+                      </Text>
+                    </View>
+                  </LinearGradient>
+                </ScrollView>
+              </View>
+            )}
           </View>
         </ImageBackground>
       </View>
