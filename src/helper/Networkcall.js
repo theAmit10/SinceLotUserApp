@@ -1,7 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import UrlHelper from './UrlHelper';
-import { server } from '../redux/store';
-
+import {server} from '../redux/store';
 
 // baseUrl: 'https://jenny.worldgames55fhgfg7sd8fvgsd8f6gs8dfgdsfgds6onion.ru/api/v1/',
 
@@ -47,7 +46,7 @@ export const sincelotUserApi = createApi({
 
     // FOR BETTING
 
-     // FOR GETTING DATE ACCORDING TO THE LOCATION, TIME
+    // FOR GETTING DATE ACCORDING TO THE LOCATION, TIME
     //  getDateAccToLocTime: builder.query({
     //     query: (accessToken, lottimeId,lotlocationId) => ({
     //       url: `result/searchdate?lottimeId=${lottimeId}&lotlocationId=${lotlocationId}`,
@@ -58,7 +57,7 @@ export const sincelotUserApi = createApi({
     //     }),
     //   }),
     getDateAccToLocTime: builder.query({
-      query: ({ accessToken, lottimeId, lotlocationId }) => ({
+      query: ({accessToken, lottimeId, lotlocationId}) => ({
         url: `result/searchdate?lottimeId=${lottimeId}&lotlocationId=${lotlocationId}`,
         method: 'get',
         headers: {
@@ -66,7 +65,6 @@ export const sincelotUserApi = createApi({
         },
       }),
     }),
-    
 
     // FOR GETTING BET ACCORDING TO THE LOCATION, TIME AND CURRENT DATE
     getBetAccToLocTimeDate: builder.query({
@@ -79,8 +77,8 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
-     // FOR CREATE A PLAY REQUEST
-     createPlay: builder.mutation({
+    // FOR CREATE A PLAY REQUEST
+    createPlay: builder.mutation({
       query: ({accessToken, body}) => ({
         url: UrlHelper.CREATE_PLAY_API,
         method: 'POST',
@@ -92,11 +90,10 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
-
     // FOR HISTORIES
 
-     // FOR GETTING USERS PLAY HISTORY
-     getPlayHistory: builder.query({
+    // FOR GETTING USERS PLAY HISTORY
+    getPlayHistory: builder.query({
       query: accessToken => ({
         url: 'result/singleuser/playbets',
         method: 'get',
@@ -106,10 +103,10 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
-     // FOR GETTING USERS HISTORY
-     getHistory: builder.query({
-      query: ({accesstoken,userId}) => ({
-        url: "user/getuserdeposit/?userid="+userId,
+    // FOR GETTING USERS HISTORY
+    getHistory: builder.query({
+      query: ({accesstoken, userId}) => ({
+        url: 'user/getuserdeposit/?userid=' + userId,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -124,7 +121,7 @@ export const sincelotUserApi = createApi({
         method: 'POST',
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
         },
         body,
       }),
@@ -132,7 +129,7 @@ export const sincelotUserApi = createApi({
 
     // FOR GETTING ALL COUNTRY LIST
     getAllCountry: builder.query({
-      query: (accesstoken) => ({
+      query: accesstoken => ({
         url: `result/allcurrencies`,
         method: 'get',
         headers: {
@@ -154,10 +151,8 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
-   
-
     // For CHECKING ALL NOTFICATION SEEN
-     checkNotificationSeen: builder.mutation({
+    checkNotificationSeen: builder.mutation({
       query: ({accessToken, id}) => ({
         url: `${UrlHelper.NOTIFICATION_SEEN_API}${id}/notifications/seen`,
         method: 'PUT',
@@ -170,9 +165,9 @@ export const sincelotUserApi = createApi({
 
     // GET ALL THE RESULT
     getResultLocMonYear: builder.query({
-      query: ({ accessToken, locationid, year, month }) => ({
+      query: ({accessToken, locationid, year, month}) => ({
         url: `result/allresultlocmonyear?locationid=${locationid}&year=${year}&month=${month}`,
-        method: "get",
+        method: 'get',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -203,8 +198,8 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
-     // FOR CREATE A BANK ACCOUNT
-     createBankAccount: builder.mutation({
+    // FOR CREATE A BANK ACCOUNT
+    createBankAccount: builder.mutation({
       query: ({accesstoken, body}) => ({
         url: 'result/addbankpayment',
         method: 'POST',
@@ -227,8 +222,8 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
-     // FOR CREATE A PAYPAL ACCOUNT
-     createPaypalAccount: builder.mutation({
+    // FOR CREATE A PAYPAL ACCOUNT
+    createPaypalAccount: builder.mutation({
       query: ({accesstoken, body}) => ({
         url: 'result/addpaypalpayment',
         method: 'POST',
@@ -275,7 +270,6 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
-
     // FOR CREATE A CRYPTO ACCOUNT
     createCryptoAccount: builder.mutation({
       query: ({accesstoken, body}) => ({
@@ -300,13 +294,13 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
-    // Partner Module 
+    // Partner Module
 
     // GET POWERBALL GAME DETAILS
     getPowerball: builder.query({
-      query: ({ accesstoken , id}) => ({
+      query: ({accesstoken, id}) => ({
         url: `user/getpowerball/${id}`,
-        method: "get",
+        method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -316,12 +310,12 @@ export const sincelotUserApi = createApi({
     // GET ALL POWER TIMES
     getPowetTimes: builder.query({
       query: ({accesstoken}) => ({
-        url: 'user/getallpowertime',  
+        url: 'user/getallpowertime',
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
-      })
+      }),
     }),
 
     // GET POWER DATES
@@ -332,60 +326,86 @@ export const sincelotUserApi = createApi({
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      })
+      }),
     }),
 
-
-     // GET ABOUT PARTNER
-     getAboutPartner: builder.query({
-      query: ({accesstoken,userid}) => ({
-        url: `user/getpartnerbyuserid/${userid}`,  
+    // GET ABOUT PARTNER
+    getAboutPartner: builder.query({
+      query: ({accesstoken, userid}) => ({
+        url: `user/getpartnerbyuserid/${userid}`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
-      })
+      }),
     }),
 
     // GET PARTNER PARTNERLIST
     getPartnerPartnerList: builder.query({
-      query: ({accesstoken,userid}) => ({
-        url: `user/getpartnerpartnerlist/${userid}`,  
-        method: 'get',
+      query: ({accesstoken, userid}) => ({
+        url: `user/getpartnerpartnerlist/${userid}`,
         headers: {
           Authorization: `Bearer ${accesstoken}`,
+          method: 'get',
         },
-      })
+      }),
     }),
 
     // GET PARTNER USERLIST
     getPartnerUserList: builder.query({
-      query: ({accesstoken,userid}) => ({
-        url: `user/getpartneruserlist/${userid}`,  
+      query: ({accesstoken, userId}) => ({
+        url: `user/getpartneruserlist/${userId}`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
-      })
+      }),
     }),
 
-     // GET PARTNER PROFIT DEDUCTION LIST
-     getPartnerUserList: builder.query({
-      query: ({accesstoken,userid}) => ({
-        url: `user/getprofitdeduction/${userid}`,  
+    // GET PARTNER PROFIT DEDUCTION LIST
+    getPartnerProfitDeduction: builder.query({
+      query: ({accesstoken, userid}) => ({
+        url: `user/getprofitdeduction/${userid}`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
-
         },
-      })
+      }),
     }),
 
+    // Create sub partner
+    createSubPartner: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'user/createsubpartner',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+    }),
+
+    // Remove user from userlist
+    removeUserFromUserList: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'user/removeuserfromuserlist',
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+    }),
 
     // ######## END #########
   }),
 });
 export const {
+  useRemoveUserFromUserListMutation,
+  useCreateSubPartnerMutation,
+  useGetPartnerProfitDeductionQuery,
   useGetPartnerPartnerListQuery,
   useGetPartnerUserListQuery,
   useGetAboutPartnerQuery,
@@ -415,8 +435,4 @@ export const {
   useDeleteSkrillAccountMutation,
   useCreateCryptoAccountMutation,
   useDeleteCryptoAccountMutation,
-
-
-
-
 } = sincelotUserApi;

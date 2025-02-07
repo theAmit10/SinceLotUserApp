@@ -28,40 +28,44 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import GradientText from '../../components/helpercComponent/GradientText';
 import Loading from '../../components/helpercComponent/Loading';
+import {
+  useCreateSubPartnerMutation,
+  useGetPartnerUserListQuery,
+  useRemoveUserFromUserListMutation,
+} from '../../helper/Networkcall';
 
+const dummeyAllUsers = [
+  {
+    userid: '1090',
+    name: 'Babu Roa',
+    partner: true,
+  },
+  {
+    userid: '1091',
+    name: 'Arjuna',
+    partner: true,
+  },
+  {
+    userid: '1092',
+    name: 'Mark Jone',
+    partner: false,
+  },
+  {
+    userid: '1093',
+    name: 'Janny Mona',
+    partner: true,
+  },
+  {
+    userid: '1094',
+    name: 'Lucy cina',
+    partner: true,
+  },
+];
 const AllPartnerUsers = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
-
-  const dummeyAllUsers = [
-    {
-      userid: '1090',
-      name: 'Babu Roa',
-      partner: true,
-    },
-    {
-      userid: '1091',
-      name: 'Arjuna',
-      partner: true,
-    },
-    {
-      userid: '1092',
-      name: 'Mark Jone',
-      partner: false,
-    },
-    {
-      userid: '1093',
-      name: 'Janny Mona',
-      partner: true,
-    },
-    {
-      userid: '1094',
-      name: 'Lucy cina',
-      partner: true,
-    },
-  ];
+  const {accesstoken, user} = useSelector(state => state.user);
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -70,11 +74,100 @@ const AllPartnerUsers = () => {
   // This will return the date and time in 'America/New_York' timezone.
 
   const handleSearch = text => {
-    const filtered = times.filter(item =>
-      item.lottime.toLowerCase().includes(text.toLowerCase()),
+    const filtered = data?.userList.filter(
+      item =>
+        item.name.toLowerCase().includes(text.toLowerCase()) ||
+        item.userId?.toString() === text,
     );
     setFilteredData(filtered);
   };
+
+  console.log(user.userId);
+  const userId = user.userId;
+
+  const {isLoading, data, error} = useGetPartnerUserListQuery({
+    accesstoken,
+    userId,
+  });
+
+  const [createSubPartner, {isLoading: subIsLoading, error: subError}] =
+    useCreateSubPartnerMutation();
+
+  const [removeUserFromUserList, {isLoading: removeIsLoading}] =
+    useRemoveUserFromUserListMutation();
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setFilteredData(data.userList);
+      console.log('Getting all users');
+      console.log(data);
+    }
+    if (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Error in getting all users',
+      });
+    }
+  }, [data, isLoading, error]);
+
+  const makePartner = async item => {
+    console.log(item);
+    setSelectedItem(item);
+    setShowProgressBar(true);
+
+    try {
+      const res = await createSubPartner({
+        accesstoken,
+        body: {
+          userId: item.userId,
+          parentId: user.userId,
+        },
+      }).unwrap();
+      console.log('res :: ' + JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: res.message || 'Partner added successfully',
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    setShowProgressBar(false);
+  };
+
+  const removePartner = async item => {
+    console.log(item);
+    setSelectedItem(item);
+    setShowProgressBar(true);
+
+    try {
+      const res = await removeUserFromUserList({
+        accesstoken,
+        id: item._id,
+        partnerId: user.userId,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: res.message || 'Partner removed successfully',
+      });
+    } catch (e) {
+      console.log(e);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Error in removing partner',
+      });
+    }
+  };
+
+  const [showProgressBar, setShowProgressBar] = useState(false);
+  const [seletectedItem, setSelectedItem] = useState('');
 
   return (
     <View style={{flex: 1}}>
@@ -166,11 +259,11 @@ const AllPartnerUsers = () => {
                 contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
                 showsVerticalScrollIndicator={false}>
                 {/** User content */}
-                {false ? (
+                {isLoading ? (
                   <Loading />
                 ) : (
-                  dummeyAllUsers.map((item, index) => (
-                    <TouchableOpacity>
+                  filteredData.map((item, index) => (
+                    <TouchableOpacity key={index}>
                       <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                         start={{x: 0, y: 0}} // start from left
@@ -191,7 +284,7 @@ const AllPartnerUsers = () => {
                               }}>
                               <Text style={styles.titleRegular}>User ID</Text>
                               <Text style={styles.titleBold}>
-                                {item.userid}
+                                {item.userId}
                               </Text>
                             </View>
                             <View
@@ -209,38 +302,112 @@ const AllPartnerUsers = () => {
                           </View>
                           <View style={styles.centerLine}></View>
                           <View style={styles.bottomContainer}>
-                            {item.partner === true ? (
-                              <TouchableOpacity
-                                style={{
-                                  borderRadius: heightPercentageToDP(2),
-                                }}>
-                                <LinearGradient
-                                  colors={[
-                                    COLORS.user_firstgreen,
-                                    COLORS.time_secondgreen,
-                                  ]}
-                                  start={{x: 0, y: 0}} // start from left
-                                  end={{x: 1, y: 0}} // end at right
-                                  style={{
-                                    padding: heightPercentageToDP(1.5),
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    borderRadius: heightPercentageToDP(2),
-                                    flexDirection: 'row',
-                                    gap: heightPercentageToDP(1),
-                                  }}>
-                                  <FontAwesome
-                                    name={'edit'}
-                                    size={heightPercentageToDP(3)}
-                                    color={COLORS.black}
-                                    style={styles.icon}
-                                  />
+                            {item.partnerType === 'user' ? (
+                              showProgressBar ? (
+                                seletectedItem._id === item._id ? (
+                                  <Loading />
+                                ) : (
+                                  <TouchableOpacity
+                                    onPress={() => makePartner(item)}
+                                    style={{
+                                      borderRadius: heightPercentageToDP(2),
+                                    }}>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.user_firstgreen,
+                                        COLORS.time_secondgreen,
+                                      ]}
+                                      start={{x: 0, y: 0}} // start from left
+                                      end={{x: 1, y: 0}} // end at right
+                                      style={{
+                                        padding: heightPercentageToDP(1.5),
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        borderRadius: heightPercentageToDP(2),
+                                        flexDirection: 'row',
+                                        gap: heightPercentageToDP(1),
+                                      }}>
+                                      <FontAwesome
+                                        name={'edit'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.black}
+                                        style={styles.icon}
+                                      />
 
-                                  <Text style={styles.titleSemiBold}>
-                                    Make Partner
-                                  </Text>
-                                </LinearGradient>
-                              </TouchableOpacity>
+                                      <Text style={styles.titleSemiBold}>
+                                        Make Partner
+                                      </Text>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+                                )
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => makePartner(item)}
+                                  style={{
+                                    borderRadius: heightPercentageToDP(2),
+                                  }}>
+                                  <LinearGradient
+                                    colors={[
+                                      COLORS.user_firstgreen,
+                                      COLORS.time_secondgreen,
+                                    ]}
+                                    start={{x: 0, y: 0}} // start from left
+                                    end={{x: 1, y: 0}} // end at right
+                                    style={{
+                                      padding: heightPercentageToDP(1.5),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                      borderRadius: heightPercentageToDP(2),
+                                      flexDirection: 'row',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <FontAwesome
+                                      name={'edit'}
+                                      size={heightPercentageToDP(3)}
+                                      color={COLORS.black}
+                                      style={styles.icon}
+                                    />
+
+                                    <Text style={styles.titleSemiBold}>
+                                      Make Partner
+                                    </Text>
+                                  </LinearGradient>
+                                </TouchableOpacity>
+                              )
+                            ) : showProgressBar ? (
+                              seletectedItem._id === item._id ? (
+                                <Loading />
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => removePartner(item)}
+                                  style={{
+                                    borderRadius: heightPercentageToDP(2),
+                                  }}>
+                                  <LinearGradient
+                                    colors={[COLORS.red, COLORS.red]}
+                                    start={{x: 0, y: 0}} // start from left
+                                    end={{x: 1, y: 0}} // end at right
+                                    style={{
+                                      padding: heightPercentageToDP(1.5),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                      borderRadius: heightPercentageToDP(2),
+                                      flexDirection: 'row',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <MaterialCommunityIcons
+                                      name={'delete'}
+                                      size={heightPercentageToDP(3)}
+                                      color={COLORS.black}
+                                      style={styles.icon}
+                                    />
+
+                                    <Text style={styles.titleSemiBold}>
+                                      Remove Partner
+                                    </Text>
+                                  </LinearGradient>
+                                </TouchableOpacity>
+                              )
                             ) : (
                               <TouchableOpacity
                                 style={{
