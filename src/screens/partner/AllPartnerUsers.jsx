@@ -64,19 +64,9 @@ const dummeyAllUsers = [
 ];
 const AllPartnerUsers = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-
   const {accesstoken, user} = useSelector(state => state.user);
-
   const [filteredData, setFilteredData] = useState([]);
-
-  // Example usage:
-  // This will return the date and time in 'America/New_York' timezone.
-  // This will return the date and time in 'America/New_York' timezone.
-  const [searchText, setSearchText] = useState('');
-
   const handleSearch = text => {
-    setSearchText(text); // Update state
     const filtered = data?.userList?.filter(
       item =>
         item.name.toLowerCase().includes(text.toLowerCase()) ||
@@ -85,7 +75,6 @@ const AllPartnerUsers = () => {
     setFilteredData(filtered);
   };
 
-  console.log(user.userId);
   const userId = user.userId;
 
   const {isLoading, data, error} = useGetPartnerUserListQuery({
@@ -215,7 +204,11 @@ const AllPartnerUsers = () => {
             data={filteredData}
             keyExtractor={item => item._id}
             renderItem={({item, index}) => (
-              <TouchableOpacity key={index}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('PartnerUserProfile', {item})
+                }
+                key={index}>
                 <LinearGradient
                   colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                   start={{x: 0, y: 0}} // start from left

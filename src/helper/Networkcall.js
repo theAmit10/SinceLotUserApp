@@ -434,5 +434,6 @@ export const {
   useCreateSkrillAccountMutation,
   useDeleteSkrillAccountMutation,
   useCreateCryptoAccountMutation,
+
   useDeleteCryptoAccountMutation,
 } = sincelotUserApi;

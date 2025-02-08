@@ -1,5 +1,3 @@
-
-
 import {
   FlatList,
   Image,
@@ -30,12 +28,13 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import GradientText from '../../components/helpercComponent/GradientText';
 import Loading from '../../components/helpercComponent/Loading';
+import {useGetPartnerPartnerListQuery} from '../../helper/Networkcall';
+import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 
 const AllPartner = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
 
   const dummeyAllUsers = [
     {
@@ -72,183 +71,151 @@ const AllPartner = () => {
   // This will return the date and time in 'America/New_York' timezone.
 
   const handleSearch = text => {
-    const filtered = times.filter(item =>
-      item.lottime.toLowerCase().includes(text.toLowerCase()),
+    const filtered = data?.userList?.filter(
+      item =>
+        item.name.toLowerCase().includes(text.toLowerCase()) ||
+        item.userId?.toString() === text,
     );
     setFilteredData(filtered);
   };
 
+  const userid = user.userId;
+  const {isLoading, data, error} = useGetPartnerPartnerListQuery({
+    accesstoken,
+    userid,
+  });
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      console.log(data);
+      setFilteredData(data.userList);
+    }
+    if (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  }, [isLoading, data, error]);
+
   return (
-    <View style={{flex: 1}}>
-      <Background />
-
-      {/** Main Cointainer */}
-
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <GradientText
+    <MainBackgroundWithoutScrollview title={'All Partners'}>
+      <View
+        style={{
+          flex: 1,
+          padding: heightPercentageToDP(1),
+        }}>
+        <View
           style={{
-            ...styles.textStyle,
-            paddingLeft: heightPercentageToDP(2),
+            height: heightPercentageToDP(7),
+            flexDirection: 'row',
+            backgroundColor: COLORS.white_s,
+            alignItems: 'center',
+            paddingHorizontal: heightPercentageToDP(2),
+            borderRadius: heightPercentageToDP(1),
           }}>
-          All Partner
-        </GradientText>
-        <ImageBackground
-          source={require('../../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: heightPercentageToDP(80),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
+          <Fontisto
+            name={'search'}
+            size={heightPercentageToDP(3)}
+            color={COLORS.darkGray}
+          />
+          <TextInput
             style={{
-              height: heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
-
-              borderTopLeftRadius: heightPercentageToDP(5),
-              borderTopRightRadius: heightPercentageToDP(5),
-            }}>
-            {/** Top Style View */}
-            <View
-              style={{
-                height: heightPercentageToDP(5),
-                width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}></View>
-            </View>
-
-            <View
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.white_s,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                marginHorizontal: heightPercentageToDP(1),
-              }}>
-              <Fontisto
-                name={'search'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2.5),
-                  color: COLORS.black,
-                }}
-                placeholder="Search for User"
-                placeholderTextColor={COLORS.black}
-                label="Search"
-                onChangeText={handleSearch}
-              />
-            </View>
-
-            {/** Content Container */}
-
-            <View
-              style={{
-                flex: 1,
-                padding: heightPercentageToDP(1),
-              }}>
-              <ScrollView
-                contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
-                showsVerticalScrollIndicator={false}>
-                {/** User content */}
-                {false ? (
-                  <Loading />
-                ) : (
-                  dummeyAllUsers.map((item, index) => (
-                    <TouchableOpacity
-                    onPress={() => navigation.navigate("PartnerDetails")}
-                    >
-                      <LinearGradient
-                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                        start={{x: 0, y: 0}} // start from left
-                        end={{x: 1, y: 0}} // end at right
-                        style={styles.paymentOption}>
-                        <View
-                          style={{
-                            flex: 1,
-                            height: '100%',
-                          }}>
-                          <View style={styles.topContainer}>
-                            <View
-                              style={{
-                                flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>User ID</Text>
-                              <Text style={styles.titleBold}>
-                                {item.userid}
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>Name</Text>
-                              <Text style={styles.titleBold} numberOfLines={1}>
-                                {item.name}
-                              </Text>
-                            </View>
-                          </View>
-                          <View style={styles.centerLine}></View>
-                          <View style={styles.bottomContainer}>
-                          <View
-                              style={{
-                                flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>Profit Percentage</Text>
-                              <Text style={styles.titleBold}>
-                                10%
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>Total no. of users</Text>
-                              <Text style={styles.titleBold} numberOfLines={1}>
-                                2
-                              </Text>
-                            </View>
-                          </View>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  ))
-                )}
-              </ScrollView>
-            </View>
-          </View>
-        </ImageBackground>
+              marginStart: heightPercentageToDP(1),
+              flex: 1,
+              fontFamily: FONT.Montserrat_Regular,
+              fontSize: heightPercentageToDP(2.5),
+              color: COLORS.black,
+            }}
+            placeholder="Search for User"
+            placeholderTextColor={COLORS.black}
+            label="Search"
+            onChangeText={handleSearch}
+          />
+        </View>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <FlatList
+            data={filteredData}
+            keyExtractor={item => item._id}
+            renderItem={({item, index}) => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('PartnerDetails')}>
+                <LinearGradient
+                  colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                  start={{x: 0, y: 0}} // start from left
+                  end={{x: 1, y: 0}} // end at right
+                  style={styles.paymentOption}>
+                  <View
+                    style={{
+                      flex: 1,
+                      height: '100%',
+                    }}>
+                    <View style={styles.topContainer}>
+                      <View
+                        style={{
+                          flex: 1,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'flex-start',
+                        }}>
+                        <Text style={styles.titleRegular}>User ID</Text>
+                        <Text style={styles.titleBold}>{item.userId}</Text>
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'flex-start',
+                        }}>
+                        <Text style={styles.titleRegular}>Name</Text>
+                        <Text style={styles.titleBold} numberOfLines={1}>
+                          {item.name}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.centerLine}></View>
+                    <View style={styles.bottomContainer}>
+                      <View
+                        style={{
+                          flex: 1,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'flex-start',
+                        }}>
+                        <Text style={styles.titleRegular}>
+                          Profit Percentage
+                        </Text>
+                        <Text style={styles.titleBold}>
+                          {item.profitPercentage}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'flex-start',
+                        }}>
+                        <Text style={styles.titleRegular}>
+                          Total no. of users
+                        </Text>
+                        <Text style={styles.titleBold} numberOfLines={1}>
+                          {item.userList?.length}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            )}
+          />
+        )}
       </View>
-    </View>
+    </MainBackgroundWithoutScrollview>
   );
 };
 

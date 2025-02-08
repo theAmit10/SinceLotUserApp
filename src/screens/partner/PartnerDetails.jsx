@@ -36,9 +36,12 @@ const PartnerDetails = () => {
 
   const {accesstoken, user} = useSelector(state => state.user);
 
- const userid = user.userId;
+  const userid = user.userId;
 
-  const {isLoading, error, data} = useGetAboutPartnerQuery({accesstoken, userid});
+  const {isLoading, error, data} = useGetAboutPartnerQuery({
+    accesstoken,
+    userid,
+  });
   const [partner, setpartner] = useState(null);
 
   useEffect(() => {
@@ -48,10 +51,10 @@ const PartnerDetails = () => {
       console.log('Hey data');
       console.log('Hey data', data);
     }
-    if(error){
-      console.log(error)
+    if (error) {
+      console.log(error);
     }
-  }, [data, isLoading,error]);
+  }, [data, isLoading, error]);
 
   return (
     <View style={{flex: 1}}>

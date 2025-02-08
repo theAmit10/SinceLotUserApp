@@ -1,4 +1,3 @@
-
 import {
   FlatList,
   Image,
@@ -27,10 +26,10 @@ import NoDataFound from '../../../components/helpercComponent/NoDataFound';
 import {COLORS, FONT} from '../../../../assets/constants';
 import Background from '../../../components/background/Background';
 import moment from 'moment';
-import { useGetHistoryQuery } from '../../../helper/Networkcall';
+import {useGetHistoryQuery} from '../../../helper/Networkcall';
 
-
-const UserTransactionHistory = () => {
+const UserTransactionHistory = ({route}) => {
+  const {item} = route.params;
   const {accesstoken, user} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
 
@@ -83,10 +82,10 @@ const UserTransactionHistory = () => {
   };
 
   function formatAmount(value) {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       value = parseFloat(value); // Convert string to float if necessary
     }
-  
+
     // Check if the number has decimals
     if (value % 1 === 0) {
       return value; // Return as is if it's a whole number
@@ -127,17 +126,38 @@ const UserTransactionHistory = () => {
               style={{
                 height: heightPercentageToDP(5),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(3),
               }}>
+              <Text
+                style={{
+                  fontFamily: FONT.Montserrat_SemiBold,
+                  color: COLORS.white_s,
+                  fontSize: heightPercentageToDP(2),
+                }}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}>
+                {item.userId}
+              </Text>
               <View
                 style={{
                   width: widthPercentageToDP(20),
                   height: heightPercentageToDP(0.8),
                   backgroundColor: COLORS.grayBg,
                   borderRadius: heightPercentageToDP(2),
+                }}></View>
+              <Text
+                style={{
+                  fontFamily: FONT.Montserrat_SemiBold,
+                  color: COLORS.white_s,
+                  fontSize: heightPercentageToDP(2),
                 }}
-              />
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}>
+                {item.name}
+              </Text>
             </View>
 
             <View style={{margin: heightPercentageToDP(2)}}>
@@ -367,7 +387,7 @@ const UserTransactionHistory = () => {
                                   : 'Transaction type'}
                               </Text>
                               <Text style={styles.detailValue}>
-                              {item.transactionId
+                                {item.transactionId
                                   ? item.transactionId
                                   : item.transactionType === 'Transfer'
                                   ? 'Game to Withdraw W.'
@@ -493,4 +513,3 @@ const styles = StyleSheet.create({
     fontSize: heightPercentageToDP(2),
   },
 });
-

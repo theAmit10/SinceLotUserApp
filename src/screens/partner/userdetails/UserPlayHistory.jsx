@@ -77,7 +77,8 @@ const historyapidata = [
   },
 ];
 
-const UserPlayHistory = () => {
+const UserPlayHistory = ({route}) => {
+  const {item} = route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {accesstoken, user} = useSelector(state => state.user);
@@ -215,7 +216,7 @@ const UserPlayHistory = () => {
                 }}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                1090
+                {item.userId}
               </Text>
               <View
                 style={{
@@ -232,7 +233,7 @@ const UserPlayHistory = () => {
                 }}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                Aryan Kumar singh
+                {item.name}
               </Text>
             </View>
 
