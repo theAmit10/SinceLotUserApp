@@ -1,6 +1,3 @@
-
-
-
 import {
   ImageBackground,
   SafeAreaView,
@@ -16,7 +13,6 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 
-
 import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -31,8 +27,8 @@ import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
 import Background from '../../components/background/Background';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
-import { COLORS, FONT } from '../../../assets/constants';
-
+import {COLORS, FONT} from '../../../assets/constants';
+import GradientText from '../../components/helpercComponent/GradientText';
 
 const CreateNotification = ({route}) => {
   const {userdata} = route.params;
@@ -69,7 +65,7 @@ const CreateNotification = ({route}) => {
             title: titleValue,
             description: discriptionValue,
             devicetoken: userdata?.devicetoken,
-            userId: userdata._id
+            userId: userdata._id,
           },
           {
             headers: {
@@ -151,8 +147,7 @@ const CreateNotification = ({route}) => {
                   textAlign: 'center',
                 }}
                 numberOfLines={1}
-                ellipsizeMode="tail"
-                >
+                ellipsizeMode="tail">
                 {userdata.name}
               </Text>
 
@@ -174,12 +169,10 @@ const CreateNotification = ({route}) => {
                   textAlign: 'center',
                 }}
                 numberOfLines={1}
-                ellipsizeMode="tail"
-                >
+                ellipsizeMode="tail">
                 {userdata.country?.countryname}
               </Text>
             </View>
-
 
             {/** Result Main Container */}
 

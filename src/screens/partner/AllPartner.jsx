@@ -142,7 +142,7 @@ const AllPartner = () => {
             keyExtractor={item => item._id}
             renderItem={({item, index}) => (
               <TouchableOpacity
-                onPress={() => navigation.navigate('PartnerDetails')}>
+                onPress={() => navigation.navigate('PartnerDetails', {item})}>
                 <LinearGradient
                   colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                   start={{x: 0, y: 0}} // start from left

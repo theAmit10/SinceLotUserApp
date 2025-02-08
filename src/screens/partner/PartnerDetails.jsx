@@ -30,10 +30,10 @@ import GradientText from '../../components/helpercComponent/GradientText';
 import {useGetAboutPartnerQuery} from '../../helper/Networkcall';
 import Loading from '../../components/helpercComponent/Loading';
 
-const PartnerDetails = () => {
+const PartnerDetails = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
+  const {item} = route.params;
   const {accesstoken, user} = useSelector(state => state.user);
 
   const userid = user.userId;
@@ -86,9 +86,21 @@ const PartnerDetails = () => {
               style={{
                 height: heightPercentageToDP(5),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(3),
               }}>
+              <Text
+                style={{
+                  fontFamily: FONT.Montserrat_SemiBold,
+                  color: COLORS.white_s,
+                  fontSize: heightPercentageToDP(2),
+                }}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}>
+                {item.userId}
+              </Text>
               <View
                 style={{
                   width: widthPercentageToDP(20),
@@ -96,6 +108,16 @@ const PartnerDetails = () => {
                   backgroundColor: COLORS.grayBg,
                   borderRadius: heightPercentageToDP(2),
                 }}></View>
+              <Text
+                style={{
+                  fontFamily: FONT.Montserrat_SemiBold,
+                  color: COLORS.white_s,
+                  fontSize: heightPercentageToDP(2),
+                }}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}>
+                {item.name}
+              </Text>
             </View>
 
             <GradientTextWhite
@@ -123,7 +145,9 @@ const PartnerDetails = () => {
                   showsVerticalScrollIndicator={false}>
                   {/** USER PLAY HISTORY DETAILS */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('UserPlayHistory')}>
+                    onPress={() =>
+                      navigation.navigate('UserPlayHistory', {item})
+                    }>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left
@@ -156,7 +180,7 @@ const PartnerDetails = () => {
                   {/** ALL PARTNER */}
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate('UserTransactionHistory')
+                      navigation.navigate('UserTransactionHistory', {item})
                     }>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -189,7 +213,11 @@ const PartnerDetails = () => {
 
                   {/** All Profit Decrease */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('CreateNotification')}>
+                    onPress={() =>
+                      navigation.navigate('CreateNotification', {
+                        userdata: item,
+                      })
+                    }>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left
@@ -221,7 +249,9 @@ const PartnerDetails = () => {
 
                   {/** Increse Percentage */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('UpdatePercentage')}>
+                    onPress={() =>
+                      navigation.navigate('UpdatePercentage', {item})
+                    }>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left
