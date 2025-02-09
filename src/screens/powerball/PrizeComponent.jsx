@@ -2,7 +2,10 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, FONT} from '../../../assets/constants';
-import {heightPercentageToDP} from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 /*************  ✨ Codeium Command ⭐  *************/
@@ -15,7 +18,6 @@ import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 /******  5a6f2ca4-c42a-4123-8a18-aa7f65d55be4  *******/
 const PrizeComponent = ({amount, title, description, numberofwinner}) => {
-  
   return (
     <LinearGradient
       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -73,6 +75,10 @@ const PrizeComponent = ({amount, title, description, numberofwinner}) => {
               padding: heightPercentageToDP(1),
               borderRadius: heightPercentageToDP(2),
               paddingHorizontal: heightPercentageToDP(4),
+              minWidth: widthPercentageToDP(35),
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
             <Text
               style={{

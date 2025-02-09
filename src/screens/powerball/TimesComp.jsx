@@ -7,7 +7,12 @@ import GradientText from '../../components/helpercComponent/GradientText';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const TimesComp = ({powertime, subtitle, navigate = 'PowerballGame', item}) => {
+const TimesComp = ({
+  powertime,
+  subtitle = 'PLAY NOW',
+  navigate = 'PowerballGame',
+  item,
+}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity onPress={() => navigation.navigate(navigate, {item})}>

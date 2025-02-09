@@ -228,6 +228,29 @@ const PowerballGame = () => {
     console.log('submited ticket :: ', tickets), setShowAllSeclectedBalls(true);
   };
 
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const submitHandler = async () => {
+    setSubmitLoader(true);
+    console.log('submitting to next stage to confirm ticket');
+    console.log('submited ticket :: ', tickets), setTicketValue(1);
+
+    setTimeout(() => {
+      setActiveBallIndex(0);
+      setActiveTicketIndex(0);
+      setTickets([
+        {selectedNumbers: Array(MAX_NUMBERS).fill(null), multiplier: null},
+      ]);
+
+      Toast.show({
+        type: 'success',
+        text1: 'Ticket submited successfully',
+      });
+
+      setSubmitLoader(false);
+      setShowAllSeclectedBalls(false);
+    }, 4000);
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView
@@ -281,7 +304,7 @@ const PowerballGame = () => {
                   }}
                   numberOfLines={1}
                   adjustsFontSizeToFit={true}>
-                  10-12-2024
+                  08-02-2025
                 </Text>
                 <View
                   style={{
@@ -805,7 +828,7 @@ const PowerballGame = () => {
                                     fontFamily: FONT.Montserrat_Regular,
                                     fontSize: heightPercentageToDP(2),
                                   }}>
-                                  14-01-2025
+                                  08-02-2025
                                 </Text>
                               </View>
                             </View>
@@ -1027,15 +1050,24 @@ const PowerballGame = () => {
                   </View>
 
                   {/* Submit Button */}
-                  <TouchableOpacity
-                    style={[
-                      styles.submitButton,
-                      isSubmitEnabled && styles.submitEnabled,
-                    ]}
-                    disabled={!isSubmitEnabled}
-                    onPress={() => console.log(tickets)}>
-                    <Text style={styles.submitText}>Submit</Text>
-                  </TouchableOpacity>
+                  {submitLoader ? (
+                    <View
+                      style={{
+                        height: heightPercentageToDP(7),
+                      }}>
+                      <Loading />
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      style={[
+                        styles.submitButton,
+                        isSubmitEnabled && styles.submitEnabled,
+                      ]}
+                      disabled={!isSubmitEnabled}
+                      onPress={submitHandler}>
+                      <Text style={styles.submitText}>Submit</Text>
+                    </TouchableOpacity>
+                  )}
 
                   {/** end */}
                 </View>

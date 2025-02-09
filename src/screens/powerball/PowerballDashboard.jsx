@@ -64,7 +64,7 @@ const PowerballDashboard = () => {
       },
       {
         id: 4,
-        amount: '10000',
+        amount: '4 X',
         currency: 'INR',
         title: '4th Prize',
         description: 'Match 3 balls to win the 4th Prize.',
@@ -72,7 +72,7 @@ const PowerballDashboard = () => {
       },
       {
         id: 5,
-        amount: '5000',
+        amount: '3 X',
         currency: 'INR',
         title: '5th Prize',
         description: 'Match 2 balls to win the 5th Prize.',
@@ -80,7 +80,7 @@ const PowerballDashboard = () => {
       },
       {
         id: 6,
-        amount: '1000',
+        amount: '2 X',
         currency: 'INR',
         title: '6th Prize',
         description: 'Match 1 balls to win the 6th Prize.',
@@ -95,23 +95,22 @@ const PowerballDashboard = () => {
   const id = '67a38904b00aa387719533b9';
   const [powerball, setPowerball] = useState(null);
   // Network call
-  const {data, error, isLoading} = useGetPowerballQuery({accesstoken,id});
-
+  const {data, error, isLoading} = useGetPowerballQuery({accesstoken, id});
 
   useEffect(() => {
     if (!isLoading && data) {
       setPowerball(data.game);
-      console.log(data?.game);  
+      console.log(data?.game);
     }
-  
-    if (error) {
-      console.error("Error fetching powerball data:", error);
-    }
-  }, [data, isLoading, error]);  // Correct dependencies
 
-  console.log("Starting powerball");
-  console.log(powerball?.game)
-  console.log(error)
+    if (error) {
+      console.error('Error fetching powerball data:', error);
+    }
+  }, [data, isLoading, error]); // Correct dependencies
+
+  console.log('Starting powerball');
+  console.log(powerball?.game);
+  console.log(error);
 
   return (
     <View style={{flex: 1}}>
@@ -291,7 +290,7 @@ const PowerballDashboard = () => {
                         flexDirection: 'row',
                       }}>
                       <Text style={styles.semibold}>09 : 00 PM</Text>
-                      <Text style={styles.semibold}>23-12-2024</Text>
+                      <Text style={styles.semibold}>06-02-2025</Text>
                     </View>
                     <View
                       style={{
