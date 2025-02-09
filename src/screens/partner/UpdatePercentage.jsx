@@ -32,14 +32,55 @@ import GradientText from '../../components/helpercComponent/GradientText';
 import UpdatePartnerComp from '../../components/partner/updatepartner/UpdatePartnerComp';
 import UpdatePartnerInput from '../../components/partner/updatepartner/UpdatePartnerInput';
 import Loading from '../../components/helpercComponent/Loading';
+import {useUpdateProfitPercentageMutation} from '../../helper/Networkcall';
 
-const UpdatePercentage = () => {
+const UpdatePercentage = ({route}) => {
+  const {item} = route.params;
+
+  console.log('Data from update percentage :: ' + JSON.stringify(item));
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {accesstoken} = useSelector(state => state.user);
+  const [profitPercentage, setProfitPercentage] = useState(null);
 
-  const [inputValue, setInputValue] = useState('');
+  const [updateProfitPercentage, {isLoading, error}] =
+    useUpdateProfitPercentageMutation();
+
+  // TODE: UPDATE PARTNER PERCENTAGE FUNCTION
+  const updatePartnerPercentage = async () => {
+    if (!profitPercentage) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Profit Percentage',
+      });
+    } else {
+      console.log(item.userId);
+      console.log(profitPercentage);
+      try {
+        const res = await updateProfitPercentage({
+          accesstoken,
+          body: {
+            partnerId: item.userId,
+            profitPercentage: profitPercentage,
+          },
+        });
+
+        console.log(res);
+        Toast.show({
+          type: 'success',
+          text1: 'Successfully Updated',
+        });
+      } catch (error) {
+        console.log(error);
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+        });
+      }
+    }
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -75,9 +116,21 @@ const UpdatePercentage = () => {
                 style={{
                   height: heightPercentageToDP(5),
                   width: widthPercentageToDP(100),
-                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(3),
                 }}>
+                <Text
+                  style={{
+                    fontFamily: FONT.Montserrat_SemiBold,
+                    color: COLORS.white_s,
+                    fontSize: heightPercentageToDP(2),
+                  }}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit={true}>
+                  {item.userId}
+                </Text>
                 <View
                   style={{
                     width: widthPercentageToDP(20),
@@ -85,6 +138,16 @@ const UpdatePercentage = () => {
                     backgroundColor: COLORS.grayBg,
                     borderRadius: heightPercentageToDP(2),
                   }}></View>
+                <Text
+                  style={{
+                    fontFamily: FONT.Montserrat_SemiBold,
+                    color: COLORS.white_s,
+                    fontSize: heightPercentageToDP(2),
+                  }}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit={true}>
+                  {item.name}
+                </Text>
               </View>
 
               <GradientTextWhite
@@ -107,33 +170,37 @@ const UpdatePercentage = () => {
                     flexGrow: 1, // Ensures the content container grows to fill the available space
                     paddingBottom: heightPercentageToDP(2),
                   }}
-                  showsVerticalScrollIndicator={false}
-                  >
+                  showsVerticalScrollIndicator={false}>
                   {/** USER PLAY HISTORY DETAILS */}
-                  <UpdatePartnerComp title={'User ID'} value={'1090'} />
-                  <UpdatePartnerComp title={'Name'} value={'Aryan Singh'} />
+                  <UpdatePartnerComp
+                    title={'Old Profit Percentage'}
+                    value={item.profitPercentage}
+                  />
+                  {/* <UpdatePartnerComp title={'Name'} value={'Aryan Singh'} /> */}
 
                   <UpdatePartnerInput
-                    title="Profit Percentage"
-                    value={inputValue}
-                    onChangeText={text => setInputValue(text)} // Updates inputValue state
-                    placeholder="Enter profit percentage"
+                    title="New Profit Percentage"
+                    value={profitPercentage}
+                    onChangeText={text => setProfitPercentage(text)} // Updates inputValue state
+                    placeholder="Enter new profit percentage"
+                    keyboardType="numeric"
                   />
 
                   <View
                     style={{
                       flex: 1,
-                      justifyContent: 'flex-end'
+                      justifyContent: 'flex-end',
                     }}>
                     <View
                       style={{
                         marginBottom: heightPercentageToDP(5),
                         marginTop: heightPercentageToDP(2),
                       }}>
-                      {false ? (
+                      {isLoading ? (
                         <Loading />
                       ) : (
                         <TouchableOpacity
+                          onPress={updatePartnerPercentage}
                           style={{
                             backgroundColor: COLORS.blue,
                             padding: heightPercentageToDP(2),

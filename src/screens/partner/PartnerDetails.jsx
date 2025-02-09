@@ -38,7 +38,7 @@ const PartnerDetails = ({route}) => {
 
   const userid = user.userId;
 
-  const {isLoading, error, data} = useGetAboutPartnerQuery({
+  const {isLoading, error, data, refetch} = useGetAboutPartnerQuery({
     accesstoken,
     userid,
   });
@@ -55,6 +55,11 @@ const PartnerDetails = ({route}) => {
       console.log(error);
     }
   }, [data, isLoading, error]);
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    refetch();
+  }, [isFocused]);
 
   return (
     <View style={{flex: 1}}>
@@ -283,7 +288,9 @@ const PartnerDetails = ({route}) => {
 
                   {/** Decrease Percentage */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('DecresePercentage')}>
+                    onPress={() =>
+                      navigation.navigate('DecresePercentage', {item})
+                    }>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left

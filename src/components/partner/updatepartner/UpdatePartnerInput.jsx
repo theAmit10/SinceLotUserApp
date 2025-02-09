@@ -5,7 +5,13 @@ import {heightPercentageToDP} from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import {Text} from 'react-native-paper';
 
-const UpdatePartnerInput = ({title, value, onChangeText,placeholder}) => {
+const UpdatePartnerInput = ({
+  title,
+  value,
+  onChangeText,
+  placeholder,
+  keyboardType = 'default',
+}) => {
   return (
     <LinearGradient
       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -39,6 +45,7 @@ const UpdatePartnerInput = ({title, value, onChangeText,placeholder}) => {
           adjustsFontSizeToFit={true}
           placeholder={placeholder}
           placeholderTextColor={COLORS.gray}
+          keyboardType={keyboardType}
         />
       </View>
     </LinearGradient>

@@ -33,14 +33,60 @@ import UpdatePartnerComp from '../../components/partner/updatepartner/UpdatePart
 import UpdatePartnerInput from '../../components/partner/updatepartner/UpdatePartnerInput';
 import Loading from '../../components/helpercComponent/Loading';
 import TextAreaInput from '../../components/partner/updatepartner/TextAreaInput';
+import {useDecreasePartnerProfitMutation} from '../../helper/Networkcall';
 
-const DecresePercentage = () => {
+const DecresePercentage = ({route}) => {
   const navigation = useNavigation();
+  const {item} = route.params;
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
+  const [decreasePartnerProfit, {isLoading, data, error}] =
+    useDecreasePartnerProfitMutation();
 
   const [inputValue, setInputValue] = useState('');
+
+  const [profitPercentage, setProfitPercentage] = useState('');
+  const [reason, setReason] = useState('');
+
+  const submitDecreasePercentage = async () => {
+    if (!profitPercentage) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Profit Percentage',
+      });
+    }
+    if (!reason) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter Reason',
+      });
+    } else {
+      try {
+        const res = await decreasePartnerProfit({
+          accesstoken,
+          body: {
+            userId: item.userId,
+            partnerId: item.userId,
+            profitPercentage: profitPercentage,
+            reason: reason,
+          },
+        });
+
+        console.log(res.data.message);
+
+        Toast.show({
+          type: 'success',
+          text1: res.data.message,
+        });
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: error.data.message,
+        });
+      }
+    }
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -76,9 +122,21 @@ const DecresePercentage = () => {
                 style={{
                   height: heightPercentageToDP(5),
                   width: widthPercentageToDP(100),
-                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(3),
                 }}>
+                <Text
+                  style={{
+                    fontFamily: FONT.Montserrat_SemiBold,
+                    color: COLORS.white_s,
+                    fontSize: heightPercentageToDP(2),
+                  }}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit={true}>
+                  {item.userId}
+                </Text>
                 <View
                   style={{
                     width: widthPercentageToDP(20),
@@ -86,6 +144,16 @@ const DecresePercentage = () => {
                     backgroundColor: COLORS.grayBg,
                     borderRadius: heightPercentageToDP(2),
                   }}></View>
+                <Text
+                  style={{
+                    fontFamily: FONT.Montserrat_SemiBold,
+                    color: COLORS.white_s,
+                    fontSize: heightPercentageToDP(2),
+                  }}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit={true}>
+                  {item.name}
+                </Text>
               </View>
 
               <GradientTextWhite
@@ -110,19 +178,23 @@ const DecresePercentage = () => {
                   }}
                   showsVerticalScrollIndicator={false}>
                   {/** USER PLAY HISTORY DETAILS */}
-                  <UpdatePartnerComp title={'User ID'} value={'1090'} />
-                  <UpdatePartnerComp title={'Name'} value={'Aryan Singh'} />
+                  {/* <UpdatePartnerComp title={'User ID'} value={'1090'} /> */}
+                  <UpdatePartnerComp
+                    title={'Old Profit Percentage'}
+                    value={item.profitPercentage}
+                  />
 
                   <UpdatePartnerInput
-                    title="Profit Percentage"
-                    value={inputValue}
+                    title="New Profit Percentage"
+                    value={profitPercentage}
                     onChangeText={text => setInputValue(text)} // Updates inputValue state
                     placeholder="Enter profit percentage"
+                    keyboardType="numeric"
                   />
 
                   <TextAreaInput
                     title="Reason"
-                    value={inputValue}
+                    value={reason}
                     onChangeText={text => setInputValue(text)} // Updates inputValue state
                     placeholder="Enter profit deduction reason"
                   />
@@ -137,7 +209,7 @@ const DecresePercentage = () => {
                         marginBottom: heightPercentageToDP(5),
                         marginTop: heightPercentageToDP(2),
                       }}>
-                      {false ? (
+                      {isLoading ? (
                         <Loading />
                       ) : (
                         <TouchableOpacity
@@ -146,7 +218,8 @@ const DecresePercentage = () => {
                             padding: heightPercentageToDP(2),
                             borderRadius: heightPercentageToDP(1),
                             alignItems: 'center',
-                          }}>
+                          }}
+                          onPress={submitDecreasePercentage}>
                           <Text
                             style={{
                               color: COLORS.white,

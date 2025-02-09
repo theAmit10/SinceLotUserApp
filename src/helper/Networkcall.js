@@ -1,6 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import UrlHelper from './UrlHelper';
 import {server} from '../redux/store';
+import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 // baseUrl: 'https://jenny.worldgames55fhgfg7sd8fvgsd8f6gs8dfgdsfgds6onion.ru/api/v1/',
 
@@ -399,10 +400,52 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // INCREASE PROFIT PERCENTAGE
+
+    updateProfitPercentage: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'user/increaseprofit',
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+    }),
+
+    // PROFIT PROFIT DECREASE
+    decreasePartnerProfit: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'user/createprofitdeduction',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+    }),
+
+    // PROFIT DEDUCTION LIST
+    getProfitDeductionList: builder.query({
+      query: ({accesstoken}) => ({
+        url: 'user/getprofitdeduction',
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useGetProfitDeductionListQuery,
+  useDecreasePartnerProfitMutation,
+  useUpdateProfitPercentageMutation,
   useRemoveUserFromUserListMutation,
   useCreateSubPartnerMutation,
   useGetPartnerProfitDeductionQuery,
