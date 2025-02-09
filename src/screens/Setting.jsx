@@ -129,8 +129,6 @@ const Setting = () => {
   console.log('setting current date :: ', getCurrentDate());
   console.log('setting next date : ', getNextDate());
 
-  // 39860 // 135
-
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -273,7 +271,7 @@ const Setting = () => {
 
                 {/** RESULTS */}
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ResultDashboard')}
+                  onPress={() => navigation.navigate('ResultPowerball')}
                   style={{
                     height: heightPercentageToDP(7),
                     flexDirection: 'row',
@@ -287,7 +285,7 @@ const Setting = () => {
                     colors={[COLORS.grayBg, COLORS.white_s]}
                     className="rounded-xl p-1">
                     <MaterialCommunityIcons
-                      name={'trophy-award'}
+                      name={'trophy'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
@@ -300,7 +298,7 @@ const Setting = () => {
                       fontSize: heightPercentageToDP(2),
                       color: COLORS.black,
                     }}>
-                    Results
+                    Powerball Results
                   </Text>
 
                   <Ionicons

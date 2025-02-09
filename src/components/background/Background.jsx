@@ -13,8 +13,29 @@ import {COLORS} from '../../../assets/constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
-const Background = () => {
+const Background = ({
+  navigate,
+  fromScreen = 'Home',
+  backcase,
+  setshowTime,
+  setTime,
+  setShowResult,
+}) => {
   const navigation = useNavigation();
+
+  const handleBackPress = () => {
+    if (fromScreen === 'Home') {
+      navigation.goBack();
+    } else {
+      if (backcase === 'time') {
+        navigation.goBack();
+      } else if (backcase === 'result') {
+        setShowResult(false);
+        setshowTime(true);
+        setTime(null);
+      }
+    }
+  };
   return (
     <SafeAreaView
       style={{
@@ -85,7 +106,6 @@ const Background = () => {
 };
 
 export default Background;
-
 
 // import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 // import React from 'react';

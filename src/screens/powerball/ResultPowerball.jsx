@@ -20,7 +20,11 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
-import {findFocusedRoute, useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  findFocusedRoute,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
@@ -28,18 +32,16 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import GradientText from '../../components/helpercComponent/GradientText';
 import Loading from '../../components/helpercComponent/Loading';
-
-
+import SelectYearAndMonth from '../../components/helpercComponent/SelectYearAndMonth';
+import {useGetPowetTimesQuery} from '../../helper/Networkcall';
+import TimesComp from './TimesComp';
+import ResultTimeComp from './ResultTimeComp';
+import NoDataFound from '../../components/helpercComponent/NoDataFound';
 
 const ResultPowerball = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-
-
-
-  
-  
   const {accesstoken} = useSelector(state => state.user);
 
   const dummeyAllUsers = [
@@ -92,9 +94,63 @@ const ResultPowerball = () => {
     }));
   };
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  const currentYear = new Date().getFullYear();
+  const currentMonthIndex = new Date().getMonth(); // 0-based index (0 = January, 11 = December)
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const [selectedMonth, setSelectedMonth] = useState(months[currentMonthIndex]);
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [showSelectYear, setShowSelectYear] = useState(false);
+  const [showSelectMonth, setShowSelectMonth] = useState(false);
+  const [showTime, setshowTime] = useState(true);
+  const [showResult, setShowResult] = useState(false);
+  const [time, setTime] = useState(null);
+
+  const [forcase, setforcase] = useState('time');
+
+  // FOR TIME
+  const {
+    isLoading: timeLoading,
+    data: timeData,
+    error: timeError,
+  } = useGetPowetTimesQuery({accesstoken});
+
+  // FOR RESULT
+  useEffect(() => {
+    console.log('CHANGING MONTH OR YEAR');
+    if (time && selectedMonth && selectedYear) {
+      setshowTime(false);
+      setShowResult(true);
+      setforcase('result');
+    }
+  }, [selectedYear, selectedMonth, showSelectMonth, showSelectYear]);
+
+  const [resultdata, setresultdata] = useState([]);
+
   return (
     <View style={{flex: 1}}>
-      <Background />
+      <Background
+        fromScreen="powerballresult"
+        setShowResult={setShowResult}
+        setTime={setTime}
+        setshowTime={setshowTime}
+        backcase={forcase}
+      />
 
       {/** Main Cointainer */}
 
@@ -104,7 +160,7 @@ const ResultPowerball = () => {
             ...styles.textStyle,
             paddingLeft: heightPercentageToDP(2),
           }}>
-          Powerball
+          Powerball Result
         </GradientText>
         <ImageBackground
           source={require('../../../assets/image/tlwbg.jpg')}
@@ -134,19 +190,25 @@ const ResultPowerball = () => {
                 alignItems: 'center',
                 paddingHorizontal: heightPercentageToDP(3),
               }}>
-              <Text
-                style={{
-                  fontFamily: FONT.Montserrat_SemiBold,
-                  color: COLORS.white_s,
-                  fontSize: heightPercentageToDP(2),
-                }}
-                numberOfLines={1}
-                adjustsFontSizeToFit={true}>
-                All Result
-              </Text>
               <View
                 style={{
                   flex: 1,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: FONT.Montserrat_SemiBold,
+                    color: COLORS.white_s,
+                    fontSize: heightPercentageToDP(2),
+                  }}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit={true}>
+                  {selectedMonth}
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flex: 2,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
@@ -159,6 +221,7 @@ const ResultPowerball = () => {
                   }}></View>
               </View>
 
+              <View style={{flex: 0.5}}></View>
               <Text
                 style={{
                   fontFamily: FONT.Montserrat_SemiBold,
@@ -167,7 +230,7 @@ const ResultPowerball = () => {
                 }}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                09:00 PM
+                {time ? time.powertime : ''}
               </Text>
             </View>
 
@@ -178,14 +241,57 @@ const ResultPowerball = () => {
                 flex: 1,
                 padding: heightPercentageToDP(1),
               }}>
-              <ScrollView
-                contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
-                showsVerticalScrollIndicator={false}>
-                {/** User content */}
-                {false ? (
+              {/* SELECT TIME */}
+              {showTime &&
+                (timeLoading ? (
                   <Loading />
                 ) : (
-                  dummeyAllUsers.map((item, index) => (
+                  timeData &&
+                  timeData?.powerTimes && (
+                    <FlatList
+                      data={timeData?.powerTimes}
+                      showsVerticalScrollIndicator={false}
+                      keyExtractor={item => item._id}
+                      renderItem={({item, index}) => (
+                        <ResultTimeComp
+                          key={item._id}
+                          powertime={item.powertime}
+                          subtitle="Results"
+                          item={item}
+                          setTime={setTime}
+                          setShowSelectYear={setShowSelectYear}
+                          setshowTime={setshowTime}
+                        />
+                      )}
+                    />
+                  )
+                ))}
+              {/* SHOW SELECT MONTH AND YEAR */}
+              {showSelectYear && (
+                <SelectYearAndMonth
+                  onClose={() => {
+                    setShowSelectYear(false);
+                    setshowTime(true);
+                  }}
+                  setSelectedMonth={setSelectedMonth}
+                  setSelectedYear={setSelectedYear}
+                  selectedYear={selectedYear}
+                  selectedMonth={selectedMonth}
+                />
+              )}
+              {/* SHOW RESULT */}
+              {showResult && (
+                <ScrollView
+                  contentContainerStyle={{
+                    paddingBottom: heightPercentageToDP(2),
+                  }}
+                  showsVerticalScrollIndicator={false}>
+                  {/** User content */}
+                  {false ? (
+                    <Loading />
+                  ) : resultdata.length === 0 ? (
+                    <NoDataFound data={'No Result Available'} />
+                  ) : (
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left
@@ -229,9 +335,9 @@ const ResultPowerball = () => {
                         </View>
                       </View>
                     </LinearGradient>
-                  ))
-                )}
-              </ScrollView>
+                  )}
+                </ScrollView>
+              )}
             </View>
           </View>
         </ImageBackground>

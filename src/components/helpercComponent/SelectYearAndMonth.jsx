@@ -159,8 +159,8 @@ const styles = StyleSheet.create({
   imageBackground: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: widthPercentageToDP(95),
-    height: heightPercentageToDP(95),
+    width: widthPercentageToDP(100),
+    height: heightPercentageToDP(80),
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,

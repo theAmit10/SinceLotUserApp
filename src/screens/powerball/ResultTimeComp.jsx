@@ -7,10 +7,25 @@ import GradientText from '../../components/helpercComponent/GradientText';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const TimesComp = ({powertime, subtitle, navigate = 'PowerballGame', item}) => {
+const ResultTimeComp = ({
+  powertime,
+  subtitle,
+  navigate = 'PowerballGame',
+  item,
+  setShowSelectYear,
+  setshowTime,
+  setTime,
+}) => {
   const navigation = useNavigation();
+
+  const handlePress = () => {
+    setshowTime(false);
+    setTime(item);
+    setShowSelectYear(true);
+  };
+
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(navigate, {item})}>
+    <TouchableOpacity onPress={handlePress}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
@@ -60,7 +75,7 @@ const TimesComp = ({powertime, subtitle, navigate = 'PowerballGame', item}) => {
   );
 };
 
-export default TimesComp;
+export default ResultTimeComp;
 
 const styles = StyleSheet.create({
   textStyle: {
