@@ -108,7 +108,11 @@ const Skrill = () => {
       return;
     }
     if (isNaN(amountval)) {
-      Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Amount',
+        text2: 'Please enter valid amount',
+      });
     }
     if (!transactionval) {
       Toast.show({type: 'error', text1: 'Enter Transaction Number'});
@@ -170,7 +174,9 @@ const Skrill = () => {
   const allTheDepositData = async () => {
     try {
       setLoadingAllData(true);
-      const {data} = await axios.get(UrlHelper.ALL_SKRILL_API, {
+
+      const url = `${UrlHelper.PARTNER_USER_PAYPAL_API}/${user.rechargePaymentId}`;
+      const {data} = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accesstoken}`,
@@ -193,571 +199,572 @@ const Skrill = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-       <KeyboardAvoidingView
+      <KeyboardAvoidingView
         style={{flex: 1}}
         behavior="height"
         keyboardVerticalOffset={-60}>
-      <Background />
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height:
+        <Background />
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <ImageBackground
+            source={require('../../../assets/image/tlwbg.jpg')}
+            style={{
+              width: '100%',
+              height:
                 Platform.OS === 'android'
                   ? heightPercentageToDP(85)
                   : heightPercentageToDP(80),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
-            style={{
-              height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
+            }}
+            imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
             }}>
             <View
               style={{
-                height: heightPercentageToDP(5),
+                height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+                borderTopLeftRadius: heightPercentageToDP(5),
+                borderTopRightRadius: heightPercentageToDP(5),
               }}>
               <View
                 style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}
-              />
-            </View>
-            <View style={{margin: heightPercentageToDP(2)}}>
-              <GradientTextWhite style={styles.textStyle}>
-                Skrill Deposit
-              </GradientTextWhite>
-
-              {!loadingAllData && allDepositdata.length !== 0 && (
-                <TouchableOpacity onPress={toggleUpiOptionView}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      height: heightPercentageToDP(10),
-                      borderRadius: heightPercentageToDP(2),
-                      alignItems: 'center',
-                      gap: heightPercentageToDP(3),
-                      paddingStart: heightPercentageToDP(2),
-                      marginTop: heightPercentageToDP(2),
-                    }}>
-                    <View
-                      style={{
-                        backgroundColor: COLORS.white_s,
-                        padding: heightPercentageToDP(1.5),
-                        borderRadius: heightPercentageToDP(1),
-                      }}>
-                      <Image
-                        source={require('../../../assets/image/skrill.png')}
-                        resizeMode="cover"
-                        style={{
-                          height: 25,
-                          width: 25,
-                        }}
-                      />
-                    </View>
-                    <GradientTextWhite style={styles.textStyleContent}>
-                      Skrill
-                    </GradientTextWhite>
-                    {/* <GradientTextWhite style={styles.textStyleContent}>
-                      {selectedUpiId?.paymentId}
-                    </GradientTextWhite> */}
-                    <LinearGradient
-                      colors={[COLORS.grayBg, COLORS.white_s]}
-                      style={{borderRadius: 20, padding: 10}}>
-                      <AntDesign
-                        name={'downcircleo'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
-                      />
-                    </LinearGradient>
-                  </LinearGradient>
-                </TouchableOpacity>
-              )}
-            </View>
-
-            {loadingAllData ? (
-              <View
-                style={{
-                  height: heightPercentageToDP(10),
+                  height: heightPercentageToDP(5),
+                  width: widthPercentageToDP(100),
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Loading />
+                <View
+                  style={{
+                    width: widthPercentageToDP(20),
+                    height: heightPercentageToDP(0.8),
+                    backgroundColor: COLORS.grayBg,
+                    borderRadius: heightPercentageToDP(2),
+                  }}
+                />
               </View>
-            ) : (
-              <>
-                {allDepositdata.length === 0 ? (
-                  <View
-                    style={{
-                      flex: 1,
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                      margin: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(2),
-                    }}>
-                    <Text
+              <View style={{margin: heightPercentageToDP(2)}}>
+                <GradientTextWhite style={styles.textStyle}>
+                  Skrill Deposit
+                </GradientTextWhite>
+
+                {!loadingAllData && allDepositdata.length !== 0 && (
+                  <TouchableOpacity onPress={toggleUpiOptionView}>
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
                       style={{
-                        color: COLORS.white_s,
-
-                        padding: heightPercentageToDP(1),
-                        borderRadius: heightPercentageToDP(1),
-                        fontFamily: FONT.Montserrat_SemiBold,
-                        maxWidth: widthPercentageToDP(80),
-                        fontSize: heightPercentageToDP(2),
-                        textAlign: 'center',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        height: heightPercentageToDP(10),
+                        borderRadius: heightPercentageToDP(2),
+                        alignItems: 'center',
+                        gap: heightPercentageToDP(3),
+                        paddingStart: heightPercentageToDP(2),
+                        marginTop: heightPercentageToDP(2),
                       }}>
-                      This payment method is temporarily unavailable.
-                    </Text>
-                  </View>
-                ) : (
-                  <>
-                    {/** FOR UPI ID DEPOSIT OPTION */}
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                      {upiVisible &&
-                        allDepositdata.length !== 0 &&
-                        allDepositdata.map(item => (
-                          <TouchableOpacity
-                            key={item._id}
-                            onPress={() => settingUpiId(item)}>
-                            <LinearGradient
-                              colors={[
-                                COLORS.time_firstblue,
-                                COLORS.time_secondbluw,
-                              ]}
-                              start={{x: 0, y: 0}} // start from left
-                              end={{x: 1, y: 0}} // end at right
-                              style={{
-                                borderRadius: heightPercentageToDP(2),
-                                marginHorizontal: heightPercentageToDP(2),
-                                marginVertical: heightPercentageToDP(1),
-                              }}>
-                              <View
+                      <View
+                        style={{
+                          backgroundColor: COLORS.white_s,
+                          padding: heightPercentageToDP(1.5),
+                          borderRadius: heightPercentageToDP(1),
+                        }}>
+                        <Image
+                          source={require('../../../assets/image/skrill.png')}
+                          resizeMode="cover"
+                          style={{
+                            height: 25,
+                            width: 25,
+                          }}
+                        />
+                      </View>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        Skrill
+                      </GradientTextWhite>
+                      {/* <GradientTextWhite style={styles.textStyleContent}>
+                      {selectedUpiId?.paymentId}
+                    </GradientTextWhite> */}
+                      <LinearGradient
+                        colors={[COLORS.grayBg, COLORS.white_s]}
+                        style={{borderRadius: 20, padding: 10}}>
+                        <AntDesign
+                          name={'downcircleo'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </LinearGradient>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              {loadingAllData ? (
+                <View
+                  style={{
+                    height: heightPercentageToDP(10),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Loading />
+                </View>
+              ) : (
+                <>
+                  {allDepositdata.length === 0 ? (
+                    <View
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        margin: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <Text
+                        style={{
+                          color: COLORS.white_s,
+
+                          padding: heightPercentageToDP(1),
+                          borderRadius: heightPercentageToDP(1),
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          maxWidth: widthPercentageToDP(80),
+                          fontSize: heightPercentageToDP(2),
+                          textAlign: 'center',
+                        }}>
+                        This payment method is temporarily unavailable.
+                      </Text>
+                    </View>
+                  ) : (
+                    <>
+                      {/** FOR UPI ID DEPOSIT OPTION */}
+                      <ScrollView showsVerticalScrollIndicator={false}>
+                        {upiVisible &&
+                          allDepositdata.length !== 0 &&
+                          allDepositdata.map(item => (
+                            <TouchableOpacity
+                              key={item._id}
+                              onPress={() => settingUpiId(item)}>
+                              <LinearGradient
+                                colors={[
+                                  COLORS.time_firstblue,
+                                  COLORS.time_secondbluw,
+                                ]}
+                                start={{x: 0, y: 0}} // start from left
+                                end={{x: 1, y: 0}} // end at right
                                 style={{
-                                  flexDirection: 'row',
-
-                                  height: heightPercentageToDP(5),
-
+                                  borderRadius: heightPercentageToDP(2),
+                                  marginHorizontal: heightPercentageToDP(2),
                                   marginVertical: heightPercentageToDP(1),
                                 }}>
                                 <View
                                   style={{
-                                    flex: 1,
                                     flexDirection: 'row',
-                                    gap: heightPercentageToDP(3),
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    marginStart: heightPercentageToDP(3),
+
+                                    height: heightPercentageToDP(5),
+
+                                    marginVertical: heightPercentageToDP(1),
                                   }}>
                                   <View
                                     style={{
-                                      backgroundColor: COLORS.white_s,
-                                      padding: heightPercentageToDP(1),
-                                      borderRadius: heightPercentageToDP(1),
+                                      flex: 1,
+                                      flexDirection: 'row',
+                                      gap: heightPercentageToDP(3),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                      marginStart: heightPercentageToDP(3),
                                     }}>
-                                    <Image
-                                      source={require('../../../assets/image/skrill.png')}
-                                      resizeMode="cover"
+                                    <View
                                       style={{
-                                        height: 25,
-                                        width: 25,
-                                      }}
-                                    />
+                                        backgroundColor: COLORS.white_s,
+                                        padding: heightPercentageToDP(1),
+                                        borderRadius: heightPercentageToDP(1),
+                                      }}>
+                                      <Image
+                                        source={require('../../../assets/image/skrill.png')}
+                                        resizeMode="cover"
+                                        style={{
+                                          height: 25,
+                                          width: 25,
+                                        }}
+                                      />
+                                    </View>
+                                    <GradientTextWhite
+                                      style={styles.textStyleContent}>
+                                      Skrill
+                                    </GradientTextWhite>
+                                    <GradientTextWhite
+                                      style={styles.textStyleContent}>
+                                      {item.paymentId}
+                                    </GradientTextWhite>
                                   </View>
-                                  <GradientTextWhite
-                                    style={styles.textStyleContent}>
-                                    Skrill
-                                  </GradientTextWhite>
-                                  <GradientTextWhite
-                                    style={styles.textStyleContent}>
-                                    {item.paymentId}
-                                  </GradientTextWhite>
+
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                      justifyContent: 'flex-end',
+                                      alignItems: 'flex-end',
+                                      paddingEnd: heightPercentageToDP(2),
+                                    }}>
+                                    <LinearGradient
+                                      colors={[COLORS.grayBg, COLORS.white_s]}
+                                      style={{borderRadius: 10, padding: 5}}>
+                                      <AntDesign
+                                        name={
+                                          selectedUpiId._id === item._id
+                                            ? 'checkcircle'
+                                            : 'checkcircleo'
+                                        }
+                                        size={heightPercentageToDP(3)}
+                                        color={
+                                          selectedUpiId._id === item._id
+                                            ? COLORS.green
+                                            : COLORS.darkGray
+                                        }
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    gap: heightPercentageToDP(1),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flex: 1,
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(2),
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                      gap: heightPercentageToDP(2),
+                                      justifyContent: 'space-between',
+                                    }}>
+                                    <Text
+                                      style={styles.copytitle}
+                                      numberOfLines={2}>
+                                      Address
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      gap: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={styles.copycontent}
+                                      numberOfLines={2}>
+                                      {item.address}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{gap: heightPercentageToDP(0.5)}}>
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        copyToClipboard(item.address)
+                                      }>
+                                      <LinearGradient
+                                        colors={[
+                                          COLORS.lightWhite,
+                                          COLORS.white_s,
+                                        ]}
+                                        style={{
+                                          padding: heightPercentageToDP(0.5),
+                                          borderRadius: heightPercentageToDP(1),
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                        }}>
+                                        <AntDesign
+                                          name={'copy1'}
+                                          size={heightPercentageToDP(2.5)}
+                                          color={COLORS.darkGray}
+                                        />
+                                      </LinearGradient>
+                                    </TouchableOpacity>
+                                  </View>
                                 </View>
 
                                 <View
                                   style={{
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
                                     flex: 1,
-                                    justifyContent: 'flex-end',
-                                    alignItems: 'flex-end',
+                                    padding: heightPercentageToDP(2),
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                      display: 'flex',
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'flex-start',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        ...styles.copytitle,
+                                        paddingLeft: heightPercentageToDP(2),
+                                      }}
+                                      numberOfLines={2}>
+                                      {item.paymentnote ? 'Note' : ''}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                    }}>
+                                    <Text style={styles.copycontent}>
+                                      {item.paymentnote}
+                                    </Text>
+                                  </View>
+                                </View>
+                              </LinearGradient>
+                            </TouchableOpacity>
+                          ))}
+                      </ScrollView>
+
+                      {/** FOR UPI DEPOSIT FORM */}
+
+                      {!upiVisible && (
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                          <View
+                            style={{
+                              height: heightPercentageToDP(70),
+                              padding: heightPercentageToDP(2),
+                            }}>
+                            {/** Amount */}
+                            <View
+                              style={{
+                                borderRadius: heightPercentageToDP(2),
+                                padding: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  color: COLORS.black,
+                                  fontSize: heightPercentageToDP(2),
+                                  paddingStart: heightPercentageToDP(1),
+                                }}>
+                                Send Amount
+                              </Text>
+
+                              <LinearGradient
+                                colors={[
+                                  COLORS.time_firstblue,
+                                  COLORS.time_secondbluw,
+                                ]}
+                                start={{x: 0, y: 0}} // start from left
+                                end={{x: 1, y: 0}} // end at right
+                                style={{
+                                  borderRadius: heightPercentageToDP(2),
+                                }}>
+                                <TextInput
+                                  underlineColor="transparent"
+                                  activeUnderlineColor="transparent"
+                                  cursorColor={COLORS.white}
+                                  placeholderTextColor={COLORS.black}
+                                  style={{
+                                    backgroundColor: 'transparent',
+                                    fontFamily: FONT.Montserrat_Bold,
+                                    color: COLORS.black,
+                                  }}
+                                  textColor={COLORS.black}
+                                  fontFamily={FONT.Montserrat_Bold}
+                                  value={amountval}
+                                  inputMode="decimal"
+                                  onChangeText={text => setAmountval(text)}
+                                />
+                              </LinearGradient>
+                            </View>
+
+                            {/** Transaction id */}
+
+                            <View
+                              style={{
+                                borderRadius: heightPercentageToDP(2),
+                                padding: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  color: COLORS.black,
+                                  fontSize: heightPercentageToDP(2),
+                                  paddingStart: heightPercentageToDP(1),
+                                }}>
+                                Transaction ID
+                              </Text>
+
+                              <LinearGradient
+                                colors={[
+                                  COLORS.time_firstblue,
+                                  COLORS.time_secondbluw,
+                                ]}
+                                start={{x: 0, y: 0}} // start from left
+                                end={{x: 1, y: 0}} // end at right
+                                style={{
+                                  borderRadius: heightPercentageToDP(2),
+                                }}>
+                                <TextInput
+                                  underlineColor="transparent"
+                                  activeUnderlineColor="transparent"
+                                  cursorColor={COLORS.white}
+                                  placeholderTextColor={COLORS.black}
+                                  style={{
+                                    backgroundColor: 'transparent',
+                                    fontFamily: FONT.Montserrat_Bold,
+                                    color: COLORS.black,
+                                  }}
+                                  value={transactionval}
+                                  onChangeText={text => setTransactionval(text)}
+                                />
+                              </LinearGradient>
+                            </View>
+
+                            {/** Receipt */}
+
+                            <TouchableOpacity
+                              onPress={selectDoc}
+                              style={{
+                                borderRadius: heightPercentageToDP(2),
+                                padding: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  color: COLORS.black,
+                                  fontSize: heightPercentageToDP(2),
+                                  paddingStart: heightPercentageToDP(1),
+                                }}>
+                                Upload Receipt
+                              </Text>
+
+                              <LinearGradient
+                                colors={[
+                                  COLORS.time_firstblue,
+                                  COLORS.time_secondbluw,
+                                ]}
+                                start={{x: 0, y: 0}} // start from left
+                                end={{x: 1, y: 0}} // end at right
+                                style={{
+                                  borderRadius: heightPercentageToDP(2),
+                                  flexDirection: 'row',
+                                  alignItems: 'center', // Ensures vertical alignment of items
+                                  padding: heightPercentageToDP(0.5), // Adjust padding for spacing
+                                }}>
+                                <Text
+                                  style={{
+                                    backgroundColor: 'transparent',
+                                    fontFamily: FONT.HELVETICA_REGULAR,
+                                    color: COLORS.black,
+                                    fontSize: heightPercentageToDP(2),
+                                    textAlign: 'left',
+                                    paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
+                                    flex: 1, // Let the text take available space
+                                  }}>
+                                  {imageFileName}
+                                </Text>
+                                <View
+                                  style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
                                     paddingEnd: heightPercentageToDP(2),
                                   }}>
                                   <LinearGradient
                                     colors={[COLORS.grayBg, COLORS.white_s]}
-                                    style={{borderRadius: 10, padding: 5}}>
+                                    style={{borderRadius: 20, padding: 10}}>
                                     <AntDesign
-                                      name={
-                                        selectedUpiId._id === item._id
-                                          ? 'checkcircle'
-                                          : 'checkcircleo'
-                                      }
+                                      name={'upload'}
                                       size={heightPercentageToDP(3)}
-                                      color={
-                                        selectedUpiId._id === item._id
-                                          ? COLORS.green
-                                          : COLORS.darkGray
-                                      }
+                                      color={COLORS.darkGray}
                                     />
                                   </LinearGradient>
                                 </View>
-                              </View>
-                              <View
-                                style={{
-                                  flexDirection: 'row',
-                                  gap: heightPercentageToDP(1),
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  flex: 1,
-                                  paddingHorizontal: heightPercentageToDP(2),
-                                  borderRadius: heightPercentageToDP(2),
-                                }}>
-                                <View
-                                  style={{
-                                    flex: 1,
-                                    gap: heightPercentageToDP(2),
-                                    justifyContent: 'space-between',
-                                  }}>
-                                  <Text
-                                    style={styles.copytitle}
-                                    numberOfLines={2}>
-                                    Address
-                                  </Text>
-                                </View>
-                                <View
-                                  style={{
-                                    flex: 2,
-                                    gap: heightPercentageToDP(2),
-                                  }}>
-                                  <Text
-                                    style={styles.copycontent}
-                                    numberOfLines={2}>
-                                    {item.address}
-                                  </Text>
-                                </View>
-                                <View style={{gap: heightPercentageToDP(0.5)}}>
-                                  <TouchableOpacity
-                                    onPress={() =>
-                                      copyToClipboard(item.address)
-                                    }>
-                                    <LinearGradient
-                                      colors={[
-                                        COLORS.lightWhite,
-                                        COLORS.white_s,
-                                      ]}
-                                      style={{
-                                        padding: heightPercentageToDP(0.5),
-                                        borderRadius: heightPercentageToDP(1),
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                      }}>
-                                      <AntDesign
-                                        name={'copy1'}
-                                        size={heightPercentageToDP(2.5)}
-                                        color={COLORS.darkGray}
-                                      />
-                                    </LinearGradient>
-                                  </TouchableOpacity>
-                                </View>
-                              </View>
+                              </LinearGradient>
+                            </TouchableOpacity>
 
-                              <View
-                          style={{
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flex: 1,
-                            padding: heightPercentageToDP(2),
-                         
-                          }}>
-                          <View
-                            style={{
-                              flex: 1,
-                              display: 'flex',
-                              justifyContent: 'flex-start',
-                              alignItems: 'flex-start',
-                            }}>
-                            <Text style={{
-                              ...styles.copytitle,
-                              paddingLeft: heightPercentageToDP(2)
-                            }} numberOfLines={2} >
-                              {item.paymentnote ? 'Note' : ''}
-                            </Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 2,
-                            }}>
-                            <Text style={styles.copycontent}>
-                              {item.paymentnote} 
-                            </Text>
-                          </View>
-                        </View>
-
-                            </LinearGradient>
-                          </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-
-                    {/** FOR UPI DEPOSIT FORM */}
-
-                    {!upiVisible && (
-                      <ScrollView showsVerticalScrollIndicator={false}>
-                        <View
-                          style={{
-                            height: heightPercentageToDP(70),
-                            padding: heightPercentageToDP(2),
-                          }}>
-                          {/** Amount */}
-                          <View
-                            style={{
-                              borderRadius: heightPercentageToDP(2),
-                              padding: heightPercentageToDP(1),
-                            }}>
-                            <Text
-                              style={{
-                                fontFamily: FONT.Montserrat_SemiBold,
-                                color: COLORS.black,
-                                fontSize: heightPercentageToDP(2),
-                                paddingStart: heightPercentageToDP(1),
-                              }}>
-                              Send Amount
-                            </Text>
-
-                            <LinearGradient
-                              colors={[
-                                COLORS.time_firstblue,
-                                COLORS.time_secondbluw,
-                              ]}
-                              start={{x: 0, y: 0}} // start from left
-                              end={{x: 1, y: 0}} // end at right
-                              style={{
-                                borderRadius: heightPercentageToDP(2),
-                              }}>
-                              <TextInput
-                                underlineColor="transparent"
-                                activeUnderlineColor="transparent"
-                                cursorColor={COLORS.white}
-                                placeholderTextColor={COLORS.black}
-                                style={{
-                                  backgroundColor: 'transparent',
-                                  fontFamily: FONT.Montserrat_Bold,
-                                  color: COLORS.black,
-                                }}
-                                textColor={COLORS.black}
-                                fontFamily={FONT.Montserrat_Bold}
-                                value={amountval}
-                                inputMode="decimal"
-                                onChangeText={text => setAmountval(text)}
-                              />
-                            </LinearGradient>
-                          </View>
-
-                          {/** Transaction id */}
-
-                          <View
-                            style={{
-                              borderRadius: heightPercentageToDP(2),
-                              padding: heightPercentageToDP(1),
-                            }}>
-                            <Text
-                              style={{
-                                fontFamily: FONT.Montserrat_SemiBold,
-                                color: COLORS.black,
-                                fontSize: heightPercentageToDP(2),
-                                paddingStart: heightPercentageToDP(1),
-                              }}>
-                              Transaction ID
-                            </Text>
-
-                            <LinearGradient
-                              colors={[
-                                COLORS.time_firstblue,
-                                COLORS.time_secondbluw,
-                              ]}
-                              start={{x: 0, y: 0}} // start from left
-                              end={{x: 1, y: 0}} // end at right
-                              style={{
-                                borderRadius: heightPercentageToDP(2),
-                              }}>
-                              <TextInput
-                                underlineColor="transparent"
-                                activeUnderlineColor="transparent"
-                                cursorColor={COLORS.white}
-                                placeholderTextColor={COLORS.black}
-                                style={{
-                                  backgroundColor: 'transparent',
-                                  fontFamily: FONT.Montserrat_Bold,
-                                  color: COLORS.black,
-                                }}
-                                value={transactionval}
-                                onChangeText={text => setTransactionval(text)}
-                              />
-                            </LinearGradient>
-                          </View>
-
-                          {/** Receipt */}
-
-                          <TouchableOpacity
-                            onPress={selectDoc}
-                            style={{
-                              borderRadius: heightPercentageToDP(2),
-                              padding: heightPercentageToDP(1),
-                            }}>
-                            <Text
-                              style={{
-                                fontFamily: FONT.Montserrat_SemiBold,
-                                color: COLORS.black,
-                                fontSize: heightPercentageToDP(2),
-                                paddingStart: heightPercentageToDP(1),
-                              }}>
-                              Upload Receipt
-                            </Text>
-
-                            <LinearGradient
-                              colors={[
-                                COLORS.time_firstblue,
-                                COLORS.time_secondbluw,
-                              ]}
-                              start={{x: 0, y: 0}} // start from left
-                              end={{x: 1, y: 0}} // end at right
-                              style={{
-                                borderRadius: heightPercentageToDP(2),
-                                flexDirection: 'row',
-                                alignItems: 'center', // Ensures vertical alignment of items
-                                padding: heightPercentageToDP(0.5), // Adjust padding for spacing
-                              }}>
-                              <Text
-                                style={{
-                                  backgroundColor: 'transparent',
-                                  fontFamily: FONT.HELVETICA_REGULAR,
-                                  color: COLORS.black,
-                                  fontSize: heightPercentageToDP(2),
-                                  textAlign: 'left',
-                                  paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
-                                  flex: 1, // Let the text take available space
-                                }}>
-                                {imageFileName}
-                              </Text>
-                              <View
-                                style={{
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  paddingEnd: heightPercentageToDP(2),
-                                }}>
-                                <LinearGradient
-                                  colors={[COLORS.grayBg, COLORS.white_s]}
-                                  style={{borderRadius: 20, padding: 10}}>
-                                  <AntDesign
-                                    name={'upload'}
-                                    size={heightPercentageToDP(3)}
-                                    color={COLORS.darkGray}
-                                  />
-                                </LinearGradient>
-                              </View>
-                            </LinearGradient>
-                          </TouchableOpacity>
-
-                          {/** Remark */}
-
-                          <View
-                            style={{
-                              borderRadius: heightPercentageToDP(2),
-                              padding: heightPercentageToDP(1),
-                            }}>
-                            <Text
-                              style={{
-                                fontFamily: FONT.Montserrat_SemiBold,
-                                color: COLORS.black,
-                                fontSize: heightPercentageToDP(2),
-                                paddingStart: heightPercentageToDP(1),
-                              }}>
-                              Remark
-                            </Text>
-
-                            <LinearGradient
-                              colors={[
-                                COLORS.time_firstblue,
-                                COLORS.time_secondbluw,
-                              ]}
-                              start={{x: 0, y: 0}} // start from left
-                              end={{x: 1, y: 0}} // end at right
-                              style={{
-                                borderRadius: heightPercentageToDP(2),
-                              }}>
-                              <TextInput
-                                underlineColor="transparent"
-                                activeUnderlineColor="transparent"
-                                cursorColor={COLORS.white}
-                                placeholderTextColor={COLORS.black}
-                                style={{
-                                  backgroundColor: 'transparent',
-                                  fontFamily: FONT.Montserrat_Bold,
-                                  color: COLORS.black,
-                                  minHeight: heightPercentageToDP(10),
-                                }}
-                                multiline={true}
-                                value={remarkval}
-                                numberOfLines={4}
-                                onChangeText={text => setRemarkval(text)}
-                              />
-                            </LinearGradient>
+                            {/** Remark */}
 
                             <View
                               style={{
-                                marginBottom: heightPercentageToDP(5),
-                                marginTop: heightPercentageToDP(2),
+                                borderRadius: heightPercentageToDP(2),
+                                padding: heightPercentageToDP(1),
                               }}>
-                              {isLoading ? (
-                                <Loading />
-                              ) : (
-                                <TouchableOpacity
-                                  onPress={submitDeposit}
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  color: COLORS.black,
+                                  fontSize: heightPercentageToDP(2),
+                                  paddingStart: heightPercentageToDP(1),
+                                }}>
+                                Remark
+                              </Text>
+
+                              <LinearGradient
+                                colors={[
+                                  COLORS.time_firstblue,
+                                  COLORS.time_secondbluw,
+                                ]}
+                                start={{x: 0, y: 0}} // start from left
+                                end={{x: 1, y: 0}} // end at right
+                                style={{
+                                  borderRadius: heightPercentageToDP(2),
+                                }}>
+                                <TextInput
+                                  underlineColor="transparent"
+                                  activeUnderlineColor="transparent"
+                                  cursorColor={COLORS.white}
+                                  placeholderTextColor={COLORS.black}
                                   style={{
-                                    backgroundColor: COLORS.blue,
-                                    padding: heightPercentageToDP(2),
-                                    borderRadius: heightPercentageToDP(1),
-                                    alignItems: 'center',
-                                  }}>
-                                  <Text
+                                    backgroundColor: 'transparent',
+                                    fontFamily: FONT.Montserrat_Bold,
+                                    color: COLORS.black,
+                                    minHeight: heightPercentageToDP(10),
+                                  }}
+                                  multiline={true}
+                                  value={remarkval}
+                                  numberOfLines={4}
+                                  onChangeText={text => setRemarkval(text)}
+                                />
+                              </LinearGradient>
+
+                              <View
+                                style={{
+                                  marginBottom: heightPercentageToDP(5),
+                                  marginTop: heightPercentageToDP(2),
+                                }}>
+                                {isLoading ? (
+                                  <Loading />
+                                ) : (
+                                  <TouchableOpacity
+                                    onPress={submitDeposit}
                                     style={{
-                                      color: COLORS.white,
-                                      fontFamily: FONT.Montserrat_Regular,
+                                      backgroundColor: COLORS.blue,
+                                      padding: heightPercentageToDP(2),
+                                      borderRadius: heightPercentageToDP(1),
+                                      alignItems: 'center',
                                     }}>
-                                    Submit
-                                  </Text>
-                                </TouchableOpacity>
-                              )}
+                                    <Text
+                                      style={{
+                                        color: COLORS.white,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                      }}>
+                                      Submit
+                                    </Text>
+                                  </TouchableOpacity>
+                                )}
+                              </View>
                             </View>
                           </View>
-                        </View>
-                      </ScrollView>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-          </View>
-        </ImageBackground>
-      </View>
+                        </ScrollView>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </View>
+          </ImageBackground>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
