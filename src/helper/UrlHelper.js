@@ -15,15 +15,13 @@ const RESULT_ACCORDING_TO_LOCATION_API = server + 'result/allresultlocation';
 const NEXT_RESULT_API = server + 'result/nextresult';
 const GET_ALL_PROMOTIONS = server + 'user/getallpromotion';
 
-
-
 // For Updating User Profile
 const UPDATE_USER_PROFILE_API = server + 'user/updateprofile';
 const USER_PROFILE_PIC_API = server + 'user/updateprofilepic';
 
 const CHANGE_PASSWORD_API = server + 'user/changepassword';
 
-// For All Promtion 
+// For All Promtion
 const ALL_PROMOTIONS_API = server + 'user/getallpromotion';
 const ALL_ABOUT_API = server + 'user/getallabout';
 
@@ -56,9 +54,7 @@ const CREATE_PLAY_API = server + 'result/playbet/addplybet';
 const BALANCE_TRANSFER_TO_WALLET_TWO_API = server + 'user/balancetransfer';
 
 const RESULT_MONTH_YEAR = server;
-
-
-
+const SEND_NOTIFICATION_SINGLE_USER = server + 'user/sendnotificationsingle';
 
 export default {
   LOGIN_API,
@@ -97,5 +93,6 @@ export default {
   CREATE_PLAY_API,
   BALANCE_TRANSFER_TO_WALLET_TWO_API,
   NOTIFICATION_SEEN_API,
-  RESULT_MONTH_YEAR
+  RESULT_MONTH_YEAR,
+  SEND_NOTIFICATION_SINGLE_USER,
 };

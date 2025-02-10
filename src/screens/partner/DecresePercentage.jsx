@@ -67,7 +67,7 @@ const DecresePercentage = ({route}) => {
           accesstoken,
           body: {
             userId: item.userId,
-            partnerId: item.userId,
+            partnerId: user.userId,
             profitPercentage: profitPercentage,
             reason: reason,
           },
@@ -187,7 +187,7 @@ const DecresePercentage = ({route}) => {
                   <UpdatePartnerInput
                     title="New Profit Percentage"
                     value={profitPercentage}
-                    onChangeText={text => setInputValue(text)} // Updates inputValue state
+                    onChangeText={text => setProfitPercentage(text)} // Updates inputValue state
                     placeholder="Enter profit percentage"
                     keyboardType="numeric"
                   />
@@ -195,7 +195,7 @@ const DecresePercentage = ({route}) => {
                   <TextAreaInput
                     title="Reason"
                     value={reason}
-                    onChangeText={text => setInputValue(text)} // Updates inputValue state
+                    onChangeText={text => setReason(text)} // Updates inputValue state
                     placeholder="Enter profit deduction reason"
                   />
 

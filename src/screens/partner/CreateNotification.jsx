@@ -29,6 +29,7 @@ import Background from '../../components/background/Background';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientText from '../../components/helpercComponent/GradientText';
+import Loading from '../../components/helpercComponent/Loading';
 
 const CreateNotification = ({route}) => {
   const {userdata} = route.params;
