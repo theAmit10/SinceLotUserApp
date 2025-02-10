@@ -429,8 +429,8 @@ export const sincelotUserApi = createApi({
 
     // PROFIT DEDUCTION LIST
     getProfitDeductionList: builder.query({
-      query: ({accesstoken}) => ({
-        url: 'user/getprofitdeduction',
+      query: ({accesstoken, userid}) => ({
+        url: `user/getprofitdeduction/${userid}`,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${accesstoken}`,

@@ -28,12 +28,14 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import GradientText from '../../components/helpercComponent/GradientText';
 import Loading from '../../components/helpercComponent/Loading';
+import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
+import {useGetProfitDeductionListQuery} from '../../helper/Networkcall';
 
 const AllProfitDecrease = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
 
   const dummeyAllUsers = [
     {
@@ -70,13 +72,25 @@ const AllProfitDecrease = () => {
   // This will return the date and time in 'America/New_York' timezone.
 
   const handleSearch = text => {
-    const filtered = times.filter(item =>
-      item.lottime.toLowerCase().includes(text.toLowerCase()),
+    const filtered = data?.profitDeductions?.filter(
+      item =>
+        item.name.toLowerCase().includes(text.toLowerCase()) ||
+        item.userId?.toString() === text,
     );
     setFilteredData(filtered);
   };
-
   const [expandedItems, setExpandedItems] = useState({});
+  const {isLoading, data, error} = useGetProfitDeductionListQuery({
+    accesstoken,
+    userid: user.userId,
+  });
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      console.log(data);
+      setFilteredData(data.profitDeductions);
+    }
+  }, [isLoading, error, data]);
 
   const toggleItem = id => {
     setExpandedItems(prev => ({
@@ -86,189 +100,131 @@ const AllProfitDecrease = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
-      <Background />
-
-      {/** Main Cointainer */}
-
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <GradientText
+    <MainBackgroundWithoutScrollview title={'All Profit Decrease'}>
+      {}
+      <View
+        style={{
+          height: heightPercentageToDP(7),
+          flexDirection: 'row',
+          backgroundColor: COLORS.white_s,
+          alignItems: 'center',
+          paddingHorizontal: heightPercentageToDP(2),
+          borderRadius: heightPercentageToDP(1),
+          marginHorizontal: heightPercentageToDP(1),
+        }}>
+        <Fontisto
+          name={'search'}
+          size={heightPercentageToDP(3)}
+          color={COLORS.darkGray}
+        />
+        <TextInput
           style={{
-            ...styles.textStyle,
-            paddingLeft: heightPercentageToDP(2),
-          }}>
-          All Profit Decrease
-        </GradientText>
-        <ImageBackground
-          source={require('../../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: heightPercentageToDP(80),
+            marginStart: heightPercentageToDP(1),
+            flex: 1,
+            fontFamily: FONT.Montserrat_Regular,
+            fontSize: heightPercentageToDP(2.5),
+            color: COLORS.black,
           }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
-            style={{
-              height: heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
-
-              borderTopLeftRadius: heightPercentageToDP(5),
-              borderTopRightRadius: heightPercentageToDP(5),
-            }}>
-            {/** Top Style View */}
-            <View
-              style={{
-                height: heightPercentageToDP(5),
-                width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}></View>
-            </View>
-
-            <View
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.white_s,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                marginHorizontal: heightPercentageToDP(1),
-              }}>
-              <Fontisto
-                name={'search'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2.5),
-                  color: COLORS.black,
-                }}
-                placeholder="Search for User"
-                placeholderTextColor={COLORS.black}
-                label="Search"
-                onChangeText={handleSearch}
-              />
-            </View>
-
-            {/** Content Container */}
-
-            <View
-              style={{
-                flex: 1,
-                padding: heightPercentageToDP(1),
-              }}>
-              <ScrollView
-                contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
-                showsVerticalScrollIndicator={false}>
-                {/** User content */}
-                {false ? (
-                  <Loading />
-                ) : (
-                  dummeyAllUsers.map((item, index) => (
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={{
-                        justifyContent: 'flex-start',
-                        borderRadius: heightPercentageToDP(2),
-                        marginTop: heightPercentageToDP(2),
-                      }}>
-                      <TouchableOpacity
-                        style={styles.paymentOption}
-                        onPress={() => toggleItem(index)}>
-                        <View
-                          style={{
-                            flex: 1,
-                            height: '100%',
-                          }}>
-                          <View style={styles.topContainer}>
-                            <View
-                              style={{
-                                flex: 0.5,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>User ID</Text>
-                              <Text style={styles.titleBold}>
-                                {item.userid}
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                flex: 1.5,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>Name</Text>
-                              <Text style={styles.titleBold} numberOfLines={1}>
-                                {item.name}
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>Status</Text>
-                              <Text style={styles.titleBold} numberOfLines={1}>
-                                Pending
-                              </Text>
-                            </View>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-
-                      {expandedItems[index] && (
-                        <View
-                          style={{
-                            padding: heightPercentageToDP(2),
-                          }}>
-                          <View style={styles.centerLine}></View>
-                          <View style={styles.bottomContainer}>
-                            <View
-                              style={{
-                                flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>Reason</Text>
-                              <Text style={styles.titleBold}>
-                                Due to his weak performance and we have do
-                                something in life and i know that i can do it.
-                              </Text>
-                            </View>
-                          </View>
-                        </View>
-                      )}
-                    </LinearGradient>
-                  ))
-                )}
-              </ScrollView>
-            </View>
-          </View>
-        </ImageBackground>
+          placeholder="Search for User"
+          placeholderTextColor={COLORS.black}
+          label="Search"
+          onChangeText={handleSearch}
+        />
       </View>
-    </View>
+
+      {/** Content Container */}
+
+      <View
+        style={{
+          flex: 1,
+          padding: heightPercentageToDP(1),
+        }}>
+        <FlatList
+          data={filteredData}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item, index}) => (
+            <LinearGradient
+              colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+              start={{x: 0, y: 0}} // start from left
+              end={{x: 1, y: 0}} // end at right
+              style={{
+                justifyContent: 'flex-start',
+                borderRadius: heightPercentageToDP(1),
+                marginTop: heightPercentageToDP(2),
+              }}>
+              <TouchableOpacity
+                style={styles.paymentOption}
+                onPress={() => toggleItem(index)}>
+                <View
+                  style={{
+                    flex: 1,
+                    height: '100%',
+                  }}>
+                  <View style={styles.topContainer}>
+                    <View
+                      style={{
+                        flex: 0.5,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}>
+                      <Text style={styles.titleRegular}>User ID</Text>
+                      <Text style={styles.titleBold}>{item.userId}</Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1.5,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}>
+                      <Text style={styles.titleRegular}>Name</Text>
+                      <Text style={styles.titleBold} numberOfLines={1}>
+                        {item.name}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}>
+                      <Text style={styles.titleRegular}>Status</Text>
+                      <Text style={styles.titleBold} numberOfLines={1}>
+                        {item.status}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              {expandedItems[index] && (
+                <View
+                  style={{
+                    padding: heightPercentageToDP(2),
+                  }}>
+                  <View style={styles.centerLine}></View>
+                  <View style={styles.bottomContainer}>
+                    <View
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}>
+                      <Text style={styles.titleRegular}>Reason</Text>
+                      <Text style={styles.titleBold}>{item.reason}</Text>
+                    </View>
+                  </View>
+                </View>
+              )}
+            </LinearGradient>
+          )}
+        />
+      </View>
+    </MainBackgroundWithoutScrollview>
   );
 };
 
