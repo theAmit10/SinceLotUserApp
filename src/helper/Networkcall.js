@@ -450,10 +450,22 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    getAllRecharge: builder.query({
+      query: ({accesstoken, userId}) => ({
+        url: `user/getsinglepartnerrecharge/${userId}`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useGetAllRechargeQuery,
   useGetRechargeModuleQuery,
   useGetProfitDeductionListQuery,
   useDecreasePartnerProfitMutation,

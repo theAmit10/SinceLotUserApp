@@ -1,4 +1,3 @@
-
 import {
   FlatList,
   Image,
@@ -29,44 +28,46 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import GradientText from '../../components/helpercComponent/GradientText';
 import Loading from '../../components/helpercComponent/Loading';
-import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
+import {useGetAllRechargeQuery} from '../../helper/Networkcall';
 
 const AllRecharge = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user, partner} = useSelector(state => state.user);
 
   const dummeyAllUsers = [
     {
       userid: '1090',
       name: 'Babu Roa',
       partner: true,
-         paymentStatus: 'Pending'
+      paymentStatus: 'Pending',
     },
     {
       userid: '1091',
       name: 'Arjuna',
       partner: true,
-         paymentStatus: 'Pending'
+      paymentStatus: 'Pending',
     },
     {
       userid: '1092',
       name: 'Mark Jone',
       partner: false,
-      paymentStatus: 'Completed'
+      paymentStatus: 'Completed',
     },
     {
       userid: '1093',
       name: 'Janny Mona',
       partner: true,
-         paymentStatus: 'Cancelled'
+      paymentStatus: 'Cancelled',
     },
     {
       userid: '1094',
       name: 'Lucy cina',
       partner: true,
-         paymentStatus: 'Completed'
+      paymentStatus: 'Completed',
     },
   ];
 
@@ -92,348 +93,293 @@ const AllRecharge = () => {
     }));
   };
 
+  const {
+    isLoading: allRechargeLoading,
+    data: allRechargeData,
+    error: allRechargeError,
+  } = useGetAllRechargeQuery({
+    accesstoken,
+    userId: user.userId,
+  });
+
+  useEffect(() => {
+    if (!allRechargeLoading && allRechargeData) {
+      console.log('Getting all reacharge data');
+      console.log('All Recharge Data :: ' + JSON.stringify(allRechargeData));
+      setFilteredData(allRechargeData.recharges);
+    }
+  }, [allRechargeData, allRechargeLoading, allRechargeError]);
+
+  console.log('From all recharge');
+  console.log(allRechargeData);
+
   return (
-    <View style={{flex: 1}}>
-      <Background />
-
-      {/** Main Cointainer */}
-
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <GradientText
+    <MainBackgroundWithoutScrollview title={'All Recharge'}>
+      {/* <View
+        style={{
+          height: heightPercentageToDP(7),
+          flexDirection: 'row',
+          backgroundColor: COLORS.white_s,
+          alignItems: 'center',
+          paddingHorizontal: heightPercentageToDP(2),
+          borderRadius: heightPercentageToDP(1),
+          marginHorizontal: heightPercentageToDP(1),
+        }}>
+        <Fontisto
+          name={'search'}
+          size={heightPercentageToDP(3)}
+          color={COLORS.darkGray}
+        />
+        <TextInput
           style={{
-            ...styles.textStyle,
-            paddingLeft: heightPercentageToDP(2),
-          }}>
-          All Recharge
-        </GradientText>
-        <ImageBackground
-          source={require('../../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: heightPercentageToDP(80),
+            marginStart: heightPercentageToDP(1),
+            flex: 1,
+            fontFamily: FONT.Montserrat_Regular,
+            fontSize: heightPercentageToDP(2.5),
+            color: COLORS.black,
           }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
-            style={{
-              height: heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
+          placeholder="Search for User"
+          placeholderTextColor={COLORS.black}
+          label="Search"
+          onChangeText={handleSearch}
+        />
+      </View> */}
 
-              borderTopLeftRadius: heightPercentageToDP(5),
-              borderTopRightRadius: heightPercentageToDP(5),
-            }}>
-            {/** Top Style View */}
-            <View
+      {/** Content Container */}
+
+      <View
+        style={{
+          flex: 1,
+          padding: heightPercentageToDP(1),
+        }}>
+        <FlatList
+          data={filteredData}
+          renderItem={({item, index}) => (
+            <LinearGradient
+              colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+              start={{x: 0, y: 0}} // start from left
+              end={{x: 1, y: 0}} // end at right
               style={{
-                height: heightPercentageToDP(5),
-                width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+                justifyContent: 'flex-start',
+                borderRadius: heightPercentageToDP(2),
+                marginTop: heightPercentageToDP(2),
               }}>
-              <View
-                style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}></View>
-            </View>
-
-            <View
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.white_s,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                marginHorizontal: heightPercentageToDP(1),
-              }}>
-              <Fontisto
-                name={'search'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2.5),
-                  color: COLORS.black,
-                }}
-                placeholder="Search for User"
-                placeholderTextColor={COLORS.black}
-                label="Search"
-                onChangeText={handleSearch}
-              />
-            </View>
-
-            {/** Content Container */}
-
-            <View
-              style={{
-                flex: 1,
-                padding: heightPercentageToDP(1),
-              }}>
-              <ScrollView
-                contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
-                showsVerticalScrollIndicator={false}>
-                {/** User content */}
-                {false ? (
-                  <Loading />
-                ) : (
-                  dummeyAllUsers.map((item, index) => (
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
+              <TouchableOpacity
+                style={styles.paymentOption}
+                onPress={() => toggleItem(index)}>
+                <View
+                  style={{
+                    flex: 1,
+                    height: '100%',
+                    paddingEnd: heightPercentageToDP(2),
+                  }}>
+                  <View style={styles.topContainer}>
+                    <View
                       style={{
-                        justifyContent: 'flex-start',
-                        borderRadius: heightPercentageToDP(2),
-                        marginTop: heightPercentageToDP(2),
+                        flex: 0.5,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
                       }}>
-                      <TouchableOpacity
-                        style={styles.paymentOption}
-                        onPress={() => toggleItem(index)}>
+                      <Text style={styles.titleRegular}>User ID</Text>
+                      <Text style={styles.titleBold}>{item.userId}</Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}>
+                      <Text style={styles.titleRegular}>Amount</Text>
+                      <Text style={styles.titleBold} numberOfLines={1}>
+                        200 INR
+                      </Text>
+                    </View>
+                    {/* <View
+                        style={{
+                          flex: 1,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'flex-start',
+                        }}>
+                        <Text style={styles.titleRegular}>Status</Text>
+                        <Text style={styles.titleBold} numberOfLines={1}>
+                          Pending
+                        </Text>
+                      </View> */}
+                    {/** Right View */}
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                      {false && false ? (
                         <View
                           style={{
                             flex: 1,
-                            height: '100%',
-                            paddingEnd: heightPercentageToDP(2)
+                            justifyContent: 'center',
+                            alignItems: 'center',
                           }}>
-                          <View style={styles.topContainer}>
-                            <View
-                              style={{
-                                flex: 0.5,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>User ID</Text>
-                              <Text style={styles.titleBold}>
-                                {item.userid}
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>Amount</Text>
-                              <Text style={styles.titleBold} numberOfLines={1}>
-                                200 INR
-                              </Text>
-                            </View>
-                            {/* <View
-                              style={{
-                                flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>Status</Text>
-                              <Text style={styles.titleBold} numberOfLines={1}>
-                                Pending
-                              </Text>
-                            </View> */}
-                            {/** Right View */}
-                            <View style={{flex: 1, flexDirection: 'row'}}>
-                              {false &&
-                              false ? (
-                                <View
-                                  style={{
-                                    flex: 1,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                  }}>
-                                  <Loading />
-                                </View>
-                              ) : (
-                                <>
-                                  {item.paymentStatus === 'Pending' && (
-                                    <TouchableOpacity
-                                      style={{
-                                        width: '40%',
-                                        paddingHorizontal: 4,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                      }}>
-                                      <LinearGradient
-                                        colors={[
-                                          COLORS.lightWhite,
-                                          COLORS.white_s,
-                                        ]}
-                                        style={styles.iconContainer}>
-                                        <AntDesign
-                                          name={'check'}
-                                          size={heightPercentageToDP(2)}
-                                          color={COLORS.green}
-                                        />
-                                      </LinearGradient>
-                                    </TouchableOpacity>
-                                  )}
-
-                                  {/** PAYMENT STATUS TEXT */}
-                                  {item.paymentStatus === 'Pending' ? (
-                                    <Text
-                                      style={{
-                                        fontFamily: FONT.Montserrat_Regular,
-                                        color: COLORS.black,
-                                        fontSize: heightPercentageToDP(1.2),
-                                        textAlignVertical: 'center',
-                                        alignSelf: 'center',
-                                      }}>
-                                      {item.paymentStatus}
-                                    </Text>
-                                  ) : item.paymentStatus === 'Completed' ? (
-                                    <View
-                                      style={{
-                                        backgroundColor: COLORS.green,
-                                        borderRadius: heightPercentageToDP(1),
-                                        margin: heightPercentageToDP(2),
-                                        alignSelf: 'center',
-                                        padding: heightPercentageToDP(1),
-                                        flex: 1, // Ensure the view takes up space if necessary
-                                      }}>
-                                      <Text
-                                        style={{
-                                          fontFamily: FONT.Montserrat_SemiBold,
-                                          color: COLORS.white_s,
-                                          fontSize: heightPercentageToDP(1.5),
-                                          textAlignVertical: 'center',
-                                          textAlign: 'center',
-                                        }}>
-                                        {item.paymentStatus}
-                                      </Text>
-                                    </View>
-                                  ) : (
-                                    <View
-                                      style={{
-                                        flex: 1,
-                                        backgroundColor: COLORS.red,
-                                        borderRadius: heightPercentageToDP(2),
-                                        margin: heightPercentageToDP(2),
-                                        alignSelf: 'center',
-                                        padding: heightPercentageToDP(1),
-                                      }}>
-                                      <Text
-                                        style={{
-                                          fontFamily: FONT.Montserrat_SemiBold,
-                                          color: COLORS.white_s,
-                                          fontSize: heightPercentageToDP(1.5),
-                                          textAlignVertical: 'center',
-                                          textAlign: 'center',
-                                        }}>
-                                        {item.paymentStatus}
-                                      </Text>
-                                    </View>
-                                  )}
-
-                                 
-
-                                  {item.paymentStatus === 'Pending' && (
-                                    <TouchableOpacity
-                                      style={{
-                                        width: '40%',
-                                        paddingHorizontal: 4,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                      }}>
-                                      <LinearGradient
-                                        colors={[
-                                          COLORS.lightWhite,
-                                          COLORS.white_s,
-                                        ]}
-                                        style={styles.iconContainer}>
-                                        <AntDesign
-                                          name={'close'}
-                                          size={heightPercentageToDP(2)}
-                                          color={COLORS.red}
-                                        />
-                                      </LinearGradient>
-                                    </TouchableOpacity>
-                                  )}
-                                </>
-                              )}
-                            </View>
-                          </View>
+                          <Loading />
                         </View>
-                      </TouchableOpacity>
+                      ) : (
+                        <>
+                          {item.paymentStatus === 'Pending' && (
+                            <TouchableOpacity
+                              style={{
+                                width: '40%',
+                                paddingHorizontal: 4,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <LinearGradient
+                                colors={[COLORS.lightWhite, COLORS.white_s]}
+                                style={styles.iconContainer}>
+                                <AntDesign
+                                  name={'check'}
+                                  size={heightPercentageToDP(2)}
+                                  color={COLORS.green}
+                                />
+                              </LinearGradient>
+                            </TouchableOpacity>
+                          )}
 
-                      {expandedItems[index] && (
-                        <View
-                          style={{
-                            padding: heightPercentageToDP(2),
-                          }}>
-                          <View style={styles.centerLine}></View>
-                          <View style={styles.bottomContainer}>
+                          {/** PAYMENT STATUS TEXT */}
+                          {item.paymentStatus === 'Pending' ? (
+                            <Text
+                              style={{
+                                fontFamily: FONT.Montserrat_Regular,
+                                color: COLORS.black,
+                                fontSize: heightPercentageToDP(1.2),
+                                textAlignVertical: 'center',
+                                alignSelf: 'center',
+                              }}>
+                              {item.paymentStatus}
+                            </Text>
+                          ) : item.paymentStatus === 'Completed' ? (
+                            <View
+                              style={{
+                                backgroundColor: COLORS.green,
+                                borderRadius: heightPercentageToDP(1),
+                                margin: heightPercentageToDP(2),
+                                alignSelf: 'center',
+                                padding: heightPercentageToDP(1),
+                                flex: 1, // Ensure the view takes up space if necessary
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  color: COLORS.white_s,
+                                  fontSize: heightPercentageToDP(1.5),
+                                  textAlignVertical: 'center',
+                                  textAlign: 'center',
+                                }}>
+                                {item.paymentStatus}
+                              </Text>
+                            </View>
+                          ) : (
                             <View
                               style={{
                                 flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
+                                backgroundColor: COLORS.red,
+                                borderRadius: heightPercentageToDP(2),
+                                margin: heightPercentageToDP(2),
+                                alignSelf: 'center',
+                                padding: heightPercentageToDP(1),
                               }}>
-                              <Text style={styles.titleRegular}>Name</Text>
-                              <Text style={styles.titleBold}>
-                                {item.name}
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  color: COLORS.white_s,
+                                  fontSize: heightPercentageToDP(1.5),
+                                  textAlignVertical: 'center',
+                                  textAlign: 'center',
+                                }}>
+                                {item.paymentStatus}
                               </Text>
                             </View>
-                            <View
+                          )}
+
+                          {item.paymentStatus === 'Pending' && (
+                            <TouchableOpacity
                               style={{
-                                flex: 1,
-                                display: 'flex',
+                                width: '40%',
+                                paddingHorizontal: 4,
                                 justifyContent: 'center',
-                                alignItems: 'flex-start',
+                                alignItems: 'center',
                               }}>
-                              <Text style={styles.titleRegular}>Payment Method</Text>
-                              <Text style={styles.titleBold}>
-                               UPI
-                              </Text>
-                            </View>
-                          </View>
-                          <View style={styles.bottomContainer}>
-                            <View
-                              style={{
-                                flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>Transaction ID</Text>
-                              <Text style={styles.titleBold}>
-                                8943493483984
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                flex: 1,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                              }}>
-                              <Text style={styles.titleRegular}>Receipt</Text>
-                              <Text style={styles.titleBold}>
-                               Show Receipt
-                              </Text>
-                            </View>
-                          </View>
-                        </View>
+                              <LinearGradient
+                                colors={[COLORS.lightWhite, COLORS.white_s]}
+                                style={styles.iconContainer}>
+                                <AntDesign
+                                  name={'close'}
+                                  size={heightPercentageToDP(2)}
+                                  color={COLORS.red}
+                                />
+                              </LinearGradient>
+                            </TouchableOpacity>
+                          )}
+                        </>
                       )}
-                    </LinearGradient>
-                  ))
-                )}
-              </ScrollView>
-            </View>
-          </View>
-        </ImageBackground>
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              {expandedItems[index] && (
+                <View
+                  style={{
+                    padding: heightPercentageToDP(2),
+                  }}>
+                  <View style={styles.centerLine}></View>
+                  <View style={styles.bottomContainer}>
+                    <View
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}>
+                      <Text style={styles.titleRegular}>Name</Text>
+                      <Text style={styles.titleBold}>{item.username}</Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}>
+                      <Text style={styles.titleRegular}>Payment Method</Text>
+                      <Text style={styles.titleBold}>{item.paymentType}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.bottomContainer}>
+                    <View
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}>
+                      <Text style={styles.titleRegular}>Transaction ID</Text>
+                      <Text style={styles.titleBold}>{item.transactionId}</Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                      }}>
+                      <Text style={styles.titleRegular}>Receipt</Text>
+                      <Text style={styles.titleBold}>Show Receipt</Text>
+                    </View>
+                  </View>
+                </View>
+              )}
+            </LinearGradient>
+          )}
+        />
       </View>
-    </View>
+    </MainBackgroundWithoutScrollview>
   );
 };
 
@@ -504,7 +450,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white_s,
     marginTop: heightPercentageToDP(-1),
     marginBottom: heightPercentageToDP(1),
-    
   },
   titleRegular: {
     fontSize: heightPercentageToDP(1.5),

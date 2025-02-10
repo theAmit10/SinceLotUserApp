@@ -175,7 +175,7 @@ const Skrill = () => {
     try {
       setLoadingAllData(true);
 
-      const url = `${UrlHelper.PARTNER_USER_PAYPAL_API}/${user.rechargePaymentId}`;
+      const url = `${UrlHelper.PARTNER_USER_SKRILL_API}/${user.rechargePaymentId}`;
       const {data} = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
