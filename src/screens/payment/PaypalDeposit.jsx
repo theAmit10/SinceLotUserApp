@@ -175,7 +175,8 @@ const PaypalDeposit = () => {
   const allTheDepositData = async () => {
     try {
       setLoadingAllData(true);
-      const {data} = await axios.get(UrlHelper.ALL_PAYPAL_API, {
+      const url = `${UrlHelper.PARTNER_USER_PAYPAL_API}/${user.rechargePaymentId}`;
+      const {data} = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accesstoken}`,

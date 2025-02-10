@@ -1,4 +1,3 @@
-
 import {
   FlatList,
   Image,
@@ -56,6 +55,7 @@ const CreatePaypal = () => {
         const body = {
           emailaddress,
           paymentnote,
+          userId: user.userId,
         };
 
         console.log('JSON BODY :: ', JSON.stringify(body));
@@ -256,7 +256,6 @@ const CreatePaypal = () => {
                       />
                     </LinearGradient>
                   </View>
-                  
                 </View>
               </ScrollView>
               <View

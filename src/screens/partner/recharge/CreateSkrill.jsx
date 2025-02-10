@@ -1,5 +1,3 @@
-
-
 import {
   FlatList,
   Image,
@@ -63,6 +61,7 @@ const CreateSkrill = () => {
         const body = {
           address,
           paymentnote,
+          userId: user.userId,
         };
 
         console.log('JSON BODY :: ', JSON.stringify(body));

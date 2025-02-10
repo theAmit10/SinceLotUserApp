@@ -34,7 +34,7 @@ const AllPaypalDepositPayment = () => {
   const navigation = useNavigation();
 
   const isFocused = useIsFocused();
-  const {accesstoken, user} = useSelector(state => state.user);
+  const {accesstoken, user, partner} = useSelector(state => state.user);
 
   const copyToClipboard = val => {
     Clipboard.setString(val);
@@ -67,7 +67,9 @@ const AllPaypalDepositPayment = () => {
   const allTheDepositData = async () => {
     try {
       setLoadingAllData(true);
-      const {data} = await axios.get(UrlHelper.ALL_PAYPAL_API, {
+      const url = `${UrlHelper.PARTNER_PAYPAL_API}/${partner.rechargeModule}`;
+      console.log(url);
+      const {data} = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accesstoken}`,
@@ -75,7 +77,7 @@ const AllPaypalDepositPayment = () => {
       });
 
       console.log('datat :: ' + JSON.stringify(data));
-      setAllDepositData(data.payments);
+      setAllDepositData(data.paypalList);
       setLoadingAllData(false);
     } catch (error) {
       setLoadingAllData(false);
@@ -163,15 +165,14 @@ const AllPaypalDepositPayment = () => {
               </View>
             ) : (
               <ScrollView showsVerticalScrollIndicator={false}>
-                {allDepositdata.length !== 0 &&
-                  allDepositdata.map(item => (
+                {allDepositdata?.length !== 0 &&
+                  allDepositdata?.map(item => (
                     <TouchableOpacity key={item._id}>
                       <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                         start={{x: 0, y: 0}} // start from left
                         end={{x: 1, y: 0}} // end at right
                         style={{
-                       
                           borderRadius: heightPercentageToDP(2),
                           marginHorizontal: heightPercentageToDP(2),
                           marginVertical: heightPercentageToDP(1),
@@ -316,7 +317,6 @@ const AllPaypalDepositPayment = () => {
                             alignItems: 'center',
                             flex: 1,
                             padding: heightPercentageToDP(2),
-                         
                           }}>
                           <View
                             style={{
@@ -325,10 +325,12 @@ const AllPaypalDepositPayment = () => {
                               justifyContent: 'flex-start',
                               alignItems: 'flex-start',
                             }}>
-                            <Text style={{
-                              ...styles.copytitle,
-                              paddingLeft: heightPercentageToDP(2)
-                            }} numberOfLines={2} >
+                            <Text
+                              style={{
+                                ...styles.copytitle,
+                                paddingLeft: heightPercentageToDP(2),
+                              }}
+                              numberOfLines={2}>
                               {item.paymentnote ? 'Note' : ''}
                             </Text>
                           </View>
@@ -337,7 +339,57 @@ const AllPaypalDepositPayment = () => {
                               flex: 2,
                             }}>
                             <Text style={styles.copycontent}>
-                              {item.paymentnote} 
+                              {item.paymentnote}
+                            </Text>
+                          </View>
+                        </View>
+                        {/** FOR ACTIVATION STATUS */}
+                        <View
+                          style={{
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flex: 1,
+                            padding: heightPercentageToDP(2),
+                            gap: heightPercentageToDP(1),
+                          }}>
+                          <View
+                            style={{
+                              flex: 1,
+                              display: 'flex',
+                              justifyContent: 'flex-start',
+                              alignItems: 'flex-start',
+                            }}>
+                            <Text
+                              style={{
+                                ...styles.copytitle,
+                                paddingLeft: heightPercentageToDP(2),
+                              }}
+                              numberOfLines={2}>
+                              Activation Status
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 2,
+                              backgroundColor:
+                                item.paymentStatus === 'Pending'
+                                  ? COLORS.orange
+                                  : item.paymentStatus === 'Approved'
+                                  ? COLORS.green
+                                  : COLORS.red,
+                              width: widthPercentageToDP(90),
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(4),
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <Text
+                              style={[
+                                styles.copycontent,
+                                {color: COLORS.white_s},
+                              ]}>
+                              {item.paymentStatus}
                             </Text>
                           </View>
                         </View>

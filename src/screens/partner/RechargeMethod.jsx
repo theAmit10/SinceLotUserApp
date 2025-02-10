@@ -23,11 +23,20 @@ import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
+import {useGetRechargeModuleQuery} from '../../helper/Networkcall';
+import Loading from '../../components/helpercComponent/Loading';
 
 const RechargeMethod = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, partner} = useSelector(state => state.user);
+
+  const {isLoading, error, data} = useGetRechargeModuleQuery({
+    accesstoken,
+    id: partner.rechargeModule,
+  });
+
+  console.log(data);
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -74,114 +83,143 @@ const RechargeMethod = () => {
               <GradientTextWhite style={styles.textStyle}>
                 Recharge Deposit
               </GradientTextWhite>
-              <ScrollView
-                contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
-                showsVerticalScrollIndicator={false}>
-                {/** Crypto */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllCryptoDepositPayment')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
-                    <View style={styles.iconContainer}>
-                      <Image
-                        source={require('../../../assets/image/crypto.png')}
-                        resizeMode="cover"
-                        style={styles.icon}
-                      />
-                    </View>
-                    <GradientTextWhite style={styles.textStyleContent}>
-                      Crypto
-                    </GradientTextWhite>
-                  </LinearGradient>
-                </TouchableOpacity>
+              {isLoading ? (
+                <Loading />
+              ) : (
+                <ScrollView
+                  contentContainerStyle={{
+                    paddingBottom: heightPercentageToDP(2),
+                  }}
+                  showsVerticalScrollIndicator={false}>
+                  {/** Crypto */}
 
-                {/** Paypal */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllPaypalDepositPayment')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
-                    <View style={styles.iconContainer}>
-                      <Image
-                        source={require('../../../assets/image/paypal.png')}
-                        resizeMode="cover"
-                        style={styles.icon}
-                      />
-                    </View>
-                    <GradientTextWhite style={styles.textStyleContent}>
-                      Paypal
-                    </GradientTextWhite>
-                  </LinearGradient>
-                </TouchableOpacity>
+                  {data && data.rechargeModule.cryptoPermission && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('AllCryptoDepositPayment')
+                      }>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={styles.paymentOption}>
+                        <View style={styles.iconContainer}>
+                          <Image
+                            source={require('../../../assets/image/crypto.png')}
+                            resizeMode="cover"
+                            style={styles.icon}
+                          />
+                        </View>
+                        <GradientTextWhite style={styles.textStyleContent}>
+                          Crypto
+                        </GradientTextWhite>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
 
-                {/** Skrill */}
-                <TouchableOpacity onPress={() => navigation.navigate('AllSkrillPaymentPayment')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
-                    <View style={styles.iconContainer}>
-                      <Image
-                        source={require('../../../assets/image/skrill.png')}
-                        resizeMode="cover"
-                        style={styles.icon}
-                      />
-                    </View>
-                    <GradientTextWhite style={styles.textStyleContent}>
-                      Skrill
-                    </GradientTextWhite>
-                  </LinearGradient>
-                </TouchableOpacity>
+                  {/** Paypal */}
 
-                {/** BANK */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllBankDepositPayment')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
-                    <View style={styles.iconContainer}>
-                      <Image
-                        source={require('../../../assets/image/bank.png')}
-                        resizeMode="cover"
-                        style={styles.icon}
-                      />
-                    </View>
-                    <GradientTextWhite style={styles.textStyleContent}>
-                      Bank
-                    </GradientTextWhite>
-                  </LinearGradient>
-                </TouchableOpacity>
+                  {data && data.rechargeModule.paypalPermission && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('AllPaypalDepositPayment')
+                      }>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={styles.paymentOption}>
+                        <View style={styles.iconContainer}>
+                          <Image
+                            source={require('../../../assets/image/paypal.png')}
+                            resizeMode="cover"
+                            style={styles.icon}
+                          />
+                        </View>
+                        <GradientTextWhite style={styles.textStyleContent}>
+                          Paypal
+                        </GradientTextWhite>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
 
-                {/** UPI */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllUpiDepositPayment')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    style={styles.paymentOption}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                  >
-                    <View style={styles.iconContainer}>
-                      <Image
-                        source={require('../../../assets/image/upi.png')}
-                        resizeMode="cover"
-                        style={styles.icon}
-                      />
-                    </View>
-                    <GradientTextWhite style={styles.textStyleContent}>
-                      UPI
-                    </GradientTextWhite>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </ScrollView>
+                  {/** Skrill */}
+                  {data && data.rechargeModule.skrillPermission && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('AllSkrillPaymentPayment')
+                      }>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={styles.paymentOption}>
+                        <View style={styles.iconContainer}>
+                          <Image
+                            source={require('../../../assets/image/skrill.png')}
+                            resizeMode="cover"
+                            style={styles.icon}
+                          />
+                        </View>
+                        <GradientTextWhite style={styles.textStyleContent}>
+                          Skrill
+                        </GradientTextWhite>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
+
+                  {/** BANK */}
+                  {data && data.rechargeModule.bankPermission && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('AllBankDepositPayment')
+                      }>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={styles.paymentOption}>
+                        <View style={styles.iconContainer}>
+                          <Image
+                            source={require('../../../assets/image/bank.png')}
+                            resizeMode="cover"
+                            style={styles.icon}
+                          />
+                        </View>
+                        <GradientTextWhite style={styles.textStyleContent}>
+                          Bank
+                        </GradientTextWhite>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
+
+                  {/** UPI */}
+                  {data && data.rechargeModule.upiPermission && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('AllUpiDepositPayment')
+                      }>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        style={styles.paymentOption}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                      >
+                        <View style={styles.iconContainer}>
+                          <Image
+                            source={require('../../../assets/image/upi.png')}
+                            resizeMode="cover"
+                            style={styles.icon}
+                          />
+                        </View>
+                        <GradientTextWhite style={styles.textStyleContent}>
+                          UPI
+                        </GradientTextWhite>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
+                </ScrollView>
+              )}
             </View>
           </View>
         </ImageBackground>

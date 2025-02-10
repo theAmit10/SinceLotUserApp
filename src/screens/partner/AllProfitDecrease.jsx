@@ -72,7 +72,7 @@ const AllProfitDecrease = () => {
   // This will return the date and time in 'America/New_York' timezone.
 
   const handleSearch = text => {
-    const filtered = data?.profitDeductions?.filter(
+    const filtered = data?.userList?.filter(
       item =>
         item.name.toLowerCase().includes(text.toLowerCase()) ||
         item.userId?.toString() === text,

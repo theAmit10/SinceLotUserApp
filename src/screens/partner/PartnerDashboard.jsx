@@ -26,12 +26,17 @@ import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import GradientText from '../../components/helpercComponent/GradientText';
+import {loadPartnerProfile} from '../../redux/actions/userAction';
 
 const PartnerDashboard = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user, partner} = useSelector(state => state.user);
+
+  useEffect(() => {
+    dispatch(loadPartnerProfile(accesstoken, user.userId));
+  }, [dispatch]);
 
   return (
     <View style={{flex: 1}}>
@@ -252,66 +257,73 @@ const PartnerDashboard = () => {
                 </TouchableOpacity>
 
                 {/** All Recharge */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllRecharge')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
-                    <View
-                      style={{
-                        flex: 1,
-                        gap: heightPercentageToDP(2),
-                      }}>
-                      <GradientText style={styles.textStyleContent}>
-                        All Recharge
-                      </GradientText>
-                      <Text style={styles.subtitle}>Recharge Partner data</Text>
-                    </View>
 
-                    <View style={styles.iconContainer}>
-                      <FontAwesome6
-                        name={'money-bill-trend-up'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
-                        style={styles.icon}
-                      />
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
+                {user && partner && partner.rechargeModule && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllRecharge')}>
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={styles.paymentOption}>
+                      <View
+                        style={{
+                          flex: 1,
+                          gap: heightPercentageToDP(2),
+                        }}>
+                        <GradientText style={styles.textStyleContent}>
+                          All Recharge
+                        </GradientText>
+                        <Text style={styles.subtitle}>
+                          Recharge Partner data
+                        </Text>
+                      </View>
+
+                      <View style={styles.iconContainer}>
+                        <FontAwesome6
+                          name={'money-bill-trend-up'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                          style={styles.icon}
+                        />
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
 
                 {/** Recharge Method */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('RechargeMethod')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
-                    <View
-                      style={{
-                        flex: 1,
-                        gap: heightPercentageToDP(2),
-                      }}>
-                      <GradientText style={styles.textStyleContent}>
-                        Recharge Method
-                      </GradientText>
-                      <Text style={styles.subtitle}>
-                        Recharge Payment Methods{' '}
-                      </Text>
-                    </View>
+                {user && partner && partner.rechargeModule && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('RechargeMethod')}>
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={styles.paymentOption}>
+                      <View
+                        style={{
+                          flex: 1,
+                          gap: heightPercentageToDP(2),
+                        }}>
+                        <GradientText style={styles.textStyleContent}>
+                          Recharge Method
+                        </GradientText>
+                        <Text style={styles.subtitle}>
+                          Recharge Payment Methods{' '}
+                        </Text>
+                      </View>
 
-                    <View style={styles.iconContainer}>
-                      <FontAwesome6
-                        name={'money-check'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
-                        style={styles.icon}
-                      />
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
+                      <View style={styles.iconContainer}>
+                        <FontAwesome6
+                          name={'money-check'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                          style={styles.icon}
+                        />
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
               </ScrollView>
             </View>
           </View>
@@ -361,7 +373,6 @@ const styles = StyleSheet.create({
     width: 25,
     justifyContent: 'center',
     alignItems: 'center',
-
   },
   textStyleContent: {
     fontSize: heightPercentageToDP(3),

@@ -69,6 +69,10 @@ export const userReducer = createReducer(
       .addCase('getAllNotificationSuccess', (state, action) => {
         state.loadingNotification = false;
         state.notifications = action.payload;
+      })
+      .addCase('getPartnerSuccess', (state, action) => {
+        state.loading = false;
+        state.partner = action.payload;
       });
 
     builder
@@ -99,6 +103,10 @@ export const userReducer = createReducer(
       .addCase('getAllNotificationFail', (state, action) => {
         state.loadingNotification = false;
         state.error = action.payload;
+      })
+      .addCase('getPartnerFail', (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
 
     builder.addCase('registerFail', (state, action) => {
@@ -115,8 +123,8 @@ export const userReducer = createReducer(
       state.message = null;
     });
     builder.addCase('clearAllPromotion', state => {
-        state.promotions = [];
-      });
+      state.promotions = [];
+    });
     builder.addCase('clearAllAbout', state => {
       state.abouts = [];
     });

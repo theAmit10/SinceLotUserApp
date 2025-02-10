@@ -90,6 +90,33 @@ export const loadProfile = accesstoken => async dispatch => {
   }
 };
 
+// GETTING PARTNER PROFILE
+export const loadPartnerProfile = (accesstoken, userId) => async dispatch => {
+  try {
+    const url = `${UrlHelper.PARTNER_PROFILE_API}/${userId}`;
+
+    const {data} = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+
+    console.log('Data :: ' + data.partner);
+
+    dispatch({
+      type: 'getPartnerSuccess',
+      payload: data.partner,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response);
+    dispatch({
+      type: 'getPartnerFail',
+      payload: error.response.data.message,
+    });
+  }
+};
+
 // logging off
 export const logout = accesstoken => async dispatch => {
   console.log('Processing logout');
@@ -121,54 +148,59 @@ export const logout = accesstoken => async dispatch => {
   }
 };
 
-
 // Getting Registered
-export const register = (name,email,password,userDeviceToken) => async dispatch => {
-  console.log("Registering User")
-  console.log("Registering User data :: ",name,email,password,userDeviceToken)
+export const register =
+  (name, email, password, userDeviceToken) => async dispatch => {
+    console.log('Registering User');
+    console.log(
+      'Registering User data :: ',
+      name,
+      email,
+      password,
+      userDeviceToken,
+    );
 
-  try {
-    dispatch({
-      type: 'registerRequest',
-    });
-    const {data} = await axios.post(
-      UrlHelper.REGISTER_API,
-      {
+    try {
+      dispatch({
+        type: 'registerRequest',
+      });
+      const {data} = await axios.post(
+        UrlHelper.REGISTER_API,
+        {
           name,
           email,
           password,
           devicetoken: userDeviceToken,
-      }
-  ,
-      {
-        headers: {
-          'Content-Type': 'application/json',
         },
-      },
-    );
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
-    AsyncStorage.setItem("accesstoken",data.token)
-    dispatch({
-      type: 'getaccesstoken',
-      payload: data.token,
-    });
+      AsyncStorage.setItem('accesstoken', data.token);
+      dispatch({
+        type: 'getaccesstoken',
+        payload: data.token,
+      });
 
-    console.log("register data :: "+JSON.stringify(data))
+      console.log('register data :: ' + JSON.stringify(data));
 
-    dispatch({
-      type: 'registerSuccess',
-      payload: data.message,
-    });
-  } catch (error) {
-    console.log(error);
-    console.log(error.response.data.message);
+      dispatch({
+        type: 'registerSuccess',
+        payload: data.message,
+      });
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.message);
 
-    dispatch({
-      type: 'registerFail',
-      payload: error.response.data.message,
-    });
-  }
-};
+      dispatch({
+        type: 'registerFail',
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 // // Getting Registered
 // export const register = (name, email, password) => async dispatch => {
@@ -226,7 +258,7 @@ export const getUserAccessToken = token => async dispatch => {
 
 export const updateProfile = (name, accesstoken) => async dispatch => {
   try {
-    console.log("Updated profile started :: "+name)
+    console.log('Updated profile started :: ' + name);
     dispatch({
       type: 'updateProfileRequest',
     });
@@ -243,7 +275,7 @@ export const updateProfile = (name, accesstoken) => async dispatch => {
       },
     );
 
-    console.log("Updated Prifile :: "+data.message)
+    console.log('Updated Prifile :: ' + data.message);
 
     dispatch({
       type: 'updateProfileSuccess',
@@ -259,18 +291,18 @@ export const updateProfile = (name, accesstoken) => async dispatch => {
 };
 
 // Load All PROMOTION
-export const loadAllPromotion = (accesstoken) => async dispatch => {
+export const loadAllPromotion = accesstoken => async dispatch => {
   try {
     dispatch({
       type: 'getAllPromotionRequest',
-  });
-  
+    });
+
     const {data} = await axios.get(UrlHelper.ALL_PROMOTIONS_API, {
       headers: {
         Authorization: `Bearer ${accesstoken}`,
       },
     });
-  
+
     dispatch({
       type: 'getAllPromotionSuccess',
       payload: data.promotions,
@@ -278,29 +310,27 @@ export const loadAllPromotion = (accesstoken) => async dispatch => {
   } catch (error) {
     console.log(error);
     console.log(error.response);
-  
+
     dispatch({
       type: 'getAllPromotionFail',
       payload: error.response.data.message,
     });
   }
-  };
+};
 
-
-
-  // Load All About Us
-export const loadAllAboutUs = (accesstoken) => async dispatch => {
+// Load All About Us
+export const loadAllAboutUs = accesstoken => async dispatch => {
   try {
     dispatch({
       type: 'getAllAboutRequest',
-  });
-  
+    });
+
     const {data} = await axios.get(UrlHelper.ALL_ABOUT_API, {
       headers: {
         Authorization: `Bearer ${accesstoken}`,
       },
     });
-  
+
     dispatch({
       type: 'getAllAboutSuccess',
       payload: data.aboutus,
@@ -308,31 +338,29 @@ export const loadAllAboutUs = (accesstoken) => async dispatch => {
   } catch (error) {
     console.log(error);
     console.log(error.response);
-  
+
     dispatch({
       type: 'getAllAboutFail',
       payload: error.response.data.message,
     });
   }
-  };
+};
 
-
-
-  // Load All Notification
-export const loadAllNotification = (accesstoken,id) => async dispatch => {
+// Load All Notification
+export const loadAllNotification = (accesstoken, id) => async dispatch => {
   try {
     dispatch({
       type: 'getAllNotificationRequest',
-  });
+    });
 
-  const url = `${UrlHelper.NOTIFICATION_API}${id}/notifications`
-  
+    const url = `${UrlHelper.NOTIFICATION_API}${id}/notifications`;
+
     const {data} = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${accesstoken}`,
       },
     });
-  
+
     dispatch({
       type: 'getAllNotificationSuccess',
       payload: data.notifications,
@@ -340,10 +368,10 @@ export const loadAllNotification = (accesstoken,id) => async dispatch => {
   } catch (error) {
     console.log(error);
     console.log(error.response);
-  
+
     dispatch({
       type: 'getAllNotificationFail',
       payload: error.response.data.message,
     });
   }
-  };
+};

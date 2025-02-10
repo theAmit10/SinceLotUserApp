@@ -55,8 +55,18 @@ const BALANCE_TRANSFER_TO_WALLET_TWO_API = server + 'user/balancetransfer';
 
 const RESULT_MONTH_YEAR = server;
 const SEND_NOTIFICATION_SINGLE_USER = server + 'user/sendnotificationsingle';
+const PARTNER_PROFILE_API = server + 'user/getpartnerbyuserid';
 
+const PARTNER_PAYPAL_API = server + 'result/getpartnerpaypallist';
+const PARTNER_USER_PAYPAL_API = server + 'result/getuserpaypalpaymets';
+
+const PARTNER_SKRILL_API = server + 'result/getpartnerskrilllist';
+const PARTNER_USER_SKRILL_API = server + 'result/getuserskrillpaymets';
 export default {
+  PARTNER_PAYPAL_API,
+  PARTNER_USER_PAYPAL_API,
+  PARTNER_SKRILL_API,
+  PARTNER_USER_SKRILL_API,
   LOGIN_API,
   USER_PROFILE_API,
   LOGOUT_API,
@@ -95,4 +105,5 @@ export default {
   NOTIFICATION_SEEN_API,
   RESULT_MONTH_YEAR,
   SEND_NOTIFICATION_SINGLE_USER,
+  PARTNER_PROFILE_API,
 };
