@@ -461,10 +461,22 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // FOR GETTING USERS SINGLE USER PLAY HISTORY
+    getSingleUserPlayHistory: builder.query({
+      query: ({accesstoken, userId}) => ({
+        url: 'result/singleuserplayhistory/' + userId,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useGetSingleUserPlayHistoryQuery,
   useGetAllRechargeQuery,
   useGetRechargeModuleQuery,
   useGetProfitDeductionListQuery,

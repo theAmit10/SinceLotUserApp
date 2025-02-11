@@ -41,7 +41,7 @@ const Setting = () => {
   const {isLoading, error, data} = useGetAboutPartnerQuery({accesstoken});
 
   useEffect(() => {
-    if (user && user.partnerModule) {
+    if (user && user.partnerStatus) {
       setPartner(true);
     }
   }, [user]);

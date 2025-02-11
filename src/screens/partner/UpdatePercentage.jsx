@@ -43,10 +43,17 @@ const UpdatePercentage = ({route}) => {
   const dispatch = useDispatch();
 
   const {accesstoken} = useSelector(state => state.user);
-  const [profitPercentage, setProfitPercentage] = useState(null);
+  const [profitPercentage, setProfitPercentage] = useState('');
 
   const [updateProfitPercentage, {isLoading, error}] =
     useUpdateProfitPercentageMutation();
+
+  const checkProfitIsValid = () => {
+    const itemProfit = Number.parseInt(item.profitPercentage, 10);
+    const newProfit = Number.parseInt(profitPercentage, 10);
+
+    return newProfit >= itemProfit;
+  };
 
   // TODE: UPDATE PARTNER PERCENTAGE FUNCTION
   const updatePartnerPercentage = async () => {
@@ -54,6 +61,21 @@ const UpdatePercentage = ({route}) => {
       Toast.show({
         type: 'error',
         text1: 'Enter Profit Percentage',
+      });
+    }
+    if (isNaN(profitPercentage)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter valid profit percentage',
+      });
+    } else if (
+      Number.parseInt(item.profitPercentage) >=
+      Number.parseInt(profitPercentage)
+    ) {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Profit Percentage',
+        text2: 'New percentage must be higher than the current one.',
       });
     } else {
       console.log(item.userId);
@@ -63,14 +85,14 @@ const UpdatePercentage = ({route}) => {
           accesstoken,
           body: {
             partnerId: item.userId,
-            profitPercentage: profitPercentage,
+            profitPercentage: Number.parseInt(profitPercentage),
           },
         });
 
         console.log(res);
         Toast.show({
           type: 'success',
-          text1: 'Successfully Updated',
+          text1: res.data.message,
         });
       } catch (error) {
         console.log(error);

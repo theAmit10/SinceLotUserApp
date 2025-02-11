@@ -80,7 +80,7 @@ const AllPartner = () => {
   };
 
   const userid = user.userId;
-  const {isLoading, data, error} = useGetPartnerPartnerListQuery({
+  const {isLoading, data, error, refetch} = useGetPartnerPartnerListQuery({
     accesstoken,
     userid,
   });
@@ -98,6 +98,12 @@ const AllPartner = () => {
       });
     }
   }, [isLoading, data, error]);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    refetch();
+  }, [isFocused, refetch]);
 
   return (
     <MainBackgroundWithoutScrollview title={'All Partners'}>
@@ -139,6 +145,7 @@ const AllPartner = () => {
         ) : (
           <FlatList
             data={filteredData}
+            showsVerticalScrollIndicator={false}
             keyExtractor={item => item._id}
             renderItem={({item, index}) => (
               <TouchableOpacity
@@ -203,9 +210,29 @@ const AllPartner = () => {
                         <Text style={styles.titleRegular}>
                           Total no. of users
                         </Text>
-                        <Text style={styles.titleBold} numberOfLines={1}>
-                          {item.userList?.length}
-                        </Text>
+                        <View
+                          style={{
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            width: '100%',
+                          }}>
+                          <Text style={styles.titleBold} numberOfLines={1}>
+                            {item.userList?.length}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.titleRegular,
+                              {
+                                color: item.partnerStatus
+                                  ? 'green'
+                                  : COLORS.red,
+                              },
+                            ]}
+                            numberOfLines={1}>
+                            {item.partnerStatus ? 'Active' : 'Inactive'}
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </View>

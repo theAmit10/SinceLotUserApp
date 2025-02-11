@@ -21,7 +21,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 
 import moment from 'moment-timezone';
-import {useGetPlayHistoryQuery} from '../../../helper/Networkcall';
+import {
+  useGetPlayHistoryQuery,
+  useGetSingleUserPlayHistoryQuery,
+} from '../../../helper/Networkcall';
 import GradientTextWhite from '../../../components/helpercComponent/GradientTextWhite';
 import Loading from '../../../components/helpercComponent/Loading';
 import NoDataFound from '../../../components/helpercComponent/NoDataFound';
@@ -84,12 +87,22 @@ const UserPlayHistory = ({route}) => {
   const {accesstoken, user} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
 
+  // const {
+  //   data: historyapidatas,
+  //   error,
+  //   isLoading,
+  //   refetch,
+  // } = useGetPlayHistoryQuery(accesstoken);
+
   const {
     data: historyapidatas,
     error,
     isLoading,
     refetch,
-  } = useGetPlayHistoryQuery(accesstoken);
+  } = useGetSingleUserPlayHistoryQuery({
+    accesstoken: accesstoken,
+    userId: item.userId,
+  });
 
   console.log(JSON.stringify(historyapidatas?.playbets));
 

@@ -36,7 +36,7 @@ const PartnerDetails = ({route}) => {
   const {item} = route.params;
   const {accesstoken, user} = useSelector(state => state.user);
 
-  const userid = user.userId;
+  const userid = item.userId;
 
   const {isLoading, error, data, refetch} = useGetAboutPartnerQuery({
     accesstoken,
@@ -46,7 +46,7 @@ const PartnerDetails = ({route}) => {
 
   useEffect(() => {
     if (!isLoading && data) {
-      setpartner(data);
+      setpartner(data.partner);
 
       console.log('Hey data');
       console.log('Hey data', data);
@@ -255,7 +255,7 @@ const PartnerDetails = ({route}) => {
                   {/** Increse Percentage */}
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate('UpdatePercentage', {item})
+                      navigation.navigate('UpdatePercentage', {item: partner})
                     }>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}

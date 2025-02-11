@@ -58,6 +58,8 @@ const CreateNotification = ({route}) => {
     } else {
       setProgressBar(true);
 
+      console.log('User id :: ', userdata._id);
+
       try {
         const url = `${UrlHelper.SEND_NOTIFICATION_SINGLE_USER}`;
         const {data} = await axios.post(
@@ -66,7 +68,7 @@ const CreateNotification = ({route}) => {
             title: titleValue,
             description: discriptionValue,
             devicetoken: userdata?.devicetoken,
-            userId: userdata._id,
+            userId: userdata.userId,
           },
           {
             headers: {

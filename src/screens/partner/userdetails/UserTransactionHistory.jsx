@@ -41,7 +41,7 @@ const UserTransactionHistory = ({route}) => {
     error,
     isLoading,
     refetch,
-  } = useGetHistoryQuery({accesstoken: accesstoken, userId: user.userId});
+  } = useGetHistoryQuery({accesstoken: accesstoken, userId: item.userId});
 
   console.log('History isloading :: ' + isLoading);
   console.log('History :: ' + JSON.stringify(error));
