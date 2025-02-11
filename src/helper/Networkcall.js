@@ -472,10 +472,24 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // [UPDATE RECHARGE STATUS]
+    updateDepositPaymentStatus: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/updateuserdeposit`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        body,
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useUpdateDepositPaymentStatusMutation,
   useGetSingleUserPlayHistoryQuery,
   useGetAllRechargeQuery,
   useGetRechargeModuleQuery,
