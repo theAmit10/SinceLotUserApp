@@ -61,6 +61,21 @@ const DecresePercentage = ({route}) => {
         type: 'error',
         text1: 'Enter Reason',
       });
+    }
+    if (isNaN(profitPercentage)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter valid new profit percentage',
+      });
+    } else if (
+      Number.parseInt(item.profitPercentage) <=
+      Number.parseInt(profitPercentage)
+    ) {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Profit Percentage',
+        text2: 'New percentage must be lower than the current one.',
+      });
     } else {
       try {
         const res = await decreasePartnerProfit({

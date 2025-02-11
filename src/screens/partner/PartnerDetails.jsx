@@ -289,7 +289,7 @@ const PartnerDetails = ({route}) => {
                   {/** Decrease Percentage */}
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate('DecresePercentage', {item})
+                      navigation.navigate('DecresePercentage', {item: partner})
                     }>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
