@@ -114,7 +114,9 @@ const BankDeposit = () => {
   const allTheDepositData = async () => {
     try {
       setLoadingAllData(true);
-      const {data} = await axios.get(UrlHelper.ALL_BANK_API, {
+
+      const url = `${UrlHelper.PARTNER_USER_BANK_API}/${user.rechargePaymentId}`;
+      const {data} = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accesstoken}`,
@@ -450,7 +452,6 @@ const BankDeposit = () => {
                                     </LinearGradient>
                                   </View>
                                 </View>
-                                
 
                                 {/** BANK NAME */}
                                 <View
@@ -733,7 +734,7 @@ const BankDeposit = () => {
                                       alignItems: 'flex-start',
                                     }}>
                                     <Text style={styles.copytitle}>
-                                    Routing / IFSC Code
+                                      Routing / IFSC Code
                                     </Text>
                                   </View>
                                   <View

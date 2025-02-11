@@ -1,4 +1,3 @@
-
 import {
   ImageBackground,
   KeyboardAvoidingView,
@@ -110,6 +109,7 @@ const CreateCrypto = () => {
         formData.append('walletaddress', walletaddress);
         formData.append('networktype', networktype);
         formData.append('paymentnote', paymentnote);
+        formData.append('userId', user.userId);
         formData.append('qrcode', {
           uri: mineImage[0].uri,
           name: mineImage[0].name,

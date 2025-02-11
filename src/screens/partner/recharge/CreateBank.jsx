@@ -155,6 +155,7 @@ const CreateBank = () => {
             accountnumber,
             swiftcode,
             paymentnote,
+            userId: user.userId,
           };
           console.log('JSON BODY :: ', JSON.stringify(body));
           const res = await createBankAccount({
@@ -170,6 +171,7 @@ const CreateBank = () => {
             ifsccode,
             accountnumber,
             paymentnote,
+            userId: user.userId,
           };
           console.log('JSON BODY :: ', JSON.stringify(body));
           const res = await createBankAccount({

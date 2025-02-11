@@ -108,7 +108,11 @@ const UpiDeposit = () => {
       return;
     }
     if (isNaN(amountval)) {
-      Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Amount',
+        text2: 'Please enter valid amount',
+      });
     }
     if (!transactionval) {
       Toast.show({type: 'error', text1: 'Enter Transaction Number'});
@@ -170,7 +174,9 @@ const UpiDeposit = () => {
   const allTheDepositData = async () => {
     try {
       setLoadingAllData(true);
-      const {data} = await axios.get(UrlHelper.ALL_UPI_API, {
+
+      const url = `${UrlHelper.PARTNER_USER_UPI_API}/${user.rechargePaymentId}`;
+      const {data} = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accesstoken}`,
@@ -206,9 +212,9 @@ const UpiDeposit = () => {
             style={{
               width: '100%',
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
             }}
             imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -217,9 +223,9 @@ const UpiDeposit = () => {
             <View
               style={{
                 height:
-                Platform.OS === 'android'
-                  ? heightPercentageToDP(85)
-                  : heightPercentageToDP(80),
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),

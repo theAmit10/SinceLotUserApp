@@ -24,14 +24,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import Clipboard from '@react-native-clipboard/clipboard';
 import axios from 'axios';
 import GradientTextWhite from '../../../components/helpercComponent/GradientTextWhite';
-import { COLORS, FONT } from '../../../../assets/constants';
-import { serverName } from '../../../redux/store';
-import { useDeleteUpiAccountMutation } from '../../../helper/Networkcall';
+import {COLORS, FONT} from '../../../../assets/constants';
+import {serverName} from '../../../redux/store';
+import {useDeleteUpiAccountMutation} from '../../../helper/Networkcall';
 import Background from '../../../components/background/Background';
 import UrlHelper from '../../../helper/UrlHelper';
 import Loading from '../../../components/helpercComponent/Loading';
-
-
 
 const upiapidata = [
   {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
@@ -44,7 +42,7 @@ const upiapidata = [
 const AllUpiDepositPayment = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const {accesstoken, user} = useSelector(state => state.user);
+  const {accesstoken, user, partner} = useSelector(state => state.user);
 
   const [seletedItem, setSelectedItem] = useState('');
 
@@ -73,33 +71,11 @@ const AllUpiDepositPayment = () => {
     console.log(loadingAllData);
   }, [loadingAllData]);
 
-  // const allTheDepositData = async () => {
-  //   try {
-  //     setLoadingAllData(true);
-  //     const {data} = await axios.get(UrlHelper.ALL_UPI_API, {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${accesstoken}`,
-  //       },
-  //     });
-
-  //     console.log('datat :: ' + JSON.stringify(data));
-  //     setAllDepositData(data.payments);
-  //     setLoadingAllData(false);
-  //   } catch (error) {
-  //     setLoadingAllData(false);
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: 'Something went wrong',
-  //     });
-  //     console.log(error);
-  //   }
-  // };
-
   const allTheDepositData = async () => {
     try {
       setLoadingAllData(true);
-      const {data} = await axios.get(UrlHelper.ALL_UPI_API, {
+      const url = `${UrlHelper.PARTNER_UPI_API}/${partner.rechargeModule}`;
+      const {data} = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accesstoken}`,
@@ -107,7 +83,7 @@ const AllUpiDepositPayment = () => {
       });
 
       console.log('datat :: ' + JSON.stringify(data));
-      setAllDepositData(data.payments);
+      setAllDepositData(data.upiList);
       setLoadingAllData(false);
     } catch (error) {
       setLoadingAllData(false);
@@ -139,7 +115,7 @@ const AllUpiDepositPayment = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Background/>
+      <Background />
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <ImageBackground
           source={require('../../../../assets/image/tlwbg.jpg')}
@@ -406,6 +382,45 @@ const AllUpiDepositPayment = () => {
                           </View>
                         </View>
 
+                        {item.paymentnote && (
+                          <View
+                            style={{
+                              flexDirection: 'column',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              flex: 1,
+                              padding: heightPercentageToDP(2),
+                            }}>
+                            <View
+                              style={{
+                                flex: 1,
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-start',
+                              }}>
+                              <Text
+                                style={{
+                                  ...styles.copytitle,
+                                  paddingLeft: heightPercentageToDP(1),
+                                  textAlignVertical: 'center',
+                                }}
+                                numberOfLines={2}>
+                                {item.paymentnote ? 'Note' : ''}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 2,
+                                paddingEnd: heightPercentageToDP(1),
+                              }}>
+                              <Text style={styles.copycontent}>
+                                {item.paymentnote}
+                              </Text>
+                            </View>
+                          </View>
+                        )}
+
+                        {/** FOR ACTIVATION STATUS */}
                         <View
                           style={{
                             flexDirection: 'column',
@@ -413,6 +428,7 @@ const AllUpiDepositPayment = () => {
                             alignItems: 'center',
                             flex: 1,
                             padding: heightPercentageToDP(2),
+                            gap: heightPercentageToDP(1),
                           }}>
                           <View
                             style={{
@@ -424,20 +440,33 @@ const AllUpiDepositPayment = () => {
                             <Text
                               style={{
                                 ...styles.copytitle,
-                                paddingLeft: heightPercentageToDP(1),
-                                textAlignVertical: 'center',
+                                paddingLeft: heightPercentageToDP(2),
                               }}
                               numberOfLines={2}>
-                              {item.paymentnote ? 'Note' : ''}
+                              Activation Status
                             </Text>
                           </View>
                           <View
                             style={{
                               flex: 2,
-                              paddingEnd: heightPercentageToDP(1),
+                              backgroundColor:
+                                item.paymentStatus === 'Pending'
+                                  ? COLORS.orange
+                                  : item.paymentStatus === 'Approved'
+                                  ? COLORS.green
+                                  : COLORS.red,
+                              width: widthPercentageToDP(90),
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(4),
+                              justifyContent: 'center',
+                              alignItems: 'center',
                             }}>
-                            <Text style={styles.copycontent}>
-                              {item.paymentnote}
+                            <Text
+                              style={[
+                                styles.copycontent,
+                                {color: COLORS.white_s},
+                              ]}>
+                              {item.paymentStatus}
                             </Text>
                           </View>
                         </View>

@@ -42,7 +42,7 @@ const AllCryptoDepositPayment = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
-  const {accesstoken, user} = useSelector(state => state.user);
+  const {accesstoken, user, partner} = useSelector(state => state.user);
 
   const copyToClipboard = val => {
     Clipboard.setString(val);
@@ -75,7 +75,9 @@ const AllCryptoDepositPayment = () => {
   const allTheDepositData = async () => {
     try {
       setLoadingAllData(true);
-      const {data} = await axios.get(UrlHelper.ALL_CRYPTO_API, {
+
+      const url = `${UrlHelper.PARTNER_CRYPTO_API}/${partner.rechargeModule}`;
+      const {data} = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accesstoken}`,
@@ -83,7 +85,7 @@ const AllCryptoDepositPayment = () => {
       });
 
       console.log('datat :: ' + JSON.stringify(data));
-      setAllDepositData(data.payments);
+      setAllDepositData(data.cryptoList);
       setLoadingAllData(false);
     } catch (error) {
       setLoadingAllData(false);
@@ -377,38 +379,90 @@ const AllCryptoDepositPayment = () => {
                           </View>
                         </View>
 
+                        {item.paymentnote && (
+                          <View
+                            style={{
+                              flexDirection: 'column',
+                              gap: heightPercentageToDP(1),
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              flex: 1,
+                              paddingHorizontal: heightPercentageToDP(2),
+                              borderRadius: heightPercentageToDP(2),
+                              paddingBottom: heightPercentageToDP(2),
+                            }}>
+                            <View
+                              style={{
+                                flex: 1,
+                                gap: heightPercentageToDP(2),
+                                justifyContent: 'space-between',
+                              }}>
+                              <Text style={styles.copytitle} numberOfLines={2}>
+                                {item.paymentnote ? 'Note' : ''}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 2,
+                                gap: heightPercentageToDP(2),
+                              }}>
+                              <Text style={styles.copycontent}>
+                                {item.paymentnote}
+                              </Text>
+                            </View>
+                          </View>
+                        )}
+
+                        {/** FOR ACTIVATION STATUS */}
                         <View
                           style={{
                             flexDirection: 'column',
-                            gap: heightPercentageToDP(1),
                             justifyContent: 'center',
                             alignItems: 'center',
                             flex: 1,
-                            paddingHorizontal: heightPercentageToDP(2),
-                            borderRadius: heightPercentageToDP(2),
-                            paddingBottom: heightPercentageToDP(2),
+                            padding: heightPercentageToDP(2),
+                            gap: heightPercentageToDP(1),
                           }}>
                           <View
                             style={{
                               flex: 1,
-                              gap: heightPercentageToDP(2),
-                              justifyContent: 'space-between',
+                              display: 'flex',
+                              justifyContent: 'flex-start',
+                              alignItems: 'flex-start',
                             }}>
-                            <Text style={styles.copytitle} numberOfLines={2}>
-                              {item.paymentnote ? 'Note' : ''}
+                            <Text
+                              style={{
+                                ...styles.copytitle,
+                                paddingLeft: heightPercentageToDP(2),
+                              }}
+                              numberOfLines={2}>
+                              Activation Status
                             </Text>
                           </View>
                           <View
                             style={{
                               flex: 2,
-                              gap: heightPercentageToDP(2),
+                              backgroundColor:
+                                item.paymentStatus === 'Pending'
+                                  ? COLORS.orange
+                                  : item.paymentStatus === 'Approved'
+                                  ? COLORS.green
+                                  : COLORS.red,
+                              width: widthPercentageToDP(90),
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(4),
+                              justifyContent: 'center',
+                              alignItems: 'center',
                             }}>
-                            <Text style={styles.copycontent}>
-                              {item.paymentnote}
+                            <Text
+                              style={[
+                                styles.copycontent,
+                                {color: COLORS.white_s},
+                              ]}>
+                              {item.paymentStatus}
                             </Text>
                           </View>
                         </View>
-                        
                       </LinearGradient>
                     </TouchableOpacity>
                   ))}
