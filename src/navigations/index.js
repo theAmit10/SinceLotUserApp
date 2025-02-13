@@ -86,6 +86,7 @@ import AllSkrillPaymentPayment from '../screens/partner/recharge/AllSkrillPaymen
 import AllCryptoDepositPayment from '../screens/partner/recharge/AllCryptoDepositPayment';
 import Play from '../screens/Play';
 import PartnerUserProfile from '../screens/partner/userdetails/PartnerUserProfile';
+import TempScreen from '../screens/TempScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -94,13 +95,14 @@ const Main = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{headerShown: false}}
-        initialRouteName="SplashScreen">
+        initialRouteName="TempScreen">
         <Stack.Group>
           <Stack.Screen
             name="UploadProfilePicture"
             component={UploadProfilePicture}
           />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="TempScreen" component={TempScreen} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="OtpVerification" component={OtpVerification} />
