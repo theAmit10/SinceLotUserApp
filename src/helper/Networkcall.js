@@ -496,10 +496,22 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // [SEARCH PARTNER PARTNER LIST]
+    searchPartnerPartnerList: builder.query({
+      query: ({accesstoken, userId, query}) => ({
+        url: `user/searchpartnerlist/${userId}?query=${query}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useSearchPartnerPartnerListQuery,
   useGetPowerballResultQuery,
   useUpdateDepositPaymentStatusMutation,
   useGetSingleUserPlayHistoryQuery,
