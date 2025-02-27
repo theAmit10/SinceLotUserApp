@@ -175,22 +175,26 @@ const ProfitDetails = () => {
                   </LinearGradient>
 
                   {/** PARTNER  Recharge Percentage */}
-                  <Text style={styles.textTitle}>Recharge Percentage</Text>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
-                    <View
-                      style={{
-                        flex: 1,
-                        gap: heightPercentageToDP(2),
-                      }}>
-                      <Text style={styles.textTitle}>
-                        {partner.rechargePercentage}
-                      </Text>
-                    </View>
-                  </LinearGradient>
+                  {partner.rechargeModule && (
+                    <>
+                      <Text style={styles.textTitle}>Recharge Percentage</Text>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={styles.paymentOption}>
+                        <View
+                          style={{
+                            flex: 1,
+                            gap: heightPercentageToDP(2),
+                          }}>
+                          <Text style={styles.textTitle}>
+                            {partner.rechargePercentage}
+                          </Text>
+                        </View>
+                      </LinearGradient>
+                    </>
+                  )}
 
                   {/** PARTNER  Total no. of User’s */}
                   <Text style={styles.textTitle}>Total no. of User’s</Text>
