@@ -33,7 +33,10 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import GradientText from '../../components/helpercComponent/GradientText';
 import Loading from '../../components/helpercComponent/Loading';
 import SelectYearAndMonth from '../../components/helpercComponent/SelectYearAndMonth';
-import {useGetPowetTimesQuery} from '../../helper/Networkcall';
+import {
+  useGetPowerballResultQuery,
+  useGetPowetTimesQuery,
+} from '../../helper/Networkcall';
 import TimesComp from './TimesComp';
 import ResultTimeComp from './ResultTimeComp';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
@@ -43,34 +46,6 @@ const ResultPowerball = () => {
   const dispatch = useDispatch();
 
   const {accesstoken} = useSelector(state => state.user);
-
-  const dummeyAllUsers = [
-    {
-      userid: '1090',
-      name: 'Babu Roa',
-      partner: true,
-    },
-    {
-      userid: '1091',
-      name: 'Arjuna',
-      partner: true,
-    },
-    {
-      userid: '1092',
-      name: 'Mark Jone',
-      partner: false,
-    },
-    {
-      userid: '1093',
-      name: 'Janny Mona',
-      partner: true,
-    },
-    {
-      userid: '1094',
-      name: 'Lucy cina',
-      partner: true,
-    },
-  ];
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -130,6 +105,16 @@ const ResultPowerball = () => {
     error: timeError,
   } = useGetPowetTimesQuery({accesstoken});
 
+  const {isLoading, data, error} = useGetPowerballResultQuery(
+    {
+      accesstoken,
+      powertimeid: time?._id,
+      year: selectedYear,
+      month: selectedMonth,
+    },
+    {skip: time == null},
+  );
+
   // FOR RESULT
   useEffect(() => {
     console.log('CHANGING MONTH OR YEAR');
@@ -142,6 +127,13 @@ const ResultPowerball = () => {
 
   const [resultdata, setresultdata] = useState([]);
 
+  console.log('DATA :: ' + JSON.stringify(data?.results[0]?.dates));
+  useEffect(() => {
+    if (data) {
+      setresultdata(data?.results[0]?.dates);
+    }
+  }, [data]);
+
   return (
     <View style={{flex: 1}}>
       <Background
@@ -150,6 +142,7 @@ const ResultPowerball = () => {
         setTime={setTime}
         setshowTime={setshowTime}
         backcase={forcase}
+        setforcase={setforcase}
       />
 
       {/** Main Cointainer */}
@@ -280,64 +273,67 @@ const ResultPowerball = () => {
                 />
               )}
               {/* SHOW RESULT */}
-              {showResult && (
-                <ScrollView
-                  contentContainerStyle={{
-                    paddingBottom: heightPercentageToDP(2),
-                  }}
-                  showsVerticalScrollIndicator={false}>
-                  {/** User content */}
-                  {false ? (
-                    <Loading />
-                  ) : resultdata.length === 0 ? (
-                    <NoDataFound data={'No Result Available'} />
-                  ) : (
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={{
-                        justifyContent: 'flex-start',
-                        borderRadius: heightPercentageToDP(2),
-                        marginTop: heightPercentageToDP(2),
-                      }}>
-                      <View
-                        style={[
-                          styles.paymentOption,
-                          {
-                            flex: 1,
-                            height: '100%',
-                          },
-                        ]}>
-                        <View style={styles.topContainer}>
-                          <View
-                            style={{
+              {showResult &&
+                (isLoading ? (
+                  <Loading />
+                ) : resultdata?.length === 0 ? (
+                  <NoDataFound data={'No Result Available'} />
+                ) : (
+                  <FlatList
+                    data={resultdata}
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={item => item._id}
+                    renderItem={({item, index}) => (
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          justifyContent: 'flex-start',
+                          borderRadius: heightPercentageToDP(2),
+                          marginTop: heightPercentageToDP(2),
+                        }}>
+                        <View
+                          style={[
+                            styles.paymentOption,
+                            {
                               flex: 1,
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
-                            }}>
-                            <Text style={styles.titleRegular}>Date</Text>
-                            <Text style={styles.titleBold}>10-12-2024</Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 1.5,
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
-                            }}>
-                            <Text style={styles.titleRegular}>Jackpot</Text>
-                            <Text style={styles.titleBold} numberOfLines={1}>
-                              11 32 43 23 12 44
-                            </Text>
+                              height: '100%',
+                            },
+                          ]}>
+                          <View style={styles.topContainer}>
+                            <View
+                              style={{
+                                flex: 1,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                              }}>
+                              <Text style={styles.titleRegular}>Date</Text>
+                              <Text style={styles.titleBold}>
+                                {item?.powerdate?.powerdate}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 1.5,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                              }}>
+                              <Text style={styles.titleRegular}>Jackpot</Text>
+                              <Text style={styles.titleBold} numberOfLines={1}>
+                                {item?.results[0]?.jackpotnumber
+                                  .toString()
+                                  .replaceAll(',', ' ')}
+                              </Text>
+                            </View>
                           </View>
                         </View>
-                      </View>
-                    </LinearGradient>
-                  )}
-                </ScrollView>
-              )}
+                      </LinearGradient>
+                    )}
+                  />
+                ))}
             </View>
           </View>
         </ImageBackground>

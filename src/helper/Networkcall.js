@@ -485,10 +485,22 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // [FOR GETTING RESULT FOR POWERBALL]
+    getPowerballResult: builder.query({
+      query: ({accesstoken, powertimeid, year, month}) => ({
+        url: `result/allpowerresultmonyear?powertimeid=${powertimeid}&year=${year}&month=${month}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useGetPowerballResultQuery,
   useUpdateDepositPaymentStatusMutation,
   useGetSingleUserPlayHistoryQuery,
   useGetAllRechargeQuery,

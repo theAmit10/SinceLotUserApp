@@ -20,6 +20,7 @@ const Background = ({
   setshowTime,
   setTime,
   setShowResult,
+  setforcase,
 }) => {
   const navigation = useNavigation();
 

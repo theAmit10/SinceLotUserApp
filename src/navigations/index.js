@@ -95,7 +95,7 @@ const Main = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{headerShown: false}}
-        initialRouteName="TempScreen">
+        initialRouteName="SplashScreen">
         <Stack.Group>
           <Stack.Screen
             name="UploadProfilePicture"
