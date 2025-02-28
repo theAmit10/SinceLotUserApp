@@ -285,6 +285,7 @@ const ResultPowerball = () => {
                     keyExtractor={item => item._id}
                     renderItem={({item, index}) => (
                       <LinearGradient
+                        key={index}
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                         start={{x: 0, y: 0}} // start from left
                         end={{x: 1, y: 0}} // end at right

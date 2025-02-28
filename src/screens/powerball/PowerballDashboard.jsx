@@ -28,79 +28,25 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import GradientText from '../../components/helpercComponent/GradientText';
 import CircleContainer from '../../components/powerball/CircleContainer';
 import PrizeComponent from './PrizeComponent';
-import {useGetPowerballQuery} from '../../helper/Networkcall';
+import {
+  useGetPowerballQuery,
+  useLatestPowerballResultQuery,
+} from '../../helper/Networkcall';
 import Loading from '../../components/helpercComponent/Loading';
 
 const PowerballDashboard = () => {
-  const resultdata = {
-    id: 1,
-    time: '09:00 AM',
-    date: '01/01/2023',
-    number: [28, 9, 63, 17, 22, 24],
-    prize: [
-      {
-        id: 1,
-        amount: '100000',
-        currency: 'INR',
-        title: '1st Prize',
-        description: 'Match all 6 balls to win the 1st Prize',
-        numberofwinner: '1',
-      },
-      {
-        id: 2,
-        amount: '50000',
-        currency: 'INR',
-        title: '2nf Prize',
-        description: 'Match 5 balls to win the 2nd Prize.',
-        numberofwinner: '150',
-      },
-      {
-        id: 3,
-        amount: '25000',
-        currency: 'INR',
-        title: '3rd Prize',
-        description: 'Match 4 balls to win the 3rd Prize.',
-        numberofwinner: '500',
-      },
-      {
-        id: 4,
-        amount: '4 X',
-        currency: 'INR',
-        title: '4th Prize',
-        description: 'Match 3 balls to win the 4th Prize.',
-        numberofwinner: '3390',
-      },
-      {
-        id: 5,
-        amount: '3 X',
-        currency: 'INR',
-        title: '5th Prize',
-        description: 'Match 2 balls to win the 5th Prize.',
-        numberofwinner: '6579',
-      },
-      {
-        id: 6,
-        amount: '2 X',
-        currency: 'INR',
-        title: '6th Prize',
-        description: 'Match 1 balls to win the 6th Prize.',
-        numberofwinner: '10000',
-      },
-    ],
-  };
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
   const {user, accesstoken} = useSelector(state => state.user);
-  const id = '67a38904b00aa387719533b9';
+
   const [powerball, setPowerball] = useState(null);
   // Network call
-  const {data, error, isLoading} = useGetPowerballQuery({accesstoken, id});
+  const {data, error, isLoading} = useGetPowerballQuery({accesstoken});
 
   useEffect(() => {
     if (!isLoading && data) {
-      setPowerball(data.game);
-      console.log(data?.game);
+      setPowerball(data.games[0]);
+      console.log(data?.games[0]);
     }
 
     if (error) {
@@ -108,9 +54,11 @@ const PowerballDashboard = () => {
     }
   }, [data, isLoading, error]); // Correct dependencies
 
-  console.log('Starting powerball');
-  console.log(powerball?.game);
-  console.log(error);
+  const {
+    isLoading: latestResultIsLoading,
+    data: latestResultData,
+    refetch: latesetResultRefetch,
+  } = useLatestPowerballResultQuery({accesstoken});
 
   return (
     <View style={{flex: 1}}>
@@ -169,7 +117,7 @@ const PowerballDashboard = () => {
                 flex: 1,
                 padding: heightPercentageToDP(1),
               }}>
-              {isLoading ? (
+              {isLoading || latestResultIsLoading ? (
                 <Loading />
               ) : (
                 <ScrollView
@@ -204,7 +152,8 @@ const PowerballDashboard = () => {
                       <Text style={styles.subtitle}>
                         PLAY FOR JUST{' '}
                         <Text style={{fontFamily: FONT.Montserrat_Bold}}>
-                          100INR
+                          {user?.country?.ticketprice}{' '}
+                          {user?.country?.countrycurrencysymbol}
                         </Text>
                       </Text>
                       <View
@@ -235,7 +184,6 @@ const PowerballDashboard = () => {
                       <View
                         style={{
                           flex: 1,
-
                           flexDirection: 'row',
                         }}>
                         <View
@@ -258,7 +206,7 @@ const PowerballDashboard = () => {
                               fontSize: heightPercentageToDP(3),
                               color: COLORS.black,
                             }}>
-                            1000000 INR
+                            {latestResultData?.data?.prize?.firstprize?.amount}
                           </Text>
                         </View>
                         <View
@@ -289,8 +237,12 @@ const PowerballDashboard = () => {
                         alignItems: 'center',
                         flexDirection: 'row',
                       }}>
-                      <Text style={styles.semibold}>09 : 00 PM</Text>
-                      <Text style={styles.semibold}>06-02-2025</Text>
+                      <Text style={styles.semibold}>
+                        {latestResultData?.data?.powertime?.powertime}
+                      </Text>
+                      <Text style={styles.semibold}>
+                        {latestResultData?.data?.powerdate?.powerdate}
+                      </Text>
                     </View>
                     <View
                       style={{
@@ -308,12 +260,23 @@ const PowerballDashboard = () => {
                       </Text>
                     </View>
 
-                    <CircleContainer jackpotnumber={resultdata.number} />
+                    <CircleContainer
+                      jackpotnumber={
+                        latestResultData?.data?.jackpotnumber || [
+                          '*',
+                          '*',
+                          '*',
+                          '*',
+                          '*',
+                          '*',
+                        ]
+                      }
+                    />
                   </LinearGradient>
 
                   {/* PRIZE DISTRIBUTION */}
 
-                  {resultdata.prize.map((item, index) => {
+                  {/* {resultdata.prize.map((item, index) => {
                     return (
                       <PrizeComponent
                         key={index}
@@ -323,7 +286,79 @@ const PowerballDashboard = () => {
                         amount={item.amount}
                       />
                     );
-                  })}
+                  })} */}
+
+                  {/** FIRST PRIZE */}
+                  <PrizeComponent
+                    key={1}
+                    title={'1st Prize'}
+                    description={'Match all 6 balls to win the 1st Prize'}
+                    numberofwinner={
+                      latestResultData?.data?.prize?.firstprize?.totaluser
+                    }
+                    amount={latestResultData?.data?.prize?.firstprize?.amount}
+                  />
+
+                  {/** SECOND PRIZE */}
+                  <PrizeComponent
+                    key={2}
+                    title={'2nd Prize'}
+                    description={'Match all 5 balls to win the 2nd Prize'}
+                    numberofwinner={
+                      latestResultData?.data?.prize?.secondprize?.totaluser
+                    }
+                    amount={latestResultData?.data?.prize?.secondprize?.amount}
+                  />
+
+                  {/** THIRD PRIZE */}
+
+                  <PrizeComponent
+                    key={3}
+                    title={'3rd Prize'}
+                    description={'Match all 4 balls to win the 3rd Prize'}
+                    numberofwinner={
+                      latestResultData?.data?.prize?.thirdprize?.totaluser
+                    }
+                    amount={latestResultData?.data?.prize?.thirdprize?.amount}
+                  />
+
+                  {/** FOURTH PRIZE */}
+
+                  <PrizeComponent
+                    key={4}
+                    title={'4th Prize'}
+                    description={'Match all 3 balls to win the 4th Prize'}
+                    numberofwinner={
+                      latestResultData?.data?.prize?.fourthprize?.totaluser
+                    }
+                    amount={
+                      latestResultData?.data?.prize?.fourthprize?.amount + ' X'
+                    }
+                  />
+                  {/** FIFTH PRIZE */}
+                  <PrizeComponent
+                    key={5}
+                    title={'5th Prize'}
+                    description={'Match all 2 balls to win the 5th Prize'}
+                    numberofwinner={
+                      latestResultData?.data?.prize?.fifthprize?.totaluser
+                    }
+                    amount={
+                      latestResultData?.data?.prize?.fifthprize?.amount + ' X'
+                    }
+                  />
+                  {/** SIXTH PRIZE */}
+                  <PrizeComponent
+                    key={6}
+                    title={'6th Prize'}
+                    description={'Match all 1 ball to win the 6th Prize'}
+                    numberofwinner={
+                      latestResultData?.data?.prize?.sixthprize?.totaluser
+                    }
+                    amount={
+                      latestResultData?.data?.prize?.sixthprize?.amount + ' X'
+                    }
+                  />
                 </ScrollView>
               )}
             </View>

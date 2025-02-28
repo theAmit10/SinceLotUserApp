@@ -299,8 +299,8 @@ export const sincelotUserApi = createApi({
 
     // GET POWERBALL GAME DETAILS
     getPowerball: builder.query({
-      query: ({accesstoken, id}) => ({
-        url: `user/getpowerball/${id}`,
+      query: ({accesstoken}) => ({
+        url: `user/getallpowerball`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -529,10 +529,22 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // [LATEST POWERBALL RESULT]
+    latestPowerballResult: builder.query({
+      query: ({accesstoken}) => ({
+        url: `result/singlepowerresult`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useLatestPowerballResultQuery,
   useSearchPartnerUserListQuery,
   useGetSingleUserQuery,
   useSearchPartnerPartnerListQuery,
