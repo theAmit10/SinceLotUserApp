@@ -540,10 +540,35 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // GET POWERBALL DATE
+    getPowerDatesByTime: builder.query({
+      query: ({accesstoken, id, page, limit}) => ({
+        url: `user/getpowerdatebytime/${id}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [CREATE POWERBALL BET]
+    createPowerballBet: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `result/playbet/addpowerbet`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+        body,
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useCreatePowerballBetMutation,
+  useGetPowerDatesByTimeQuery,
   useLatestPowerballResultQuery,
   useSearchPartnerUserListQuery,
   useGetSingleUserQuery,

@@ -135,7 +135,11 @@ const PowerballTimes = () => {
                 ) : (
                   powertimes?.map((item, index) => {
                     return (
-                      <TimesComp key={item._id} powertime={item.powertime} />
+                      <TimesComp
+                        key={item._id}
+                        powertime={item.powertime}
+                        item={item}
+                      />
                     );
                   })
                 )}

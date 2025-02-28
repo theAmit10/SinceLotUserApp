@@ -23,7 +23,10 @@ import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import Loading from '../../components/helpercComponent/Loading';
-import {useGetPlayHistoryQuery} from '../../helper/Networkcall';
+import {
+  useGetPlayHistoryQuery,
+  useGetSingleUserPlayHistoryQuery,
+} from '../../helper/Networkcall';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
 import {getTimeAccordingToTimezone} from '../SearchTime';
 import moment from 'moment-timezone';
@@ -82,12 +85,22 @@ const PlayHistory = () => {
   const {accesstoken, user} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
 
+  // const {
+  //   data: historyapidatas,
+  //   error,
+  //   isLoading,
+  //   refetch,
+  // } = useGetPlayHistoryQuery(accesstoken);
+
   const {
     data: historyapidatas,
     error,
     isLoading,
     refetch,
-  } = useGetPlayHistoryQuery(accesstoken);
+  } = useGetSingleUserPlayHistoryQuery({
+    accesstoken: accesstoken,
+    userId: user.userId,
+  });
 
   console.log(JSON.stringify(historyapidatas?.playbets));
 
@@ -238,7 +251,7 @@ const PlayHistory = () => {
                   renderItem={({item}) => {
                     return (
                       <>
-                        {currentGame === 'playzone' ? (
+                        {item.gameType === 'playarena' ? (
                           <LinearGradient
                             colors={[
                               COLORS.time_firstblue,
@@ -577,7 +590,7 @@ const PlayHistory = () => {
                                       numberOfLines={2}>
                                       :{' '}
                                       {formatAmount(
-                                        calculateTotalAmount(item?.playnumbers),
+                                        calculateTotalAmount(item?.tickets),
                                       )}{' '}
                                       {user?.country?.countrycurrencysymbol}
                                     </Text>
@@ -596,11 +609,11 @@ const PlayHistory = () => {
                                         fontSize: heightPercentageToDP(1.8),
                                         color: COLORS.black,
                                       }}>
-                                      {item?.lotdate?.lotdate
+                                      {item?.powerdate?.powerdate
                                         ? formatDate(
                                             getDateTimeAccordingToUserTimezone(
-                                              item?.lottime?.lottime,
-                                              item?.lotdate?.lotdate,
+                                              item?.powertime?.powertime,
+                                              item?.powerdate?.powerdate,
                                               user?.country?.timezone,
                                             ),
                                           )
@@ -667,7 +680,7 @@ const PlayHistory = () => {
                                       numberOfLines={1}
                                       style={styles.detailLabel}>
                                       {getTimeAccordingToTimezone(
-                                        item?.lottime?.lottime,
+                                        item?.powertime?.powertime,
                                         user?.country?.timezone,
                                       )}
                                     </Text>
@@ -683,7 +696,7 @@ const PlayHistory = () => {
                                       style={styles.detailLabel}>
                                       {item?.walletName
                                         ? item.playnumbers[0]?.playnumber
-                                        : item?.playnumbers.length}
+                                        : item?.tickets.length}
                                     </Text>
                                   </View>
                                 </View>
@@ -730,7 +743,7 @@ const PlayHistory = () => {
                                     </Text>
                                   </View>
                                 </View>
-                                {item.playnumbers.map((pitem, pindex) => (
+                                {item.tickets.map((pitem, pindex) => (
                                   <View
                                     key={pindex}
                                     style={{
@@ -753,7 +766,7 @@ const PlayHistory = () => {
                                           ...styles.detailLabel,
                                           fontFamily: FONT.Montserrat_SemiBold,
                                         }}>
-                                        {pitem?.playnumber}
+                                        {pindex + 1}
                                       </Text>
                                     </View>
                                     <View
@@ -764,16 +777,10 @@ const PlayHistory = () => {
                                         paddingStart: heightPercentageToDP(1),
                                       }}>
                                       <Text style={styles.detailLabel}>
-                                        {/* {pitem?.amount} */}
-                                        {item?.walletName
-                                          ? formatAmount(
-                                              pitem?.amount /
-                                                extractNumberFromString(
-                                                  item?.lotlocation
-                                                    ?.maximumReturn,
-                                                ),
-                                            )
-                                          : formatAmount(pitem?.amount)}
+                                        {pitem.usernumber.join(', ')}
+                                        {pitem.multiplier > 1
+                                          ? ` - ${pitem.multiplier}X `
+                                          : ''}
                                       </Text>
                                     </View>
                                     <View
@@ -784,7 +791,7 @@ const PlayHistory = () => {
                                         paddingStart: heightPercentageToDP(1),
                                       }}>
                                       <Text style={styles.detailLabel}>
-                                        {formatAmount(pitem?.winningamount)}
+                                        {pitem.amount}
                                       </Text>
                                     </View>
                                   </View>

@@ -27,53 +27,176 @@ import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
-import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import GradientText from '../../components/helpercComponent/GradientText';
-import CircleContainer from '../../components/powerball/CircleContainer';
-import PrizeComponent from './PrizeComponent';
-import TimesComp from './TimesComp';
 import Loading from '../../components/helpercComponent/Loading';
-import NoDataFound from '../../components/helpercComponent/NoDataFound';
-import GradientCircle from '../../components/powerball/GradientCircle';
-import GreenballContainer from '../../components/powerball/GreenballContainer';
 import GreenBall from '../../components/powerball/GreenBall';
 import WhiteBall from '../../components/powerball/WhiteBall';
 import SmallWhiteBall from '../../components/powerball/SmallWhiteBall';
+import {
+  useCreatePowerballBetMutation,
+  useGetPowerballQuery,
+  useGetPowerDatesByTimeQuery,
+  useGetPowerDatesQuery,
+} from '../../helper/Networkcall';
+import moment from 'moment-timezone';
 
-const TOTAL_BALLS = 70; // Total available numbers
-const MAX_NUMBERS = 6; // Numbers per ticket
-const MULTIPLIERS = ['2X', '3X', '4X', '5X', '6X', '7X', 'NA']; // Multiplier options
-const TICKET_COST = 100; // Base price per ticket
-const MULTIPLIER_COSTS = {
-  '2X': 20,
-  '3X': 30,
-  '4X': 40,
-  '5X': 50,
-  '6X': 60,
-  '7X': 70,
-  NA: 0,
+const getCurrentDateInTimezone = timezone => {
+  return moment().tz(timezone).format('DD-MM-YYYY');
 };
 
-const PowerballGame = () => {
+const getMatchingPowerDate = (currentDate, powerDates) => {
+  return powerDates.find(entry => entry.powerdate === currentDate) || null;
+};
+
+const generateMultiplierObject = (number, multiplierArray = []) => {
+  if (!Array.isArray(multiplierArray)) {
+    console.error(
+      'Invalid multiplier array. Expected an array but got:',
+      multiplierArray,
+    );
+    return {};
+  }
+
+  const result = {};
+
+  multiplierArray.forEach(item => {
+    if (item.value) {
+      const multiplierValue = parseInt(item.value); // Extract number from "2X", "3X", etc.
+      if (!isNaN(multiplierValue)) {
+        result[item.value] = number * multiplierValue;
+      }
+    }
+  });
+
+  // Add '7X' and 'NA' with default values
+  result['7X'] = number * 7;
+  result['NA'] = 0;
+
+  return result;
+};
+
+const getMultiplierValues = (multiplierArray = []) => {
+  if (!Array.isArray(multiplierArray)) {
+    console.error(
+      'Invalid multiplier array. Expected an array but got:',
+      multiplierArray,
+    );
+    return [];
+  }
+
+  // Extract values from the array
+  const values = multiplierArray.map(item => item.value);
+
+  // Append '7X' and 'NA'
+  return [...values, '7X', 'NA'];
+};
+
+const processTicketData = (ticketArray, TICKET_COST) => {
+  if (!Array.isArray(ticketArray) || typeof TICKET_COST !== 'number') {
+    console.error('Invalid input. Expected an array and a number.');
+    return [];
+  }
+
+  return ticketArray.map(({multiplier, selectedNumbers}) => {
+    // Handle cases where multiplier is "NA" or null
+    const multiplierValue =
+      multiplier && multiplier !== 'NA'
+        ? parseInt(multiplier.replace('X', ''), 10)
+        : 1;
+
+    return {
+      amount: TICKET_COST * multiplierValue, // Multiply cost with multiplier
+      convertedAmount: TICKET_COST * multiplierValue, // Generate a random converted amount
+      multiplier: multiplierValue, // Store multiplier as a number
+      usernumber: selectedNumbers, // Keep the selected numbers
+    };
+  });
+};
+
+function canPlaceBet(walletBalanceStr, bettingAmountStr) {
+  const walletBalance = parseFloat(walletBalanceStr);
+  const bettingAmount = parseFloat(bettingAmountStr);
+
+  if (isNaN(walletBalance) || isNaN(bettingAmount)) {
+    throw new Error('Invalid input: Both inputs must be valid numbers.');
+  }
+
+  return walletBalance >= bettingAmount;
+}
+
+const PowerballGame = ({route}) => {
+  const {item: powertime} = route.params;
+
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const {accesstoken, user} = useSelector(state => state.user);
+  const [todayPowerDate, setTodayPowerDate] = useState(null);
+  // const TOTAL_BALLS = 70; // Total available numbers
+  const MAX_NUMBERS = 6; // Numbers per ticket
+  // const MULTIPLIERS = ['2X', '3X', '4X', '5X', '6X', '7X', 'NA']; // Multiplier options
+  // const TICKET_COST = 100; // Base price per ticket
+  // const MULTIPLIER_COSTS = {
+  //   '2X': 20,
+  //   '3X': 30,
+  //   '4X': 40,
+  //   '5X': 50,
+  //   '6X': 60,
+  //   '7X': 70,
+  //   NA: 0,
+  // };
+  const [TOTAL_BALLS, setTOTAL_BALLS] = useState(null);
+  const [MULTIPLIERS, setMULTIPLIERS] = useState([]);
+  const [TICKET_COST, setTICKET_COST] = useState(null);
+  const [MULTIPLIER_COSTS, setMULTIPLIER_COSTS] = useState({});
 
-  const {accesstoken} = useSelector(state => state.user);
+  const [powerball, setPowerball] = useState(null);
+  // Network call
+  const {data: powerballData, isLoading: powerballIsLoading} =
+    useGetPowerballQuery({accesstoken});
 
-  const timedata = [
-    {
-      id: 1,
-      powertime: '10:00 PM',
-    },
-    {
-      id: 2,
-      powertime: '11:00 PM',
-    },
-  ];
+  useEffect(() => {
+    if (!powerballIsLoading && powerballData) {
+      setPowerball(powerballData.games[0]);
+      setTOTAL_BALLS(powerballData.games[0].range.endRange);
+      setTICKET_COST(user?.country?.ticketprice);
 
-  const loading = false;
+      const multiplierArray = generateMultiplierObject(
+        user?.country?.multiplierprice,
+        powerballData?.games[0].multiplier,
+      );
+
+      setMULTIPLIER_COSTS(multiplierArray);
+      setMULTIPLIERS(getMultiplierValues(powerballData?.games[0].multiplier));
+    }
+  }, [powerballData, powerballIsLoading]);
+
+  // [FOR GETTING POWERBALL GAME DATES]
+  const {data: powerballDates, isLoading: powerballDatesIsLoading} =
+    useGetPowerDatesByTimeQuery({
+      accesstoken,
+      id: powertime._id,
+      page: 1,
+      limit: 5,
+    });
+
+  // [FOR GETTING TODAY POWERBALL DATE]
+  useEffect(() => {
+    if (!powerballDatesIsLoading && powerballDates) {
+      const currentDate = getCurrentDateInTimezone(user?.country?.timezone);
+      const matchingDate = getMatchingPowerDate(
+        currentDate,
+        powerballDates.powerDates,
+      );
+      setTodayPowerDate(matchingDate);
+      console.log(matchingDate);
+    }
+  }, [powerballDatesIsLoading, powerballDates]);
 
   const [ticketValue, setTicketValue] = useState(1);
+
+  // [FOR POWEBALL BET]
+
+  const [createPowerballBet, {isLoading: createPowerballBetIsLoading}] =
+    useCreatePowerballBetMutation();
 
   // Function to increment the ticket value
   const increment = () => {
@@ -223,32 +346,62 @@ const PowerballGame = () => {
     return TICKET_COST + multiplierCost;
   };
 
-  const sebmittingNext = () => {
+  const sebmittingNext = async () => {
     console.log('submitting to next stage to confirm ticket');
-    console.log('submited ticket :: ', tickets), setShowAllSeclectedBalls(true);
+    console.log('submited ticket :: ', tickets);
+    setShowAllSeclectedBalls(true);
   };
 
   const [submitLoader, setSubmitLoader] = useState(false);
   const submitHandler = async () => {
-    setSubmitLoader(true);
+    // setSubmitLoader(true);
     console.log('submitting to next stage to confirm ticket');
     console.log('submited ticket :: ', tickets), setTicketValue(1);
 
-    setTimeout(() => {
+    try {
+      if (!canPlaceBet(user.walletTwo.balance, calculateTotalCost())) {
+        Toast.show({
+          type: 'error',
+          text1: 'Insufficent Balance',
+          text2: 'Add balance to play',
+        });
+        return;
+      }
+      const myticket = processTicketData(tickets, TICKET_COST);
+      console.log('Mine ticket');
+      console.log(myticket);
+      const body = {
+        powertime: powertime._id,
+        powerdate: todayPowerDate._id,
+        gameType: 'powerball',
+        tickets: myticket,
+      };
+
+      const res = await createPowerballBet({
+        accesstoken,
+        body,
+      }).unwrap();
+
+      console.log(JSON.stringify(res));
+
+      Toast.show({
+        type: 'success',
+        text1: res.message,
+      });
       setActiveBallIndex(0);
       setActiveTicketIndex(0);
       setTickets([
         {selectedNumbers: Array(MAX_NUMBERS).fill(null), multiplier: null},
       ]);
-
-      Toast.show({
-        type: 'success',
-        text1: 'Ticket submited successfully',
-      });
-
       setSubmitLoader(false);
       setShowAllSeclectedBalls(false);
-    }, 4000);
+    } catch (e) {
+      console.log(e);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
   };
 
   return (
@@ -267,7 +420,7 @@ const PowerballGame = () => {
               ...styles.textStyle,
               paddingLeft: heightPercentageToDP(2),
             }}>
-            Powerball
+            {powerball?.name}
           </GradientText>
           <ImageBackground
             source={require('../../../assets/image/tlwbg.jpg')}
@@ -304,7 +457,7 @@ const PowerballGame = () => {
                   }}
                   numberOfLines={1}
                   adjustsFontSizeToFit={true}>
-                  08-02-2025
+                  {todayPowerDate?.powerdate}
                 </Text>
                 <View
                   style={{
@@ -321,133 +474,138 @@ const PowerballGame = () => {
                   }}
                   numberOfLines={1}
                   adjustsFontSizeToFit={true}>
-                  09:00 PM
+                  {powertime?.powertime}
                 </Text>
               </View>
 
               {/** ALL TICKET BUYING Container */}
 
-              {!showAllSeclectedBalls && (
-                <View
-                  style={{
-                    flex: 1,
-                    padding: heightPercentageToDP(1),
-                  }}>
-                  {/* ADD TICKETS */}
-                  <View
-                    style={{
-                      height: heightPercentageToDP(7),
-                      flexDirection: 'row',
-                    }}>
-                    {/** MINUS BUTTON */}
+              {powerballIsLoading || powerballDatesIsLoading ? (
+                <Loading />
+              ) : (
+                <>
+                  {!showAllSeclectedBalls && (
                     <View
                       style={{
                         flex: 1,
-                        justifyContent: 'center',
+                        padding: heightPercentageToDP(1),
                       }}>
-                      <Text
+                      {/* ADD TICKETS */}
+                      <View
                         style={{
-                          fontFamily: FONT.Montserrat_Bold,
-                          fontSize: heightPercentageToDP(2),
-                          color: COLORS.white_s,
-                        }}
-                        numberOfLines={2}>
-                        Add Ticket
-                      </Text>
-                    </View>
-                    {/* TOTAL NUMBER OF TICKET INPUT */}
-                    <View
-                      style={{
-                        flex: 2,
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: heightPercentageToDP(1),
-                      }}>
-                      {/* Minus Button */}
-                      <TouchableOpacity
-                        onPress={removeTicket}
-                        disabled={tickets.length === 1}>
-                        <AntDesign
-                          name={'minuscircleo'}
-                          size={heightPercentageToDP(3)}
-                          color={COLORS.white_s}
-                          style={styles.icon}
-                        />
-                      </TouchableOpacity>
-
-                      {/* TextInput to show the ticket value */}
-                      <TextInput
-                        // Convert to string for TextInput
-                        style={styles.ticketInput}
-                        keyboardType="numeric"
-                        placeholder="Ticket"
-                        onSubmitEditing={e =>
-                          addMultipleTickets(e.nativeEvent.text)
-                        }
-                      />
-
-                      {/* <Text style={styles.ticketCount}>{tickets.length}</Text> */}
-
-                      {/* Plus Button */}
-                      <TouchableOpacity onPress={addTicket}>
-                        <AntDesign
-                          name={'pluscircleo'}
-                          size={heightPercentageToDP(3)}
-                          color={COLORS.white_s}
-                          style={styles.icon}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    {/** ADD BUTTON */}
-                    <View
-                      style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <TouchableOpacity onPress={generateUniqueRandomNumbers}>
-                        <LinearGradient
-                          colors={[COLORS.green, COLORS.blue]}
-                          start={{x: 0, y: 0}} // start from left
-                          end={{x: 3, y: 0}} // end at right
+                          height: heightPercentageToDP(7),
+                          flexDirection: 'row',
+                        }}>
+                        {/** MINUS BUTTON */}
+                        <View
                           style={{
-                            padding: heightPercentageToDP(1),
-                            borderRadius: heightPercentageToDP(1),
+                            flex: 1,
+                            justifyContent: 'center',
                           }}>
                           <Text
                             style={{
-                              fontFamily: FONT.Montserrat_SemiBold,
-                              fontSize: heightPercentageToDP(1.4),
+                              fontFamily: FONT.Montserrat_Bold,
+                              fontSize: heightPercentageToDP(2),
                               color: COLORS.white_s,
-                              textAlign: 'center',
-                            }}>
-                            Auto Generate
+                            }}
+                            numberOfLines={2}>
+                            Add Ticket
                           </Text>
-                        </LinearGradient>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+                        </View>
+                        {/* TOTAL NUMBER OF TICKET INPUT */}
+                        <View
+                          style={{
+                            flex: 2,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: heightPercentageToDP(1),
+                          }}>
+                          {/* Minus Button */}
+                          <TouchableOpacity
+                            onPress={removeTicket}
+                            disabled={tickets.length === 1}>
+                            <AntDesign
+                              name={'minuscircleo'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.white_s}
+                              style={styles.icon}
+                            />
+                          </TouchableOpacity>
 
-                  {/** HORIZONTAL TICKETS DETAILS */}
+                          {/* TextInput to show the ticket value */}
+                          <TextInput
+                            // Convert to string for TextInput
+                            style={styles.ticketInput}
+                            keyboardType="numeric"
+                            placeholder="Ticket"
+                            onSubmitEditing={e =>
+                              addMultipleTickets(e.nativeEvent.text)
+                            }
+                          />
 
-                  {!showMultipliers && (
-                    <View
-                      style={{
-                        paddingVertical: heightPercentageToDP(1),
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_Bold,
-                          fontSize: heightPercentageToDP(2),
-                          color: COLORS.white_s,
-                          paddingBottom: heightPercentageToDP(1),
-                        }}
-                        numberOfLines={2}>
-                        Choose 6 Unique Tickets
-                      </Text>
+                          {/* <Text style={styles.ticketCount}>{tickets.length}</Text> */}
 
-                      {/* <LinearGradient
+                          {/* Plus Button */}
+                          <TouchableOpacity onPress={addTicket}>
+                            <AntDesign
+                              name={'pluscircleo'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.white_s}
+                              style={styles.icon}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                        {/** ADD BUTTON */}
+                        <View
+                          style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <TouchableOpacity
+                            onPress={generateUniqueRandomNumbers}>
+                            <LinearGradient
+                              colors={[COLORS.green, COLORS.blue]}
+                              start={{x: 0, y: 0}} // start from left
+                              end={{x: 3, y: 0}} // end at right
+                              style={{
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  fontSize: heightPercentageToDP(1.4),
+                                  color: COLORS.white_s,
+                                  textAlign: 'center',
+                                }}>
+                                Auto Generate
+                              </Text>
+                            </LinearGradient>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+
+                      {/** HORIZONTAL TICKETS DETAILS */}
+
+                      {!showMultipliers && (
+                        <View
+                          style={{
+                            paddingVertical: heightPercentageToDP(1),
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: FONT.Montserrat_Bold,
+                              fontSize: heightPercentageToDP(2),
+                              color: COLORS.white_s,
+                              paddingBottom: heightPercentageToDP(1),
+                            }}
+                            numberOfLines={2}>
+                            Choose 6 Unique Tickets
+                          </Text>
+
+                          {/* <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                         start={{x: 0, y: 0}} // start from left
                         end={{x: 1, y: 0}} // end at right
@@ -476,240 +634,251 @@ const PowerballGame = () => {
                         </ScrollView>
                       </LinearGradient> */}
 
-                      <LinearGradient
-                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                        start={{x: 0, y: 0}} // Start from left
-                        end={{x: 1, y: 0}} // End at right
-                        style={styles.paymentOption}>
-                        <ScrollView
-                          horizontal={true}
-                          showsHorizontalScrollIndicator={false}>
-                          {ballNumbers.map(num => {
-                            // Check if the number is selected
-                            const isSelected = tickets.some(ticket =>
-                              ticket.selectedNumbers.includes(num),
-                            );
-                            return (
-                              <WhiteBall
-                                key={num}
-                                num={num}
-                                isSelected={isSelected}
-                                onPress={() => handleNumberSelect(num)}
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </LinearGradient>
-                    </View>
-                  )}
+                          <LinearGradient
+                            colors={[
+                              COLORS.time_firstblue,
+                              COLORS.time_secondbluw,
+                            ]}
+                            start={{x: 0, y: 0}} // Start from left
+                            end={{x: 1, y: 0}} // End at right
+                            style={styles.paymentOption}>
+                            <ScrollView
+                              horizontal={true}
+                              showsHorizontalScrollIndicator={false}>
+                              {ballNumbers.map(num => {
+                                // Check if the number is selected
+                                const isSelected = tickets.some(ticket =>
+                                  ticket.selectedNumbers.includes(num),
+                                );
+                                return (
+                                  <WhiteBall
+                                    key={num}
+                                    num={num}
+                                    isSelected={isSelected}
+                                    onPress={() => handleNumberSelect(num)}
+                                  />
+                                );
+                              })}
+                            </ScrollView>
+                          </LinearGradient>
+                        </View>
+                      )}
 
-                  {/* Multiplier Selector */}
-                  {showMultipliers && (
-                    <View
-                      style={{
-                        paddingVertical: heightPercentageToDP(1),
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_Bold,
-                          fontSize: heightPercentageToDP(2),
-                          color: COLORS.white_s,
-                          paddingBottom: heightPercentageToDP(1),
-                        }}
-                        numberOfLines={2}>
-                        Choose Multiplier
-                      </Text>
-                      <LinearGradient
-                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                        start={{x: 0, y: 0}} // Start from left
-                        end={{x: 1, y: 0}} // End at right
-                        style={styles.paymentOption}>
-                        <ScrollView
-                          horizontal={true}
-                          showsHorizontalScrollIndicator={false}>
-                          {MULTIPLIERS.map(multiplier => (
-                            <TouchableOpacity
-                              key={multiplier}
-                              style={[styles.ball, styles.multiplierBall]}
-                              onPress={() =>
-                                handleMultiplierSelect(multiplier)
-                              }>
-                              <GreenBall
-                                key={multiplier}
-                                value={multiplier || ''}
-                                firstcolor={COLORS.firstred}
-                                secondcolor={COLORS.secondred}
-                              />
-                            </TouchableOpacity>
-                          ))}
-                        </ScrollView>
-                      </LinearGradient>
-                    </View>
-                  )}
-
-                  {/** SELECTED TICKETS */}
-
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.ticketOption}>
-                    <View
-                      style={{
-                        height: heightPercentageToDP(5),
-                        width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_Bold,
-                          fontSize: heightPercentageToDP(2),
-                          color: COLORS.white_s,
-                          paddingBottom: heightPercentageToDP(1),
-                        }}
-                        numberOfLines={2}>
-                        Tickets
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_Bold,
-                          fontSize: heightPercentageToDP(2),
-                          color: COLORS.white_s,
-                          paddingBottom: heightPercentageToDP(1),
-                        }}
-                        numberOfLines={2}>
-                        Multiplier
-                      </Text>
-                    </View>
-                    {/** Tickets container */}
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: 'column',
-                      }}>
-                      <ScrollView style={styles.scrollView}>
-                        {tickets.map((ticket, ticketIndex) => (
-                          <View
-                            key={ticketIndex}
+                      {/* Multiplier Selector */}
+                      {showMultipliers && (
+                        <View
+                          style={{
+                            paddingVertical: heightPercentageToDP(1),
+                          }}>
+                          <Text
                             style={{
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
-                              flexDirection: 'row',
-                              marginTop: heightPercentageToDP(1),
-                            }}>
-                            <View
-                              style={{
-                                flex: 4,
-                                flexDirection: 'row',
-                                gap: heightPercentageToDP(0.5),
-                                flexWrap: 'wrap',
-                                paddingBottom: heightPercentageToDP(1),
-                                borderBottomColor: COLORS.white_s,
-                                borderBottomWidth: 1,
-                              }}>
-                              {ticket.selectedNumbers.map((num, index) => (
+                              fontFamily: FONT.Montserrat_Bold,
+                              fontSize: heightPercentageToDP(2),
+                              color: COLORS.white_s,
+                              paddingBottom: heightPercentageToDP(1),
+                            }}
+                            numberOfLines={2}>
+                            Choose Multiplier
+                          </Text>
+                          <LinearGradient
+                            colors={[
+                              COLORS.time_firstblue,
+                              COLORS.time_secondbluw,
+                            ]}
+                            start={{x: 0, y: 0}} // Start from left
+                            end={{x: 1, y: 0}} // End at right
+                            style={styles.paymentOption}>
+                            <ScrollView
+                              horizontal={true}
+                              showsHorizontalScrollIndicator={false}>
+                              {MULTIPLIERS.map(multiplier => (
                                 <TouchableOpacity
-                                  key={index}
-                                  onPress={() => {
-                                    if (num !== null) {
-                                      handleNumberSelect(num);
-                                    }
-                                    setActiveTicketIndex(ticketIndex);
-                                    setActiveBallIndex(index);
-                                  }}>
-                                  <LinearGradient
-                                    colors={[COLORS.green, COLORS.green]}
-                                    start={{x: 1, y: 0}}
-                                    end={{x: 0, y: 1}}
-                                    style={[
-                                      styles.whiteBall,
-                                      {
-                                        width: heightPercentageToDP(5),
-                                        height: heightPercentageToDP(5),
-                                        borderRadius:
-                                          heightPercentageToDP(5) / 2,
-                                        borderWidth: 0.5, // Adjust the border thickness as needed
-                                        borderBottomColor: 'transparent', // Remove border from other sides
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                      },
-                                      activeTicketIndex === ticketIndex &&
-                                        index === activeBallIndex &&
-                                        styles.activeBall,
-                                      num !== null && styles.selectedBall,
-                                    ]}>
-                                    {/* Inner LinearGradient */}
-                                    <LinearGradient
-                                      colors={[COLORS.green, COLORS.green]}
-                                      start={{x: 0.5, y: 0}} // Middle of the top
-                                      end={{x: 0.5, y: 1}} // Middle of the bottom
-                                      style={{
-                                        width: '100%', // Slightly smaller than the wrapper to accommodate the border
-                                        height: '98%',
-                                        borderRadius:
-                                          heightPercentageToDP(5) / 2,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                      }}>
-                                      <Text style={styles.semibold}>{num}</Text>
-                                    </LinearGradient>
-                                  </LinearGradient>
+                                  key={multiplier}
+                                  style={[styles.ball, styles.multiplierBall]}
+                                  onPress={() =>
+                                    handleMultiplierSelect(multiplier)
+                                  }>
+                                  <GreenBall
+                                    key={multiplier}
+                                    value={multiplier || ''}
+                                    firstcolor={COLORS.firstred}
+                                    secondcolor={COLORS.secondred}
+                                  />
                                 </TouchableOpacity>
                               ))}
-                            </View>
-                            <View
-                              style={{
-                                flex: 1,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                paddingBottom: heightPercentageToDP(1),
-                              }}>
-                              <TouchableOpacity
-                                style={[
-                                  styles.ball,
+                            </ScrollView>
+                          </LinearGradient>
+                        </View>
+                      )}
 
-                                  ticket.multiplier && styles.selectedRedBall,
-                                ]}
-                                onPress={() => {
-                                  setActiveTicketIndex(ticketIndex);
-                                  setShowMultipliers(true);
+                      {/** SELECTED TICKETS */}
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={styles.ticketOption}>
+                        <View
+                          style={{
+                            height: heightPercentageToDP(5),
+                            width: '100%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: FONT.Montserrat_Bold,
+                              fontSize: heightPercentageToDP(2),
+                              color: COLORS.white_s,
+                              paddingBottom: heightPercentageToDP(1),
+                            }}
+                            numberOfLines={2}>
+                            Tickets
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: FONT.Montserrat_Bold,
+                              fontSize: heightPercentageToDP(2),
+                              color: COLORS.white_s,
+                              paddingBottom: heightPercentageToDP(1),
+                            }}
+                            numberOfLines={2}>
+                            Multiplier
+                          </Text>
+                        </View>
+                        {/** Tickets container */}
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: 'column',
+                          }}>
+                          <ScrollView style={styles.scrollView}>
+                            {tickets.map((ticket, ticketIndex) => (
+                              <View
+                                key={ticketIndex}
+                                style={{
+                                  justifyContent: 'center',
+                                  alignItems: 'flex-start',
+                                  flexDirection: 'row',
+                                  marginTop: heightPercentageToDP(1),
                                 }}>
-                                <GreenBall
-                                  key={ticket.multiplier}
-                                  value={ticket.multiplier || ''}
-                                  firstcolor={COLORS.firstred}
-                                  secondcolor={COLORS.secondred}
-                                />
-                              </TouchableOpacity>
-                            </View>
-                          </View>
-                        ))}
-                      </ScrollView>
+                                <View
+                                  style={{
+                                    flex: 4,
+                                    flexDirection: 'row',
+                                    gap: heightPercentageToDP(0.5),
+                                    flexWrap: 'wrap',
+                                    paddingBottom: heightPercentageToDP(1),
+                                    borderBottomColor: COLORS.white_s,
+                                    borderBottomWidth: 1,
+                                  }}>
+                                  {ticket.selectedNumbers.map((num, index) => (
+                                    <TouchableOpacity
+                                      key={index}
+                                      onPress={() => {
+                                        if (num !== null) {
+                                          handleNumberSelect(num);
+                                        }
+                                        setActiveTicketIndex(ticketIndex);
+                                        setActiveBallIndex(index);
+                                      }}>
+                                      <LinearGradient
+                                        colors={[COLORS.green, COLORS.green]}
+                                        start={{x: 1, y: 0}}
+                                        end={{x: 0, y: 1}}
+                                        style={[
+                                          styles.whiteBall,
+                                          {
+                                            width: heightPercentageToDP(5),
+                                            height: heightPercentageToDP(5),
+                                            borderRadius:
+                                              heightPercentageToDP(5) / 2,
+                                            borderWidth: 0.5, // Adjust the border thickness as needed
+                                            borderBottomColor: 'transparent', // Remove border from other sides
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                          },
+                                          activeTicketIndex === ticketIndex &&
+                                            index === activeBallIndex &&
+                                            styles.activeBall,
+                                          num !== null && styles.selectedBall,
+                                        ]}>
+                                        {/* Inner LinearGradient */}
+                                        <LinearGradient
+                                          colors={[COLORS.green, COLORS.green]}
+                                          start={{x: 0.5, y: 0}} // Middle of the top
+                                          end={{x: 0.5, y: 1}} // Middle of the bottom
+                                          style={{
+                                            width: '100%', // Slightly smaller than the wrapper to accommodate the border
+                                            height: '98%',
+                                            borderRadius:
+                                              heightPercentageToDP(5) / 2,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                          }}>
+                                          <Text style={styles.semibold}>
+                                            {num}
+                                          </Text>
+                                        </LinearGradient>
+                                      </LinearGradient>
+                                    </TouchableOpacity>
+                                  ))}
+                                </View>
+                                <View
+                                  style={{
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    paddingBottom: heightPercentageToDP(1),
+                                  }}>
+                                  <TouchableOpacity
+                                    style={[
+                                      styles.ball,
+
+                                      ticket.multiplier &&
+                                        styles.selectedRedBall,
+                                    ]}
+                                    onPress={() => {
+                                      setActiveTicketIndex(ticketIndex);
+                                      setShowMultipliers(true);
+                                    }}>
+                                    <GreenBall
+                                      key={ticket.multiplier}
+                                      value={ticket.multiplier || ''}
+                                      firstcolor={COLORS.firstred}
+                                      secondcolor={COLORS.secondred}
+                                    />
+                                  </TouchableOpacity>
+                                </View>
+                              </View>
+                            ))}
+                          </ScrollView>
+                        </View>
+                      </LinearGradient>
+
+                      {/* Total Cost */}
+                      <View style={styles.totalCostContainer}>
+                        <Text style={styles.totalCostText}>Total Cost:</Text>
+                        <Text style={styles.totalCostText}>
+                          {calculateTotalCost()}
+                        </Text>
+                      </View>
+
+                      {/* Submit Button */}
+                      <TouchableOpacity
+                        style={[
+                          styles.submitButton,
+                          isSubmitEnabled && styles.submitEnabled,
+                        ]}
+                        disabled={!isSubmitEnabled}
+                        onPress={() => sebmittingNext()}>
+                        <Text style={styles.submitText}>Next</Text>
+                      </TouchableOpacity>
+
+                      {/** end */}
                     </View>
-                  </LinearGradient>
-
-                  {/* Total Cost */}
-                  <View style={styles.totalCostContainer}>
-                    <Text style={styles.totalCostText}>Total Cost:</Text>
-                    <Text style={styles.totalCostText}>
-                      {calculateTotalCost()}
-                    </Text>
-                  </View>
-
-                  {/* Submit Button */}
-                  <TouchableOpacity
-                    style={[
-                      styles.submitButton,
-                      isSubmitEnabled && styles.submitEnabled,
-                    ]}
-                    disabled={!isSubmitEnabled}
-                    onPress={() => sebmittingNext()}>
-                    <Text style={styles.submitText}>Next</Text>
-                  </TouchableOpacity>
-
-                  {/** end */}
-                </View>
+                  )}
+                </>
               )}
 
               {/** ALL SELECTED NUMBERS */}
@@ -777,7 +946,7 @@ const PowerballGame = () => {
                                 gap: heightPercentageToDP(0.5),
                               }}>
                               {ticket.selectedNumbers.map((num, index) => (
-                                <SmallWhiteBall value={num} />
+                                <SmallWhiteBall index={index} value={num} />
                               ))}
                             </View>
                             <View
@@ -820,7 +989,7 @@ const PowerballGame = () => {
                                     fontFamily: FONT.Montserrat_Regular,
                                     fontSize: heightPercentageToDP(2),
                                   }}>
-                                  09 : 00 PM
+                                  {powertime.powertime}
                                 </Text>
                                 <Text
                                   style={{
@@ -828,7 +997,7 @@ const PowerballGame = () => {
                                     fontFamily: FONT.Montserrat_Regular,
                                     fontSize: heightPercentageToDP(2),
                                   }}>
-                                  08-02-2025
+                                  {todayPowerDate.powerdate}
                                 </Text>
                               </View>
                             </View>
@@ -891,7 +1060,7 @@ const PowerballGame = () => {
                                     fontSize: heightPercentageToDP(1),
                                     textAlignVertical: 'bottom',
                                   }}>
-                                  INR
+                                  {user.country.countrycurrencysymbol}
                                 </Text>
                               </View>
                             </View>
@@ -1050,7 +1219,7 @@ const PowerballGame = () => {
                   </View>
 
                   {/* Submit Button */}
-                  {submitLoader ? (
+                  {createPowerballBetIsLoading ? (
                     <View
                       style={{
                         height: heightPercentageToDP(7),
