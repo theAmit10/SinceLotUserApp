@@ -507,10 +507,34 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // [GET SINGLE USER INFORMATION]
+    getSingleUser: builder.query({
+      query: ({accesstoken, userId, query}) => ({
+        url: `user/singleuser/${userId}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [SEARCH PARTNER USER LIST]
+    searchPartnerUserList: builder.query({
+      query: ({accesstoken, userId, query}) => ({
+        url: `user/searchuserlist/${userId}?query=${query}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useSearchPartnerUserListQuery,
+  useGetSingleUserQuery,
   useSearchPartnerPartnerListQuery,
   useGetPowerballResultQuery,
   useUpdateDepositPaymentStatusMutation,

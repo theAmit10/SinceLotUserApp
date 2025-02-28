@@ -38,6 +38,10 @@ const PartnerDashboard = () => {
     dispatch(loadPartnerProfile(accesstoken, user.userId));
   }, [dispatch]);
 
+  const userdata = {
+    userId: 1000,
+  };
+
   return (
     <View style={{flex: 1}}>
       <Background />
@@ -184,6 +188,40 @@ const PartnerDashboard = () => {
                     <View style={styles.iconContainer}>
                       <MaterialCommunityIcons
                         name={'human-capacity-decrease'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                        style={styles.icon}
+                      />
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/** SEND NOTIFICATION TO ADMIN */}
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('CreateNotification', {userdata})
+                  }>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.paymentOption}>
+                    <View
+                      style={{
+                        flex: 1,
+                        gap: heightPercentageToDP(2),
+                      }}>
+                      <GradientText style={styles.textStyleContent}>
+                        Notify Admin
+                      </GradientText>
+                      <Text style={styles.subtitle}>
+                        Send Notification to Admin
+                      </Text>
+                    </View>
+
+                    <View style={styles.iconContainer}>
+                      <FontAwesome6
+                        name={'user'}
                         size={heightPercentageToDP(3)}
                         color={COLORS.darkGray}
                         style={styles.icon}

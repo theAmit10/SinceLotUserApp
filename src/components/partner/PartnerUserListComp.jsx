@@ -1,37 +1,19 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+
 import {heightPercentageToDP} from 'react-native-responsive-screen';
-import {COLORS, FONT} from '../../../assets/constants';
-import Toast from 'react-native-toast-message';
+import {COLORS, FONT} from '../../assets/constants';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-const AllPartnerComp = ({
-  navigate,
-  userid,
-  name,
-  profitpercentage,
-  rechargepercentage,
-  noofumser,
-  walletbalance,
-  item,
-}) => {
+const PartnerUserListComp = ({navigate, userid, name, item}) => {
   const navigation = useNavigation();
-
-  const handleComponentClick = () => {
-    if (item.partnerStatus) {
-      navigation.navigate(navigate, {item});
-    } else {
-      Toast.show({
-        type: 'info',
-        text1: 'Account Not Activated',
-        text2: 'This account has not been activated.',
-      });
-    }
-  };
-
   return (
-    <TouchableOpacity onPress={handleComponentClick}>
+    <TouchableOpacity
+      onPress={() => {
+        console.log(item);
+        navigation.navigate(navigate, {userdata: item});
+      }}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
@@ -44,6 +26,9 @@ const AllPartnerComp = ({
           }}>
           <View style={styles.topContainer}>
             <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('PartnerDetails', {data: item})
+              }
               style={{
                 flex: 1,
                 display: 'flex',
@@ -65,86 +50,6 @@ const AllPartnerComp = ({
                 {name}
               </Text>
             </View>
-
-            <View
-              style={{
-                flex: 1.5,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular} numberOfLines={1}>
-                Game Balance
-              </Text>
-              <Text
-                style={styles.titleBold}
-                numberOfLines={1}
-                adjustsFontSizeToFit={true}>
-                {walletbalance}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.centerLine}></View>
-          <View style={styles.bottomContainer}>
-            <View
-              style={{
-                flex: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>Profit</Text>
-              <Text style={styles.titleBold}>{profitpercentage}</Text>
-            </View>
-            <View
-              style={{
-                flex: 2,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>Recharge</Text>
-              <Text style={styles.titleBold}>{rechargepercentage}</Text>
-            </View>
-            <View
-              style={{
-                flex: 1.5,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>Total no. of users</Text>
-              <Text style={styles.titleBold} numberOfLines={1}>
-                {noofumser}
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              flexDirection: 'row',
-              gap: heightPercentageToDP(1),
-            }}>
-            <View
-              style={{
-                height: 5,
-                width: 5,
-                borderRadius: 5 / 2,
-                backgroundColor: item.partnerStatus ? 'green' : COLORS.red,
-              }}
-            />
-            <Text
-              style={[
-                styles.titleRegular,
-                {
-                  color: item.partnerStatus ? 'green' : COLORS.red,
-                },
-              ]}
-              numberOfLines={1}>
-              {item.partnerStatus ? 'Active' : 'Inactive'}
-            </Text>
           </View>
         </View>
       </LinearGradient>
@@ -152,7 +57,7 @@ const AllPartnerComp = ({
   );
 };
 
-export default AllPartnerComp;
+export default PartnerUserListComp;
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -176,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'pink',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: heightPercentageToDP(16),
+    height: heightPercentageToDP(10),
     borderRadius: heightPercentageToDP(2),
     alignItems: 'center',
     gap: heightPercentageToDP(3),

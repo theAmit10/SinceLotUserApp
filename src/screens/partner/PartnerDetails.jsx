@@ -27,7 +27,10 @@ import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import GradientText from '../../components/helpercComponent/GradientText';
-import {useGetAboutPartnerQuery} from '../../helper/Networkcall';
+import {
+  useGetAboutPartnerQuery,
+  useGetSingleUserQuery,
+} from '../../helper/Networkcall';
 import Loading from '../../components/helpercComponent/Loading';
 
 const PartnerDetails = ({route}) => {
@@ -43,6 +46,15 @@ const PartnerDetails = ({route}) => {
     userid,
   });
   const [partner, setpartner] = useState(null);
+
+  const {
+    isLoading: singleUserIsLoading,
+    data: singleUserData,
+    refetch: singleUserRefetch,
+  } = useGetSingleUserQuery({
+    accesstoken,
+    userId: item.userId,
+  });
 
   useEffect(() => {
     if (!isLoading && data) {
@@ -135,7 +147,7 @@ const PartnerDetails = ({route}) => {
 
             {/** Content Container */}
 
-            {isLoading ? (
+            {isLoading || singleUserIsLoading ? (
               <Loading />
             ) : (
               <View
@@ -148,73 +160,132 @@ const PartnerDetails = ({route}) => {
                     paddingBottom: heightPercentageToDP(2),
                   }}
                   showsVerticalScrollIndicator={false}>
-                  {/** USER PLAY HISTORY DETAILS */}
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('UserPlayHistory', {item})
-                    }>
+                  {/** USER DETAILS */}
+                  {singleUserData && (
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                       start={{x: 0, y: 0}} // start from left
                       end={{x: 1, y: 0}} // end at right
-                      style={styles.paymentOption}>
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+
+                        borderRadius: heightPercentageToDP(2),
+                        alignItems: 'center',
+                        gap: heightPercentageToDP(3),
+                        padding: heightPercentageToDP(2),
+                        marginTop: heightPercentageToDP(2),
+                      }}>
                       <View
                         style={{
                           flex: 1,
-                          gap: heightPercentageToDP(2),
                         }}>
+                        {singleUserData?.user?.email && (
+                          <>
+                            <Text style={styles.subtitle}>Email</Text>
+                            <GradientText style={styles.textStyleContent}>
+                              {singleUserData?.user?.email}
+                            </GradientText>
+                          </>
+                        )}
+
+                        {singleUserData?.user?.contact !=
+                          singleUserData?.user?.userId && (
+                          <>
+                            <Text style={styles.subtitle}>Phone</Text>
+                            <GradientText style={styles.textStyleContent}>
+                              {singleUserData?.user?.contact}
+                            </GradientText>
+                          </>
+                        )}
+
+                        <Text style={styles.subtitle}>Country</Text>
                         <GradientText style={styles.textStyleContent}>
-                          Play History
+                          {singleUserData?.user?.country?.countryname}
                         </GradientText>
-                        <Text style={styles.subtitle}>
-                          User’s Play History Details
-                        </Text>
                       </View>
 
-                      <View style={styles.iconContainer}>
+                      {/* <View style={styles.iconContainer}>
                         <MaterialCommunityIcons
-                          name={'history'}
+                          name={'account'}
                           size={heightPercentageToDP(3)}
                           color={COLORS.darkGray}
                           style={styles.icon}
                         />
-                      </View>
+                      </View> */}
                     </LinearGradient>
-                  </TouchableOpacity>
+                  )}
+                  {/** USER PLAY HISTORY DETAILS */}
+                  {partner?.playHistoryPermission && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('UserPlayHistory', {item})
+                      }>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={styles.paymentOption}>
+                        <View
+                          style={{
+                            flex: 1,
+                            gap: heightPercentageToDP(2),
+                          }}>
+                          <GradientText style={styles.textStyleContent}>
+                            Play History
+                          </GradientText>
+                          <Text style={styles.subtitle}>
+                            User’s Play History Details
+                          </Text>
+                        </View>
+
+                        <View style={styles.iconContainer}>
+                          <MaterialCommunityIcons
+                            name={'history'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                            style={styles.icon}
+                          />
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
 
                   {/** ALL PARTNER */}
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('UserTransactionHistory', {item})
-                    }>
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={styles.paymentOption}>
-                      <View
-                        style={{
-                          flex: 1,
-                          gap: heightPercentageToDP(2),
-                        }}>
-                        <GradientText style={styles.textStyleContent}>
-                          Transaction History
-                        </GradientText>
-                        <Text style={styles.subtitle}>
-                          User’s Transaction details
-                        </Text>
-                      </View>
+                  {partner?.transactionHistoryPermission && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('UserTransactionHistory', {item})
+                      }>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={styles.paymentOption}>
+                        <View
+                          style={{
+                            flex: 1,
+                            gap: heightPercentageToDP(2),
+                          }}>
+                          <GradientText style={styles.textStyleContent}>
+                            Transaction History
+                          </GradientText>
+                          <Text style={styles.subtitle}>
+                            User’s Transaction details
+                          </Text>
+                        </View>
 
-                      <View style={styles.iconContainer}>
-                        <MaterialCommunityIcons
-                          name={'history'}
-                          size={heightPercentageToDP(3)}
-                          color={COLORS.darkGray}
-                          style={styles.icon}
-                        />
-                      </View>
-                    </LinearGradient>
-                  </TouchableOpacity>
+                        <View style={styles.iconContainer}>
+                          <MaterialCommunityIcons
+                            name={'history'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                            style={styles.icon}
+                          />
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
 
                   {/** All Profit Decrease */}
                   <TouchableOpacity

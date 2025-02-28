@@ -139,90 +139,94 @@ const AllProfitDecrease = () => {
           flex: 1,
           padding: heightPercentageToDP(1),
         }}>
-        <FlatList
-          data={filteredData}
-          keyExtractor={item => item._id}
-          showsVerticalScrollIndicator={false}
-          renderItem={({item, index}) => (
-            <LinearGradient
-              colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-              start={{x: 0, y: 0}} // start from left
-              end={{x: 1, y: 0}} // end at right
-              style={{
-                justifyContent: 'flex-start',
-                borderRadius: heightPercentageToDP(1),
-                marginTop: heightPercentageToDP(2),
-              }}>
-              <TouchableOpacity
-                style={styles.paymentOption}
-                onPress={() => toggleItem(index)}>
-                <View
-                  style={{
-                    flex: 1,
-                    height: '100%',
-                  }}>
-                  <View style={styles.topContainer}>
-                    <View
-                      style={{
-                        flex: 0.5,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'flex-start',
-                      }}>
-                      <Text style={styles.titleRegular}>User ID</Text>
-                      <Text style={styles.titleBold}>{item.userId}</Text>
-                    </View>
-                    <View
-                      style={{
-                        flex: 1.5,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'flex-start',
-                      }}>
-                      <Text style={styles.titleRegular}>Name</Text>
-                      <Text style={styles.titleBold} numberOfLines={1}>
-                        {item.name}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'flex-start',
-                      }}>
-                      <Text style={styles.titleRegular}>Status</Text>
-                      <Text style={styles.titleBold} numberOfLines={1}>
-                        {item.status}
-                      </Text>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <FlatList
+            data={filteredData}
+            keyExtractor={item => item._id}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item, index}) => (
+              <LinearGradient
+                colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                start={{x: 0, y: 0}} // start from left
+                end={{x: 1, y: 0}} // end at right
+                style={{
+                  justifyContent: 'flex-start',
+                  borderRadius: heightPercentageToDP(1),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                <TouchableOpacity
+                  style={styles.paymentOption}
+                  onPress={() => toggleItem(index)}>
+                  <View
+                    style={{
+                      flex: 1,
+                      height: '100%',
+                    }}>
+                    <View style={styles.topContainer}>
+                      <View
+                        style={{
+                          flex: 0.5,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'flex-start',
+                        }}>
+                        <Text style={styles.titleRegular}>User ID</Text>
+                        <Text style={styles.titleBold}>{item.userId}</Text>
+                      </View>
+                      <View
+                        style={{
+                          flex: 1.5,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'flex-start',
+                        }}>
+                        <Text style={styles.titleRegular}>Name</Text>
+                        <Text style={styles.titleBold} numberOfLines={1}>
+                          {item.name}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'flex-start',
+                        }}>
+                        <Text style={styles.titleRegular}>Status</Text>
+                        <Text style={styles.titleBold} numberOfLines={1}>
+                          {item.status}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
 
-              {expandedItems[index] && (
-                <View
-                  style={{
-                    padding: heightPercentageToDP(2),
-                  }}>
-                  <View style={styles.centerLine}></View>
-                  <View style={styles.bottomContainer}>
-                    <View
-                      style={{
-                        flex: 1,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'flex-start',
-                      }}>
-                      <Text style={styles.titleRegular}>Reason</Text>
-                      <Text style={styles.titleBold}>{item.reason}</Text>
+                {expandedItems[index] && (
+                  <View
+                    style={{
+                      padding: heightPercentageToDP(2),
+                    }}>
+                    <View style={styles.centerLine}></View>
+                    <View style={styles.bottomContainer}>
+                      <View
+                        style={{
+                          flex: 1,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'flex-start',
+                        }}>
+                        <Text style={styles.titleRegular}>Reason</Text>
+                        <Text style={styles.titleBold}>{item.reason}</Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              )}
-            </LinearGradient>
-          )}
-        />
+                )}
+              </LinearGradient>
+            )}
+          />
+        )}
       </View>
     </MainBackgroundWithoutScrollview>
   );
