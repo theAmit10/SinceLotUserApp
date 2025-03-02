@@ -58,7 +58,7 @@ const ProfitDetails = () => {
     if (!isLoading && data) {
       setpartner(data.partner);
       console.log('Hey data');
-      console.log('Hey data', data);
+      console.log('Hey data', data.partner.rechargeModule);
     }
     if (error) {
       console.log(error);
@@ -175,7 +175,7 @@ const ProfitDetails = () => {
                   </LinearGradient>
 
                   {/** PARTNER  Recharge Percentage */}
-                  {partner.rechargeModule && (
+                  {partner.rechargeModule !== undefined && (
                     <>
                       <Text style={styles.textTitle}>Recharge Percentage</Text>
                       <LinearGradient

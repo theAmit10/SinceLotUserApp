@@ -563,7 +563,7 @@ const PlayArena = ({route}) => {
       ) > playnumberlimit
     ) {
       if (parseInt(playnumberlimit) <= 0) {
-        console.log(locationdata)
+        console.log(locationdata);
         Toast.show({
           type: 'info',
           text1: `${findMissingNumbers(
@@ -827,7 +827,7 @@ const PlayArena = ({route}) => {
     error: userplayhistoryError,
     isLoading: userplayhistoryLoading,
     refetch: userplayhistoryRefetch,
-  } = useGetPlayHistoryQuery(accesstoken);
+  } = useGetPlayHistoryQuery({accesstoken});
 
   const [playhistorydata, setPlayhistorydata] = useState([]);
   useEffect(() => {
@@ -848,7 +848,7 @@ const PlayArena = ({route}) => {
       console.log(
         checkPlaybetLimit(
           playhistorydata,
-          currentDate.lotdate,
+          currentDate?.lotdate,
           timedata.time ? timedata.time : timedata.lottime,
           locationdata.name ? locationdata.name : locationdata.lotlocation,
           mineplaynum,
