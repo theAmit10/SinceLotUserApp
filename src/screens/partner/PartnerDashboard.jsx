@@ -42,6 +42,10 @@ const PartnerDashboard = () => {
     userId: 1000,
   };
 
+  const partnerData = {
+    userId: user.parentPartnerId,
+  };
+
   return (
     <View style={{flex: 1}}>
       <Background />
@@ -131,70 +135,73 @@ const PartnerDashboard = () => {
                     </View>
                   </LinearGradient>
                 </TouchableOpacity>
-
                 {/** ALL PARTNER */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllPartner')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
-                    <View
-                      style={{
-                        flex: 1,
-                        gap: heightPercentageToDP(2),
-                      }}>
-                      <GradientText style={styles.textStyleContent}>
-                        All Partner
-                      </GradientText>
-                      <Text style={styles.subtitle}>
-                        List of all Partner data
-                      </Text>
-                    </View>
+                {user.parentParentPartnerId === 1000 && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllPartner')}>
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={styles.paymentOption}>
+                      <View
+                        style={{
+                          flex: 1,
+                          gap: heightPercentageToDP(2),
+                        }}>
+                        <GradientText style={styles.textStyleContent}>
+                          All Partner
+                        </GradientText>
+                        <Text style={styles.subtitle}>
+                          List of all Partner data
+                        </Text>
+                      </View>
 
-                    <View style={styles.iconContainer}>
-                      <FontAwesome6
-                        name={'people-group'}
-                        size={heightPercentageToDP(2.5)}
-                        color={COLORS.darkGray}
-                        style={styles.icon}
-                      />
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
+                      <View style={styles.iconContainer}>
+                        <FontAwesome6
+                          name={'people-group'}
+                          size={heightPercentageToDP(2.5)}
+                          color={COLORS.darkGray}
+                          style={styles.icon}
+                        />
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
 
                 {/** All Profit Decrease */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllProfitDecrease')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
-                    <View
-                      style={{
-                        flex: 1,
-                        gap: heightPercentageToDP(2),
-                      }}>
-                      <GradientText style={styles.textStyleContent}>
-                        All Profit Decrease
-                      </GradientText>
-                      <Text style={styles.subtitle}>
-                        List of Decrease Request{' '}
-                      </Text>
-                    </View>
+                {user.parentParentPartnerId === 1000 && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllProfitDecrease')}>
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={styles.paymentOption}>
+                      <View
+                        style={{
+                          flex: 1,
+                          gap: heightPercentageToDP(2),
+                        }}>
+                        <GradientText style={styles.textStyleContent}>
+                          All Profit Decrease
+                        </GradientText>
+                        <Text style={styles.subtitle}>
+                          List of Decrease Request{' '}
+                        </Text>
+                      </View>
 
-                    <View style={styles.iconContainer}>
-                      <MaterialCommunityIcons
-                        name={'human-capacity-decrease'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
-                        style={styles.icon}
-                      />
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
+                      <View style={styles.iconContainer}>
+                        <MaterialCommunityIcons
+                          name={'human-capacity-decrease'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                          style={styles.icon}
+                        />
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
 
                 {/** SEND NOTIFICATION TO ADMIN */}
                 <TouchableOpacity
@@ -229,6 +236,44 @@ const PartnerDashboard = () => {
                     </View>
                   </LinearGradient>
                 </TouchableOpacity>
+
+                {/** SEND NOTIFICATION TO PARTNER */}
+                {user?.parentPartnerId !== 1000 && (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('CreateNotification', {
+                        userdata: partnerData,
+                      })
+                    }>
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={styles.paymentOption}>
+                      <View
+                        style={{
+                          flex: 1,
+                          gap: heightPercentageToDP(2),
+                        }}>
+                        <GradientText style={styles.textStyleContent}>
+                          Notify Partner
+                        </GradientText>
+                        <Text style={styles.subtitle}>
+                          Send Notification to Top Partner
+                        </Text>
+                      </View>
+
+                      <View style={styles.iconContainer}>
+                        <FontAwesome6
+                          name={'user'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                          style={styles.icon}
+                        />
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
 
                 {/** Decrease Percentage */}
                 {/* <TouchableOpacity

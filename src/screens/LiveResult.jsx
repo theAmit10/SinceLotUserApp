@@ -297,7 +297,9 @@ const LiveResult = () => {
 
         console.log('Time Difference:', timeDifference); // Debugging
 
-        setShouldBlink(timeDifference > 0 && timeDifference <= 10);
+        const timerinMinutes = timeItem.liveresulttimer || 10;
+
+        setShouldBlink(timeDifference > 0 && timeDifference <= timerinMinutes);
       };
 
       checkTimeDifference();

@@ -422,89 +422,108 @@ const PlayHistory = () => {
                                       )}
                                     </Text>
                                   </View>
-                                  <View style={styles.detailContainer}>
-                                    <Text style={styles.detailValue}>
-                                      {item?.walletName
-                                        ? 'Winning No.'
-                                        : 'Total bets'}
-                                    </Text>
-                                    <Text
-                                      numberOfLines={3}
-                                      style={styles.detailLabel}>
-                                      {item?.walletName
-                                        ? item.playnumbers[0]?.playnumber
-                                        : item?.playnumbers.length}
-                                    </Text>
-                                  </View>
+                                  {item?.forProcess ? (
+                                    <View style={styles.detailContainer}>
+                                      <Text style={styles.detailValue}>
+                                        Partner
+                                      </Text>
+                                      <Text
+                                        numberOfLines={3}
+                                        style={styles.detailLabel}>
+                                        Profit
+                                      </Text>
+                                    </View>
+                                  ) : (
+                                    <View style={styles.detailContainer}>
+                                      <Text style={styles.detailValue}>
+                                        {item?.walletName
+                                          ? 'Winning No.'
+                                          : 'Total bets'}
+                                      </Text>
+                                      <Text
+                                        numberOfLines={3}
+                                        style={styles.detailLabel}>
+                                        {item?.walletName
+                                          ? item.playnumbers[0]?.playnumber
+                                          : item?.playnumbers.length}
+                                      </Text>
+                                    </View>
+                                  )}
                                 </View>
                                 {/** PLAY NUMBER */}
-                                <View
-                                  style={{
-                                    flex: 1,
-                                    borderBottomLeftRadius:
-                                      heightPercentageToDP(2),
-                                    borderBottomEndRadius:
-                                      heightPercentageToDP(2),
-                                    flexDirection: 'row',
-                                    padding: heightPercentageToDP(1),
-                                  }}>
-                                  <View style={styles.detailContainer}>
-                                    <Text style={styles.detailValue}>
-                                      Number
-                                    </Text>
-                                  </View>
-                                  <View style={styles.detailContainer}>
-                                    <Text style={styles.detailValue}>
-                                      Amount
-                                    </Text>
-                                  </View>
-                                  <View style={styles.detailContainer}>
-                                    <Text style={styles.detailValue}>
-                                      Win Amt.
-                                    </Text>
-                                  </View>
-                                </View>
-                                {item.playnumbers.map((pitem, pindex) => (
-                                  <View
-                                    key={pindex}
-                                    style={{
-                                      borderBottomLeftRadius:
-                                        heightPercentageToDP(2),
-                                      borderBottomEndRadius:
-                                        heightPercentageToDP(2),
-                                      flexDirection: 'row',
-                                      padding: heightPercentageToDP(1),
-                                    }}>
-                                    <View style={styles.detailContainer}>
-                                      <Text
+                                {item?.forProcess ? null : (
+                                  <>
+                                    <View
+                                      style={{
+                                        flex: 1,
+                                        borderBottomLeftRadius:
+                                          heightPercentageToDP(2),
+                                        borderBottomEndRadius:
+                                          heightPercentageToDP(2),
+                                        flexDirection: 'row',
+                                        padding: heightPercentageToDP(1),
+                                      }}>
+                                      <View style={styles.detailContainer}>
+                                        <Text style={styles.detailValue}>
+                                          Number
+                                        </Text>
+                                      </View>
+                                      <View style={styles.detailContainer}>
+                                        <Text style={styles.detailValue}>
+                                          Amount
+                                        </Text>
+                                      </View>
+                                      <View style={styles.detailContainer}>
+                                        <Text style={styles.detailValue}>
+                                          Win Amt.
+                                        </Text>
+                                      </View>
+                                    </View>
+                                    {item.playnumbers.map((pitem, pindex) => (
+                                      <View
+                                        key={pindex}
                                         style={{
-                                          ...styles.detailLabel,
-                                          fontFamily: FONT.Montserrat_SemiBold,
+                                          borderBottomLeftRadius:
+                                            heightPercentageToDP(2),
+                                          borderBottomEndRadius:
+                                            heightPercentageToDP(2),
+                                          flexDirection: 'row',
+                                          padding: heightPercentageToDP(1),
                                         }}>
-                                        {pitem?.playnumber}
-                                      </Text>
-                                    </View>
-                                    <View style={styles.detailContainer}>
-                                      <Text style={styles.detailLabel}>
-                                        {/* {pitem?.amount} */}
-                                        {item?.walletName
-                                          ? formatAmount(
-                                              pitem?.amount /
-                                                extractNumberFromString(
-                                                  item?.lotlocation
-                                                    ?.maximumReturn,
-                                                ),
-                                            )
-                                          : formatAmount(pitem?.amount)}
-                                      </Text>
-                                    </View>
-                                    <View style={styles.detailContainer}>
-                                      <Text style={styles.detailLabel}>
-                                        {formatAmount(pitem?.winningamount)}
-                                      </Text>
-                                    </View>
-                                  </View>
-                                ))}
+                                        <View style={styles.detailContainer}>
+                                          <Text
+                                            style={{
+                                              ...styles.detailLabel,
+                                              fontFamily:
+                                                FONT.Montserrat_SemiBold,
+                                            }}>
+                                            {pitem?.playnumber}
+                                          </Text>
+                                        </View>
+                                        <View style={styles.detailContainer}>
+                                          <Text style={styles.detailLabel}>
+                                            {/* {pitem?.amount} */}
+                                            {item?.walletName
+                                              ? formatAmount(
+                                                  pitem?.amount /
+                                                    extractNumberFromString(
+                                                      item?.lotlocation
+                                                        ?.maximumReturn,
+                                                    ),
+                                                )
+                                              : formatAmount(pitem?.amount)}
+                                          </Text>
+                                        </View>
+                                        <View style={styles.detailContainer}>
+                                          <Text style={styles.detailLabel}>
+                                            {formatAmount(pitem?.winningamount)}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    ))}
+                                  </>
+                                )}
+
                                 <View
                                   style={{
                                     height: 1,
@@ -688,7 +707,7 @@ const PlayHistory = () => {
                                   <View style={styles.detailContainer}>
                                     <Text style={styles.detailValue}>
                                       {item?.walletName
-                                        ? 'Winning No.'
+                                        ? 'Winner Ticket'
                                         : 'Total Ticket'}
                                     </Text>
                                     <Text

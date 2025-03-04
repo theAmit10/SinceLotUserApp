@@ -7,9 +7,13 @@ import {COLORS, FONT} from '../../../../assets/constants';
 import GradientText from '../../../components/helpercComponent/GradientText';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import {useSelector} from 'react-redux';
 
 const PartnerUserProfile = ({route}) => {
   const {item} = route.params;
+  const {accesstoken, user, partner} = useSelector(state => state.user);
+  console.log('User Data :: ' + JSON.stringify(item));
 
   console.log(item);
   const navigation = useNavigation();
@@ -18,64 +22,150 @@ const PartnerUserProfile = ({route}) => {
       title={'User Profile'}
       righttext={item.name}
       lefttext={item.userId}>
+      {/** USER DETAILS */}
+      {item && (
+        <LinearGradient
+          colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+          start={{x: 0, y: 0}} // start from left
+          end={{x: 1, y: 0}} // end at right
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+
+            borderRadius: heightPercentageToDP(2),
+            alignItems: 'center',
+            gap: heightPercentageToDP(3),
+            padding: heightPercentageToDP(2),
+            marginTop: heightPercentageToDP(2),
+          }}>
+          <View
+            style={{
+              flex: 1,
+            }}>
+            {item?.email && (
+              <>
+                <Text style={styles.subtitle}>Email</Text>
+                <GradientText style={styles.textStyleContent}>
+                  {item?.email}
+                </GradientText>
+              </>
+            )}
+
+            {item?.contact != item?.userId && (
+              <>
+                <Text style={styles.subtitle}>Phone</Text>
+                <GradientText style={styles.textStyleContent}>
+                  {item?.contact}
+                </GradientText>
+              </>
+            )}
+
+            <Text style={styles.subtitle}>Country</Text>
+            <GradientText style={styles.textStyleContent}>
+              {item?.country?.countryname}
+            </GradientText>
+          </View>
+        </LinearGradient>
+      )}
+
+      {/** SEND NOTIFICATION TO PARTNER */}
+
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('CreateNotification', {
+            userdata: item,
+          })
+        }>
+        <LinearGradient
+          colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+          start={{x: 0, y: 0}} // start from left
+          end={{x: 1, y: 0}} // end at right
+          style={styles.paymentOption}>
+          <View
+            style={{
+              flex: 1,
+              gap: heightPercentageToDP(2),
+            }}>
+            <GradientText style={styles.textStyleContent}>
+              Send Notification
+            </GradientText>
+            <Text style={styles.subtitle}>Send Notification to User</Text>
+          </View>
+
+          <View style={styles.iconContainer}>
+            <FontAwesome6
+              name={'user'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.darkGray}
+              style={styles.icon}
+            />
+          </View>
+        </LinearGradient>
+      </TouchableOpacity>
+
       {/*  PLAY HISTORY*/}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('UserPlayHistory', {item})}>
-        <LinearGradient
-          colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-          start={{x: 0, y: 0}} // start from left
-          end={{x: 1, y: 0}} // end at right
-          style={styles.paymentOption}>
-          <View
-            style={{
-              flex: 1,
-              gap: heightPercentageToDP(2),
-            }}>
-            <GradientText style={styles.textStyleContent}>
-              Play History
-            </GradientText>
-            <Text style={styles.subtitle}>User’s Play History Details</Text>
-          </View>
+      {partner.playHistoryPermission && (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('UserPlayHistory', {item})}>
+          <LinearGradient
+            colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+            start={{x: 0, y: 0}} // start from left
+            end={{x: 1, y: 0}} // end at right
+            style={styles.paymentOption}>
+            <View
+              style={{
+                flex: 1,
+                gap: heightPercentageToDP(2),
+              }}>
+              <GradientText style={styles.textStyleContent}>
+                Play History
+              </GradientText>
+              <Text style={styles.subtitle}>User’s Play History Details</Text>
+            </View>
 
-          <View style={styles.iconContainer}>
-            <MaterialCommunityIcons
-              name={'history'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          </View>
-        </LinearGradient>
-      </TouchableOpacity>
+            <View style={styles.iconContainer}>
+              <MaterialCommunityIcons
+                name={'history'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
+      )}
+
       {/** ALL  TRANSACTION HISTORY*/}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('UserTransactionHistory', {item})}>
-        <LinearGradient
-          colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-          start={{x: 0, y: 0}} // start from left
-          end={{x: 1, y: 0}} // end at right
-          style={styles.paymentOption}>
-          <View
-            style={{
-              flex: 1,
-              gap: heightPercentageToDP(2),
-            }}>
-            <GradientText style={styles.textStyleContent}>
-              Transaction History
-            </GradientText>
-            <Text style={styles.subtitle}>User’s Transaction details</Text>
-          </View>
+      {partner.transactionHistoryPermission && (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('UserTransactionHistory', {item})}>
+          <LinearGradient
+            colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+            start={{x: 0, y: 0}} // start from left
+            end={{x: 1, y: 0}} // end at right
+            style={styles.paymentOption}>
+            <View
+              style={{
+                flex: 1,
+                gap: heightPercentageToDP(2),
+              }}>
+              <GradientText style={styles.textStyleContent}>
+                Transaction History
+              </GradientText>
+              <Text style={styles.subtitle}>User’s Transaction details</Text>
+            </View>
 
-          <View style={styles.iconContainer}>
-            <MaterialCommunityIcons
-              name={'history'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          </View>
-        </LinearGradient>
-      </TouchableOpacity>
+            <View style={styles.iconContainer}>
+              <MaterialCommunityIcons
+                name={'history'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
+      )}
     </MainBackgroundWithoutScrollview>
   );
 };

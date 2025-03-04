@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {useSelector} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {
   useCreateSubPartnerMutation,
   useGetPartnerUserListQuery,
@@ -18,13 +18,16 @@ import {
 } from '../../helper/Networkcall';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS, FONT} from '../../../assets/constants';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import Toast from 'react-native-toast-message';
 import LinearGradient from 'react-native-linear-gradient';
+import Loading from '../../components/helpercComponent/Loading';
 
 const AllPartnerUsers = ({route}) => {
+  const navigation = useNavigation();
   const {accesstoken, user} = useSelector(state => state.user);
   // States
   const [partners, setPartners] = useState([]);
@@ -130,7 +133,7 @@ const AllPartnerUsers = ({route}) => {
       Toast.show({
         type: 'success',
         text1: 'Success',
-        text2: res.data.message || 'Partner added successfully',
+        text2: res.message || res.data.message || 'Partner added successfully',
       });
       await refetch();
     } catch (e) {
@@ -230,7 +233,15 @@ const AllPartnerUsers = ({route}) => {
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                     start={{x: 0, y: 0}} // start from left
                     end={{x: 1, y: 0}} // end at right
-                    style={styles.paymentOption}>
+                    style={[
+                      styles.paymentOption,
+                      {
+                        height:
+                          user.parentParentPartnerId !== 1000
+                            ? heightPercentageToDP(10)
+                            : heightPercentageToDP(15),
+                      },
+                    ]}>
                     <View
                       style={{
                         flex: 1,
@@ -260,12 +271,50 @@ const AllPartnerUsers = ({route}) => {
                           </Text>
                         </View>
                       </View>
-                      <View style={styles.centerLine}></View>
-                      <View style={styles.bottomContainer}>
-                        {item.partnerType === 'user' ? (
-                          showProgressBar ? (
-                            seletectedItem._id === item._id ? (
-                              <Loading />
+                      {user.parentParentPartnerId === 1000 && (
+                        <View style={styles.centerLine}></View>
+                      )}
+
+                      {user.parentParentPartnerId === 1000 && (
+                        <View style={styles.bottomContainer}>
+                          {item.partnerType === 'user' ? (
+                            showProgressBar ? (
+                              seletectedItem._id === item._id ? (
+                                <Loading />
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => makePartner(item)}
+                                  style={{
+                                    borderRadius: heightPercentageToDP(2),
+                                  }}>
+                                  <LinearGradient
+                                    colors={[
+                                      COLORS.user_firstgreen,
+                                      COLORS.time_secondgreen,
+                                    ]}
+                                    start={{x: 0, y: 0}} // start from left
+                                    end={{x: 1, y: 0}} // end at right
+                                    style={{
+                                      padding: heightPercentageToDP(1.5),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                      borderRadius: heightPercentageToDP(2),
+                                      flexDirection: 'row',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <FontAwesome
+                                      name={'edit'}
+                                      size={heightPercentageToDP(3)}
+                                      color={COLORS.black}
+                                      style={styles.icon}
+                                    />
+
+                                    <Text style={styles.titleSemiBold}>
+                                      Make Partner
+                                    </Text>
+                                  </LinearGradient>
+                                </TouchableOpacity>
+                              )
                             ) : (
                               <TouchableOpacity
                                 onPress={() => makePartner(item)}
@@ -300,43 +349,40 @@ const AllPartnerUsers = ({route}) => {
                                 </LinearGradient>
                               </TouchableOpacity>
                             )
-                          ) : (
-                            <TouchableOpacity
-                              onPress={() => makePartner(item)}
-                              style={{
-                                borderRadius: heightPercentageToDP(2),
-                              }}>
-                              <LinearGradient
-                                colors={[
-                                  COLORS.user_firstgreen,
-                                  COLORS.time_secondgreen,
-                                ]}
-                                start={{x: 0, y: 0}} // start from left
-                                end={{x: 1, y: 0}} // end at right
+                          ) : showProgressBar ? (
+                            seletectedItem._id === item._id ? (
+                              <Loading />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => removePartner(item)}
                                 style={{
-                                  padding: heightPercentageToDP(1.5),
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
                                   borderRadius: heightPercentageToDP(2),
-                                  flexDirection: 'row',
-                                  gap: heightPercentageToDP(1),
                                 }}>
-                                <FontAwesome
-                                  name={'edit'}
-                                  size={heightPercentageToDP(3)}
-                                  color={COLORS.black}
-                                  style={styles.icon}
-                                />
+                                <LinearGradient
+                                  colors={[COLORS.red, COLORS.red]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    padding: heightPercentageToDP(1.5),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: heightPercentageToDP(2),
+                                    flexDirection: 'row',
+                                    gap: heightPercentageToDP(1),
+                                  }}>
+                                  <MaterialCommunityIcons
+                                    name={'delete'}
+                                    size={heightPercentageToDP(3)}
+                                    color={COLORS.black}
+                                    style={styles.icon}
+                                  />
 
-                                <Text style={styles.titleSemiBold}>
-                                  Make Partner
-                                </Text>
-                              </LinearGradient>
-                            </TouchableOpacity>
-                          )
-                        ) : showProgressBar ? (
-                          seletectedItem._id === item._id ? (
-                            <Loading />
+                                  <Text style={styles.titleSemiBold}>
+                                    Remove Partner
+                                  </Text>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            )
                           ) : (
                             <TouchableOpacity
                               onPress={() => removePartner(item)}
@@ -367,39 +413,9 @@ const AllPartnerUsers = ({route}) => {
                                 </Text>
                               </LinearGradient>
                             </TouchableOpacity>
-                          )
-                        ) : (
-                          <TouchableOpacity
-                            onPress={() => removePartner(item)}
-                            style={{
-                              borderRadius: heightPercentageToDP(2),
-                            }}>
-                            <LinearGradient
-                              colors={[COLORS.red, COLORS.red]}
-                              start={{x: 0, y: 0}} // start from left
-                              end={{x: 1, y: 0}} // end at right
-                              style={{
-                                padding: heightPercentageToDP(1.5),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: heightPercentageToDP(2),
-                                flexDirection: 'row',
-                                gap: heightPercentageToDP(1),
-                              }}>
-                              <MaterialCommunityIcons
-                                name={'delete'}
-                                size={heightPercentageToDP(3)}
-                                color={COLORS.black}
-                                style={styles.icon}
-                              />
-
-                              <Text style={styles.titleSemiBold}>
-                                Remove Partner
-                              </Text>
-                            </LinearGradient>
-                          </TouchableOpacity>
-                        )}
-                      </View>
+                          )}
+                        </View>
+                      )}
                     </View>
                   </LinearGradient>
                 </TouchableOpacity>
