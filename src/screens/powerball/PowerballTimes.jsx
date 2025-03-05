@@ -37,21 +37,8 @@ const PowerballTimes = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const timedata = [
-    {
-      id: 1,
-      powertime: '10:00 PM',
-    },
-    {
-      id: 2,
-      powertime: '11:00 PM',
-    },
-  ];
-
-  const loading = false;
-
   const {user, accesstoken} = useSelector(state => state.user);
-  const id = '67a38904b00aa387719533b9';
+
   const [powertimes, setPowertimes] = useState(null);
   // Network call
   const {data, error, isLoading} = useGetPowetTimesQuery({accesstoken});

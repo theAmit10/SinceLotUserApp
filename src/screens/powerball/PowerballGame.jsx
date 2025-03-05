@@ -39,6 +39,10 @@ import {
   useGetPowerDatesQuery,
 } from '../../helper/Networkcall';
 import moment from 'moment-timezone';
+import {
+  getDateTimeAccordingToUserTimezone,
+  getTimeAccordingToTimezone,
+} from '../SearchTime';
 
 const getCurrentDateInTimezone = timezone => {
   return moment().tz(timezone).format('DD-MM-YYYY');
@@ -457,7 +461,11 @@ const PowerballGame = ({route}) => {
                   }}
                   numberOfLines={1}
                   adjustsFontSizeToFit={true}>
-                  {todayPowerDate?.powerdate}
+                  {getDateTimeAccordingToUserTimezone(
+                    powertime?.powertime,
+                    todayPowerDate?.powerdate,
+                    user?.country?.timezone,
+                  )}
                 </Text>
                 <View
                   style={{
@@ -474,7 +482,10 @@ const PowerballGame = ({route}) => {
                   }}
                   numberOfLines={1}
                   adjustsFontSizeToFit={true}>
-                  {powertime?.powertime}
+                  {getTimeAccordingToTimezone(
+                    powertime?.powertime,
+                    user?.country?.timezone,
+                  )}
                 </Text>
               </View>
 
@@ -989,7 +1000,10 @@ const PowerballGame = ({route}) => {
                                     fontFamily: FONT.Montserrat_Regular,
                                     fontSize: heightPercentageToDP(2),
                                   }}>
-                                  {powertime.powertime}
+                                  {getTimeAccordingToTimezone(
+                                    powertime?.powertime,
+                                    user?.country?.timezone,
+                                  )}
                                 </Text>
                                 <Text
                                   style={{
@@ -997,7 +1011,11 @@ const PowerballGame = ({route}) => {
                                     fontFamily: FONT.Montserrat_Regular,
                                     fontSize: heightPercentageToDP(2),
                                   }}>
-                                  {todayPowerDate.powerdate}
+                                  {getDateTimeAccordingToUserTimezone(
+                                    powertime?.powertime,
+                                    todayPowerDate?.powerdate,
+                                    user?.country?.timezone,
+                                  )}
                                 </Text>
                               </View>
                             </View>

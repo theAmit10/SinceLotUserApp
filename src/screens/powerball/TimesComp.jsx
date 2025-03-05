@@ -6,6 +6,8 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientText from '../../components/helpercComponent/GradientText';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {getTimeAccordingToTimezone} from '../SearchTime';
+import {useSelector} from 'react-redux';
 
 const TimesComp = ({
   powertime,
@@ -14,6 +16,7 @@ const TimesComp = ({
   item,
 }) => {
   const navigation = useNavigation();
+  const {user} = useSelector(state => state.user);
   return (
     <TouchableOpacity onPress={() => navigation.navigate(navigate, {item})}>
       <LinearGradient
@@ -33,7 +36,7 @@ const TimesComp = ({
               justifyContent: 'space-between',
             }}>
             <GradientText style={styles.textStyleContent}>
-              {powertime}
+              {getTimeAccordingToTimezone(powertime, user?.country?.timezone)}
             </GradientText>
             <Text style={styles.semibold}>{subtitle}</Text>
           </View>

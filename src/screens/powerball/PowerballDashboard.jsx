@@ -33,6 +33,10 @@ import {
   useLatestPowerballResultQuery,
 } from '../../helper/Networkcall';
 import Loading from '../../components/helpercComponent/Loading';
+import {
+  getDateTimeAccordingToUserTimezone,
+  getTimeAccordingToTimezone,
+} from '../SearchTime';
 
 const PowerballDashboard = () => {
   const navigation = useNavigation();
@@ -238,10 +242,17 @@ const PowerballDashboard = () => {
                         flexDirection: 'row',
                       }}>
                       <Text style={styles.semibold}>
-                        {latestResultData?.data?.powertime?.powertime}
+                        {getTimeAccordingToTimezone(
+                          latestResultData?.data?.powertime?.powertime,
+                          user?.country?.timezone,
+                        )}
                       </Text>
                       <Text style={styles.semibold}>
-                        {latestResultData?.data?.powerdate?.powerdate}
+                        {getDateTimeAccordingToUserTimezone(
+                          latestResultData?.data?.powertime?.powertime,
+                          latestResultData?.data?.powerdate?.powerdate,
+                          user?.country?.timezone,
+                        )}
                       </Text>
                     </View>
                     <View
