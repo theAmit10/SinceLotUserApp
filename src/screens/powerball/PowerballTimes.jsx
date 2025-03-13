@@ -1,42 +1,20 @@
-import {
-  FlatList,
-  Image,
-  ImageBackground,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ImageBackground, ScrollView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
-import GradientText from '../../components/helpercComponent/GradientText';
-import CircleContainer from '../../components/powerball/CircleContainer';
-import PrizeComponent from './PrizeComponent';
 import TimesComp from './TimesComp';
 import Loading from '../../components/helpercComponent/Loading';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
 import {useGetPowetTimesQuery} from '../../helper/Networkcall';
 
 const PowerballTimes = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-
   const {user, accesstoken} = useSelector(state => state.user);
 
   const [powertimes, setPowertimes] = useState(null);

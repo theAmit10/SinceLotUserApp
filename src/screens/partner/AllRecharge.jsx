@@ -525,7 +525,7 @@ const AllRecharge = () => {
                         }}>
                         <Text style={styles.titleRegular}>Amount</Text>
                         <Text style={styles.titleBold} numberOfLines={1}>
-                          200 INR
+                          {item.convertedAmount} INR
                         </Text>
                       </View>
                       {/* <View

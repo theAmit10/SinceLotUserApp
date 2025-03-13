@@ -343,7 +343,7 @@ const PowerballDashboard = () => {
                       latestResultData?.data?.prize?.fourthprize?.totaluser
                     }
                     amount={
-                      latestResultData?.data?.prize?.fourthprize?.amount + ' X'
+                      latestResultData?.data?.prize?.fourthprize?.totaluser
                     }
                   />
                   {/** FIFTH PRIZE */}

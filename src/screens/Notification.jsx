@@ -5,8 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -16,19 +14,15 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../assets/constants';
-import GradientText from '../components/helpercComponent/GradientText';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllLocations} from '../redux/actions/locationAction';
-import {getAllResult} from '../redux/actions/resultAction';
+
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 import {loadAllNotification} from '../redux/actions/userAction';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-import { useCheckNotificationSeenMutation } from '../helper/Networkcall';
+import {useCheckNotificationSeenMutation} from '../helper/Networkcall';
 
 const Notification = () => {
   const navigation = useNavigation();
@@ -44,14 +38,13 @@ const Notification = () => {
     dispatch(loadAllNotification(accesstoken, user._id));
   }, [dispatch, focused]);
 
-
   useEffect(() => {
     if (!loadingNotification && notifications) {
       submitHandler();
     }
   }, [loadingNotification, notifications]);
 
-  const [checkNotificationSeen, { isLoading, error }] =
+  const [checkNotificationSeen, {isLoading, error}] =
     useCheckNotificationSeenMutation();
 
   const submitHandler = async () => {
@@ -66,13 +59,6 @@ const Notification = () => {
       console.log('Error during submitHandler:', error);
     }
   };
-
-
-  
-
-  
-  
-
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -152,7 +138,8 @@ const Notification = () => {
                     style={{
                       height: heightPercentageToDP(11),
                       backgroundColor: COLORS.white_s,
-                      margin: heightPercentageToDP(2),
+                      marginBottom: heightPercentageToDP(2),
+                      marginHorizontal: heightPercentageToDP(1),
                       padding: heightPercentageToDP(2),
                       borderRadius: heightPercentageToDP(2),
                     }}>
@@ -173,8 +160,7 @@ const Notification = () => {
                         fontSize: heightPercentageToDP(2),
                       }}
                       numberOfLines={2}
-                      selectable
-                      >
+                      selectable>
                       {item.description}
                     </Text>
                   </View>

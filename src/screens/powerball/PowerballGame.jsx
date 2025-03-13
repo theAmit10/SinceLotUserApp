@@ -1,9 +1,6 @@
 import {
-  FlatList,
-  Image,
   ImageBackground,
   KeyboardAvoidingView,
-  Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -18,9 +15,6 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -36,7 +30,6 @@ import {
   useCreatePowerballBetMutation,
   useGetPowerballQuery,
   useGetPowerDatesByTimeQuery,
-  useGetPowerDatesQuery,
 } from '../../helper/Networkcall';
 import moment from 'moment-timezone';
 import {
@@ -73,7 +66,7 @@ const generateMultiplierObject = (number, multiplierArray = []) => {
   });
 
   // Add '7X' and 'NA' with default values
-  result['7X'] = number * 7;
+  // result['7X'] = number * 7;
   result['NA'] = 0;
 
   return result;
@@ -92,7 +85,7 @@ const getMultiplierValues = (multiplierArray = []) => {
   const values = multiplierArray.map(item => item.value);
 
   // Append '7X' and 'NA'
-  return [...values, '7X', 'NA'];
+  return [...values, 'NA'];
 };
 
 const processTicketData = (ticketArray, TICKET_COST) => {
@@ -179,7 +172,7 @@ const PowerballGame = ({route}) => {
       accesstoken,
       id: powertime._id,
       page: 1,
-      limit: 5,
+      limit: 10,
     });
 
   // [FOR GETTING TODAY POWERBALL DATE]

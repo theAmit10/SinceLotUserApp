@@ -20,6 +20,7 @@ import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {COLORS, FONT} from '../../../assets/constants';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import Toast from 'react-native-toast-message';
@@ -149,8 +150,8 @@ const AllPartnerUsers = ({route}) => {
     // setShowProgressBar(true);
     Toast.show({
       type: 'info',
-      text1: 'Admin mode',
-      text2: 'Admin can only remove partner',
+      text1: 'Already Partner',
+      text2: 'You are already a partner of this user',
     });
 
     // try {
@@ -322,10 +323,7 @@ const AllPartnerUsers = ({route}) => {
                                   borderRadius: heightPercentageToDP(2),
                                 }}>
                                 <LinearGradient
-                                  colors={[
-                                    COLORS.user_firstgreen,
-                                    COLORS.time_secondgreen,
-                                  ]}
+                                  colors={[COLORS.orange, COLORS.orange]}
                                   start={{x: 0, y: 0}} // start from left
                                   end={{x: 1, y: 0}} // end at right
                                   style={{
@@ -359,7 +357,10 @@ const AllPartnerUsers = ({route}) => {
                                   borderRadius: heightPercentageToDP(2),
                                 }}>
                                 <LinearGradient
-                                  colors={[COLORS.red, COLORS.red]}
+                                  colors={[
+                                    COLORS.user_firstgreen,
+                                    COLORS.time_secondgreen,
+                                  ]}
                                   start={{x: 0, y: 0}} // start from left
                                   end={{x: 1, y: 0}} // end at right
                                   style={{
@@ -371,14 +372,14 @@ const AllPartnerUsers = ({route}) => {
                                     gap: heightPercentageToDP(1),
                                   }}>
                                   <MaterialCommunityIcons
-                                    name={'delete'}
+                                    name={'user'}
                                     size={heightPercentageToDP(3)}
                                     color={COLORS.black}
                                     style={styles.icon}
                                   />
 
                                   <Text style={styles.titleSemiBold}>
-                                    Remove Partner
+                                    Partnered
                                   </Text>
                                 </LinearGradient>
                               </TouchableOpacity>
@@ -390,7 +391,10 @@ const AllPartnerUsers = ({route}) => {
                                 borderRadius: heightPercentageToDP(2),
                               }}>
                               <LinearGradient
-                                colors={[COLORS.red, COLORS.red]}
+                                colors={[
+                                  COLORS.user_firstgreen,
+                                  COLORS.time_secondgreen,
+                                ]}
                                 start={{x: 0, y: 0}} // start from left
                                 end={{x: 1, y: 0}} // end at right
                                 style={{
@@ -401,15 +405,15 @@ const AllPartnerUsers = ({route}) => {
                                   flexDirection: 'row',
                                   gap: heightPercentageToDP(1),
                                 }}>
-                                <MaterialCommunityIcons
-                                  name={'delete'}
+                                <MaterialIcons
+                                  name={'admin-panel-settings'}
                                   size={heightPercentageToDP(3)}
                                   color={COLORS.black}
                                   style={styles.icon}
                                 />
 
                                 <Text style={styles.titleSemiBold}>
-                                  Remove Partner
+                                  Partnered
                                 </Text>
                               </LinearGradient>
                             </TouchableOpacity>

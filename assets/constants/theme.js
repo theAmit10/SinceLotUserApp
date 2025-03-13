@@ -5,7 +5,7 @@
 
 //   gray: '#83829A',
 //   gray2: '#C1C0C8',
-  
+
 //   lightGray: '#EDEDEE',
 //   golden: '#ae9159',
 //   goldenLight: '#ebda8e',
@@ -62,7 +62,7 @@ const COLORS = {
 
   gray: '#83829A',
   gray2: '#C1C0C8',
-  
+
   lightGray: '#EDEDEE',
   golden: '#ae9159',
   goldenLight: '#ebda8e',
@@ -109,11 +109,11 @@ const COLORS = {
   grayBg: '#E0E3E1',
   grayHalfBg: '#ECECEC',
   white_s: '#FFFFFF',
-  black: "#000000",
-  blue: "#246BFD",
+  black: '#000000',
+  blue: '#246BFD',
   darkGray: '#4E4B4B',
   ballGray: '#808080',
-  lightDarkGray: "#A7A5B1",
+  lightDarkGray: '#A7A5B1',
   profileDarkGray: '#7E7D84',
 
   lightblue: '#9FE7F5',
@@ -123,7 +123,7 @@ const COLORS = {
   lightyellow: '#FFD75F',
   darkyellow: '#F7AD19',
 
-  result_lightblue : '#1993FF',
+  result_lightblue: '#1993FF',
   result_green: '#7EC530',
   result_yellow: '#EFC62A',
   result_orange: '#FF8500',
@@ -139,12 +139,7 @@ const COLORS = {
   time_secondgreen: '#C0D98A',
   user_firstgreen: '#7EC630',
   user_secondgreen: '#C0D98A',
-
-  
-
-
 };
-
 
 const FONT = {
   HELVETICA_BOLD: 'Helvetica-Bold',
