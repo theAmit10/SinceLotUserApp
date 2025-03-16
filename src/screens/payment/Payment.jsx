@@ -15,7 +15,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -178,6 +178,28 @@ const Payment = () => {
                     </View>
                     <GradientTextWhite style={styles.textStyleContent}>
                       UPI
+                    </GradientTextWhite>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/** Cash */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('OtherDeposit')}>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    style={styles.paymentOption}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                  >
+                    <View style={styles.iconContainer}>
+                      <MaterialCommunityIcons
+                        color={COLORS.black}
+                        name="contactless-payment-circle"
+                        size={heightPercentageToDP(4)}
+                      />
+                    </View>
+                    <GradientTextWhite style={styles.textStyleContent}>
+                      Other Payment
                     </GradientTextWhite>
                   </LinearGradient>
                 </TouchableOpacity>

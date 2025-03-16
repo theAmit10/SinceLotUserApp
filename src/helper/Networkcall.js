@@ -563,10 +563,22 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // GET OTHER PAYMENT NAMES
+    getOtherPaymentName: builder.query({
+      query: ({accesstoken}) => ({
+        url: `user/getopname`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useGetOtherPaymentNameQuery,
   useCreatePowerballBetMutation,
   useGetPowerDatesByTimeQuery,
   useLatestPowerballResultQuery,

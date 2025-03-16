@@ -72,7 +72,12 @@ const PARTNER_USER_UPI_API = server + 'result/getuserupipaymets';
 const PARTNER_BANK_API = server + 'result/getpartnerbanklist';
 const PARTNER_USER_BANK_API = server + 'result/getuserbankpaymets';
 
+const PARTNER_USER_OTHER_API = server + 'result/getuserotherpaymets';
+const PARTNER_OTHERPAYMENT_API = server + 'result/getpartnerotherlist';
+
 export default {
+  PARTNER_USER_OTHER_API,
+  PARTNER_OTHERPAYMENT_API,
   PARTNER_UPI_API,
   PARTNER_BANK_API,
   PARTNER_CRYPTO_API,
