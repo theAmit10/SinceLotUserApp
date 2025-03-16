@@ -272,52 +272,54 @@ const OtherDeposit = () => {
                   Other Deposit
                 </GradientTextWhite>
 
-                {!loadingAllData && allDepositdata.length !== 0 && (
-                  <TouchableOpacity onPress={toggleUpiOptionView}>
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        height: heightPercentageToDP(10),
-                        borderRadius: heightPercentageToDP(2),
-                        alignItems: 'center',
-                        gap: heightPercentageToDP(3),
-                        paddingStart: heightPercentageToDP(2),
-                        marginTop: heightPercentageToDP(2),
-                      }}>
-                      <View
+                {!loadingAllData &&
+                  !loadingOtherPayment &&
+                  allDepositdata.length !== 0 && (
+                    <TouchableOpacity onPress={toggleUpiOptionView}>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
                         style={{
-                          backgroundColor: COLORS.white_s,
-                          padding: heightPercentageToDP(1.5),
-                          borderRadius: heightPercentageToDP(1),
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          height: heightPercentageToDP(10),
+                          borderRadius: heightPercentageToDP(2),
+                          alignItems: 'center',
+                          gap: heightPercentageToDP(3),
+                          paddingStart: heightPercentageToDP(2),
+                          marginTop: heightPercentageToDP(2),
                         }}>
-                        <MaterialCommunityIcons
-                          color={COLORS.black}
-                          name="contactless-payment-circle"
-                          size={heightPercentageToDP(4)}
-                        />
-                      </View>
-                      <GradientTextWhite style={styles.textStyleContent}>
-                        Other
-                      </GradientTextWhite>
-                      {/* <GradientTextWhite style={styles.textStyleContent}>
+                        <View
+                          style={{
+                            backgroundColor: COLORS.white_s,
+                            padding: heightPercentageToDP(1.5),
+                            borderRadius: heightPercentageToDP(1),
+                          }}>
+                          <MaterialCommunityIcons
+                            color={COLORS.black}
+                            name="contactless-payment-circle"
+                            size={heightPercentageToDP(4)}
+                          />
+                        </View>
+                        <GradientTextWhite style={styles.textStyleContent}>
+                          Other
+                        </GradientTextWhite>
+                        {/* <GradientTextWhite style={styles.textStyleContent}>
                           {selectedUpiId?.paymentId}
                         </GradientTextWhite> */}
-                      <LinearGradient
-                        colors={[COLORS.grayBg, COLORS.white_s]}
-                        style={{borderRadius: 20, padding: 10}}>
-                        <AntDesign
-                          name={'downcircleo'}
-                          size={heightPercentageToDP(3)}
-                          color={COLORS.darkGray}
-                        />
+                        <LinearGradient
+                          colors={[COLORS.grayBg, COLORS.white_s]}
+                          style={{borderRadius: 20, padding: 10}}>
+                          <AntDesign
+                            name={'downcircleo'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                          />
+                        </LinearGradient>
                       </LinearGradient>
-                    </LinearGradient>
-                  </TouchableOpacity>
-                )}
+                    </TouchableOpacity>
+                  )}
               </View>
 
               {loadingAllData ? (
@@ -409,10 +411,10 @@ const OtherDeposit = () => {
                                       style={styles.textStyleContent}>
                                       Other
                                     </GradientTextWhite>
-                                    <GradientTextWhite
+                                    {/* <GradientTextWhite
                                       style={styles.textStyleContent}>
                                       {item.paymentId}
-                                    </GradientTextWhite>
+                                    </GradientTextWhite> */}
                                   </View>
 
                                   <View

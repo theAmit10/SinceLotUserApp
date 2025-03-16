@@ -88,6 +88,8 @@ import Play from '../screens/Play';
 import PartnerUserProfile from '../screens/partner/userdetails/PartnerUserProfile';
 import TempScreen from '../screens/TempScreen';
 import OtherDeposit from '../screens/payment/OtherDeposit';
+import AllOtherDepositPayment from '../screens/partner/recharge/AllOtherDepositPayment';
+import CreateOther from '../screens/partner/recharge/CreateOther';
 
 const Stack = createNativeStackNavigator();
 
@@ -239,7 +241,12 @@ const Main = () => {
           <Stack.Screen name="CreatePaypal" component={CreatePaypal} />
           <Stack.Screen name="CreateSkrill" component={CreateSkrill} />
           <Stack.Screen name="CreateCrypto" component={CreateCrypto} />
+          <Stack.Screen name="CreateOther" component={CreateOther} />
           <Stack.Screen name="OtherDeposit" component={OtherDeposit} />
+          <Stack.Screen
+            name="AllOtherDepositPayment"
+            component={AllOtherDepositPayment}
+          />
           <Stack.Screen name="Play" component={Play} />
           <Stack.Screen
             name="PartnerUserProfile"

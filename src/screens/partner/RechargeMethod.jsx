@@ -25,6 +25,7 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import {useGetRechargeModuleQuery} from '../../helper/Networkcall';
 import Loading from '../../components/helpercComponent/Loading';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const RechargeMethod = () => {
   const navigation = useNavigation();
@@ -214,6 +215,31 @@ const RechargeMethod = () => {
                         </View>
                         <GradientTextWhite style={styles.textStyleContent}>
                           UPI
+                        </GradientTextWhite>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
+                  {/** Cash */}
+                  {data && data.rechargeModule.otherPaymentPermission && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('AllOtherDepositPayment')
+                      }>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        style={styles.paymentOption}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                      >
+                        <View style={styles.iconContainer}>
+                          <MaterialCommunityIcons
+                            color={COLORS.black}
+                            name="contactless-payment-circle"
+                            size={heightPercentageToDP(4)}
+                          />
+                        </View>
+                        <GradientTextWhite style={styles.textStyleContent}>
+                          Other Payment
                         </GradientTextWhite>
                       </LinearGradient>
                     </TouchableOpacity>

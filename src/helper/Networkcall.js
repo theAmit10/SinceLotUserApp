@@ -574,10 +574,36 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // FOR DELETE A OTHER PAYMENT ACCOUNT
+    deleteOtherPaymentAccount: builder.mutation({
+      query: ({accesstoken, id}) => ({
+        url: `result/removeotherpayment/${id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // FOR CREATE A OTHER PAYMENT ACCOUNT
+    createOtherPaymentAccount: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'result/addOtherPayment',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        body,
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useCreateOtherPaymentAccountMutation,
+  useDeleteOtherPaymentAccountMutation,
   useGetOtherPaymentNameQuery,
   useCreatePowerballBetMutation,
   useGetPowerDatesByTimeQuery,
