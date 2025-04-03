@@ -303,7 +303,9 @@ const OtherDeposit = () => {
                           />
                         </View>
                         <GradientTextWhite style={styles.textStyleContent}>
-                          Other
+                          {selectedUpiId?.paymentName
+                            ? selectedUpiId?.paymentName
+                            : 'Other'}
                         </GradientTextWhite>
                         {/* <GradientTextWhite style={styles.textStyleContent}>
                           {selectedUpiId?.paymentId}
@@ -409,7 +411,9 @@ const OtherDeposit = () => {
                                     </View>
                                     <GradientTextWhite
                                       style={styles.textStyleContent}>
-                                      Other
+                                      {item.paymentName
+                                        ? item.paymentName
+                                        : 'Other Payment'}
                                     </GradientTextWhite>
                                     {/* <GradientTextWhite
                                       style={styles.textStyleContent}>
@@ -419,7 +423,7 @@ const OtherDeposit = () => {
 
                                   <View
                                     style={{
-                                      flex: 1,
+                                      flex: 0.2,
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                       paddingEnd: heightPercentageToDP(2),
@@ -458,35 +462,23 @@ const OtherDeposit = () => {
                                       justifyContent: 'flex-start',
                                       alignItems: 'flex-start',
                                     }}>
-                                    {otherPaymentData?.inputNames
-                                      ?.firstInputName && (
+                                    {item?.firstInputName && (
                                       <Text
                                         style={styles.copytitle}
                                         numberOfLines={2}>
-                                        {
-                                          otherPaymentData?.inputNames
-                                            ?.firstInputName
-                                        }
+                                        {item?.firstInputName}
                                       </Text>
                                     )}
 
-                                    {otherPaymentData?.inputNames
-                                      ?.secondInputName && (
+                                    {item?.secondInputName && (
                                       <Text style={styles.copytitle}>
-                                        {
-                                          otherPaymentData?.inputNames
-                                            ?.secondInputName
-                                        }
+                                        {item?.secondInputName}
                                       </Text>
                                     )}
 
-                                    {otherPaymentData?.inputNames
-                                      ?.thirdInputName && (
+                                    {item?.thirdInputName && (
                                       <Text style={styles.copytitle}>
-                                        {
-                                          otherPaymentData?.inputNames
-                                            ?.thirdInputName
-                                        }
+                                        {item?.thirdInputName}
                                       </Text>
                                     )}
                                   </View>
@@ -600,8 +592,7 @@ const OtherDeposit = () => {
                                   </View>
                                 </View>
                                 {/** QR code */}
-                                {otherPaymentData?.inputNames
-                                  ?.fourthInputName && (
+                                {item.qrcode && (
                                   <View
                                     style={{
                                       flex: 2,
