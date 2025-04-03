@@ -272,16 +272,49 @@ const AllPartnerUsers = ({route}) => {
                           </Text>
                         </View>
                       </View>
-                      {user.parentParentPartnerId === 1000 && (
-                        <View style={styles.centerLine}></View>
-                      )}
+                      {user.parentPartnerId !== 1000 &&
+                      user.parentParentPartnerId !== 1000 ? null : (
+                        <>
+                          <View style={styles.centerLine}></View>
+                          <View style={styles.bottomContainer}>
+                            {item.partnerType === 'user' ? (
+                              showProgressBar ? (
+                                seletectedItem._id === item._id ? (
+                                  <Loading />
+                                ) : (
+                                  <TouchableOpacity
+                                    onPress={() => makePartner(item)}
+                                    style={{
+                                      borderRadius: heightPercentageToDP(2),
+                                    }}>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.user_firstgreen,
+                                        COLORS.time_secondgreen,
+                                      ]}
+                                      start={{x: 0, y: 0}} // start from left
+                                      end={{x: 1, y: 0}} // end at right
+                                      style={{
+                                        padding: heightPercentageToDP(1.5),
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        borderRadius: heightPercentageToDP(2),
+                                        flexDirection: 'row',
+                                        gap: heightPercentageToDP(1),
+                                      }}>
+                                      <FontAwesome
+                                        name={'edit'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.black}
+                                        style={styles.icon}
+                                      />
 
-                      {user.parentParentPartnerId === 1000 && (
-                        <View style={styles.bottomContainer}>
-                          {item.partnerType === 'user' ? (
-                            showProgressBar ? (
-                              seletectedItem._id === item._id ? (
-                                <Loading />
+                                      <Text style={styles.titleSemiBold}>
+                                        Make Partner
+                                      </Text>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+                                )
                               ) : (
                                 <TouchableOpacity
                                   onPress={() => makePartner(item)}
@@ -289,10 +322,7 @@ const AllPartnerUsers = ({route}) => {
                                     borderRadius: heightPercentageToDP(2),
                                   }}>
                                   <LinearGradient
-                                    colors={[
-                                      COLORS.user_firstgreen,
-                                      COLORS.time_secondgreen,
-                                    ]}
+                                    colors={[COLORS.orange, COLORS.orange]}
                                     start={{x: 0, y: 0}} // start from left
                                     end={{x: 1, y: 0}} // end at right
                                     style={{
@@ -316,40 +346,43 @@ const AllPartnerUsers = ({route}) => {
                                   </LinearGradient>
                                 </TouchableOpacity>
                               )
-                            ) : (
-                              <TouchableOpacity
-                                onPress={() => makePartner(item)}
-                                style={{
-                                  borderRadius: heightPercentageToDP(2),
-                                }}>
-                                <LinearGradient
-                                  colors={[COLORS.orange, COLORS.orange]}
-                                  start={{x: 0, y: 0}} // start from left
-                                  end={{x: 1, y: 0}} // end at right
+                            ) : showProgressBar ? (
+                              seletectedItem._id === item._id ? (
+                                <Loading />
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => removePartner(item)}
                                   style={{
-                                    padding: heightPercentageToDP(1.5),
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
                                     borderRadius: heightPercentageToDP(2),
-                                    flexDirection: 'row',
-                                    gap: heightPercentageToDP(1),
                                   }}>
-                                  <FontAwesome
-                                    name={'edit'}
-                                    size={heightPercentageToDP(3)}
-                                    color={COLORS.black}
-                                    style={styles.icon}
-                                  />
+                                  <LinearGradient
+                                    colors={[
+                                      COLORS.user_firstgreen,
+                                      COLORS.time_secondgreen,
+                                    ]}
+                                    start={{x: 0, y: 0}} // start from left
+                                    end={{x: 1, y: 0}} // end at right
+                                    style={{
+                                      padding: heightPercentageToDP(1.5),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                      borderRadius: heightPercentageToDP(2),
+                                      flexDirection: 'row',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <MaterialCommunityIcons
+                                      name={'user'}
+                                      size={heightPercentageToDP(3)}
+                                      color={COLORS.black}
+                                      style={styles.icon}
+                                    />
 
-                                  <Text style={styles.titleSemiBold}>
-                                    Make Partner
-                                  </Text>
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            )
-                          ) : showProgressBar ? (
-                            seletectedItem._id === item._id ? (
-                              <Loading />
+                                    <Text style={styles.titleSemiBold}>
+                                      Partnered
+                                    </Text>
+                                  </LinearGradient>
+                                </TouchableOpacity>
+                              )
                             ) : (
                               <TouchableOpacity
                                 onPress={() => removePartner(item)}
@@ -371,8 +404,8 @@ const AllPartnerUsers = ({route}) => {
                                     flexDirection: 'row',
                                     gap: heightPercentageToDP(1),
                                   }}>
-                                  <MaterialCommunityIcons
-                                    name={'user'}
+                                  <MaterialIcons
+                                    name={'admin-panel-settings'}
                                     size={heightPercentageToDP(3)}
                                     color={COLORS.black}
                                     style={styles.icon}
@@ -383,42 +416,9 @@ const AllPartnerUsers = ({route}) => {
                                   </Text>
                                 </LinearGradient>
                               </TouchableOpacity>
-                            )
-                          ) : (
-                            <TouchableOpacity
-                              onPress={() => removePartner(item)}
-                              style={{
-                                borderRadius: heightPercentageToDP(2),
-                              }}>
-                              <LinearGradient
-                                colors={[
-                                  COLORS.user_firstgreen,
-                                  COLORS.time_secondgreen,
-                                ]}
-                                start={{x: 0, y: 0}} // start from left
-                                end={{x: 1, y: 0}} // end at right
-                                style={{
-                                  padding: heightPercentageToDP(1.5),
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  borderRadius: heightPercentageToDP(2),
-                                  flexDirection: 'row',
-                                  gap: heightPercentageToDP(1),
-                                }}>
-                                <MaterialIcons
-                                  name={'admin-panel-settings'}
-                                  size={heightPercentageToDP(3)}
-                                  color={COLORS.black}
-                                  style={styles.icon}
-                                />
-
-                                <Text style={styles.titleSemiBold}>
-                                  Partnered
-                                </Text>
-                              </LinearGradient>
-                            </TouchableOpacity>
-                          )}
-                        </View>
+                            )}
+                          </View>
+                        </>
                       )}
                     </View>
                   </LinearGradient>

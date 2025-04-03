@@ -39,7 +39,7 @@ const PartnerDetails = ({route}) => {
   const {item} = route.params;
   const {accesstoken, user} = useSelector(state => state.user);
 
-  const userid = item.userId;
+  const userid = user.userId;
 
   const {isLoading, error, data, refetch} = useGetAboutPartnerQuery({
     accesstoken,

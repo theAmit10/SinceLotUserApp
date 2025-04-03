@@ -33,6 +33,17 @@ import UpdatePartnerComp from '../../components/partner/updatepartner/UpdatePart
 import UpdatePartnerInput from '../../components/partner/updatepartner/UpdatePartnerInput';
 import Loading from '../../components/helpercComponent/Loading';
 import {useUpdateProfitPercentageMutation} from '../../helper/Networkcall';
+const checkValidPercentageCriteria = (profit, recharge) => {
+  const numProfit = Number(profit);
+  const numRecharge = Number(recharge);
+
+  if (isNaN(numProfit) || isNaN(numRecharge)) {
+    console.error('Invalid input: Both values must be numbers');
+    return false;
+  }
+
+  return numProfit + numRecharge <= 100;
+};
 
 const UpdatePercentage = ({route}) => {
   const {item} = route.params;
@@ -62,8 +73,7 @@ const UpdatePercentage = ({route}) => {
         type: 'error',
         text1: 'Enter Profit Percentage',
       });
-    }
-    if (isNaN(profitPercentage)) {
+    } else if (isNaN(profitPercentage)) {
       Toast.show({
         type: 'error',
         text1: 'Please enter valid profit percentage',
@@ -77,6 +87,14 @@ const UpdatePercentage = ({route}) => {
         text1: 'Invalid Profit Percentage',
         text2: 'New percentage must be higher than the current one.',
       });
+    } else if (
+      !checkValidPercentageCriteria(profitPercentage, item.rechargePercentage)
+    ) {
+      Toast.show({
+        type: 'error',
+        text1: 'Percentage is too high',
+      });
+      return;
     } else {
       console.log(item.userId);
       console.log(profitPercentage);
