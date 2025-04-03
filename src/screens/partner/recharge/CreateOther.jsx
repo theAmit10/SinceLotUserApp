@@ -173,15 +173,16 @@ const CreateOther = () => {
   const [secondInputName, setSecondInputName] = useState('');
   const [thirdInputName, setThirdInputName] = useState('');
   const [fourthInputName, setFourthInputName] = useState('');
-
-  useEffect(() => {
-    if (!loadingOtherPayment && otherPaymentData) {
-      setFirstInputName(otherPaymentData?.inputNames?.firstInputName);
-      setSecondInputName(otherPaymentData?.inputNames?.secondInputName);
-      setThirdInputName(otherPaymentData?.inputNames?.thirdInputName);
-      setFourthInputName(otherPaymentData?.inputNames?.fourthInputName);
-    }
-  }, [loadingOtherPayment, otherPaymentData]);
+  const [qrcodeName, setQrcodeName] = useState('');
+  const [paymentName, setPaymentName] = useState('');
+  // useEffect(() => {
+  //   if (!loadingOtherPayment && otherPaymentData) {
+  //     setFirstInputName(otherPaymentData?.inputNames?.firstInputName);
+  //     setSecondInputName(otherPaymentData?.inputNames?.secondInputName);
+  //     setThirdInputName(otherPaymentData?.inputNames?.thirdInputName);
+  //     setFourthInputName(otherPaymentData?.inputNames?.fourthInputName);
+  //   }
+  // }, [loadingOtherPayment, otherPaymentData]);
 
   //  FOR CREATING UPI
 
@@ -189,73 +190,80 @@ const CreateOther = () => {
     useCreateOtherPaymentAccountMutation();
 
   const submitCreateRequest = async () => {
-    if (otherPaymentData) {
-      if (firstInputName && !firstInput) {
-        Toast.show({
-          type: 'error',
-          text1: `Enter ${
-            otherPaymentData?.inputNames?.firstInputName || 'value'
-          }`,
-        });
-        return;
-      }
-      if (secondInputName && !secondInput) {
-        Toast.show({
-          type: 'error',
-          text1: `Enter ${
-            otherPaymentData?.inputNames?.secondInputName || 'value'
-          }`,
-        });
-        return;
-      }
-      if (thirdInputName && !thirdInput) {
-        Toast.show({
-          type: 'error',
-          text1: `Enter ${
-            otherPaymentData?.inputNames?.thirdInputName || 'value'
-          }`,
-        });
-        return;
-      }
-
-      if (fourthInputName && !imageSource) {
-        Toast.show({
-          type: 'error',
-          text1: 'Add QR code',
-        });
-        return;
-      }
-      if (!paymentnote) {
-        showErrorToast('Add payment note');
-        return;
-      } else {
-        console.log('Create other payment Running');
-        try {
-          const formData = new FormData();
-          // ✅ Append fields dynamically only if they have data
-          if (firstInput) formData.append('firstInput', firstInput);
-          if (secondInput) formData.append('secondInput', secondInput);
-          if (thirdInput) formData.append('thirdInput', thirdInput);
-          if (imageSource) formData.append('qrcode', imageSource);
-          if (paymentnote) formData.append('paymentnote', paymentnote);
-          formData.append('userId', user.userId);
-
-          const res = await createOtherPaymentAccount({
-            accesstoken: accesstoken,
-            body: formData,
-          }).unwrap();
-
-          Toast.show({type: 'success', text1: 'Success', text2: res.message});
-
-          navigation.goBack();
-        } catch (error) {
-          showErrorToast('Something went wrong');
-          console.log('Error during create upi:', error);
-        }
-      }
-    } else {
-      showErrorToast('Something went wrong');
+    if (!paymentName) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter payment name',
+      });
       return;
+    }
+    if (firstInputName && !firstInput) {
+      Toast.show({
+        type: 'error',
+        text1: `Enter ${'first value'}`,
+      });
+      return;
+    }
+    if (secondInputName && !secondInput) {
+      Toast.show({
+        type: 'error',
+        text1: `Enter ${'second value'}`,
+      });
+      return;
+    }
+    if (thirdInputName && !thirdInput) {
+      Toast.show({
+        type: 'error',
+        text1: `Enter ${'third value'}`,
+      });
+      return;
+    }
+
+    if (qrcodeName && !imageSource) {
+      Toast.show({
+        type: 'error',
+        text1: 'Add QR code',
+      });
+      return;
+    }
+
+    if (!paymentnote) {
+      Toast.show({
+        type: 'error',
+        text1: 'Add payment note',
+      });
+      return;
+    } else {
+      console.log('Create other payment Running');
+      try {
+        const formData = new FormData();
+        // ✅ Append fields dynamically only if they have data
+
+        if (paymentName) formData.append('paymentName', paymentName);
+        if (firstInput) formData.append('firstInput', firstInput);
+        if (firstInputName) formData.append('firstInputName', firstInputName);
+        if (secondInput) formData.append('secondInput', secondInput);
+        if (secondInputName)
+          formData.append('secondInputName', secondInputName);
+        if (thirdInput) formData.append('thirdInput', thirdInput);
+        if (thirdInputName) formData.append('thirdInputName', thirdInputName);
+        if (qrcodeName) formData.append('qrcodeName', qrcodeName);
+        if (imageSource) formData.append('qrcode', imageSource);
+        if (paymentnote) formData.append('paymentnote', paymentnote);
+        formData.append('userId', user.userId);
+
+        const res = await createOtherPaymentAccount({
+          accesstoken: accesstoken,
+          body: formData,
+        }).unwrap();
+
+        Toast.show({type: 'success', text1: 'Success', text2: res.message});
+
+        // navigation.goBack();
+      } catch (error) {
+        showErrorToast('Something went wrong');
+        console.log('Error during create upi:', error);
+      }
     }
   };
 
@@ -345,203 +353,347 @@ const CreateOther = () => {
                   automaticallyAdjustKeyboardInsets>
                   <View
                     style={{
-                      padding: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
                     }}>
-                    {/** upi holder name */}
-                    {otherPaymentData?.inputNames?.firstInputName && (
-                      <View
+                    <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        padding: heightPercentageToDP(1),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        Payment Method Name
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
                         style={{
                           borderRadius: heightPercentageToDP(2),
-                          padding: heightPercentageToDP(1),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          textColor={COLORS.black}
+                          fontFamily={FONT.Montserrat_Bold}
+                          value={paymentName}
+                          inputMode="text"
+                          onChangeText={text => setPaymentName(text)}
+                        />
+                      </LinearGradient>
+                    </View>
+
+                    {/** first */}
+
+                    <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        padding: heightPercentageToDP(1),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        First Input Name
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          textColor={COLORS.black}
+                          fontFamily={FONT.Montserrat_Bold}
+                          value={firstInputName}
+                          inputMode="text"
+                          onChangeText={text => setFirstInputName(text)}
+                        />
+                      </LinearGradient>
+                    </View>
+
+                    <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        padding: heightPercentageToDP(1),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        First Input Value
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          textColor={COLORS.black}
+                          fontFamily={FONT.Montserrat_Bold}
+                          value={firstInput}
+                          inputMode="text"
+                          onChangeText={text => setFirstInput(text)}
+                        />
+                      </LinearGradient>
+                    </View>
+
+                    {/** second */}
+                    <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        padding: heightPercentageToDP(1),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        Second Input Name
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          value={secondInputName}
+                          onChangeText={text => setSecondInputName(text)}
+                        />
+                      </LinearGradient>
+                    </View>
+
+                    <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        padding: heightPercentageToDP(1),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        Second Input Value
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          value={secondInput}
+                          onChangeText={text => setSecondInput(text)}
+                        />
+                      </LinearGradient>
+                    </View>
+
+                    {/** third */}
+
+                    <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        padding: heightPercentageToDP(1),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        Third Input Name
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          value={thirdInputName}
+                          onChangeText={text => setThirdInputName(text)}
+                        />
+                      </LinearGradient>
+                    </View>
+
+                    {/** fourth */}
+
+                    <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        padding: heightPercentageToDP(1),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        Fourth Input Name
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          value={qrcodeName}
+                          onChangeText={text => setQrcodeName(text)}
+                        />
+                      </LinearGradient>
+                    </View>
+
+                    {/** qr code */}
+
+                    <TouchableOpacity
+                      onPress={selectDoc}
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        padding: heightPercentageToDP(1),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        {qrcodeName}
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                          flexDirection: 'row',
                         }}>
                         <Text
                           style={{
-                            fontFamily: FONT.Montserrat_SemiBold,
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.HELVETICA_REGULAR,
                             color: COLORS.black,
+                            height: heightPercentageToDP(7),
+                            textAlignVertical: 'center',
+                            paddingStart: heightPercentageToDP(2),
                             fontSize: heightPercentageToDP(2),
-                            paddingStart: heightPercentageToDP(1),
                           }}>
-                          {otherPaymentData?.inputNames?.firstInputName}
+                          {imageFileName}
                         </Text>
-
-                        <LinearGradient
-                          colors={[
-                            COLORS.time_firstblue,
-                            COLORS.time_secondbluw,
-                          ]}
-                          start={{x: 0, y: 0}} // start from left
-                          end={{x: 1, y: 0}} // end at right
+                        <View
                           style={{
-                            borderRadius: heightPercentageToDP(2),
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'flex-end',
+                            paddingEnd: heightPercentageToDP(2),
                           }}>
-                          <TextInput
-                            underlineColor="transparent"
-                            activeUnderlineColor="transparent"
-                            cursorColor={COLORS.white}
-                            placeholderTextColor={COLORS.black}
-                            style={{
-                              backgroundColor: 'transparent',
-                              fontFamily: FONT.Montserrat_Bold,
-                              color: COLORS.black,
-                            }}
-                            textColor={COLORS.black}
-                            fontFamily={FONT.Montserrat_Bold}
-                            value={firstInput}
-                            inputMode="text"
-                            onChangeText={text => setFirstInput(text)}
-                          />
-                        </LinearGradient>
-                      </View>
-                    )}
-
-                    {/** Transaction id */}
-                    {otherPaymentData?.inputNames?.secondInputName && (
-                      <View
-                        style={{
-                          borderRadius: heightPercentageToDP(2),
-                          padding: heightPercentageToDP(1),
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: FONT.Montserrat_SemiBold,
-                            color: COLORS.black,
-                            fontSize: heightPercentageToDP(2),
-                            paddingStart: heightPercentageToDP(1),
-                          }}>
-                          {otherPaymentData?.inputNames?.secondInputName}
-                        </Text>
-
-                        <LinearGradient
-                          colors={[
-                            COLORS.time_firstblue,
-                            COLORS.time_secondbluw,
-                          ]}
-                          start={{x: 0, y: 0}} // start from left
-                          end={{x: 1, y: 0}} // end at right
-                          style={{
-                            borderRadius: heightPercentageToDP(2),
-                          }}>
-                          <TextInput
-                            underlineColor="transparent"
-                            activeUnderlineColor="transparent"
-                            cursorColor={COLORS.white}
-                            placeholderTextColor={COLORS.black}
-                            style={{
-                              backgroundColor: 'transparent',
-                              fontFamily: FONT.Montserrat_Bold,
-                              color: COLORS.black,
-                            }}
-                            value={secondInput}
-                            onChangeText={text => setSecondInput(text)}
-                          />
-                        </LinearGradient>
-                      </View>
-                    )}
-
-                    {otherPaymentData?.inputNames?.thirdInputName && (
-                      <View
-                        style={{
-                          borderRadius: heightPercentageToDP(2),
-                          padding: heightPercentageToDP(1),
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: FONT.Montserrat_SemiBold,
-                            color: COLORS.black,
-                            fontSize: heightPercentageToDP(2),
-                            paddingStart: heightPercentageToDP(1),
-                          }}>
-                          {otherPaymentData?.inputNames?.thirdInputName}
-                        </Text>
-
-                        <LinearGradient
-                          colors={[
-                            COLORS.time_firstblue,
-                            COLORS.time_secondbluw,
-                          ]}
-                          start={{x: 0, y: 0}} // start from left
-                          end={{x: 1, y: 0}} // end at right
-                          style={{
-                            borderRadius: heightPercentageToDP(2),
-                          }}>
-                          <TextInput
-                            underlineColor="transparent"
-                            activeUnderlineColor="transparent"
-                            cursorColor={COLORS.white}
-                            placeholderTextColor={COLORS.black}
-                            style={{
-                              backgroundColor: 'transparent',
-                              fontFamily: FONT.Montserrat_Bold,
-                              color: COLORS.black,
-                            }}
-                            value={thirdInput}
-                            onChangeText={text => setThirdInput(text)}
-                          />
-                        </LinearGradient>
-                      </View>
-                    )}
-
-                    {/** Receipt */}
-                    {otherPaymentData?.inputNames?.fourthInputName && (
-                      <TouchableOpacity
-                        onPress={selectDoc}
-                        style={{
-                          borderRadius: heightPercentageToDP(2),
-                          padding: heightPercentageToDP(1),
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: FONT.Montserrat_SemiBold,
-                            color: COLORS.black,
-                            fontSize: heightPercentageToDP(2),
-                            paddingStart: heightPercentageToDP(1),
-                          }}>
-                          {otherPaymentData?.inputNames?.fourthInputName}
-                        </Text>
-
-                        <LinearGradient
-                          colors={[
-                            COLORS.time_firstblue,
-                            COLORS.time_secondbluw,
-                          ]}
-                          start={{x: 0, y: 0}} // start from left
-                          end={{x: 1, y: 0}} // end at right
-                          style={{
-                            borderRadius: heightPercentageToDP(2),
-                            flexDirection: 'row',
-                          }}>
-                          <Text
-                            style={{
-                              backgroundColor: 'transparent',
-                              fontFamily: FONT.HELVETICA_REGULAR,
-                              color: COLORS.black,
-                              height: heightPercentageToDP(7),
-                              textAlignVertical: 'center',
-                              paddingStart: heightPercentageToDP(2),
-                              fontSize: heightPercentageToDP(2),
-                            }}>
-                            {imageFileName}
-                          </Text>
-                          <View
-                            style={{
-                              flex: 1,
-                              justifyContent: 'center',
-                              alignItems: 'flex-end',
-                              paddingEnd: heightPercentageToDP(2),
-                            }}>
-                            <LinearGradient
-                              colors={[COLORS.grayBg, COLORS.white_s]}
-                              style={{borderRadius: 20, padding: 10}}>
-                              <AntDesign
-                                name={'upload'}
-                                size={heightPercentageToDP(3)}
-                                color={COLORS.darkGray}
-                              />
-                            </LinearGradient>
-                          </View>
-                        </LinearGradient>
-                      </TouchableOpacity>
-                    )}
+                          <LinearGradient
+                            colors={[COLORS.grayBg, COLORS.white_s]}
+                            style={{borderRadius: 20, padding: 10}}>
+                            <AntDesign
+                              name={'upload'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
 
                     <View
                       style={{

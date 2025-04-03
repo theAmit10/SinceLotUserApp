@@ -228,7 +228,9 @@ const AllOtherDepositPayment = () => {
                               />
                             </View>
                             <GradientTextWhite style={styles.textStyleContent}>
-                              Other
+                              {item.paymentName
+                                ? item.paymentName
+                                : 'Other Payment'}
                             </GradientTextWhite>
                             {/* <GradientTextWhite style={styles.textStyleContent}>
                                 {item.paymentId}
@@ -237,7 +239,7 @@ const AllOtherDepositPayment = () => {
 
                           <View
                             style={{
-                              flex: 1,
+                              flex: 0.2,
                               justifyContent: 'flex-end',
                               alignItems: 'flex-end',
                               paddingEnd: heightPercentageToDP(2),
@@ -292,21 +294,21 @@ const AllOtherDepositPayment = () => {
                               gap: heightPercentageToDP(2),
                               justifyContent: 'space-between',
                             }}>
-                            {otherPaymentData?.inputNames?.firstInputName && (
+                            {item?.firstInputName && (
                               <Text style={styles.copytitle} numberOfLines={2}>
-                                {otherPaymentData?.inputNames?.firstInputName}
+                                {item?.firstInputName}
                               </Text>
                             )}
 
-                            {otherPaymentData?.inputNames?.secondInputName && (
+                            {item?.secondInputName && (
                               <Text style={styles.copytitle}>
-                                {otherPaymentData?.inputNames?.secondInputName}
+                                {item?.secondInputName}
                               </Text>
                             )}
 
-                            {otherPaymentData?.inputNames?.thirdInputName && (
+                            {item?.thirdInputName && (
                               <Text style={styles.copytitle}>
-                                {otherPaymentData?.inputNames?.thirdInputName}
+                                {item?.thirdInputName}
                               </Text>
                             )}
                           </View>
@@ -414,7 +416,7 @@ const AllOtherDepositPayment = () => {
                         </View>
 
                         {/** QR code */}
-                        {otherPaymentData?.inputNames?.fourthInputName && (
+                        {item.qrcode && (
                           <View
                             style={{
                               flex: 2,
