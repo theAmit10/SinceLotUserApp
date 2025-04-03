@@ -36,10 +36,9 @@ const Setting = () => {
 
   const {user, accesstoken} = useSelector(state => state.user);
 
-  const [partner, setPartner] = useState(false);
-
   const {isLoading, error, data} = useGetAboutPartnerQuery({accesstoken});
 
+  const [partner, setPartner] = useState(false);
   useEffect(() => {
     if (user && user.partnerStatus) {
       setPartner(true);

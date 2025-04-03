@@ -748,6 +748,12 @@ const Home = () => {
     );
   }, [dispatch, selectedYear, selectedMonth, showSelectMonth, showSelectYear]);
 
+  const [partner, setPartner] = useState(false);
+  useEffect(() => {
+    if (user && user.partnerStatus) {
+      setPartner(true);
+    }
+  }, [user]);
   return (
     <SafeAreaView className="flex-1">
       <View style={styles.container}>
@@ -844,8 +850,7 @@ const Home = () => {
                     flexDirection: 'row',
                     alignItems: 'center',
                   }}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('Play')}>
+                  <TouchableOpacity onPress={() => navigation.navigate('Play')}>
                     <Image
                       source={require('../../assets/image/playbtn.png')}
                       resizeMode="stretch"
@@ -1906,6 +1911,142 @@ const Home = () => {
                 </LinearGradient> */}
               </View>
 
+              {/** PARTNER AND LIVE RESULT */}
+
+              <View
+                style={{
+                  height: heightPercentageToDP(5),
+                  position: 'relative',
+                  marginVertical: heightPercentageToDP(2),
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginStart: heightPercentageToDP(3),
+                  marginEnd: heightPercentageToDP(2),
+                }}>
+                {partner && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('PartnerDashboard')}>
+                    <LinearGradient
+                      colors={[COLORS.white, COLORS.white]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: heightPercentageToDP(2),
+                        paddingHorizontal: heightPercentageToDP(2),
+                        width: widthPercentageToDP(42),
+                      }}>
+                      <LinearGradient
+                        colors={[COLORS.grayBg, COLORS.white_s]}
+                        className="rounded-xl p-2"
+                        style={{
+                          position: 'absolute',
+                          left: 0,
+                          padding: heightPercentageToDP(1), // Keep the padding as is
+                          borderRadius: heightPercentageToDP(2),
+                          justifyContent: 'center', // Center vertically
+                          alignItems: 'center', // Center horizontally
+                        }}>
+                        <MaterialCommunityIcons
+                          name={'account-group-outline'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </LinearGradient>
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          height: heightPercentageToDP(5),
+                        }}>
+                        <GradientText
+                          style={{
+                            fontSize: heightPercentageToDP(2),
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}>
+                          {`\u00A0 Partner`}
+                        </GradientText>
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
+
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('LiveResult')}>
+                  <LinearGradient
+                    colors={[COLORS.white, COLORS.white]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      borderRadius: heightPercentageToDP(2),
+                      paddingHorizontal: heightPercentageToDP(2),
+                      width: partner
+                        ? widthPercentageToDP(42)
+                        : widthPercentageToDP(90),
+                    }}>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: heightPercentageToDP(5),
+                      }}>
+                      <GradientText
+                        style={{
+                          fontSize: heightPercentageToDP(2),
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}>
+                        Live Result
+                      </GradientText>
+                    </View>
+
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      style={{
+                        position: 'absolute',
+                        right: 0,
+                        padding: heightPercentageToDP(1), // Keep the padding as is
+                        borderRadius: heightPercentageToDP(2),
+                        justifyContent: 'center', // Center vertically
+                        alignItems: 'center', // Center horizontally
+                      }}>
+                      <MaterialCommunityIcons
+                        name={'trophy'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/* <LinearGradient
+                  colors={[COLORS.darkyellow, COLORS.orange]}
+                  start={{x: 0, y: 0}} // start from left
+                  end={{x: 1, y: 0}} // end at right
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: heightPercentageToDP(2),
+                    paddingHorizontal: heightPercentageToDP(1),
+                  }}>
+                  <GradientText
+                    onPress={() => navigation.navigate('PlayHistory')}
+                    style={{
+                      fontSize: heightPercentageToDP(2),
+                      fontFamily: FONT.Montserrat_Bold,
+                      color: COLORS.black,
+                    }}>
+                    Play history
+                  </GradientText>
+                </LinearGradient> */}
+              </View>
               {/** PROMOTION CONTAINER */}
 
               {loadingPromotion ? (
