@@ -344,7 +344,7 @@ const PowerballGame = ({route}) => {
   };
 
   const sebmittingNext = async () => {
-    console.log('submitting to next stage to confirm ticket');
+    console.log('submitting now next stage to confirm ticket');
     console.log('submited ticket :: ', tickets);
     setShowAllSeclectedBalls(true);
   };
