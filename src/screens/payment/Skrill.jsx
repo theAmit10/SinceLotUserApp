@@ -715,6 +715,7 @@ const Skrill = () => {
                                   activeUnderlineColor="transparent"
                                   cursorColor={COLORS.white}
                                   placeholderTextColor={COLORS.black}
+                                  placeholder="Enter amount, currency & method with remarks (e.g. 100 USD SKRILL)"
                                   style={{
                                     backgroundColor: 'transparent',
                                     fontFamily: FONT.Montserrat_Bold,

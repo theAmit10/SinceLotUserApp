@@ -783,6 +783,7 @@ const CryptoDeposit = () => {
                                   activeUnderlineColor="transparent"
                                   cursorColor={COLORS.white}
                                   placeholderTextColor={COLORS.black}
+                                  placeholder="Enter amount, currency & method with remarks (e.g. 100 USD CRYPTO)"
                                   style={{
                                     backgroundColor: 'transparent',
                                     fontFamily: FONT.Montserrat_Bold,

@@ -715,6 +715,7 @@ const PaypalDeposit = () => {
                                   underlineColor="transparent"
                                   activeUnderlineColor="transparent"
                                   cursorColor={COLORS.white}
+                                  placeholder="Enter amount, currency & method with remarks (e.g. 100 USD Paypal)"
                                   placeholderTextColor={COLORS.black}
                                   style={{
                                     backgroundColor: 'transparent',

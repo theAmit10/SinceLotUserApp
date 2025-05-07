@@ -1014,6 +1014,7 @@ const BankDeposit = () => {
                                   underlineColor="transparent"
                                   activeUnderlineColor="transparent"
                                   cursorColor={COLORS.white}
+                                  placeholder="Enter amount, currency & method with remarks (e.g. 100 USD BANK)"
                                   placeholderTextColor={COLORS.black}
                                   style={{
                                     backgroundColor: 'transparent',

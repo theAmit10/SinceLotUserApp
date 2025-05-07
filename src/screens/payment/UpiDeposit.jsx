@@ -782,6 +782,7 @@ const UpiDeposit = () => {
                                   activeUnderlineColor="transparent"
                                   cursorColor={COLORS.white}
                                   placeholderTextColor={COLORS.black}
+                                  placeholder="Enter amount, currency & method with remarks (e.g. 100 INR UPI)"
                                   style={{
                                     backgroundColor: 'transparent',
                                     fontFamily: FONT.Montserrat_Bold,
