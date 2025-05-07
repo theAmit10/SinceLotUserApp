@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import React from 'react';
@@ -14,12 +15,15 @@ import {
 import Background from './Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../helpercComponent/GradientTextWhite';
+import Feather from 'react-native-vector-icons/Feather';
 
 const MainBackgroundWithoutScrollview = ({
   children,
   title,
   lefttext,
   righttext,
+  handlerPress,
+  showMenu,
 }) => {
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -93,13 +97,41 @@ const MainBackgroundWithoutScrollview = ({
                 </Text>
               </View>
 
-              <GradientTextWhite
+              {/* <GradientTextWhite
                 style={{
                   ...styles.textStyle,
                   paddingLeft: heightPercentageToDP(2),
                 }}>
                 {title}
-              </GradientTextWhite>
+              </GradientTextWhite> */}
+
+              <View
+                style={{
+                  height: heightPercentageToDP(5),
+                  width: widthPercentageToDP(100),
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  paddingEnd: heightPercentageToDP(2),
+                }}>
+                <GradientTextWhite
+                  style={{
+                    ...styles.textStyle,
+                    paddingLeft: heightPercentageToDP(2),
+                  }}>
+                  {title}
+                </GradientTextWhite>
+
+                {showMenu && (
+                  <TouchableOpacity onPress={handlerPress}>
+                    <Feather
+                      name="menu"
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.white_s}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
 
               {/* Content Container */}
               <View style={{flex: 1, padding: heightPercentageToDP(1)}}>

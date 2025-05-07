@@ -100,7 +100,7 @@ const AllPartner = () => {
   const isLoading = fetchingPaginated || fetchingSearch || loading;
 
   return (
-    <MainBackgroundWithoutScrollview title="All Partners">
+    <MainBackgroundWithoutScrollview title="All Partners" showMenu={true}>
       <View style={{flex: 1}}>
         {/* SEARCH INPUT */}
         <View
