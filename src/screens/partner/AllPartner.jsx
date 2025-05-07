@@ -12,6 +12,7 @@ import {
   useGetPartnerPartnerListQuery,
   useSearchPartnerPartnerListQuery,
 } from '../../helper/Networkcall';
+import SortingPartner from '../../components/helpercComponent/SortingPartner';
 
 const AllPartner = () => {
   const {accesstoken, user} = useSelector(state => state.user);
@@ -24,6 +25,9 @@ const AllPartner = () => {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [showSorting, setShowSorting] = useState(false);
+  const [sortBy, setSortBy] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
 
   // Debounce Effect for Search
   useEffect(() => {
@@ -39,7 +43,7 @@ const AllPartner = () => {
     refetch: refetchPaginated,
     isFetching: fetchingPaginated,
   } = useGetPartnerPartnerListQuery(
-    {accesstoken, userid: user.userId, page, limit},
+    {accesstoken, userId: user.userId, page, limit, sortBy, sortOrder},
     {skip: debouncedSearch.length > 0}, // Skip pagination if searching
   );
 
@@ -60,7 +64,7 @@ const AllPartner = () => {
       setPage(1); // ✅ Reset Page
       setHasMore(true); // ✅ Reset Load More
       refetchPaginated(); // ✅ Ensure Fresh Data
-    }, [refetchPaginated]),
+    }, [refetchPaginated, sortBy, sortOrder]),
   );
 
   useEffect(() => {
@@ -88,7 +92,7 @@ const AllPartner = () => {
     }
 
     setLoading(false);
-  }, [searchData, paginatedData, debouncedSearch, page]);
+  }, [searchData, paginatedData, debouncedSearch, page, sortBy, sortOrder]);
 
   const loadMore = () => {
     if (!loading && hasMore && debouncedSearch.length === 0) {
@@ -99,8 +103,15 @@ const AllPartner = () => {
   // Combined Loading State
   const isLoading = fetchingPaginated || fetchingSearch || loading;
 
+  const handlePressForMenu = () => {
+    setShowSorting(!showSorting);
+  };
+
   return (
-    <MainBackgroundWithoutScrollview title="All Partners" showMenu={true}>
+    <MainBackgroundWithoutScrollview
+      title="All Partners"
+      showMenu={true}
+      handlerPress={handlePressForMenu}>
       <View style={{flex: 1}}>
         {/* SEARCH INPUT */}
         <View
@@ -134,6 +145,14 @@ const AllPartner = () => {
             }}
           />
         </View>
+
+        {showSorting && (
+          <SortingPartner
+            setSortBy={setSortBy}
+            setSortOrder={setSortOrder}
+            onClose={() => setShowSorting(false)} // Close sorting options
+          />
+        )}
 
         {/* PARTNER USER LIST */}
         <View style={{flex: 1, padding: heightPercentageToDP(1)}}>

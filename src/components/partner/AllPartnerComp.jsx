@@ -93,10 +93,10 @@ const AllPartnerComp = ({
                 justifyContent: 'center',
                 alignItems: 'flex-start',
               }}>
-              <Text style={styles.titleRegular}>Profit</Text>
+              <Text style={styles.titleRegular}>Profit %</Text>
               <Text style={styles.titleBold}>{profitpercentage}</Text>
             </View>
-            <View
+            {/* <View
               style={{
                 flex: 2,
                 display: 'flex',
@@ -105,10 +105,10 @@ const AllPartnerComp = ({
               }}>
               <Text style={styles.titleRegular}>Recharge</Text>
               <Text style={styles.titleBold}>{rechargepercentage}</Text>
-            </View>
+            </View> */}
             <View
               style={{
-                flex: 1.5,
+                flex: 1,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'flex-start',
