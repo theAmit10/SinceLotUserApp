@@ -25,7 +25,11 @@ import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import LinearGradient from 'react-native-linear-gradient';
-import {useGetAllLocationWithTimeQuery} from '../helper/Networkcall';
+import {
+  useGetAllLocationWithTimeQuery,
+  useGetPowerballQuery,
+  useGetPowetTimesQuery,
+} from '../helper/Networkcall';
 import {loadProfile} from '../redux/actions/userAction';
 import {getTimeAccordingToTimezone} from './SearchTime';
 import moment from 'moment-timezone';
@@ -44,6 +48,50 @@ const LiveResult = () => {
   }, [isFocused]);
 
   const {data, error, isLoading} = useGetAllLocationWithTimeQuery(accesstoken);
+
+  const {
+    data: pdata,
+    isLoading: pisLoading,
+    refetch: prefetch,
+    error: perror,
+  } = useGetPowerballQuery(
+    {
+      accesstoken,
+    },
+    {refetchOnMountOrArgChange: true},
+  );
+
+  const {
+    isLoading: allTimeIsLoading,
+    data: allTimeData,
+    refetch: allTimeRefetch,
+  } = useGetPowetTimesQuery(
+    {
+      accesstoken,
+    },
+    {refetchOnMountOrArgChange: true},
+  );
+
+  const [updatename, setupdatename] = useState('');
+  useEffect(() => {
+    if (!pisLoading && pdata) {
+      setupdatename(pdata?.games[0]?.name);
+    }
+  }, [pisLoading, pdata, prefetch]);
+
+  const [nextTime, setNextTime] = useState(null);
+  const [filteredDataT, setFilteredDataT] = useState([]);
+  useEffect(() => {
+    if (!allTimeIsLoading && allTimeData) {
+      setFilteredDataT(allTimeData.powerTimes);
+
+      const nextTime = getNextTimeForHighlightsPowerball(
+        allTimeData.powerTimes,
+        'Asia/Kolkata',
+      );
+      setNextTime(nextTime);
+    }
+  }, [allTimeData, allTimeIsLoading]); // Correct dependencies
 
   // FOR ALL FILTER TYPE DATA
   useEffect(() => {
@@ -265,6 +313,53 @@ const LiveResult = () => {
     return sortedTimes[0];
   };
 
+  const getNextTimeForHighlightsPowerball = (times, userTimezone) => {
+    if (times.length === 1) {
+      return times[0];
+    }
+
+    // Get the current time in the user's timezone
+    const currentRiyadhTime = moment().tz(userTimezone).format('hh:mm A');
+    console.log('Current time in Riyadh timezone:', currentRiyadhTime);
+
+    // Convert each time from IST to user timezone (Asia/Riyadh)
+    const convertedTimes = times.map(item => {
+      const timeInIST = moment.tz(item.powertime, 'hh:mm A', 'Asia/Kolkata');
+      const timeInRiyadh = timeInIST.clone().tz(userTimezone).format('hh:mm A');
+      return {...item, convertedTime: timeInRiyadh};
+    });
+
+    console.log('Converted times to Riyadh timezone:', convertedTimes);
+
+    // Sort the times in the user's timezone
+    const sortedTimes = convertedTimes.sort((a, b) =>
+      moment(a.convertedTime, 'hh:mm A').diff(
+        moment(b.convertedTime, 'hh:mm A'),
+      ),
+    );
+
+    console.log('Sorted times:', sortedTimes);
+
+    // Find the next available time
+    for (let i = 0; i < sortedTimes.length; i++) {
+      if (
+        moment(currentRiyadhTime, 'hh:mm A').isBefore(
+          moment(sortedTimes[i].convertedTime, 'hh:mm A'),
+        )
+      ) {
+        console.log('Next available time found:', sortedTimes[i]);
+        return sortedTimes[i]; // Return the first future time
+      }
+    }
+
+    console.log(
+      'No future time found, returning the first sorted time:',
+      sortedTimes[0],
+    );
+    // If no future time found, return the first time (next day scenario)
+    return sortedTimes[0];
+  };
+
   // For Blinking button
 
   const BlinkingButton = ({
@@ -379,6 +474,118 @@ const LiveResult = () => {
     );
   };
 
+  const BlinkingButtonPowerball = ({
+    timeItem,
+    nextTime,
+    navigationHandler,
+    item,
+    user,
+    idx,
+  }) => {
+    const [isBlinking, setIsBlinking] = useState(false);
+    const [shouldBlink, setShouldBlink] = useState(false);
+
+    useEffect(() => {
+      if (!nextTime || !nextTime.powertime || !user?.country?.timezone) return;
+
+      const checkTimeDifference = () => {
+        const userTimezone = user.country.timezone;
+        const nextTimeInUserTZ = moment.tz(
+          nextTime.powertime,
+          'hh:mm A',
+          userTimezone,
+        );
+        const currentTimeInUserTZ = moment().tz(userTimezone);
+
+        const timeDifference = nextTimeInUserTZ.diff(
+          currentTimeInUserTZ,
+          'minutes',
+        );
+
+        console.log('Time Difference:', timeDifference); // Debugging
+
+        const timerinMinutes = timeItem.liveresulttimer || 10;
+
+        setShouldBlink(timeDifference > 0 && timeDifference <= timerinMinutes);
+      };
+
+      checkTimeDifference();
+      const timer = setInterval(checkTimeDifference, 10000); // Check every 10s
+
+      return () => clearInterval(timer);
+    }, [nextTime, user]);
+
+    useEffect(() => {
+      let interval;
+      if (shouldBlink) {
+        interval = setInterval(() => {
+          setIsBlinking(prev => !prev);
+        }, 500); // Blinking interval
+      } else {
+        setIsBlinking(false);
+      }
+
+      return () => clearInterval(interval);
+    }, [shouldBlink]);
+
+    return (
+      <TouchableOpacity
+        key={timeItem._id}
+        onPress={() => navigationHandler(item, timeItem)}
+        style={{
+          borderColor:
+            timeItem.powertime === nextTime.powertime
+              ? isBlinking
+                ? 'transparent'
+                : COLORS.white_s
+              : 'transparent',
+          borderWidth: timeItem.powertime === nextTime.powertime ? 2 : 2,
+          borderRadius: heightPercentageToDP(2),
+          overflow: 'hidden',
+        }}>
+        <LinearGradient
+          colors={
+            idx % 2 === 0
+              ? [COLORS.lightblue, COLORS.midblue]
+              : [COLORS.lightyellow, COLORS.darkyellow]
+          }
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: heightPercentageToDP(2),
+            opacity: 1,
+            paddingVertical: heightPercentageToDP(2),
+            paddingHorizontal: heightPercentageToDP(2),
+            borderRadius: heightPercentageToDP(1),
+          }}>
+          <Text
+            style={{
+              color: COLORS.black,
+              fontFamily: FONT.Montserrat_Regular,
+              fontSize: heightPercentageToDP(1.8),
+              textAlignVertical: 'center',
+            }}>
+            {moment
+              .tz(timeItem.powertime, 'hh:mm A', user?.country?.timezone)
+              .format('hh:mm A')}
+          </Text>
+          <Text
+            style={{
+              color: COLORS.black,
+              fontFamily: FONT.Montserrat_Regular,
+              fontSize: heightPercentageToDP(1.8),
+              textAlignVertical: 'center',
+            }}>
+            Play
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    );
+  };
+
   // const BlinkingButton = ({
   //   timeItem,
   //   nextTime,
@@ -466,7 +673,7 @@ const LiveResult = () => {
 
     return (
       <>
-        <TouchableOpacity onPress={() => toggleItem(item._id)}>
+        <TouchableOpacity key={item._id} onPress={() => toggleItem(item._id)}>
           <LinearGradient
             colors={
               index % 2 === 0
@@ -692,13 +899,116 @@ const LiveResult = () => {
             </View>
 
             <View style={{flex: 2}}>
-              {isLoading ? (
+              {isLoading || pisLoading ? (
                 <Loading />
               ) : (
                 <FlatList
                   data={filteredData}
                   renderItem={renderItem}
                   keyExtractor={item => item._id}
+                  ListHeaderComponent={() => {
+                    const groupedTimes = [];
+                    for (let i = 0; i < filteredDataT.length; i += 2) {
+                      groupedTimes.push(filteredDataT.slice(i, i + 2));
+                    }
+
+                    return (
+                      <>
+                        <TouchableOpacity
+                          onPress={() => toggleItem('powerball')}>
+                          <LinearGradient
+                            colors={
+                              1 % 2 === 0
+                                ? [COLORS.lightblue, COLORS.midblue]
+                                : [COLORS.lightyellow, COLORS.darkyellow]
+                            }
+                            start={{x: 0, y: 0}} // start from left
+                            end={{x: 1, y: 0}} // end at right
+                            style={styles.item}>
+                            <View style={{flex: 1.5}}>
+                              <Text
+                                style={{
+                                  color: COLORS.black,
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  fontSize: heightPercentageToDP(2.5),
+                                }}>
+                                {updatename}
+                              </Text>
+                            </View>
+                            <View style={{flex: 1}}>
+                              <Text
+                                style={{
+                                  color: COLORS.black,
+                                  fontFamily: FONT.Montserrat_Regular,
+                                  fontSize: heightPercentageToDP(2),
+                                  textAlignVertical: 'center',
+                                }}></Text>
+                            </View>
+                          </LinearGradient>
+                        </TouchableOpacity>
+
+                        {expandedItems['powerball'] && (
+                          <View style={{flex: 1, justifyContent: 'flex-end'}}>
+                            <ImageBackground
+                              source={require('../../assets/image/tlwbg.jpg')}
+                              imageStyle={{
+                                borderRadius: heightPercentageToDP(3),
+                                margin: heightPercentageToDP(2),
+                              }}
+                              style={{flex: 1}} // Ensures the overlay covers the entire image
+                            >
+                              {/* Transparent Black Overlay */}
+                              <View
+                                style={{
+                                  ...StyleSheet.absoluteFillObject,
+                                  backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust opacity as needed
+                                  borderRadius: heightPercentageToDP(3),
+                                  margin: heightPercentageToDP(2),
+                                }}
+                              />
+
+                              <View
+                                style={{
+                                  backgroundColor: 'transparent',
+                                  margin: heightPercentageToDP(2),
+                                  borderRadius: heightPercentageToDP(5),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                {groupedTimes.length === 0 ? (
+                                  <GradientTextWhite
+                                    style={{
+                                      ...styles.textStyle,
+                                      height: heightPercentageToDP(15),
+                                      textAlignVertical: 'center',
+                                      textAlign: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    No Available time
+                                  </GradientTextWhite>
+                                ) : (
+                                  groupedTimes.map((pair, idx) => (
+                                    <View key={idx} style={[styles.timeRow]}>
+                                      {pair.map(timeItem => (
+                                        <BlinkingButtonPowerball
+                                          timeItem={timeItem}
+                                          nextTime={nextTime}
+                                          navigationHandler={navigationHandler}
+                                          item={timeItem}
+                                          user={user}
+                                          idx={idx}
+                                        />
+                                      ))}
+                                    </View>
+                                  ))
+                                )}
+                              </View>
+                            </ImageBackground>
+                          </View>
+                        )}
+                      </>
+                    );
+                  }}
                   initialNumToRender={10}
                   maxToRenderPerBatch={10}
                   windowSize={10}
