@@ -129,6 +129,62 @@ const PowerballDashboard = () => {
                     paddingBottom: heightPercentageToDP(2),
                   }}
                   showsVerticalScrollIndicator={false}>
+                  {/** LATEST RESULT DETAILS */}
+                  <LinearGradient
+                    colors={[COLORS.lightyellow, COLORS.darkyellow]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.resultOption}>
+                    <View
+                      style={{
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                      }}>
+                      <Text style={styles.semibold}>
+                        {getTimeAccordingToTimezone(
+                          latestResultData?.data?.powertime?.powertime,
+                          user?.country?.timezone,
+                        )}
+                      </Text>
+                      <Text style={styles.semibold}>
+                        {getDateTimeAccordingToUserTimezone(
+                          latestResultData?.data?.powertime?.powertime,
+                          latestResultData?.data?.powerdate?.powerdate,
+                          user?.country?.timezone,
+                        )}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_Bold,
+                          fontSize: heightPercentageToDP(3),
+                          color: COLORS.black,
+                        }}>
+                        JACKPOT WINNER
+                      </Text>
+                    </View>
+
+                    <CircleContainer
+                      jackpotnumber={
+                        latestResultData?.data?.jackpotnumber || [
+                          '*',
+                          '*',
+                          '*',
+                          '*',
+                          '*',
+                          '*',
+                        ]
+                      }
+                    />
+                  </LinearGradient>
+
                   {/** BANNER DETAILS */}
                   <TouchableOpacity
                     onPress={() => navigation.navigate('PowerballTimes')}>
@@ -228,62 +284,6 @@ const PowerballDashboard = () => {
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>
-
-                  {/** LATEST RESULT DETAILS */}
-                  <LinearGradient
-                    colors={[COLORS.lightyellow, COLORS.darkyellow]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
-                    style={styles.resultOption}>
-                    <View
-                      style={{
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                      }}>
-                      <Text style={styles.semibold}>
-                        {getTimeAccordingToTimezone(
-                          latestResultData?.data?.powertime?.powertime,
-                          user?.country?.timezone,
-                        )}
-                      </Text>
-                      <Text style={styles.semibold}>
-                        {getDateTimeAccordingToUserTimezone(
-                          latestResultData?.data?.powertime?.powertime,
-                          latestResultData?.data?.powerdate?.powerdate,
-                          user?.country?.timezone,
-                        )}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_Bold,
-                          fontSize: heightPercentageToDP(3),
-                          color: COLORS.black,
-                        }}>
-                        JACKPOT WINNER
-                      </Text>
-                    </View>
-
-                    <CircleContainer
-                      jackpotnumber={
-                        latestResultData?.data?.jackpotnumber || [
-                          '*',
-                          '*',
-                          '*',
-                          '*',
-                          '*',
-                          '*',
-                        ]
-                      }
-                    />
-                  </LinearGradient>
 
                   {/* PRIZE DISTRIBUTION */}
 
