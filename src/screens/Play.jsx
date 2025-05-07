@@ -19,19 +19,29 @@ import {COLORS, FONT} from '../../assets/constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
-import Loading from '../components/helpercComponent/Loading';
-import {useDispatch, useSelector} from 'react-redux';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import LinearGradient from 'react-native-linear-gradient';
-import {useGetAllLocationWithTimeQuery} from '../helper/Networkcall';
-import {loadProfile} from '../redux/actions/userAction';
-import {getTimeAccordingToTimezone} from './SearchTime';
-import moment from 'moment-timezone';
-import Toast from 'react-native-toast-message';
-
+import {useSelector} from 'react-redux';
+import {useGetPowerballQuery} from '../helper/Networkcall';
+import Loading from '../components/helpercComponent/Loading';
 const Play = () => {
   const navigation = useNavigation();
+  const {user, accesstoken} = useSelector(state => state.user);
 
+  const [powerball, setPowerball] = useState(null);
+  // Network call
+  const {data, error, isLoading} = useGetPowerballQuery({accesstoken});
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setPowerball(data.games[0]);
+      console.log(data?.games[0]);
+    }
+
+    if (error) {
+      console.error('Error fetching powerball data:', error);
+    }
+  }, [data, isLoading, error]); // Correct dependencies
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -85,73 +95,79 @@ const Play = () => {
               </GradientTextWhite>
             </View>
 
-            {/** PLAY ARENA */}
-            <TouchableOpacity
-              onPress={() => navigation.navigate('PlayArenaLocation')}>
-              <LinearGradient
-                colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                start={{x: 0, y: 0}} // start from left
-                end={{x: 1, y: 0}} // end at right
-                style={styles.paymentOption}>
-                <View>
-                  <GradientTextWhite style={styles.textStyleContent}>
-                    Play Arena
-                  </GradientTextWhite>
-                  <Text
-                    style={{
-                      color: COLORS.white_s,
-                      fontSize: heightPercentageToDP(2),
-                      fontFamily: FONT.Montserrat_Regular,
-                    }}>
-                    Get your lucky number
-                  </Text>
-                </View>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <>
+                {/** PLAY ARENA */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('PlayArenaLocation')}>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.paymentOption}>
+                    <View>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        Play Arena
+                      </GradientTextWhite>
+                      <Text
+                        style={{
+                          color: COLORS.white_s,
+                          fontSize: heightPercentageToDP(2),
+                          fontFamily: FONT.Montserrat_Regular,
+                        }}>
+                        Get your lucky number
+                      </Text>
+                    </View>
 
-                <LinearGradient
-                  colors={[COLORS.grayBg, COLORS.white_s]}
-                  className="rounded-xl p-1">
-                  <MaterialCommunityIcons
-                    size={heightPercentageToDP(4)}
-                    color={COLORS.darkGray}
-                    name={'play-circle-outline'}
-                  />
-                </LinearGradient>
-              </LinearGradient>
-            </TouchableOpacity>
-            {/** POWERBALL */}
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        size={heightPercentageToDP(4)}
+                        color={COLORS.darkGray}
+                        name={'play-circle-outline'}
+                      />
+                    </LinearGradient>
+                  </LinearGradient>
+                </TouchableOpacity>
+                {/** POWERBALL */}
 
-            <TouchableOpacity
-              onPress={() => navigation.navigate('PowerballDashboard')}>
-              <LinearGradient
-                colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                start={{x: 0, y: 0}} // start from left
-                end={{x: 1, y: 0}} // end at right
-                style={styles.paymentOption}>
-                <View>
-                  <GradientTextWhite style={styles.textStyleContent}>
-                    Powerball
-                  </GradientTextWhite>
-                  <Text
-                    style={{
-                      color: COLORS.white_s,
-                      fontSize: heightPercentageToDP(2),
-                      fontFamily: FONT.Montserrat_Regular,
-                    }}>
-                    Get your tickets
-                  </Text>
-                </View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('PowerballDashboard')}>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.paymentOption}>
+                    <View>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        {powerball?.name}
+                      </GradientTextWhite>
+                      <Text
+                        style={{
+                          color: COLORS.white_s,
+                          fontSize: heightPercentageToDP(2),
+                          fontFamily: FONT.Montserrat_Regular,
+                        }}>
+                        Get your tickets
+                      </Text>
+                    </View>
 
-                <LinearGradient
-                  colors={[COLORS.grayBg, COLORS.white_s]}
-                  className="rounded-xl p-1">
-                  <MaterialCommunityIcons
-                    name={'trophy-award'}
-                    size={heightPercentageToDP(4)}
-                    color={COLORS.darkGray}
-                  />
-                </LinearGradient>
-              </LinearGradient>
-            </TouchableOpacity>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'trophy-award'}
+                        size={heightPercentageToDP(4)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </>
+            )}
           </View>
         </ImageBackground>
       </View>
