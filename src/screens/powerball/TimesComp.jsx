@@ -14,6 +14,8 @@ const TimesComp = ({
   subtitle = 'PLAY NOW',
   navigate = 'PowerballGame',
   item,
+  time,
+  nextTime,
 }) => {
   const navigation = useNavigation();
   const {user} = useSelector(state => state.user);
@@ -23,7 +25,18 @@ const TimesComp = ({
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
         end={{x: 1, y: 0}} // end at right
-        style={styles.paymentOption}>
+        style={[
+          styles.paymentOption,
+          {
+            borderColor:
+              item.powertime === nextTime.powertime
+                ? COLORS.yellow
+                : 'transparent',
+            borderWidth: item.powertime === nextTime.powertime ? 2 : 2,
+            borderRadius: heightPercentageToDP(2),
+            overflow: 'hidden',
+          },
+        ]}>
         <View
           style={{
             flex: 1,
