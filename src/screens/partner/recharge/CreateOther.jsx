@@ -381,6 +381,7 @@ const CreateOther = () => {
                           underlineColor="transparent"
                           activeUnderlineColor="transparent"
                           cursorColor={COLORS.white}
+                          placeholder="Payment Header name: Exm - Paypal, Skill, etc."
                           placeholderTextColor={COLORS.black}
                           style={{
                             backgroundColor: 'transparent',
@@ -424,6 +425,7 @@ const CreateOther = () => {
                           underlineColor="transparent"
                           activeUnderlineColor="transparent"
                           cursorColor={COLORS.white}
+                          placeholder="1st Head line name: Exm - [ Paypal ID ]"
                           placeholderTextColor={COLORS.black}
                           style={{
                             backgroundColor: 'transparent',
@@ -465,6 +467,7 @@ const CreateOther = () => {
                           underlineColor="transparent"
                           activeUnderlineColor="transparent"
                           cursorColor={COLORS.white}
+                          placeholder="Payment Receiving ID: Exm- Paypal@gmail.com"
                           placeholderTextColor={COLORS.black}
                           style={{
                             backgroundColor: 'transparent',
@@ -507,6 +510,7 @@ const CreateOther = () => {
                           underlineColor="transparent"
                           activeUnderlineColor="transparent"
                           cursorColor={COLORS.white}
+                          placeholder="2nd Head line name: Exm - [ Paypal ID ] Other field to add ( Optional )"
                           placeholderTextColor={COLORS.black}
                           style={{
                             backgroundColor: 'transparent',
@@ -545,6 +549,7 @@ const CreateOther = () => {
                           underlineColor="transparent"
                           activeUnderlineColor="transparent"
                           cursorColor={COLORS.white}
+                          placeholder="2nd input value if your payment option have update in this field ( Optional )"
                           placeholderTextColor={COLORS.black}
                           style={{
                             backgroundColor: 'transparent',
@@ -584,6 +589,7 @@ const CreateOther = () => {
                         <TextInput
                           underlineColor="transparent"
                           activeUnderlineColor="transparent"
+                          placeholder="3rd Head line name: Exm - [ Paypal ID ] Other field to add ( Optional )"
                           cursorColor={COLORS.white}
                           placeholderTextColor={COLORS.black}
                           style={{
@@ -596,10 +602,48 @@ const CreateOther = () => {
                         />
                       </LinearGradient>
                     </View>
+                    <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        padding: heightPercentageToDP(1),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        Third Input Value
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          placeholder="3rd input value if your payment option have update in this field ( Optional )"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          value={thirdInput}
+                          onChangeText={text => setThirdInput(text)}
+                        />
+                      </LinearGradient>
+                    </View>
 
                     {/** fourth */}
 
-                    <View
+                    {/* <View
                       style={{
                         borderRadius: heightPercentageToDP(2),
                         padding: heightPercentageToDP(1),
@@ -635,7 +679,7 @@ const CreateOther = () => {
                           onChangeText={text => setQrcodeName(text)}
                         />
                       </LinearGradient>
-                    </View>
+                    </View> */}
 
                     {/** qr code */}
 
@@ -652,7 +696,7 @@ const CreateOther = () => {
                           fontSize: heightPercentageToDP(2),
                           paddingStart: heightPercentageToDP(1),
                         }}>
-                        {qrcodeName}
+                        Qr code
                       </Text>
 
                       <LinearGradient
