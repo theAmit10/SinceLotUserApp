@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+
 import Toast from 'react-native-toast-message';
 
 const MAX_NUMBERS = 6; // Adjust this based on your requirements
@@ -36,11 +37,10 @@ const ticketSlice = createSlice({
         console.log(
           'Ticket limit reached. You can add a maximum of 10 tickets.',
         );
-
         Toast.show({
           type: 'error',
           text1: 'Ticket limit reached.',
-          text2: 'You can add a maximum of 10 tickets.',
+          text2: ' You can add a maximum of 10 tickets.',
         });
       }
     },
@@ -69,11 +69,10 @@ const ticketSlice = createSlice({
           state.tickets = [...state.tickets, ...newTickets];
         } else {
           console.warn('Cannot add more tickets. Maximum limit reached.');
-
           Toast.show({
             type: 'error',
-            text1: 'Cannot add more tickets',
-            text2: 'Maximum limit reached..',
+            text1: 'Cannot add more tickets. ',
+            text2: ' Maximum limit reached.',
           });
         }
       }
@@ -86,8 +85,50 @@ const ticketSlice = createSlice({
         }
       }
     },
+    // handleNumberSelectR: (state, action) => {
+    //   const { number } = action.payload;
+    //   const currentTicket = state.tickets[state.activeTicketIndex];
+    //   const updatedNumbers = [...currentTicket.selectedNumbers];
+
+    //   if (updatedNumbers.includes(number)) {
+    //     const indexToRemove = updatedNumbers.indexOf(number);
+    //     updatedNumbers[indexToRemove] = null;
+    //   } else {
+    //     updatedNumbers[state.activeBallIndex] = number;
+    //     // const indexToRemove = updatedNumbers.indexOf(number);
+    //     // updatedNumbers[indexToRemove] = null;
+    //   }
+
+    //   state.tickets[state.activeTicketIndex] = {
+    //     ...currentTicket,
+    //     selectedNumbers: updatedNumbers,
+    //   };
+
+    //   const nextEmptyIndex = updatedNumbers.indexOf(null);
+    //   if (nextEmptyIndex !== -1) {
+    //     state.activeBallIndex = nextEmptyIndex;
+    //   }
+    // },
+
     handleNumberSelectR: (state, action) => {
-      const {number} = action.payload;
+      const {number, ticketIndex} = action.payload;
+
+      // Check if the clicked ticket is different from the active one
+      if (
+        ticketIndex !== undefined &&
+        ticketIndex !== state.activeTicketIndex
+      ) {
+        console.log(
+          'Please activate the ticket first before selecting numbers.',
+        );
+
+        Toast.show({
+          type: 'error',
+          text1: 'Please select the ticket first before selecting numbers.',
+        });
+        return; // Exit the function without making changes
+      }
+
       const currentTicket = state.tickets[state.activeTicketIndex];
       const updatedNumbers = [...currentTicket.selectedNumbers];
 
@@ -96,8 +137,6 @@ const ticketSlice = createSlice({
         updatedNumbers[indexToRemove] = null;
       } else {
         updatedNumbers[state.activeBallIndex] = number;
-        // const indexToRemove = updatedNumbers.indexOf(number);
-        // updatedNumbers[indexToRemove] = null;
       }
 
       state.tickets[state.activeTicketIndex] = {
