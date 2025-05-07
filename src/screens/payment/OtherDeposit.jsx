@@ -357,7 +357,7 @@ const OtherDeposit = () => {
                           fontSize: heightPercentageToDP(2),
                           textAlign: 'center',
                         }}>
-                        This payment method is temporarily unavailable.
+                        This Payment option updating shortly. Thank You
                       </Text>
                     </View>
                   ) : (
