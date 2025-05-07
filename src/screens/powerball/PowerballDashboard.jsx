@@ -343,7 +343,8 @@ const PowerballDashboard = () => {
                       latestResultData?.data?.prize?.fourthprize?.totaluser
                     }
                     amount={
-                      latestResultData?.data?.prize?.fourthprize?.totaluser
+                      latestResultData?.data?.prize?.fourthprize?.amount *
+                      user?.country?.ticketprice
                     }
                   />
                   {/** FIFTH PRIZE */}
@@ -355,7 +356,8 @@ const PowerballDashboard = () => {
                       latestResultData?.data?.prize?.fifthprize?.totaluser
                     }
                     amount={
-                      latestResultData?.data?.prize?.fifthprize?.amount + ' X'
+                      latestResultData?.data?.prize?.fifthprize?.amount *
+                      user?.country?.ticketprice
                     }
                   />
                   {/** SIXTH PRIZE */}
@@ -367,7 +369,8 @@ const PowerballDashboard = () => {
                       latestResultData?.data?.prize?.sixthprize?.totaluser
                     }
                     amount={
-                      latestResultData?.data?.prize?.sixthprize?.amount + ' X'
+                      latestResultData?.data?.prize?.sixthprize?.amount *
+                      user?.country?.ticketprice
                     }
                   />
                 </ScrollView>
