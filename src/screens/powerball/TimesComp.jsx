@@ -8,6 +8,8 @@ import {heightPercentageToDP} from 'react-native-responsive-screen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getTimeAccordingToTimezone} from '../SearchTime';
 import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
+import moment from 'moment-timezone';
 
 const TimesComp = ({
   powertime,
@@ -19,8 +21,41 @@ const TimesComp = ({
 }) => {
   const navigation = useNavigation();
   const {user} = useSelector(state => state.user);
+
+  const handleNavigate = () => {
+    const now = moment.tz(user?.country?.timezone);
+    console.log('Current Time: ', now.format('hh:mm A'));
+    console.log('Current Date: ', now.format('DD-MM-YYYY'));
+
+    const lotTimeMoment = moment.tz(
+      getTimeAccordingToTimezone(item?.powertime, user?.country?.timezone),
+      'hh:mm A',
+      user?.country?.timezone,
+    );
+    console.log(`Lot Time for location : ${lotTimeMoment.format('hh:mm A')}`);
+
+    // Subtract 15 minutes from the lotTimeMoment
+    const lotTimeMinus15Minutes = lotTimeMoment.clone().subtract(30, 'minutes');
+
+    const isLotTimeClose =
+      now.isSameOrAfter(lotTimeMinus15Minutes) && now.isBefore(lotTimeMoment);
+    console.log(`Is it within 15 minutes of the lot time? ${isLotTimeClose}`);
+
+    if (isLotTimeClose) {
+      console.log('Navigating to PlayArena...');
+      Toast.show({
+        type: 'info',
+        text1: 'Entry is close for this session',
+        text2: 'Please choose next available time',
+      });
+      return;
+    }
+
+    navigation.navigate(navigate, {item});
+  };
+
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(navigate, {item})}>
+    <TouchableOpacity onPress={handleNavigate}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
