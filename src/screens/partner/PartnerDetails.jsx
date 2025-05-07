@@ -326,7 +326,7 @@ const PartnerDetails = ({route}) => {
                   {/** Increse Percentage */}
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate('UpdatePercentage', {item: partner})
+                      navigation.navigate('UpdatePercentage', {item: item})
                     }>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -360,7 +360,7 @@ const PartnerDetails = ({route}) => {
                   {/** Decrease Percentage */}
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate('DecresePercentage', {item: partner})
+                      navigation.navigate('DecresePercentage', {item: item})
                     }>
                     <LinearGradient
                       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}

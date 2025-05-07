@@ -32,7 +32,10 @@ import GradientText from '../../components/helpercComponent/GradientText';
 import UpdatePartnerComp from '../../components/partner/updatepartner/UpdatePartnerComp';
 import UpdatePartnerInput from '../../components/partner/updatepartner/UpdatePartnerInput';
 import Loading from '../../components/helpercComponent/Loading';
-import {useUpdateProfitPercentageMutation} from '../../helper/Networkcall';
+import {
+  useGetAboutPartnerQuery,
+  useUpdateProfitPercentageMutation,
+} from '../../helper/Networkcall';
 const checkValidPercentageCriteria = (profit, recharge) => {
   const numProfit = Number(profit);
   const numRecharge = Number(recharge);
@@ -43,6 +46,11 @@ const checkValidPercentageCriteria = (profit, recharge) => {
   }
 
   return numProfit + numRecharge <= 100;
+};
+const checkProfitMustLessThenParentProfit = (profit, parentProfit) => {
+  const numProfit = Number(profit);
+  const numParentProfit = Number(parentProfit);
+  return numProfit < numParentProfit;
 };
 
 const UpdatePercentage = ({route}) => {
@@ -55,6 +63,8 @@ const UpdatePercentage = ({route}) => {
 
   const {accesstoken} = useSelector(state => state.user);
   const [profitPercentage, setProfitPercentage] = useState('');
+  const [parentProfitPercentage, setParentProfitPercentage] = useState(0);
+  const [parentUserId, setParentUserId] = useState('');
 
   const [updateProfitPercentage, {isLoading, error}] =
     useUpdateProfitPercentageMutation();
@@ -95,6 +105,17 @@ const UpdatePercentage = ({route}) => {
         text1: 'Percentage is too high',
       });
       return;
+    } else if (
+      !checkProfitMustLessThenParentProfit(
+        profitPercentage,
+        parentProfitPercentage,
+      )
+    ) {
+      Toast.show({
+        type: 'error',
+        text1: `New percentage must be lower than the ${parentProfitPercentage}`,
+      });
+      return;
     } else {
       console.log(item.userId);
       console.log(profitPercentage);
@@ -121,6 +142,30 @@ const UpdatePercentage = ({route}) => {
       }
     }
   };
+
+  const {isLoading: singlePartnerIsloading, data: singlePartnerData} =
+    useGetAboutPartnerQuery(
+      {
+        accesstoken,
+        userid: parentUserId,
+      },
+      {skip: !parentUserId},
+    );
+
+  // CHECKING FOR THE PARENT USER ID
+  useEffect(() => {
+    if (item && item.parentPartnerId === 1000) {
+      setParentUserId(item.userId);
+    } else {
+      setParentUserId(item.parentPartnerId);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!singlePartnerIsloading && singlePartnerData) {
+      setParentProfitPercentage(singlePartnerData.partner.profitPercentage);
+    }
+  }, [singlePartnerIsloading, singlePartnerData, parentUserId]);
 
   return (
     <SafeAreaView style={{flex: 1}}>
