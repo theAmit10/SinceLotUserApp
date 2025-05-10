@@ -16,7 +16,7 @@ const TimesComp = ({
   subtitle = 'PLAY NOW',
   navigate = 'PowerballGame',
   item,
-  time,
+
   nextTime,
 }) => {
   const navigation = useNavigation();
