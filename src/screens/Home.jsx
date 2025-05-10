@@ -72,15 +72,6 @@ const images = [
   'https://imgs.search.brave.com/pBRUab3Kras4ziV_cQdR0AtRiSrOuJKwhMTmHY988d8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3Ivc3BlY2lhbC1v/ZmZlci1maW5hbC1z/YWxlLXRhZy1iYW5u/ZXItZGVzaWduLXRl/bXBsYXRlLW1hcmtl/dGluZy1zcGVjaWFs/LW9mZmVyLXByb21v/dGlvbl82ODA1OTgt/MTk1LmpwZz9zaXpl/PTYyNiZleHQ9anBn',
 ];
 
-// result_lightblue : '#1993FF',
-//   result_green: '#7EC530',
-//   result_yellow: '#EFC62A',
-//   result_orange: '#FF8500',
-//   result_pink: '#EE3D64',
-//   result_darkblue: '#2260FF',
-//   result_purple: '#A628F2',
-//   result_cyan: '#34BFC8',
-
 const COLORS_LIST = [
   COLORS.result_lightblue,
   COLORS.result_green,

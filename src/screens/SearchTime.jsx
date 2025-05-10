@@ -8,7 +8,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -24,7 +23,6 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllDate} from '../redux/actions/dateAction';
 import {getTimeAccordingLocation} from '../redux/actions/timeAction';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import LinearGradient from 'react-native-linear-gradient';
@@ -462,7 +460,7 @@ const SearchTime = ({route}) => {
                             justifyContent: 'space-between',
                             padding: heightPercentageToDP(2),
                             borderRadius: heightPercentageToDP(1),
-                            alignItems: 'center'
+                            alignItems: 'center',
                           }}>
                           <Text
                             style={{
@@ -498,7 +496,6 @@ const SearchTime = ({route}) => {
                                 borderRadius: heightPercentageToDP(2),
                                 paddingHorizontal: heightPercentageToDP(2),
                                 width: widthPercentageToDP(28),
-                                
                               }}>
                               <LinearGradient
                                 colors={[COLORS.grayBg, COLORS.white_s]}
@@ -512,10 +509,10 @@ const SearchTime = ({route}) => {
                                   alignItems: 'center', // Center horizontally
                                 }}>
                                 <MaterialCommunityIcons
-                              name={'play-circle-outline'}
-                              size={heightPercentageToDP(3)}
-                              color={COLORS.darkGray}
-                            />
+                                  name={'play-circle-outline'}
+                                  size={heightPercentageToDP(3)}
+                                  color={COLORS.darkGray}
+                                />
                               </LinearGradient>
                               <GradientText
                                 style={{
@@ -523,7 +520,6 @@ const SearchTime = ({route}) => {
                                   fontFamily: FONT.Montserrat_Bold,
                                   color: COLORS.black,
                                   padding: heightPercentageToDP(1),
-                                  
                                 }}>
                                 {`\u00A0   Play`}
                               </GradientText>
