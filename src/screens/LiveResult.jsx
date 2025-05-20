@@ -506,7 +506,7 @@ const LiveResult = () => {
 
         const timerinMinutes = timeItem.liveresulttimer || 10;
 
-        setShouldBlink(timeDifference > 0 && timeDifference <= timerinMinutes);
+        setShouldBlink(timeDifference >= 0 && timeDifference <= timerinMinutes);
       };
 
       checkTimeDifference();
