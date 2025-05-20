@@ -64,6 +64,30 @@ const PowerballDashboard = () => {
     refetch: latesetResultRefetch,
   } = useLatestPowerballResultQuery({accesstoken});
 
+  function convertToInternationalSystem(input) {
+    const number = typeof input === 'string' ? parseFloat(input) : input;
+
+    if (isNaN(number)) return 'Invalid number';
+
+    const absNum = Math.abs(number);
+
+    const suffixes = [
+      {value: 1e12, label: 'Trillion'},
+      {value: 1e9, label: 'Billion'},
+      {value: 1e6, label: 'Million'},
+      {value: 1e3, label: 'Thousand'},
+    ];
+
+    for (let {value, label} of suffixes) {
+      if (absNum >= value) {
+        const formatted = (number / value).toFixed(2).replace(/\.00$/, '');
+        return `${formatted} ${label}`;
+      }
+    }
+
+    return number.toString();
+  }
+
   return (
     <View style={{flex: 1}}>
       <Background />
@@ -266,7 +290,9 @@ const PowerballDashboard = () => {
                               fontSize: heightPercentageToDP(3),
                               color: COLORS.black,
                             }}>
-                            {latestResultData?.data?.prize?.firstprize?.amount}
+                            {convertToInternationalSystem(
+                              latestResultData?.data?.prize?.firstprize?.amount,
+                            )}
                           </Text>
                         </View>
                         <View
@@ -303,18 +329,20 @@ const PowerballDashboard = () => {
                   <PrizeComponent
                     key={1}
                     title={'1st Prize'}
-                    description={'Match all 6 balls to win the 1st Prize'}
+                    description={'Match 6 balls to win the 1st Prize'}
                     numberofwinner={
                       latestResultData?.data?.prize?.firstprize?.totaluser
                     }
-                    amount={latestResultData?.data?.prize?.firstprize?.amount}
+                    amount={convertToInternationalSystem(
+                      latestResultData?.data?.prize?.firstprize?.amount,
+                    )}
                   />
 
                   {/** SECOND PRIZE */}
                   <PrizeComponent
                     key={2}
                     title={'2nd Prize'}
-                    description={'Match all 5 balls to win the 2nd Prize'}
+                    description={'Match first 5 balls to win the 2nd Prize'}
                     numberofwinner={
                       latestResultData?.data?.prize?.secondprize?.totaluser
                     }
@@ -326,7 +354,7 @@ const PowerballDashboard = () => {
                   <PrizeComponent
                     key={3}
                     title={'3rd Prize'}
-                    description={'Match all 4 balls to win the 3rd Prize'}
+                    description={'Match first 4 balls to win the 3rd Prize'}
                     numberofwinner={
                       latestResultData?.data?.prize?.thirdprize?.totaluser
                     }
@@ -338,7 +366,7 @@ const PowerballDashboard = () => {
                   <PrizeComponent
                     key={4}
                     title={'4th Prize'}
-                    description={'Match all 3 balls to win the 4th Prize'}
+                    description={'Match first 3 balls to win the 4th Prize'}
                     numberofwinner={
                       latestResultData?.data?.prize?.fourthprize?.totaluser
                     }
@@ -351,7 +379,7 @@ const PowerballDashboard = () => {
                   <PrizeComponent
                     key={5}
                     title={'5th Prize'}
-                    description={'Match all 2 balls to win the 5th Prize'}
+                    description={'Match first 2 balls to win the 5th Prize'}
                     numberofwinner={
                       latestResultData?.data?.prize?.fifthprize?.totaluser
                     }
@@ -364,7 +392,7 @@ const PowerballDashboard = () => {
                   <PrizeComponent
                     key={6}
                     title={'6th Prize'}
-                    description={'Match all 1 ball to win the 6th Prize'}
+                    description={'Match first ball to win the 6th Prize'}
                     numberofwinner={
                       latestResultData?.data?.prize?.sixthprize?.totaluser
                     }
