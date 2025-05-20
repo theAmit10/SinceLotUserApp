@@ -868,7 +868,7 @@ const Home = () => {
                       />
                     ) : (
                       <MaterialIcons
-                        name={'notifications-on'}
+                        name={'notification-add'}
                         size={heightPercentageToDP(3)}
                         color={COLORS.lightyellow}
                       />
