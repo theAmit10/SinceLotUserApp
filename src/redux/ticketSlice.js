@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import Toast from 'react-native-toast-message';
 
 const MAX_NUMBERS = 6; // Adjust this based on your requirements
-const ballNumbers = Array.from({length: 50}, (_, i) => i + 1); // Example range: 1-50
+const ballNumbers = Array.from({length: 70}, (_, i) => i + 1); // Example range: 1-50
 const MAX_TICKETS = 10; // Define max tickets limit
 
 const initialState = {
@@ -119,12 +119,13 @@ const ticketSlice = createSlice({
         ticketIndex !== state.activeTicketIndex
       ) {
         console.log(
-          'Please activate the ticket first before selecting numbers.',
+          'Please activate the ticket ball first before selecting numbers.',
         );
 
         Toast.show({
           type: 'error',
-          text1: 'Please select the ticket first before selecting numbers.',
+          text1:
+            'Please select the ticket ball first before selecting numbers.',
         });
         return; // Exit the function without making changes
       }

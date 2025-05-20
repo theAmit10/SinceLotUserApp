@@ -128,7 +128,7 @@ const PartnerDashboard = () => {
                           gap: heightPercentageToDP(2),
                         }}>
                         <GradientText style={styles.textStyleContent}>
-                          All Recharge
+                          All Recharge Request
                         </GradientText>
                         <Text style={styles.subtitle}>
                           Recharge Partner data
