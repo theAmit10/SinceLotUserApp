@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   ImageBackground,
   SafeAreaView,
@@ -22,30 +23,87 @@ import {useDispatch, useSelector} from 'react-redux';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 import {loadAllNotification} from '../redux/actions/userAction';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-import {useCheckNotificationSeenMutation} from '../helper/Networkcall';
+import {
+  useCheckNotificationSeenMutation,
+  useGetSingleUserNotificationQuery,
+} from '../helper/Networkcall';
+import MainBackgroundWithoutScrollview from '../components/background/MainBackgroundWithoutScrollview';
 
 const Notification = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken, user, notifications, loadingNotification} = useSelector(
-    state => state.user,
-  );
+  const [page, setPage] = useState(1);
+  const limit = 8;
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [notifications, setNotification] = useState([]);
+
+  const {accesstoken, user} = useSelector(state => state.user);
 
   const focused = useIsFocused();
+
+  const {
+    data: paginatedData,
+    refetch: refetchPaginated,
+    isFetching: fetchingPaginated,
+    isLoading: loadingPaginated,
+  } = useGetSingleUserNotificationQuery(
+    {accesstoken, id: user._id, page, limit},
+    {refetchOnMountOrArgChange: true}, // Disable caching
+  );
 
   useEffect(() => {
     dispatch(loadAllNotification(accesstoken, user._id));
   }, [dispatch, focused]);
 
+  // useEffect(() => {
+  //   if (!loadingNotification && notifications) {
+  //     submitHandler();
+  //   }
+  // }, [loadingNotification, notifications]);
+
   useEffect(() => {
-    if (!loadingNotification && notifications) {
+    if (!loadingPaginated && paginatedData) {
       submitHandler();
     }
-  }, [loadingNotification, notifications]);
+  }, [loadingPaginated, paginatedData]);
 
-  const [checkNotificationSeen, {isLoading, error}] =
-    useCheckNotificationSeenMutation();
+  useEffect(() => {
+    if (paginatedData?.notifications) {
+      console.log(
+        'Paginated data received for page',
+        page,
+        ':',
+        paginatedData.notifications,
+      ); // Debug log
+      setNotification(prev => {
+        // Filter out duplicates
+        const newData = paginatedData.notifications.filter(
+          newItem => !prev.some(prevItem => prevItem._id === newItem._id),
+        );
+        return page === 1 ? paginatedData.notifications : [...prev, ...newData];
+      });
+
+      // Update hasMore correctly
+      if (paginatedData.notifications.length < limit) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+    }
+  }, [paginatedData, page]);
+
+  const loadMore = () => {
+    if (!loading && hasMore) {
+      setPage(prev => prev + 1);
+    }
+  };
+
+  // Combined Loading State
+  const isLoading = fetchingPaginated || loading;
+
+  const [checkNotificationSeen, {error}] = useCheckNotificationSeenMutation();
 
   const submitHandler = async () => {
     try {
@@ -61,122 +119,190 @@ const Notification = () => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Background />
+    <MainBackgroundWithoutScrollview title="Notification">
+      <View style={{flex: 1}}>
+        {/* SEARCH INPUT */}
 
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: heightPercentageToDP(80),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
-            style={{
-              height: heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
-
-              borderTopLeftRadius: heightPercentageToDP(5),
-              borderTopRightRadius: heightPercentageToDP(5),
-            }}>
-            {/** Top Style View */}
-            <View
-              style={{
-                height: heightPercentageToDP(5),
-                width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}></View>
-            </View>
-
-            <View
-              style={{
-                margin: heightPercentageToDP(2),
-                backgroundColor: 'transparent',
-              }}>
-              <GradientTextWhite style={styles.textStyle}>
-                Notification
-              </GradientTextWhite>
-            </View>
-
-            {/** Content Container */}
-
-            <ScrollView showsVerticalScrollIndicator={false}>
-              {loadingNotification ? (
+        {/* PARTNER USER LIST */}
+        <View style={{flex: 1, padding: heightPercentageToDP(1)}}>
+          {isLoading && page === 1 ? (
+            <ActivityIndicator size="large" color={COLORS.white_s} />
+          ) : (
+            <FlatList
+              data={notifications}
+              keyExtractor={item => item._id.toString()} // Ensure _id is unique
+              renderItem={({item, index}) => (
                 <View
+                  key={index}
                   style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingTop: heightPercentageToDP(2),
+                    minHeight: heightPercentageToDP(11),
+                    backgroundColor: COLORS.white_s,
+                    marginBottom: heightPercentageToDP(2),
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(2),
                   }}>
-                  <Loading />
-                </View>
-              ) : notifications && notifications.length === 0 ? (
-                <View
-                  style={{
-                    height: heightPercentageToDP(30),
-                    margin: heightPercentageToDP(2),
-                  }}>
-                  <NoDataFound data={'No data available '} />
-                </View>
-              ) : (
-                notifications?.map((item, index) => (
-                  <View
-                    key={index}
+                  <Text
                     style={{
-                      height: heightPercentageToDP(11),
-                      backgroundColor: COLORS.white_s,
-                      marginBottom: heightPercentageToDP(2),
-                      marginHorizontal: heightPercentageToDP(1),
-                      padding: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(2),
-                    }}>
+                      color: COLORS.black,
+                      fontFamily: FONT.Montserrat_SemiBold,
+                      fontSize: heightPercentageToDP(2),
+                    }}
+                    numberOfLines={1}>
+                    {item.title}
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: COLORS.black,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                    }}
+                    selectable>
+                    {item.description}
+                  </Text>
+                  {item.userId && (
                     <Text
                       style={{
                         color: COLORS.black,
                         fontFamily: FONT.Montserrat_SemiBold,
                         fontSize: heightPercentageToDP(2),
+                        alignSelf: 'flex-end',
                       }}
                       numberOfLines={1}>
-                      {item.title}
+                      User ID : {item.userId}
                     </Text>
-
-                    <Text
-                      style={{
-                        color: COLORS.black,
-                        fontFamily: FONT.Montserrat_Regular,
-                        fontSize: heightPercentageToDP(2),
-                      }}
-                      numberOfLines={2}
-                      selectable>
-                      {item.description}
-                    </Text>
-                  </View>
-                ))
+                  )}
+                </View>
               )}
-            </ScrollView>
-          </View>
-        </ImageBackground>
+              onEndReached={loadMore}
+              onEndReachedThreshold={0.2}
+              ListFooterComponent={() =>
+                hasMore && isLoading ? (
+                  <ActivityIndicator size="large" color={COLORS.white_s} />
+                ) : null
+              }
+            />
+          )}
+        </View>
       </View>
-
-      {/** Main Cointainer */}
-    </SafeAreaView>
+    </MainBackgroundWithoutScrollview>
   );
 };
 
 export default Notification;
+
+// <SafeAreaView style={{flex: 1}}>
+//     <Background />
+
+//     <View style={{flex: 1, justifyContent: 'flex-end'}}>
+//       <ImageBackground
+//         source={require('../../assets/image/tlwbg.jpg')}
+//         style={{
+//           width: '100%',
+//           height: heightPercentageToDP(80),
+//         }}
+//         imageStyle={{
+//           borderTopLeftRadius: heightPercentageToDP(5),
+//           borderTopRightRadius: heightPercentageToDP(5),
+//         }}>
+//         <View
+//           style={{
+//             height: heightPercentageToDP(80),
+//             width: widthPercentageToDP(100),
+
+//             borderTopLeftRadius: heightPercentageToDP(5),
+//             borderTopRightRadius: heightPercentageToDP(5),
+//           }}>
+//           {/** Top Style View */}
+//           <View
+//             style={{
+//               height: heightPercentageToDP(5),
+//               width: widthPercentageToDP(100),
+//               justifyContent: 'center',
+//               alignItems: 'center',
+//             }}>
+//             <View
+//               style={{
+//                 width: widthPercentageToDP(20),
+//                 height: heightPercentageToDP(0.8),
+//                 backgroundColor: COLORS.grayBg,
+//                 borderRadius: heightPercentageToDP(2),
+//               }}></View>
+//           </View>
+
+//           <View
+//             style={{
+//               margin: heightPercentageToDP(2),
+//               backgroundColor: 'transparent',
+//             }}>
+//             <GradientTextWhite style={styles.textStyle}>
+//               Notification
+//             </GradientTextWhite>
+//           </View>
+
+//           {/** Content Container */}
+
+//           <ScrollView showsVerticalScrollIndicator={false}>
+//             {isLoading ? (
+//               <View
+//                 style={{
+//                   flex: 1,
+//                   justifyContent: 'center',
+//                   alignItems: 'center',
+//                   paddingTop: heightPercentageToDP(2),
+//                 }}>
+//                 <Loading />
+//               </View>
+//             ) : notifications && notifications.length === 0 ? (
+//               <View
+//                 style={{
+//                   height: heightPercentageToDP(30),
+//                   margin: heightPercentageToDP(2),
+//                 }}>
+//                 <NoDataFound data={'No data available '} />
+//               </View>
+//             ) : (
+//               notifications?.map((item, index) => (
+//                 <View
+//                   key={index}
+//                   style={{
+//                     height: heightPercentageToDP(11),
+//                     backgroundColor: COLORS.white_s,
+//                     marginBottom: heightPercentageToDP(2),
+//                     marginHorizontal: heightPercentageToDP(1),
+//                     padding: heightPercentageToDP(2),
+//                     borderRadius: heightPercentageToDP(2),
+//                   }}>
+//                   <Text
+//                     style={{
+//                       color: COLORS.black,
+//                       fontFamily: FONT.Montserrat_SemiBold,
+//                       fontSize: heightPercentageToDP(2),
+//                     }}
+//                     numberOfLines={1}>
+//                     {item.title}
+//                   </Text>
+
+//                   <Text
+//                     style={{
+//                       color: COLORS.black,
+//                       fontFamily: FONT.Montserrat_Regular,
+//                       fontSize: heightPercentageToDP(2),
+//                     }}
+//                     numberOfLines={2}
+//                     selectable>
+//                     {item.description}
+//                   </Text>
+//                 </View>
+//               ))
+//             )}
+//           </ScrollView>
+//         </View>
+//       </ImageBackground>
+//     </View>
+
+//     {/** Main Cointainer */}
+//   </SafeAreaView>
 
 const styles = StyleSheet.create({
   textStyle: {

@@ -609,10 +609,21 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    getSingleUserNotification: builder.query({
+      query: ({accesstoken, id, page, limit}) => ({
+        url: `user/${id}/notifications?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useGetSingleUserNotificationQuery,
   useGetPendingUserRechargeCountQuery,
   useCreateOtherPaymentAccountMutation,
   useDeleteOtherPaymentAccountMutation,
