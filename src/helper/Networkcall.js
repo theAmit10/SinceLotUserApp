@@ -599,10 +599,21 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    getPendingUserRechargeCount: builder.query({
+      query: ({accesstoken, userId}) => ({
+        url: `user/pendinguserrechargecount/${userId}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 export const {
+  useGetPendingUserRechargeCountQuery,
   useCreateOtherPaymentAccountMutation,
   useDeleteOtherPaymentAccountMutation,
   useGetOtherPaymentNameQuery,

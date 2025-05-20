@@ -27,12 +27,18 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import GradientText from '../../components/helpercComponent/GradientText';
 import {loadPartnerProfile} from '../../redux/actions/userAction';
+import {useGetPendingUserRechargeCountQuery} from '../../helper/Networkcall';
 
 const PartnerDashboard = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {accesstoken, user, partner} = useSelector(state => state.user);
+
+  const {data, isLoading} = useGetPendingUserRechargeCountQuery({
+    accesstoken,
+    userId: user?.userId,
+  });
 
   useEffect(() => {
     dispatch(loadPartnerProfile(accesstoken, user.userId));
@@ -128,15 +134,18 @@ const PartnerDashboard = () => {
                           Recharge Partner data
                         </Text>
                       </View>
+                      <GradientText style={styles.textStyleContent}>
+                        {data?.pendingRechargesCount}
+                      </GradientText>
 
-                      <View style={styles.iconContainer}>
+                      {/* <View style={styles.iconContainer}>
                         <FontAwesome6
                           name={'money-bill-trend-up'}
                           size={heightPercentageToDP(3)}
                           color={COLORS.darkGray}
                           style={styles.icon}
                         />
-                      </View>
+                      </View> */}
                     </LinearGradient>
                   </TouchableOpacity>
                 )}
