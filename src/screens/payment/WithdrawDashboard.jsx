@@ -19,10 +19,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const Withdraw = () => {
+const WithdrawDashboard = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {accesstoken} = useSelector(state => state.user);
@@ -70,49 +68,113 @@ const Withdraw = () => {
             {/** Content Container */}
             <View style={{flex: 1, marginHorizontal: heightPercentageToDP(2)}}>
               <GradientTextWhite style={styles.textStyle}>
-                Payment Withdraw
+                Withdraw Option
               </GradientTextWhite>
               <ScrollView
                 contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
                 showsVerticalScrollIndicator={false}>
                 {/** Crypto */}
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('BalanceTransfer')}>
+                  onPress={() => navigation.navigate('Withdrawcrypto')}>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                     start={{x: 0, y: 0}} // start from left
                     end={{x: 1, y: 0}} // end at right
                     style={styles.paymentOption}>
                     <View style={styles.iconContainer}>
-                      <FontAwesome6
-                        name="money-bill-transfer"
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
+                      <Image
+                        source={require('../../../assets/image/crypto.png')}
+                        resizeMode="cover"
+                        style={styles.icon}
                       />
                     </View>
                     <GradientTextWhite style={styles.textStyleContent}>
-                      Balance Transfer
+                      Crypto
                     </GradientTextWhite>
                   </LinearGradient>
                 </TouchableOpacity>
 
                 {/** Paypal */}
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('WithdrawDashboard')}>
+                  onPress={() => navigation.navigate('Withdrawpaypal')}>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                     start={{x: 0, y: 0}} // start from left
                     end={{x: 1, y: 0}} // end at right
                     style={styles.paymentOption}>
                     <View style={styles.iconContainer}>
-                      <MaterialIcons
-                        name="wallet"
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
+                      <Image
+                        source={require('../../../assets/image/paypal.png')}
+                        resizeMode="cover"
+                        style={styles.icon}
                       />
                     </View>
                     <GradientTextWhite style={styles.textStyleContent}>
-                      Withdraw Option
+                      Paypal
+                    </GradientTextWhite>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/** Skrill */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Withdrawskrill')}>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.paymentOption}>
+                    <View style={styles.iconContainer}>
+                      <Image
+                        source={require('../../../assets/image/skrill.png')}
+                        resizeMode="cover"
+                        style={styles.icon}
+                      />
+                    </View>
+                    <GradientTextWhite style={styles.textStyleContent}>
+                      Skrill
+                    </GradientTextWhite>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/** BANK */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Withdrawbank')}>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={styles.paymentOption}>
+                    <View style={styles.iconContainer}>
+                      <Image
+                        source={require('../../../assets/image/bank.png')}
+                        resizeMode="cover"
+                        style={styles.icon}
+                      />
+                    </View>
+                    <GradientTextWhite style={styles.textStyleContent}>
+                      Bank
+                    </GradientTextWhite>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/** UPI */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Withdrawupi')}>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    style={styles.paymentOption}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                  >
+                    <View style={styles.iconContainer}>
+                      <Image
+                        source={require('../../../assets/image/upi.png')}
+                        resizeMode="cover"
+                        style={styles.icon}
+                      />
+                    </View>
+                    <GradientTextWhite style={styles.textStyleContent}>
+                      UPI
                     </GradientTextWhite>
                   </LinearGradient>
                 </TouchableOpacity>
@@ -125,7 +187,7 @@ const Withdraw = () => {
   );
 };
 
-export default Withdraw;
+export default WithdrawDashboard;
 
 const styles = StyleSheet.create({
   textStyle: {
