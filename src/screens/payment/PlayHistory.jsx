@@ -436,16 +436,26 @@ const PlayHistory = () => {
                                   ) : (
                                     <View style={styles.detailContainer}>
                                       <Text style={styles.detailValue}>
-                                        {item?.walletName
+                                        {/* {item?.walletName
                                           ? 'Winning No.'
+                                          : 'Total bets'} */}
+                                        {item?.walletName
+                                          ? item?.forProcess === 'partnercredit'
+                                            ? 'Partner'
+                                            : 'Winner No.'
                                           : 'Total bets'}
                                       </Text>
                                       <Text
                                         numberOfLines={3}
                                         style={styles.detailLabel}>
-                                        {item?.walletName
+                                        {/* {item?.walletName
                                           ? item.playnumbers[0]?.playnumber
-                                          : item?.playnumbers.length}
+                                          : item?.playnumbers.length} */}
+                                        {item?.walletName
+                                          ? item?.forProcess === 'partnercredit'
+                                            ? 'Profit Credit'
+                                            : item?.playnumbers[0]?.playnumber
+                                          : item?.playnumbers?.length}
                                       </Text>
                                     </View>
                                   )}
