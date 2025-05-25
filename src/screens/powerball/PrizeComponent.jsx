@@ -6,7 +6,8 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import WhiteBall from '../../components/powerball/WhiteBall';
+import PowerballWhite from '../../components/powerball/PowerballWhite';
 
 /*************  ✨ Codeium Command ⭐  *************/
 /**
@@ -17,7 +18,18 @@ import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
  */
 
 /******  5a6f2ca4-c42a-4123-8a18-aa7f65d55be4  *******/
-const PrizeComponent = ({amount, title, description, numberofwinner}) => {
+const PrizeComponent = ({
+  amount,
+  title,
+  description,
+  numberofwinner,
+  first,
+  second,
+  third,
+  fourth,
+  fifth,
+  sixth,
+}) => {
   return (
     <LinearGradient
       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -93,6 +105,21 @@ const PrizeComponent = ({amount, title, description, numberofwinner}) => {
           </LinearGradient>
         </View>
       </View>
+      <View
+        style={{
+          height: heightPercentageToDP(7),
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: heightPercentageToDP(0.2),
+        }}>
+        <PowerballWhite value={first} />
+        <PowerballWhite value={second} />
+        <PowerballWhite value={third} />
+        <PowerballWhite value={fourth} />
+        <PowerballWhite value={fifth} />
+        <PowerballWhite value={sixth} />
+      </View>
     </LinearGradient>
   );
 };
@@ -102,7 +129,7 @@ export default PrizeComponent;
 const styles = StyleSheet.create({
   prizeOption: {
     flexDirection: 'column',
-    height: heightPercentageToDP(15),
+    minHeight: heightPercentageToDP(20),
     borderRadius: heightPercentageToDP(2),
     padding: heightPercentageToDP(2),
     marginTop: heightPercentageToDP(2),

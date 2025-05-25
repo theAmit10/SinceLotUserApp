@@ -336,6 +336,12 @@ const PowerballDashboard = () => {
                     amount={convertToInternationalSystem(
                       latestResultData?.data?.prize?.firstprize?.amount,
                     )}
+                    first={'\u2714'}
+                    second={'\u2714'}
+                    third={'\u2714'}
+                    fourth={'\u2714'}
+                    fifth={'\u2714'}
+                    sixth={'\u2714'}
                   />
 
                   {/** SECOND PRIZE */}
@@ -347,6 +353,12 @@ const PowerballDashboard = () => {
                       latestResultData?.data?.prize?.secondprize?.totaluser
                     }
                     amount={latestResultData?.data?.prize?.secondprize?.amount}
+                    first={'\u2714'}
+                    second={'\u2714'}
+                    third={'\u2714'}
+                    fourth={'\u2714'}
+                    fifth={'\u2714'}
+                    sixth={'\u274C'}
                   />
 
                   {/** THIRD PRIZE */}
@@ -359,6 +371,12 @@ const PowerballDashboard = () => {
                       latestResultData?.data?.prize?.thirdprize?.totaluser
                     }
                     amount={latestResultData?.data?.prize?.thirdprize?.amount}
+                    first={'\u2714'}
+                    second={'\u2714'}
+                    third={'\u2714'}
+                    fourth={'\u2714'}
+                    fifth={'\u274C'}
+                    sixth={'\u274C'}
                   />
 
                   {/** FOURTH PRIZE */}
@@ -374,6 +392,12 @@ const PowerballDashboard = () => {
                       latestResultData?.data?.prize?.fourthprize?.amount *
                       user?.country?.ticketprice
                     }
+                    first={'\u2714'}
+                    second={'\u2714'}
+                    third={'\u2714'}
+                    fourth={'\u274C'}
+                    fifth={'\u274C'}
+                    sixth={'\u274C'}
                   />
                   {/** FIFTH PRIZE */}
                   <PrizeComponent
@@ -387,6 +411,12 @@ const PowerballDashboard = () => {
                       latestResultData?.data?.prize?.fifthprize?.amount *
                       user?.country?.ticketprice
                     }
+                    first={'\u2714'}
+                    second={'\u2714'}
+                    third={'\u274C'}
+                    fourth={'\u274C'}
+                    fifth={'\u274C'}
+                    sixth={'\u274C'}
                   />
                   {/** SIXTH PRIZE */}
                   <PrizeComponent
@@ -400,6 +430,12 @@ const PowerballDashboard = () => {
                       latestResultData?.data?.prize?.sixthprize?.amount *
                       user?.country?.ticketprice
                     }
+                    first={'\u2714'}
+                    second={'\u274C'}
+                    third={'\u274C'}
+                    fourth={'\u274C'}
+                    fifth={'\u274C'}
+                    sixth={'\u274C'}
                   />
                 </ScrollView>
               )}
