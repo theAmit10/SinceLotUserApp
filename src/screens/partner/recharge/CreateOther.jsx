@@ -28,7 +28,7 @@ import {TextInput} from 'react-native-paper';
 import DocumentPicker from 'react-native-document-picker';
 
 import axios from 'axios';
-import {COLORS, FONT} from '../../../../assets/constants';
+import {COLORS, FONT, images} from '../../../../assets/constants';
 import {
   useCreateOtherPaymentAccountMutation,
   useCreateUPIAccountMutation,
@@ -219,13 +219,13 @@ const CreateOther = () => {
       return;
     }
 
-    if (qrcodeName && !imageSource) {
-      Toast.show({
-        type: 'error',
-        text1: 'Add QR code',
-      });
-      return;
-    }
+    // if (!imageSource) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: 'Add QR code',
+    //   });
+    //   return;
+    // }
 
     if (!paymentnote) {
       Toast.show({
@@ -238,7 +238,7 @@ const CreateOther = () => {
       try {
         const formData = new FormData();
         // ✅ Append fields dynamically only if they have data
-
+        console.log('FORM DATA creating :: ');
         if (paymentName) formData.append('paymentName', paymentName);
         if (firstInput) formData.append('firstInput', firstInput);
         if (firstInputName) formData.append('firstInputName', firstInputName);
@@ -248,21 +248,35 @@ const CreateOther = () => {
         if (thirdInput) formData.append('thirdInput', thirdInput);
         if (thirdInputName) formData.append('thirdInputName', thirdInputName);
         if (qrcodeName) formData.append('qrcodeName', qrcodeName);
-        if (imageSource) formData.append('qrcode', imageSource);
+        // if (imageSource) formData.append('qrcode', imageSource);
+        if (imageSource) {
+          formData.append('qrcode', {
+            uri: mineImage[0].uri,
+            name: mineImage[0].name,
+            type: mineImage[0].type || 'image/jpeg', // Default to 'image/jpeg' if type is null
+          });
+        }
+
         if (paymentnote) formData.append('paymentnote', paymentnote);
         formData.append('userId', user.userId);
-
+        console.log('FORM DATA :: ' + JSON.stringify(formData));
         const res = await createOtherPaymentAccount({
           accesstoken: accesstoken,
           body: formData,
         }).unwrap();
-
-        Toast.show({type: 'success', text1: 'Success', text2: res.message});
+        console.log('waiting for res');
+        Toast.show({type: 'success', text1: res.message});
 
         // navigation.goBack();
       } catch (error) {
-        showErrorToast('Something went wrong');
-        console.log('Error during create upi:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+        });
+        console.log('Error during create other:', error);
+
+        console.log('Error status:', error.status);
+        console.log('Error data:', error.data);
       }
     }
   };
