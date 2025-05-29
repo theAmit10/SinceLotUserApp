@@ -180,16 +180,16 @@ const PartnerDetails = ({route}) => {
                         style={{
                           flex: 1,
                         }}>
-                        {singleUserData?.user?.email && (
+                        {/* {singleUserData?.user?.email && (
                           <>
                             <Text style={styles.subtitle}>Email</Text>
                             <GradientText style={styles.textStyleContent}>
                               {singleUserData?.user?.email}
                             </GradientText>
                           </>
-                        )}
+                        )} */}
 
-                        {singleUserData?.user?.contact !=
+                        {/* {singleUserData?.user?.contact !=
                           singleUserData?.user?.userId && (
                           <>
                             <Text style={styles.subtitle}>Phone</Text>
@@ -197,11 +197,15 @@ const PartnerDetails = ({route}) => {
                               {singleUserData?.user?.contact}
                             </GradientText>
                           </>
-                        )}
-
+                        )} */}
                         <Text style={styles.subtitle}>Country</Text>
                         <GradientText style={styles.textStyleContent}>
                           {singleUserData?.user?.country?.countryname}
+                        </GradientText>
+
+                        <Text style={styles.subtitle}>Currency</Text>
+                        <GradientText style={styles.textStyleContent}>
+                          {singleUserData?.user?.country?.countrycurrencysymbol}
                         </GradientText>
                       </View>
 
