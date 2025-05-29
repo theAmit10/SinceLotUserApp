@@ -22,6 +22,7 @@ import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Background from '../components/background/Background';
 import LinearGradient from 'react-native-linear-gradient';
@@ -204,8 +205,8 @@ const Setting = () => {
                     <LinearGradient
                       colors={[COLORS.grayBg, COLORS.white_s]}
                       className="rounded-xl p-1">
-                      <MaterialCommunityIcons
-                        name={'account-group-outline'}
+                      <FontAwesome6
+                        name={'handshake-simple'}
                         size={heightPercentageToDP(3)}
                         color={COLORS.darkGray}
                       />
