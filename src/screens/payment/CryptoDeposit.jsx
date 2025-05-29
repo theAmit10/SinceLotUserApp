@@ -395,10 +395,10 @@ const CryptoDeposit = () => {
                                       style={styles.textStyleContent}>
                                       Crypto
                                     </GradientTextWhite>
-                                    <GradientTextWhite
+                                    {/* <GradientTextWhite
                                       style={styles.textStyleContent}>
                                       {item.paymentId}
-                                    </GradientTextWhite>
+                                    </GradientTextWhite> */}
                                   </View>
 
                                   <View

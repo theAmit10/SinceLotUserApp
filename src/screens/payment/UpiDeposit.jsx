@@ -393,10 +393,10 @@ const UpiDeposit = () => {
                                       style={styles.textStyleContent}>
                                       UPI
                                     </GradientTextWhite>
-                                    <GradientTextWhite
+                                    {/* <GradientTextWhite
                                       style={styles.textStyleContent}>
                                       {item.paymentId}
-                                    </GradientTextWhite>
+                                    </GradientTextWhite> */}
                                   </View>
 
                                   <View

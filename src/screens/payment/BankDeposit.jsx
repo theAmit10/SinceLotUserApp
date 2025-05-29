@@ -420,10 +420,10 @@ const BankDeposit = () => {
                                       style={styles.textStyleContent}>
                                       Bank
                                     </GradientTextWhite>
-                                    <GradientTextWhite
+                                    {/* <GradientTextWhite
                                       style={styles.textStyleContent}>
                                       {item.paymentId}
-                                    </GradientTextWhite>
+                                    </GradientTextWhite> */}
                                   </View>
 
                                   <View

@@ -394,10 +394,10 @@ const Skrill = () => {
                                       style={styles.textStyleContent}>
                                       Skrill
                                     </GradientTextWhite>
-                                    <GradientTextWhite
+                                    {/* <GradientTextWhite
                                       style={styles.textStyleContent}>
                                       {item.paymentId}
-                                    </GradientTextWhite>
+                                    </GradientTextWhite> */}
                                   </View>
 
                                   <View

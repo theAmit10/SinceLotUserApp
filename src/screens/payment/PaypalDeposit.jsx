@@ -395,10 +395,10 @@ const PaypalDeposit = () => {
                                       style={styles.textStyleContent}>
                                       Paypal
                                     </GradientTextWhite>
-                                    <GradientTextWhite
+                                    {/* <GradientTextWhite
                                       style={styles.textStyleContent}>
                                       {item.paymentId}
-                                    </GradientTextWhite>
+                                    </GradientTextWhite> */}
                                   </View>
 
                                   <View

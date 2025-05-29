@@ -303,9 +303,10 @@ const OtherDeposit = () => {
                           />
                         </View>
                         <GradientTextWhite style={styles.textStyleContent}>
-                          {selectedUpiId?.paymentName
+                          {/* {selectedUpiId?.paymentName
                             ? selectedUpiId?.paymentName
-                            : 'Other'}
+                            : 'Other'} */}
+                          Other Payment
                         </GradientTextWhite>
                         {/* <GradientTextWhite style={styles.textStyleContent}>
                           {selectedUpiId?.paymentId}
