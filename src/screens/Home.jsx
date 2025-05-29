@@ -57,6 +57,7 @@ import {onDisplayNotification} from '../helper/NotificationServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import {
   getDateTimeAccordingToUserTimezone,
@@ -1940,8 +1941,8 @@ const Home = () => {
                           justifyContent: 'center', // Center vertically
                           alignItems: 'center', // Center horizontally
                         }}>
-                        <MaterialCommunityIcons
-                          name={'account-group-outline'}
+                        <FontAwesome6
+                          name={'handshake-simple'}
                           size={heightPercentageToDP(3)}
                           color={COLORS.darkGray}
                         />
