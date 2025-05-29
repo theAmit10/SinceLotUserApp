@@ -47,7 +47,9 @@ const LiveResult = () => {
     dispatch(loadProfile(accesstoken));
   }, [isFocused]);
 
-  const {data, error, isLoading} = useGetAllLocationWithTimeQuery(accesstoken);
+  const {data, error, isLoading} = useGetAllLocationWithTimeQuery(accesstoken, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const {
     data: pdata,
@@ -236,14 +238,99 @@ const LiveResult = () => {
     }
   };
 
-  const openLink = async url => {
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      await Linking.openURL(url);
+  const navigationHandlerPowerball = (item, timeItem) => {
+    const now = moment.tz(user?.country?.timezone);
+    console.log('Current Time: ', now.format('hh:mm A'));
+    console.log('Current Date: ', now.format('DD-MM-YYYY'));
+
+    const lotTimeMoment = moment.tz(
+      getTimeAccordingToTimezone(timeItem?.powertime, user?.country?.timezone),
+      'hh:mm A',
+      user?.country?.timezone,
+    );
+    console.log(`Lot Time for location : ${lotTimeMoment.format('hh:mm A')}`);
+
+    const timerinMinutes = timeItem.liveresulttimer;
+
+    // Subtract 15 minutes from the lotTimeMoment
+    const lotTimeMinus15Minutes = lotTimeMoment
+      .clone()
+      .subtract(timerinMinutes, 'minutes');
+
+    const isLotTimeClose =
+      now.isSameOrAfter(lotTimeMinus15Minutes) && now.isBefore(lotTimeMoment);
+    console.log(`Is it within 15 minutes of the lot time? ${isLotTimeClose}`);
+
+    if (isLotTimeClose) {
+      console.log('Navigating to PlayArena...');
+      console.log(JSON.stringify(timeItem.liveresultlink));
+      openLink(timeItem.liveresultlink);
+      Toast.show({
+        type: 'info',
+        text1: 'Getting Live Result',
+        text2: 'Searching for the live result',
+      });
     } else {
-      Alert.alert(`Can't open this URL: ${url}`);
+      console.log("It's too early or past the lot time.");
+      // navigation.navigate('PlayArena', {
+      //   locationdata: item,
+      //   timedata: timeItem,
+      // });
+      // console.log(JSON.stringify(timeItem.liveresultlink));
+      // openLink(timeItem.liveresultlink);
+      Toast.show({
+        type: 'info',
+        text1: 'Live Result',
+        text2: 'It too early or past the time.',
+      });
     }
   };
+
+  const openLink = async url => {
+    if (!url || typeof url !== 'string') {
+      Alert.alert('Error', 'No valid URL provided');
+      return;
+    }
+
+    // Ensure URL is trimmed and has https://
+    let formattedUrl = url.trim();
+    if (
+      !formattedUrl.startsWith('http://') &&
+      !formattedUrl.startsWith('https://')
+    ) {
+      formattedUrl = 'https://' + formattedUrl;
+    }
+
+    try {
+      // Validate URL
+      new URL(formattedUrl); // Throws error if invalid
+
+      // Try opening in YouTube app first (better UX)
+      const youtubeAppUrl = `vnd.youtube://watch?v=${
+        formattedUrl.split('v=')[1]?.split('&')[0]
+      }`;
+      const canOpenYouTubeApp = await Linking.canOpenURL(youtubeAppUrl);
+
+      if (canOpenYouTubeApp) {
+        await Linking.openURL(youtubeAppUrl); // Opens YouTube app if installed
+      } else {
+        await Linking.openURL(formattedUrl); // Fallback to browser
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Could not open YouTube video');
+    }
+  };
+
+  // Usage:
+
+  // const openLink = async url => {
+  //   const supported = await Linking.canOpenURL(url);
+  //   if (supported) {
+  //     await Linking.openURL(url);
+  //   } else {
+  //     Alert.alert(`Can't open this URL: ${url}`);
+  //   }
+  // };
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -373,6 +460,39 @@ const LiveResult = () => {
     const [isBlinking, setIsBlinking] = useState(false);
     const [shouldBlink, setShouldBlink] = useState(false);
 
+    // useEffect(() => {
+    //   if (!nextTime || !nextTime.time || !user?.country?.timezone) return;
+
+    //   const checkTimeDifference = () => {
+    //     const userTimezone = user.country.timezone;
+    //     const nextTimeInUserTZ = moment.tz(
+    //       nextTime.time,
+    //       'hh:mm A',
+    //       userTimezone,
+    //     );
+    //     const currentTimeInUserTZ = moment().tz(userTimezone);
+
+    //     let timeDifference = nextTimeInUserTZ.diff(
+    //       currentTimeInUserTZ,
+    //       'minutes',
+    //     );
+
+    //     console.log('Time Difference:', timeDifference); // Debugging
+
+    //     // timeDifference += 1;
+
+    //     const timerinMinutes = timeItem.liveresulttimer || 10;
+    //     console.log('Time timerinMinutes:', timerinMinutes); // Debugging
+
+    //     setShouldBlink(timeDifference >= 0 && timeDifference <= timerinMinutes);
+    //   };
+
+    //   checkTimeDifference();
+    //   const timer = setInterval(checkTimeDifference, 10000); // Check every 10s
+
+    //   return () => clearInterval(timer);
+    // }, [nextTime, user]);
+
     useEffect(() => {
       if (!nextTime || !nextTime.time || !user?.country?.timezone) return;
 
@@ -385,23 +505,32 @@ const LiveResult = () => {
         );
         const currentTimeInUserTZ = moment().tz(userTimezone);
 
-        const timeDifference = nextTimeInUserTZ.diff(
+        // Get precise difference in seconds first
+        const differenceInSeconds = nextTimeInUserTZ.diff(
           currentTimeInUserTZ,
-          'minutes',
+          'seconds',
         );
+        const differenceInMinutes = differenceInSeconds / 60;
 
-        console.log('Time Difference:', timeDifference); // Debugging
+        console.log('Precise Time Difference (minutes):', differenceInMinutes);
 
         const timerinMinutes = timeItem.liveresulttimer || 10;
+        console.log('Timer in Minutes:', timerinMinutes);
 
-        setShouldBlink(timeDifference > 0 && timeDifference <= timerinMinutes);
+        // Calculate the exact threshold with buffer for the interval
+        const buffer = 10 / 60; // 10 second interval converted to minutes
+
+        setShouldBlink(
+          differenceInMinutes <= timerinMinutes + buffer &&
+            differenceInMinutes >= 0 - buffer,
+        );
       };
 
       checkTimeDifference();
       const timer = setInterval(checkTimeDifference, 10000); // Check every 10s
 
       return () => clearInterval(timer);
-    }, [nextTime, user]);
+    }, [nextTime, user, timeItem.liveresulttimer]);
 
     useEffect(() => {
       let interval;
@@ -485,6 +614,36 @@ const LiveResult = () => {
     const [isBlinking, setIsBlinking] = useState(false);
     const [shouldBlink, setShouldBlink] = useState(false);
 
+    // useEffect(() => {
+    //   if (!nextTime || !nextTime.powertime || !user?.country?.timezone) return;
+
+    //   const checkTimeDifference = () => {
+    //     const userTimezone = user.country.timezone;
+    //     const nextTimeInUserTZ = moment.tz(
+    //       nextTime.powertime,
+    //       'hh:mm A',
+    //       userTimezone,
+    //     );
+    //     const currentTimeInUserTZ = moment().tz(userTimezone);
+
+    //     const timeDifference = nextTimeInUserTZ.diff(
+    //       currentTimeInUserTZ,
+    //       'minutes',
+    //     );
+
+    //     console.log('Time Difference:', timeDifference); // Debugging
+
+    //     const timerinMinutes = timeItem.liveresulttimer || 10;
+
+    //     setShouldBlink(timeDifference >= 0 && timeDifference <= timerinMinutes);
+    //   };
+
+    //   checkTimeDifference();
+    //   const timer = setInterval(checkTimeDifference, 10000); // Check every 10s
+
+    //   return () => clearInterval(timer);
+    // }, [nextTime, user]);
+
     useEffect(() => {
       if (!nextTime || !nextTime.powertime || !user?.country?.timezone) return;
 
@@ -497,23 +656,32 @@ const LiveResult = () => {
         );
         const currentTimeInUserTZ = moment().tz(userTimezone);
 
-        const timeDifference = nextTimeInUserTZ.diff(
+        // Get precise difference in seconds first
+        const differenceInSeconds = nextTimeInUserTZ.diff(
           currentTimeInUserTZ,
-          'minutes',
+          'seconds',
         );
+        const differenceInMinutes = differenceInSeconds / 60;
 
-        console.log('Time Difference:', timeDifference); // Debugging
+        console.log('Precise Time Difference (minutes):', differenceInMinutes);
 
         const timerinMinutes = timeItem.liveresulttimer || 10;
+        console.log('Timer in Minutes:', timerinMinutes);
 
-        setShouldBlink(timeDifference >= 0 && timeDifference <= timerinMinutes);
+        // Calculate the exact threshold with buffer for the interval
+        const buffer = 10 / 60; // 10 second interval converted to minutes
+
+        setShouldBlink(
+          differenceInMinutes <= timerinMinutes + buffer &&
+            differenceInMinutes >= 0 - buffer,
+        );
       };
 
       checkTimeDifference();
       const timer = setInterval(checkTimeDifference, 10000); // Check every 10s
 
       return () => clearInterval(timer);
-    }, [nextTime, user]);
+    }, [nextTime, user, timeItem.liveresulttimer]);
 
     useEffect(() => {
       let interval;
@@ -993,7 +1161,9 @@ const LiveResult = () => {
                                         <BlinkingButtonPowerball
                                           timeItem={timeItem}
                                           nextTime={nextTime}
-                                          navigationHandler={navigationHandler}
+                                          navigationHandler={
+                                            navigationHandlerPowerball
+                                          }
                                           item={timeItem}
                                           user={user}
                                           idx={idx}
