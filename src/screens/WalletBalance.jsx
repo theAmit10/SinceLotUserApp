@@ -218,7 +218,9 @@ const WalletBalance = ({route}) => {
                             alignItems: 'center',
                           }}>
                           <Text
-                            onPress={() => navigation.navigate('Withdraw')}
+                            onPress={() =>
+                              navigation.navigate('WithdrawDashboard')
+                            }
                             style={{
                               color: COLORS.black,
                               fontFamily: FONT.Montserrat_SemiBold,
