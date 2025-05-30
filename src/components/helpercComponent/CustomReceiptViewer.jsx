@@ -17,10 +17,9 @@ import {
 import {COLORS, FONT} from '../../../assets/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { serverName } from '../../redux/store';
+import {serverName} from '../../redux/store';
 
-
-const CustomReceiptViewer = ({visible, onClose, onYes, data,img}) => {
+const CustomReceiptViewer = ({visible, onClose, onYes, data, img}) => {
   console.log('Data Receipt :: ' + JSON.stringify(data));
   console.log('Data Rt :: ' + data.amount);
   console.log('Data Rt img :: ' + img);
@@ -62,7 +61,7 @@ const CustomReceiptViewer = ({visible, onClose, onYes, data,img}) => {
             }}>
             <Image
               source={{
-                uri: `${serverName}/uploads/deposit/${data.paymentupdatereceipt}`,
+                uri: `${serverName}/uploads/deposit/${data.receipt}`,
               }}
               resizeMode="cover"
               style={{
