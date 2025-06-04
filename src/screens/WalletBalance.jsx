@@ -3,6 +3,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -183,7 +184,8 @@ const WalletBalance = ({route}) => {
                       // If forWallet matches user.walletOne.walletName, show Transaction History
 
                       <>
-                        <View
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate('BalanceTransfer')}
                           style={{
                             borderRadius: heightPercentageToDP(2),
                             padding: heightPercentageToDP(2),
@@ -194,9 +196,6 @@ const WalletBalance = ({route}) => {
                             alignItems: 'center',
                           }}>
                           <Text
-                            onPress={() =>
-                              navigation.navigate('BalanceTransfer')
-                            }
                             style={{
                               color: COLORS.black,
                               fontFamily: FONT.Montserrat_SemiBold,
@@ -205,9 +204,12 @@ const WalletBalance = ({route}) => {
                             }}>
                             Balance Transfer
                           </Text>
-                        </View>
+                        </TouchableOpacity>
 
-                        <View
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate('WithdrawDashboard')
+                          }
                           style={{
                             borderRadius: heightPercentageToDP(2),
                             padding: heightPercentageToDP(2),
@@ -218,9 +220,6 @@ const WalletBalance = ({route}) => {
                             alignItems: 'center',
                           }}>
                           <Text
-                            onPress={() =>
-                              navigation.navigate('WithdrawDashboard')
-                            }
                             style={{
                               color: COLORS.black,
                               fontFamily: FONT.Montserrat_SemiBold,
@@ -229,11 +228,12 @@ const WalletBalance = ({route}) => {
                             }}>
                             Withdraw Payment
                           </Text>
-                        </View>
+                        </TouchableOpacity>
                       </>
                     ) : (
                       // Otherwise, show Withdraw Payment
-                      <View
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('History')}
                         style={{
                           borderRadius: heightPercentageToDP(2),
                           padding: heightPercentageToDP(2),
@@ -244,7 +244,6 @@ const WalletBalance = ({route}) => {
                           alignItems: 'center',
                         }}>
                         <Text
-                          onPress={() => navigation.navigate('History')}
                           style={{
                             color: COLORS.black,
                             fontFamily: FONT.Montserrat_SemiBold,
@@ -253,7 +252,7 @@ const WalletBalance = ({route}) => {
                           }}>
                           Transaction History
                         </Text>
-                      </View>
+                      </TouchableOpacity>
                     )}
                   </View>
                 </View>
