@@ -50,7 +50,7 @@ const CreateSkrill = () => {
 
   const submitDeposit = async () => {
     if (!address) {
-      Toast.show({type: 'error', text1: 'Enter address'});
+      Toast.show({type: 'error', text1: 'Enter skrill id'});
       return;
     }
     if (!paymentnote) {
@@ -193,7 +193,7 @@ const CreateSkrill = () => {
                         fontSize: heightPercentageToDP(2),
                         paddingStart: heightPercentageToDP(1),
                       }}>
-                      Address
+                      Skrill ID
                     </Text>
 
                     <LinearGradient

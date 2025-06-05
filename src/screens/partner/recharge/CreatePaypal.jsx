@@ -44,7 +44,7 @@ const CreatePaypal = () => {
 
   const submitDeposit = async () => {
     if (!emailaddress) {
-      Toast.show({type: 'error', text1: 'Enter email address'});
+      Toast.show({type: 'error', text1: 'Enter paypal id'});
       return;
     }
     if (!paymentnote) {
@@ -188,7 +188,7 @@ const CreatePaypal = () => {
                         fontSize: heightPercentageToDP(2),
                         paddingStart: heightPercentageToDP(1),
                       }}>
-                      Email Address
+                      Paypal ID
                     </Text>
 
                     <LinearGradient
