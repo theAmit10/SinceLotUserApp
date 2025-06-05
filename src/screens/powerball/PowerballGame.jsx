@@ -591,6 +591,7 @@ const PowerballGame = ({route}) => {
                             // Convert to string for TextInput
                             style={styles.ticketInput}
                             keyboardType="numeric"
+                            placeholderTextColor={COLORS.black}
                             placeholder={`${tickets.length}`}
                             onSubmitEditing={e =>
                               addMultipleTickets(e.nativeEvent.text)
