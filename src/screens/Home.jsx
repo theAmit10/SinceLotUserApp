@@ -66,6 +66,7 @@ import {
 import Test from './Test';
 import TimerTest from './TimerTest';
 import SelectYearAndMonth from '../components/helpercComponent/SelectYearAndMonth';
+import {useGetSingleUserNotificationQuery} from '../helper/Networkcall';
 
 const images = [
   'https://imgs.search.brave.com/PvhNVIxs9m8r1whelc9RPX2dMQ371Xcsk3Lf2dCiVHQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvYmlnLXNhbGUt/YmFubmVyLWRlc2ln/bi1zcGVjaWFsLW9m/ZmVyLXVwLTUwLW9m/Zi1yZWFkeS1wcm9t/b3Rpb24tdGVtcGxh/dGUtdXNlLXdlYi1w/cmludC1kZXNpZ25f/MTEwNDY0LTU3MC5q/cGc_c2l6ZT02MjYm/ZXh0PWpwZw',
@@ -702,20 +703,20 @@ const Home = () => {
     return true;
   };
 
-  const {notifications, loadingNotification} = useSelector(state => state.user);
+  // const {notifications, loadingNotification} = useSelector(state => state.user);
 
   const [newNotification, setNewNotification] = useState(true);
 
-  useEffect(() => {
-    dispatch(loadAllNotification(accesstoken, user?._id));
-  }, [dispatch, focused]);
+  // useEffect(() => {
+  //   dispatch(loadAllNotification(accesstoken, user?._id));
+  // }, [dispatch, focused]);
 
-  useEffect(() => {
-    if ((!loadingNotification && notifications, user)) {
-      checkingForNewNotification();
-      setDefaultMonthAndYearForResult();
-    }
-  }, [loadingNotification, notifications, focused, user]);
+  // useEffect(() => {
+  //   if ((!loadingNotification && notifications, user)) {
+  //     checkingForNewNotification();
+  //     setDefaultMonthAndYearForResult();
+  //   }
+  // }, [loadingNotification, notifications, focused, user]);
 
   const checkingForNewNotification = () => {
     console.log('CHECKING FOR NEW NOTIFCATION');
@@ -727,6 +728,43 @@ const Home = () => {
       setNewNotification(noti);
     }
   };
+
+  // FOR ALL THE NOTIFICAITON CONTAINER
+  const [notifications, setNotification] = useState([]);
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  // Fetch Paginated Data
+  const {
+    data: paginatedData,
+    refetch: refetchPaginated,
+    isFetching: fetchingPaginated,
+    isLoading: loadingPaginated,
+  } = useGetSingleUserNotificationQuery(
+    {accesstoken, id: user?._id, page, limit},
+    {refetchOnMountOrArgChange: true}, // Disable caching
+  );
+
+  useEffect(() => {
+    if (!loadingPaginated && paginatedData) {
+      setNotification(paginatedData.notifications);
+    }
+  }, [loadingPaginated, paginatedData, focused]);
+
+  useEffect(() => {
+    if (accesstoken && user) {
+      if (!loadingPaginated && paginatedData) {
+        checkingForNewNotification();
+      }
+    }
+  }, [loadingPaginated, notifications, focused]);
+
+  useEffect(() => {
+    if (accesstoken && user) {
+      if (!loadingPaginated && paginatedData) {
+        refetchPaginated();
+      }
+    }
+  }, [focused]);
 
   useEffect(() => {
     console.log('CHANGING MONTH OR YEAR');
