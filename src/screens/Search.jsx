@@ -73,9 +73,9 @@ const Search = () => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -84,9 +84,9 @@ const Search = () => {
           <View
             style={{
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -204,7 +204,7 @@ const Search = () => {
                               fontFamily: FONT.Montserrat_Regular,
                               fontSize: heightPercentageToDP(2),
                             }}>
-                            Max {item.maximumRange}
+                            {item.maximumReturn} Win
                           </Text>
                         </View>
                       </LinearGradient>
