@@ -162,6 +162,9 @@ const Notification = () => {
                   </Text>
                   {item.userId && (
                     <Text
+                      onPress={() =>
+                        navigation.navigate('PartnerUserProfile', {item})
+                      }
                       style={{
                         color: COLORS.black,
                         fontFamily: FONT.Montserrat_SemiBold,

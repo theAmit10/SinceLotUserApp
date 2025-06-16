@@ -20,10 +20,10 @@ const PartnerUserProfile = ({route}) => {
   return (
     <MainBackgroundWithoutScrollview
       title={'User Profile'}
-      righttext={item.name}
-      lefttext={item.userId}>
+      righttext={item?.name}
+      lefttext={item?.userId}>
       {/** USER DETAILS */}
-      {item && (
+      {item && item?.country && (
         <LinearGradient
           colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
           start={{x: 0, y: 0}} // start from left
