@@ -9,12 +9,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -23,6 +24,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment-timezone';
 import {
   useGetPlayHistoryQuery,
+  useGetPowerballQuery,
   useGetSingleUserPlayHistoryQuery,
 } from '../../../helper/Networkcall';
 import GradientTextWhite from '../../../components/helpercComponent/GradientTextWhite';
@@ -182,7 +184,23 @@ const UserPlayHistory = ({route}) => {
     return userTimeDateTime.format('DD-MM-YYYY');
   }
 
+  // const [currentGame, setCurrentGame] = useState('powerball');
+
   const [currentGame, setCurrentGame] = useState('powerball');
+
+  const [gameName, setGameName] = useState('');
+  // Network call
+  const {data, isLoading: powerballIsLoading} = useGetPowerballQuery(
+    {accesstoken},
+    {skip: !accesstoken},
+  );
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setGameName(data.games[0].name);
+      console.log(data?.games[0].name);
+    }
+  }, [data, isLoading]); // Correct dependencies
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -229,7 +247,7 @@ const UserPlayHistory = ({route}) => {
                 }}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                {item.userId}
+                {item?.userId}
               </Text>
               <View
                 style={{
@@ -246,7 +264,7 @@ const UserPlayHistory = ({route}) => {
                 }}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                {item.name}
+                {item?.name}
               </Text>
             </View>
 
@@ -274,7 +292,7 @@ const UserPlayHistory = ({route}) => {
                   renderItem={({item}) => {
                     return (
                       <>
-                        {currentGame === 'playzone' ? (
+                        {item.gameType === 'playarena' ? (
                           <LinearGradient
                             colors={[
                               COLORS.time_firstblue,
@@ -310,15 +328,27 @@ const UserPlayHistory = ({route}) => {
                                     marginVertical: heightPercentageToDP(2),
                                     marginHorizontal: heightPercentageToDP(1),
                                   }}>
-                                  <MaterialCommunityIcons
-                                    name={'play-circle-outline'}
-                                    size={heightPercentageToDP(3)}
-                                    color={
-                                      item?.walletName
-                                        ? COLORS.green
-                                        : COLORS.darkGray
-                                    }
-                                  />
+                                  {item?.walletName ? (
+                                    item?.forProcess === 'partnercredit' ? (
+                                      <FontAwesome6
+                                        name={'handshake-simple'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.orange}
+                                      />
+                                    ) : (
+                                      <MaterialCommunityIcons
+                                        name={'play-circle-outline'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.orange}
+                                      />
+                                    )
+                                  ) : (
+                                    <MaterialCommunityIcons
+                                      name={'play-circle-outline'}
+                                      size={heightPercentageToDP(3)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  )}
                                 </View>
 
                                 <View style={{flex: 1}}>
@@ -445,89 +475,118 @@ const UserPlayHistory = ({route}) => {
                                       )}
                                     </Text>
                                   </View>
-                                  <View style={styles.detailContainer}>
-                                    <Text style={styles.detailValue}>
-                                      {item?.walletName
-                                        ? 'Winning No.'
-                                        : 'Total bets'}
-                                    </Text>
-                                    <Text
-                                      numberOfLines={3}
-                                      style={styles.detailLabel}>
-                                      {item?.walletName
-                                        ? item.playnumbers[0]?.playnumber
-                                        : item?.playnumbers.length}
-                                    </Text>
-                                  </View>
+                                  {item?.forProcess ? (
+                                    <View style={styles.detailContainer}>
+                                      <Text style={styles.detailValue}>
+                                        Partner
+                                      </Text>
+                                      <Text
+                                        numberOfLines={3}
+                                        style={styles.detailLabel}>
+                                        Profit
+                                      </Text>
+                                    </View>
+                                  ) : (
+                                    <View style={styles.detailContainer}>
+                                      <Text style={styles.detailValue}>
+                                        {/* {item?.walletName
+                                          ? 'Winning No.'
+                                          : 'Total bets'} */}
+                                        {item?.walletName
+                                          ? item?.forProcess === 'partnercredit'
+                                            ? 'Partner'
+                                            : 'Winner No.'
+                                          : 'Total bets'}
+                                      </Text>
+                                      <Text
+                                        numberOfLines={3}
+                                        style={styles.detailLabel}>
+                                        {/* {item?.walletName
+                                          ? item.playnumbers[0]?.playnumber
+                                          : item?.playnumbers.length} */}
+                                        {item?.walletName
+                                          ? item?.forProcess === 'partnercredit'
+                                            ? 'Profit Credit'
+                                            : item?.playnumbers[0]?.playnumber
+                                          : item?.playnumbers?.length}
+                                      </Text>
+                                    </View>
+                                  )}
                                 </View>
                                 {/** PLAY NUMBER */}
-                                <View
-                                  style={{
-                                    flex: 1,
-                                    borderBottomLeftRadius:
-                                      heightPercentageToDP(2),
-                                    borderBottomEndRadius:
-                                      heightPercentageToDP(2),
-                                    flexDirection: 'row',
-                                    padding: heightPercentageToDP(1),
-                                  }}>
-                                  <View style={styles.detailContainer}>
-                                    <Text style={styles.detailValue}>
-                                      Number
-                                    </Text>
-                                  </View>
-                                  <View style={styles.detailContainer}>
-                                    <Text style={styles.detailValue}>
-                                      Amount
-                                    </Text>
-                                  </View>
-                                  <View style={styles.detailContainer}>
-                                    <Text style={styles.detailValue}>
-                                      Win Amt.
-                                    </Text>
-                                  </View>
-                                </View>
-                                {item.playnumbers.map((pitem, pindex) => (
-                                  <View
-                                    key={pindex}
-                                    style={{
-                                      borderBottomLeftRadius:
-                                        heightPercentageToDP(2),
-                                      borderBottomEndRadius:
-                                        heightPercentageToDP(2),
-                                      flexDirection: 'row',
-                                      padding: heightPercentageToDP(1),
-                                    }}>
-                                    <View style={styles.detailContainer}>
-                                      <Text
+                                {item?.forProcess ? null : (
+                                  <>
+                                    <View
+                                      style={{
+                                        flex: 1,
+                                        borderBottomLeftRadius:
+                                          heightPercentageToDP(2),
+                                        borderBottomEndRadius:
+                                          heightPercentageToDP(2),
+                                        flexDirection: 'row',
+                                        padding: heightPercentageToDP(1),
+                                      }}>
+                                      <View style={styles.detailContainer}>
+                                        <Text style={styles.detailValue}>
+                                          Number
+                                        </Text>
+                                      </View>
+                                      <View style={styles.detailContainer}>
+                                        <Text style={styles.detailValue}>
+                                          Amount
+                                        </Text>
+                                      </View>
+                                      <View style={styles.detailContainer}>
+                                        <Text style={styles.detailValue}>
+                                          Win Amt.
+                                        </Text>
+                                      </View>
+                                    </View>
+                                    {item.playnumbers.map((pitem, pindex) => (
+                                      <View
+                                        key={pindex}
                                         style={{
-                                          ...styles.detailLabel,
-                                          fontFamily: FONT.Montserrat_SemiBold,
+                                          borderBottomLeftRadius:
+                                            heightPercentageToDP(2),
+                                          borderBottomEndRadius:
+                                            heightPercentageToDP(2),
+                                          flexDirection: 'row',
+                                          padding: heightPercentageToDP(1),
                                         }}>
-                                        {pitem?.playnumber}
-                                      </Text>
-                                    </View>
-                                    <View style={styles.detailContainer}>
-                                      <Text style={styles.detailLabel}>
-                                        {/* {pitem?.amount} */}
-                                        {item?.walletName
-                                          ? formatAmount(
-                                              pitem?.amount /
-                                                extractNumberFromString(
-                                                  item?.lotlocation
-                                                    ?.maximumReturn,
-                                                ),
-                                            )
-                                          : formatAmount(pitem?.amount)}
-                                      </Text>
-                                    </View>
-                                    <View style={styles.detailContainer}>
-                                      <Text style={styles.detailLabel}>
-                                        {formatAmount(pitem?.winningamount)}
-                                      </Text>
-                                    </View>
-                                  </View>
-                                ))}
+                                        <View style={styles.detailContainer}>
+                                          <Text
+                                            style={{
+                                              ...styles.detailLabel,
+                                              fontFamily:
+                                                FONT.Montserrat_SemiBold,
+                                            }}>
+                                            {pitem?.playnumber}
+                                          </Text>
+                                        </View>
+                                        <View style={styles.detailContainer}>
+                                          <Text style={styles.detailLabel}>
+                                            {/* {pitem?.amount} */}
+                                            {item?.walletName
+                                              ? formatAmount(
+                                                  pitem?.amount /
+                                                    extractNumberFromString(
+                                                      item?.lotlocation
+                                                        ?.maximumReturn,
+                                                    ),
+                                                )
+                                              : formatAmount(pitem?.amount)}
+                                          </Text>
+                                        </View>
+                                        <View style={styles.detailContainer}>
+                                          <Text style={styles.detailLabel}>
+                                            {formatAmount(pitem?.winningamount)}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    ))}
+                                  </>
+                                )}
+
                                 <View
                                   style={{
                                     height: 1,
@@ -576,15 +635,27 @@ const UserPlayHistory = ({route}) => {
                                     marginVertical: heightPercentageToDP(2),
                                     marginHorizontal: heightPercentageToDP(1),
                                   }}>
-                                  <MaterialCommunityIcons
-                                    name={'trophy-award'}
-                                    size={heightPercentageToDP(3)}
-                                    color={
-                                      item?.walletName
-                                        ? COLORS.green
-                                        : COLORS.darkGray
-                                    }
-                                  />
+                                  {item?.walletName ? (
+                                    item?.forProcess === 'partnercredit' ? (
+                                      <FontAwesome6
+                                        name={'handshake-simple'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.orange}
+                                      />
+                                    ) : (
+                                      <MaterialCommunityIcons
+                                        name={'trophy-award'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.orange}
+                                      />
+                                    )
+                                  ) : (
+                                    <MaterialCommunityIcons
+                                      name={'trophy-award'}
+                                      size={heightPercentageToDP(3)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  )}
                                 </View>
 
                                 <View style={{flex: 1}}>
@@ -613,7 +684,7 @@ const UserPlayHistory = ({route}) => {
                                       numberOfLines={2}>
                                       :{' '}
                                       {formatAmount(
-                                        calculateTotalAmount(item?.playnumbers),
+                                        calculateTotalAmount(item?.tickets),
                                       )}{' '}
                                       {user?.country?.countrycurrencysymbol}
                                     </Text>
@@ -632,11 +703,11 @@ const UserPlayHistory = ({route}) => {
                                         fontSize: heightPercentageToDP(1.8),
                                         color: COLORS.black,
                                       }}>
-                                      {item?.lotdate?.lotdate
+                                      {item?.powerdate?.powerdate
                                         ? formatDate(
                                             getDateTimeAccordingToUserTimezone(
-                                              item?.lottime?.lottime,
-                                              item?.lotdate?.lotdate,
+                                              item?.powertime?.powertime,
+                                              item?.powerdate?.powerdate,
                                               user?.country?.timezone,
                                             ),
                                           )
@@ -698,12 +769,27 @@ const UserPlayHistory = ({route}) => {
                                       alignItems: 'flex-start',
                                       paddingStart: heightPercentageToDP(1),
                                     }}>
+                                    <Text style={styles.detailValue}>
+                                      Playing
+                                    </Text>
+                                    <Text
+                                      numberOfLines={1}
+                                      style={styles.detailLabel}>
+                                      {gameName}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'flex-start',
+                                      paddingStart: heightPercentageToDP(1),
+                                    }}>
                                     <Text style={styles.detailValue}>Time</Text>
                                     <Text
                                       numberOfLines={1}
                                       style={styles.detailLabel}>
                                       {getTimeAccordingToTimezone(
-                                        item?.lottime?.lottime,
+                                        item?.powertime?.powertime,
                                         user?.country?.timezone,
                                       )}
                                     </Text>
@@ -711,15 +797,19 @@ const UserPlayHistory = ({route}) => {
                                   <View style={styles.detailContainer}>
                                     <Text style={styles.detailValue}>
                                       {item?.walletName
-                                        ? 'Winning No.'
+                                        ? item?.forProcess === 'partnercredit'
+                                          ? 'Partner'
+                                          : 'Winner'
                                         : 'Total Ticket'}
                                     </Text>
                                     <Text
                                       numberOfLines={3}
                                       style={styles.detailLabel}>
                                       {item?.walletName
-                                        ? item.playnumbers[0]?.playnumber
-                                        : item?.playnumbers.length}
+                                        ? item?.forProcess === 'partnercredit'
+                                          ? 'Profit Credit'
+                                          : 'Ticket'
+                                        : item?.tickets.length}
                                     </Text>
                                   </View>
                                 </View>
@@ -766,7 +856,7 @@ const UserPlayHistory = ({route}) => {
                                     </Text>
                                   </View>
                                 </View>
-                                {item.playnumbers.map((pitem, pindex) => (
+                                {item.tickets.map((pitem, pindex) => (
                                   <View
                                     key={pindex}
                                     style={{
@@ -789,7 +879,7 @@ const UserPlayHistory = ({route}) => {
                                           ...styles.detailLabel,
                                           fontFamily: FONT.Montserrat_SemiBold,
                                         }}>
-                                        {pitem?.playnumber}
+                                        {pindex + 1}
                                       </Text>
                                     </View>
                                     <View
@@ -800,27 +890,21 @@ const UserPlayHistory = ({route}) => {
                                         paddingStart: heightPercentageToDP(1),
                                       }}>
                                       <Text style={styles.detailLabel}>
-                                        {/* {pitem?.amount} */}
-                                        {item?.walletName
-                                          ? formatAmount(
-                                              pitem?.amount /
-                                                extractNumberFromString(
-                                                  item?.lotlocation
-                                                    ?.maximumReturn,
-                                                ),
-                                            )
-                                          : formatAmount(pitem?.amount)}
+                                        {pitem.usernumber.join(', ')}
+                                        {pitem.multiplier > 1
+                                          ? ` - ${pitem.multiplier}X `
+                                          : ''}
                                       </Text>
                                     </View>
                                     <View
                                       style={{
                                         flex: 1,
-                                        justifyContent: 'center',
+                                        justifyContent: 'flex-end',
                                         alignItems: 'center',
                                         paddingStart: heightPercentageToDP(1),
                                       }}>
                                       <Text style={styles.detailLabel}>
-                                        {formatAmount(pitem?.winningamount)}
+                                        {pitem.amount}
                                       </Text>
                                     </View>
                                   </View>

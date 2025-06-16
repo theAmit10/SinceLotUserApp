@@ -875,7 +875,7 @@ const PlayHistory = () => {
                                       style={{
                                         flex: 1,
                                         justifyContent: 'flex-end',
-                                        alignItems: 'flex-end',
+                                        alignItems: 'center',
                                         paddingStart: heightPercentageToDP(1),
                                       }}>
                                       <Text style={styles.detailLabel}>
