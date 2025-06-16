@@ -26,7 +26,7 @@ const CustomAlertForDeposit = ({
   onYes,
   defaultAmount,
   usercountry,
-  paymentType
+  paymentType,
 }) => {
   const [paymentUpdateNote, setPaymentUpdateNote] = useState('');
   const [imageSource, setImageSource] = useState(null);
@@ -65,7 +65,11 @@ const CustomAlertForDeposit = ({
 
   // Set default amount whenever the modal opens or defaultAmount changes
   useEffect(() => {
-    setAmount(defaultAmount);
+    // setAmount(defaultAmount);
+    const defaultAt =
+      Number.parseInt(defaultAmount) *
+      Number.parseInt(usercountry.countrycurrencyvaluecomparedtoinr);
+    setAmount(defaultAt);
   }, [defaultAmount]);
 
   if (!visible) return null;
@@ -129,7 +133,8 @@ const CustomAlertForDeposit = ({
               textAlign: 'center',
               marginBottom: heightPercentageToDP(2),
             }}>
-            Currency : {usercountry.countrycurrencysymbol} {"     "}  Value : {usercountry.countrycurrencyvaluecomparedtoinr}
+            Currency : {usercountry.countrycurrencysymbol} {'     '} Value :{' '}
+            {usercountry.countrycurrencyvaluecomparedtoinr}
           </Text>
 
           <Text
@@ -145,7 +150,9 @@ const CustomAlertForDeposit = ({
               textAlign: 'center',
               marginBottom: heightPercentageToDP(2),
             }}>
-            Payment : {paymentType}{"  "}{"  "}Amt : {defaultAmount}
+            Payment : {paymentType}
+            {'  '}
+            {'  '}Amt : {defaultAmount}
           </Text>
           {/** AMOUNT */}
           <View
@@ -171,7 +178,7 @@ const CustomAlertForDeposit = ({
                 borderRadius: heightPercentageToDP(2),
                 width: widthPercentageToDP(90),
                 minHeight: heightPercentageToDP(6),
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}>
               <TextInput
                 underlineColor="transparent"
@@ -183,7 +190,7 @@ const CustomAlertForDeposit = ({
                   fontFamily: FONT.Montserrat_Bold,
                   color: COLORS.black,
                   textAlign: 'center',
-                  fontSize: heightPercentageToDP(2.5)
+                  fontSize: heightPercentageToDP(2.5),
                 }}
                 textColor={COLORS.black}
                 fontFamily={FONT.Montserrat_Bold}
@@ -216,7 +223,7 @@ const CustomAlertForDeposit = ({
                 borderRadius: heightPercentageToDP(2),
                 width: widthPercentageToDP(90),
                 minHeight: heightPercentageToDP(6),
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}>
               <TextInput
                 underlineColor="transparent"
@@ -228,7 +235,7 @@ const CustomAlertForDeposit = ({
                   fontFamily: FONT.Montserrat_Bold,
                   color: COLORS.black,
                   paddingStart: heightPercentageToDP(2),
-                  paddingEnd: heightPercentageToDP(2)
+                  paddingEnd: heightPercentageToDP(2),
                 }}
                 textColor={COLORS.black}
                 fontFamily={FONT.Montserrat_Bold}
