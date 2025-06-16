@@ -415,8 +415,9 @@ const PlayArenaLocation = () => {
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
                   textAlignVertical: 'center',
+                  alignSelf: 'flex-end',
                 }}>
-                Max {item.limit}
+                {item.maximumReturn} Win
               </Text>
             </View>
           </LinearGradient>
