@@ -247,7 +247,7 @@ const PowerballDashboard = () => {
                           padding: heightPercentageToDP(1),
                         }}>
                         <LinearGradient
-                          colors={[COLORS.green, COLORS.green]}
+                          colors={[COLORS.lightyellow, COLORS.darkyellow]}
                           start={{x: 0, y: 0}} // start from left
                           end={{x: 10, y: 0}} // end at right
                           style={{
@@ -259,7 +259,7 @@ const PowerballDashboard = () => {
                             style={{
                               fontFamily: FONT.Montserrat_SemiBold,
                               fontSize: heightPercentageToDP(2),
-                              color: COLORS.white_s,
+                              color: COLORS.black,
                             }}>
                             BUY TICKETS
                           </Text>
