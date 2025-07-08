@@ -1687,7 +1687,7 @@ const Home = () => {
                     fontSize: heightPercentageToDP(2),
                     textAlign: 'center',
                     textAlignVertical: 'center',
-                    color: COLORS.black,
+                    color: COLORS.white_s,
                   }}>
                   See all
                 </Text>
