@@ -29,7 +29,7 @@ import moment from 'moment';
 import {useGetHistoryQuery} from '../../../helper/Networkcall';
 
 const UserTransactionHistory = ({route}) => {
-  const {item} = route.params;
+  const {item: userdata} = route.params;
   const {accesstoken, user} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
 
@@ -41,7 +41,7 @@ const UserTransactionHistory = ({route}) => {
     error,
     isLoading,
     refetch,
-  } = useGetHistoryQuery({accesstoken: accesstoken, userId: item.userId});
+  } = useGetHistoryQuery({accesstoken: accesstoken, userId: userdata.userId});
 
   console.log('History isloading :: ' + isLoading);
   console.log('History :: ' + JSON.stringify(error));
@@ -139,7 +139,7 @@ const UserTransactionHistory = ({route}) => {
                 }}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                {item.userId}
+                {userdata.userId}
               </Text>
               <View
                 style={{
@@ -156,7 +156,7 @@ const UserTransactionHistory = ({route}) => {
                 }}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                {item.name}
+                {userdata.name}
               </Text>
             </View>
 
@@ -260,7 +260,7 @@ const UserTransactionHistory = ({route}) => {
                                 }}
                                 numberOfLines={2}>
                                 {formatAmount(item.amount)}{' '}
-                                {user.country.countrycurrencysymbol}
+                                {userdata.country.countrycurrencysymbol}
                               </Text>
                             </View>
 
