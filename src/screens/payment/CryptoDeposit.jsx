@@ -288,12 +288,12 @@ const CryptoDeposit = () => {
                       {selectedUpiId?.paymentId}
                     </GradientTextWhite> */}
                       <LinearGradient
-                        colors={[COLORS.grayBg, COLORS.white_s]}
+                        colors={[COLORS.result_orange, COLORS.result_orange]}
                         style={{borderRadius: 20, padding: 10}}>
                         <AntDesign
                           name={'downcircleo'}
                           size={heightPercentageToDP(3)}
-                          color={COLORS.darkGray}
+                          color={COLORS.white_s}
                         />
                       </LinearGradient>
                     </LinearGradient>
