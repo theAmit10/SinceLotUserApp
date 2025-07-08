@@ -541,14 +541,18 @@ const PlayHistory = () => {
                                         <View style={styles.detailContainer}>
                                           <Text style={styles.detailLabel}>
                                             {/* {pitem?.amount} */}
+
                                             {item?.walletName
-                                              ? formatAmount(
-                                                  pitem?.amount /
-                                                    extractNumberFromString(
-                                                      item?.lotlocation
-                                                        ?.maximumReturn,
-                                                    ),
-                                                )
+                                              ? item?.forProcess ===
+                                                'partnercredit'
+                                                ? '0'
+                                                : formatAmount(
+                                                    pitem?.amount /
+                                                      extractNumberFromString(
+                                                        item?.lotlocation
+                                                          ?.maximumReturn,
+                                                      ),
+                                                  )
                                               : formatAmount(pitem?.amount)}
                                           </Text>
                                         </View>
