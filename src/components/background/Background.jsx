@@ -21,10 +21,12 @@ const Background = ({
   setTime,
   setShowResult,
   setforcase,
+  navigationBackHandler,
 }) => {
   const navigation = useNavigation();
 
   const handleBackPress = () => {
+    console.log('backpressed');
     if (fromScreen === 'Home') {
       navigation.goBack();
     } else {
@@ -34,6 +36,10 @@ const Background = ({
         setShowResult(false);
         setshowTime(true);
         setTime(null);
+      } else if (backcase === 'powerball') {
+        navigationBackHandler();
+      } else {
+        navigation.goBack();
       }
     }
   };
@@ -80,7 +86,7 @@ const Background = ({
             opacity: 80,
           }}>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={handleBackPress}
             className="rounded-md p-2"
             style={{
               backgroundColor: COLORS.white_s,

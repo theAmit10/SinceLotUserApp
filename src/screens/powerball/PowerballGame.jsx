@@ -450,13 +450,28 @@ const PowerballGame = ({route}) => {
     }
   };
 
+  const navigationBackHandler = () => {
+    if (showAllSeclectedBalls === true) {
+      setShowAllSeclectedBalls(false);
+      console.log('working if');
+    } else {
+      navigation.goBack();
+      console.log('working else');
+    }
+    // setShowAllSeclectedBalls(true);
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior="height"
         keyboardVerticalOffset={-130}>
-        <Background />
+        <Background
+          fromScreen={'powerball'}
+          backcase={'powerball'}
+          navigationBackHandler={navigationBackHandler}
+        />
 
         {/** Main Cointainer */}
 
