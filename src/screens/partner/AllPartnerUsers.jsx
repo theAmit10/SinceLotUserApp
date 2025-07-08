@@ -251,7 +251,7 @@ const AllPartnerUsers = ({route}) => {
                       <View style={styles.topContainer}>
                         <View
                           style={{
-                            flex: 1,
+                            flex: 0.8,
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'flex-start',
@@ -261,7 +261,7 @@ const AllPartnerUsers = ({route}) => {
                         </View>
                         <View
                           style={{
-                            flex: 2,
+                            flex: 1,
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'flex-start',
@@ -269,6 +269,30 @@ const AllPartnerUsers = ({route}) => {
                           <Text style={styles.titleRegular}>Name</Text>
                           <Text style={styles.titleBold} numberOfLines={1}>
                             {item.name}
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            flex: 0.8,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'flex-start',
+                          }}>
+                          <Text style={styles.titleRegular}>Currency</Text>
+                          <Text style={styles.titleBold}>
+                            {item?.country?.countrycurrencysymbol}
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            flex: 1,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'flex-start',
+                          }}>
+                          <Text style={styles.titleRegular}>Country</Text>
+                          <Text style={styles.titleBold} numberOfLines={1}>
+                            {item?.country?.countryname}
                           </Text>
                         </View>
                       </View>
