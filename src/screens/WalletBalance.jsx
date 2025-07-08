@@ -20,6 +20,24 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {loadProfile} from '../redux/actions/userAction';
 import Loading from '../components/helpercComponent/Loading';
 
+export const roundToInteger = input => {
+  // Convert input to a float
+  const floatValue = parseFloat(input);
+
+  // Check if it's a valid number
+  if (isNaN(floatValue)) {
+    return 'Invalid number'; // Handle invalid input
+  }
+
+  // Check if the number is already an integer
+  if (Number.isInteger(floatValue)) {
+    return floatValue; // Return the number as it is
+  }
+
+  // Return the integer part (without rounding)
+  return Math.floor(floatValue);
+};
+
 const WalletBalance = ({route}) => {
   const {data} = route.params;
   const {accesstoken, user, loading} = useSelector(state => state.user);
@@ -68,24 +86,6 @@ const WalletBalance = ({route}) => {
       }
     }
   }, [user, forWallet, loading, previousBalance]);
-
-  const roundToInteger = input => {
-    // Convert input to a float
-    const floatValue = parseFloat(input);
-
-    // Check if it's a valid number
-    if (isNaN(floatValue)) {
-      return 'Invalid number'; // Handle invalid input
-    }
-
-    // Check if the number is already an integer
-    if (Number.isInteger(floatValue)) {
-      return floatValue; // Return the number as it is
-    }
-
-    // Return the integer part (without rounding)
-    return Math.floor(floatValue);
-  };
 
   return (
     <SafeAreaView style={{flex: 1}}>

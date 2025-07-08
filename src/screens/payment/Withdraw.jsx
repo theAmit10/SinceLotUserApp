@@ -21,11 +21,12 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {roundToInteger} from '../WalletBalance';
 
 const Withdraw = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -111,9 +112,18 @@ const Withdraw = () => {
                         color={COLORS.darkGray}
                       />
                     </View>
-                    <GradientTextWhite style={styles.textStyleContent}>
-                      Withdraw Option
-                    </GradientTextWhite>
+                    <View
+                      style={{
+                        flex: 1,
+                      }}>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        Withdraw Option
+                      </GradientTextWhite>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        {roundToInteger(user?.walletOne?.balance)}{' '}
+                        {user?.country?.countrycurrencysymbol}
+                      </GradientTextWhite>
+                    </View>
                   </LinearGradient>
                 </TouchableOpacity>
               </ScrollView>
@@ -136,7 +146,7 @@ const styles = StyleSheet.create({
   paymentOption: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    height: heightPercentageToDP(12),
+    height: heightPercentageToDP(15),
     borderRadius: heightPercentageToDP(2),
     alignItems: 'center',
     gap: heightPercentageToDP(3),
