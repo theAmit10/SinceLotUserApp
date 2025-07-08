@@ -83,7 +83,7 @@ const historyapidata = [
 ];
 
 const UserPlayHistory = ({route}) => {
-  const {item} = route.params;
+  const {item: userdata} = route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {accesstoken, user} = useSelector(state => state.user);
@@ -103,7 +103,7 @@ const UserPlayHistory = ({route}) => {
     refetch,
   } = useGetSingleUserPlayHistoryQuery({
     accesstoken: accesstoken,
-    userId: item.userId,
+    userId: userdata.userId,
   });
 
   console.log(JSON.stringify(historyapidatas?.playbets));
@@ -247,7 +247,7 @@ const UserPlayHistory = ({route}) => {
                 }}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                {item?.userId}
+                {userdata?.userId}
               </Text>
               <View
                 style={{
@@ -264,7 +264,7 @@ const UserPlayHistory = ({route}) => {
                 }}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                {item?.name}
+                {userdata?.name}
               </Text>
             </View>
 
@@ -379,7 +379,7 @@ const UserPlayHistory = ({route}) => {
                                       {formatAmount(
                                         calculateTotalAmount(item?.playnumbers),
                                       )}{' '}
-                                      {user?.country?.countrycurrencysymbol}
+                                      {userdata?.country?.countrycurrencysymbol}
                                     </Text>
                                   </View>
 
@@ -401,7 +401,7 @@ const UserPlayHistory = ({route}) => {
                                             getDateTimeAccordingToUserTimezone(
                                               item?.lottime?.lottime,
                                               item?.lotdate?.lotdate,
-                                              user?.country?.timezone,
+                                              userdata?.country?.timezone,
                                             ),
                                           )
                                         : ''}
@@ -686,7 +686,7 @@ const UserPlayHistory = ({route}) => {
                                       {formatAmount(
                                         calculateTotalAmount(item?.tickets),
                                       )}{' '}
-                                      {user?.country?.countrycurrencysymbol}
+                                      {userdata?.country?.countrycurrencysymbol}
                                     </Text>
                                   </View>
 
