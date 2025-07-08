@@ -568,7 +568,7 @@ const AllOtherDepositPayment = () => {
                       color: COLORS.white,
                       fontFamily: FONT.Montserrat_Regular,
                     }}>
-                    Create Other
+                    New payment options
                   </Text>
                 </TouchableOpacity>
               )}
