@@ -4,7 +4,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -15,7 +14,6 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../assets/constants';
-import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Toast from 'react-native-toast-message';
@@ -23,13 +21,9 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ProfileBackground from '../components/background/ProfileBackground';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Wallet from '../components/home/Wallet';
-import {Consumer} from 'react-native-paper/lib/typescript/core/settings';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadProfile, logout} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
-import Loading from '../components/helpercComponent/Loading';
 import LinearGradient from 'react-native-linear-gradient';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';

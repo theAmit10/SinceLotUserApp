@@ -1,29 +1,42 @@
-import { Image, ImageBackground, Platform, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {
+  Image,
+  ImageBackground,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import { COLORS, FONT } from '../../../assets/constants';
+import {COLORS, FONT} from '../../../assets/constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import GradientText from '../helpercComponent/GradientText';
-import { useDispatch, useSelector } from 'react-redux';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import {useDispatch, useSelector} from 'react-redux';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Toast from 'react-native-toast-message';
 import DocumentPicker from 'react-native-document-picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
-import { loadProfile } from '../../redux/actions/userAction';
-import { serverName } from '../../redux/store';
+import {loadProfile} from '../../redux/actions/userAction';
+import {serverName} from '../../redux/store';
 
 const ProfileBackground = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const { user, accesstoken, loading } = useSelector(state => state.user);
+  const {user, accesstoken, loading} = useSelector(state => state.user);
 
-
-  const [imageSource, setImageSource] = useState(require('../../../assets/image/dark_user.png'));
+  const [imageSource, setImageSource] = useState(
+    require('../../../assets/image/dark_user.png'),
+  );
 
   const [showProgressBar, setProgressBar] = useState(false);
 
@@ -31,17 +44,19 @@ const ProfileBackground = () => {
     const result = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
 
     if (result === RESULTS.DENIED) {
-      if (Platform.OS === 'android' && Platform.Version <= 29) { // Target Android 10 and above
-        const permissionResult = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+      if (Platform.OS === 'android' && Platform.Version <= 29) {
+        // Target Android 10 and above
+        const permissionResult = await request(
+          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+        );
         if (permissionResult !== RESULTS.GRANTED) {
           console.log('Permission not granted!');
           Toast.show({
             type: 'info',
-            text1: 'Permission not granted!'
-          })
+            text1: 'Permission not granted!',
+          });
           return;
         }
-
       }
     }
     // Call your DocumentPicker.pick() function here
@@ -62,9 +77,8 @@ const ProfileBackground = () => {
       if (doc) {
         console.log(doc);
         console.log(doc[0].uri);
-        setImageSource({ uri: doc[0].uri });
+        setImageSource({uri: doc[0].uri});
       }
-
     } catch (err) {
       if (DocumentPicker.isCancel(err))
         console.log('User cancelled the upload', err);
@@ -74,12 +88,11 @@ const ProfileBackground = () => {
 
   // for uploading Profile content
   const handleUpdateProfile = async () => {
-     if (!imageSource) {
+    if (!imageSource) {
       Toast.show({
         type: 'error',
         text1: 'Add profile picture',
       });
-      
     } else {
       setProgressBar(true);
 
@@ -146,7 +159,7 @@ const ProfileBackground = () => {
           type: 'error',
           text1: 'Profile updated successfully',
         });
-        
+
         setProgressBar(false);
         navigation.goBack();
       } catch (error) {
@@ -155,7 +168,6 @@ const ProfileBackground = () => {
           text1: 'Something went wrong',
         });
         console.log(error);
-
       }
     }
   };
@@ -164,7 +176,6 @@ const ProfileBackground = () => {
     <SafeAreaView
       style={{
         flex: 1,
-     
       }}>
       {/** Top View Rectangle View */}
 
@@ -174,110 +185,104 @@ const ProfileBackground = () => {
           width: '100%',
           height: '100%',
         }}>
-           <View
-        style={{
-          width: heightPercentageToDP(30),
-          height: heightPercentageToDP(30),
-          backgroundColor: COLORS.grayHalfBg,
-          position: 'absolute',
-          borderRadius: heightPercentageToDP(5),
-          zIndex: 1,
-          top: heightPercentageToDP(10),
-          left: widthPercentageToDP(20),
-          elevation: heightPercentageToDP(1)
-        }}>
-        {/** User Profile Image */}
-        <TouchableOpacity
-  
-          style={{
-            borderRadius: 100,
-            overflow: 'hidden',
-            width: heightPercentageToDP(20),
-            height: heightPercentageToDP(20),
-            zIndex: 2,
-            position: 'absolute',
-            top: heightPercentageToDP(-4),
-            left: heightPercentageToDP(4),
-          }}>
-          
-
-          {user?.avatar?.url ? (
-            <Image
-              source={{uri: `${serverName}/uploads/${user?.avatar.url}`}}
-              resizeMode="cover"
-              style={{
-                height: heightPercentageToDP(20),
-              width: heightPercentageToDP(20),
-              }}
-            />
-          ) : (
-            <Image
-              source={imageSource}
-              resizeMode="cover"
-              style={{
-                height: heightPercentageToDP(20),
-                width: heightPercentageToDP(20),
-              }}
-            />
-          )}
-
-        </TouchableOpacity>
-
         <View
           style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'transparent',
-            zIndex: 3,
-            alignSelf: 'stretch',
-            marginTop: heightPercentageToDP(14)
+            width: heightPercentageToDP(30),
+            height: heightPercentageToDP(30),
+            backgroundColor: COLORS.grayHalfBg,
+            position: 'absolute',
+            borderRadius: heightPercentageToDP(5),
+            zIndex: 1,
+            top: heightPercentageToDP(10),
+            left: widthPercentageToDP(20),
+            elevation: heightPercentageToDP(1),
           }}>
+          {/** User Profile Image */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('UploadProfilePicture')}
+            style={{
+              borderRadius: 100,
+              overflow: 'hidden',
+              width: heightPercentageToDP(20),
+              height: heightPercentageToDP(20),
+              zIndex: 2,
+              position: 'absolute',
+              top: heightPercentageToDP(-4),
+              left: heightPercentageToDP(4),
+            }}>
+            {user?.avatar?.url ? (
+              <Image
+                source={{uri: `${serverName}/uploads/${user?.avatar.url}`}}
+                resizeMode="cover"
+                style={{
+                  height: heightPercentageToDP(20),
+                  width: heightPercentageToDP(20),
+                }}
+              />
+            ) : (
+              <Image
+                source={imageSource}
+                resizeMode="cover"
+                style={{
+                  height: heightPercentageToDP(20),
+                  width: heightPercentageToDP(20),
+                }}
+              />
+            )}
+          </TouchableOpacity>
+
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent',
+              zIndex: 3,
+              alignSelf: 'stretch',
+              marginTop: heightPercentageToDP(14),
+            }}>
             {/** name */}
-          <GradientText style={{...styles.textStyle}}>{user? user.name: ""}</GradientText>
+            <GradientText style={{...styles.textStyle}}>
+              {user ? user.name : ''}
+            </GradientText>
             {/** email */}
-          <GradientText style={styles.textStyleEmail}>
-          {user? user.email: ""}
-          </GradientText>
+            <GradientText style={styles.textStyleEmail}>
+              {user ? user.email : ''}
+            </GradientText>
             {/** contact */}
-           {
-             user && user.contact != user.userId ? (<GradientText style={styles.textStyleEmail}>
-              {user? user.contact: ""}
-              </GradientText>) : (null)
-           }
+            {user && user.contact != user.userId ? (
+              <GradientText style={styles.textStyleEmail}>
+                {user ? user.contact : ''}
+              </GradientText>
+            ) : null}
 
             {/* {
              user && user?.contact ? (<GradientText style={styles.textStyleEmail}>
               {user? user.contact: ""}
               </GradientText>) : (null)
            } */}
-          
-          
-          <GradientText style={styles.textStyleEmail}>
-            User ID - {user ? user.userId : ''}
-          </GradientText>
+
+            <GradientText style={styles.textStyleEmail}>
+              User ID - {user ? user.userId : ''}
+            </GradientText>
+          </View>
+
+          {/** Username */}
+
+          {/** Email */}
+
+          <View
+            style={{
+              width: heightPercentageToDP(15),
+              height: heightPercentageToDP(30),
+              backgroundColor: COLORS.grayHalfBg,
+              position: 'absolute',
+              zIndex: 1,
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderBottomLeftRadius: heightPercentageToDP(5),
+            }}></View>
         </View>
 
-        {/** Username */}
-
-
-
-
-
-        {/** Email */}
-
-        <View
-          style={{
-            width: heightPercentageToDP(15),
-            height: heightPercentageToDP(30),
-            backgroundColor: COLORS.grayHalfBg,
-            position: 'absolute',
-            zIndex: 1,
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderBottomLeftRadius: heightPercentageToDP(5),
-          }}></View>
-      </View>
-      
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           className="rounded-md p-2"
@@ -299,10 +304,7 @@ const ProfileBackground = () => {
             margin: heightPercentageToDP(3),
             backgroundColor: COLORS.background,
           }}></View>
-
-
-        </ImageBackground>
-     
+      </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -313,11 +315,11 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
-    color:COLORS.darkGray,
+    color: COLORS.darkGray,
   },
   textStyleEmail: {
     fontSize: heightPercentageToDP(2),
     fontFamily: FONT.Montserrat_Bold,
-    color:COLORS.darkGray,
+    color: COLORS.darkGray,
   },
 });
