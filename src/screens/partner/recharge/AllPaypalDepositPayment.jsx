@@ -416,7 +416,7 @@ const AllPaypalDepositPayment = () => {
                     color: COLORS.white,
                     fontFamily: FONT.Montserrat_Regular,
                   }}>
-                  Create new account
+                  Add new paypal ID
                 </Text>
               </TouchableOpacity>
             </View>
