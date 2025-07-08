@@ -24,7 +24,23 @@ const PowerballTimes = () => {
   const [nextTime, setNextTime] = useState(null);
   useEffect(() => {
     if (!isLoading && data) {
-      setPowertimes(data.powerTimes);
+      let alltime = [];
+
+      alltime = [...data.powerTimes].sort((a, b) => {
+        // Helper function to convert time to minutes for comparison
+        const timeToMinutes = timeStr => {
+          const [time, period] = timeStr.split(' ');
+          const [hours, minutes] = time.split(':').map(Number);
+          let total = hours * 60 + minutes;
+          if (period === 'PM' && hours !== 12) total += 12 * 60;
+          if (period === 'AM' && hours === 12) total -= 12 * 60;
+          return total;
+        };
+
+        return timeToMinutes(a.powertime) - timeToMinutes(b.powertime);
+      });
+      // setPowertimes(data.powerTimes);
+      setPowertimes(alltime);
       console.log(data);
 
       const nextTime = getNextTimeForHighlights(
