@@ -486,7 +486,7 @@ const AllCryptoDepositPayment = () => {
                     color: COLORS.white,
                     fontFamily: FONT.Montserrat_Regular,
                   }}>
-                  Create new account
+                  Add new crypto address
                 </Text>
               </TouchableOpacity>
             </View>
