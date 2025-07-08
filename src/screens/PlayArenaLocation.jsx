@@ -377,8 +377,27 @@ const PlayArenaLocation = () => {
 
   const renderItem = ({item, index}) => {
     const groupedTimes = [];
-    for (let i = 0; i < item.times.length; i += 2) {
-      groupedTimes.push(item.times.slice(i, i + 2));
+    // for (let i = 0; i < item.times.length; i += 2) {
+    //   groupedTimes.push(item.times.slice(i, i + 2));
+    // }
+
+    let alltime = [];
+
+    alltime = [...item.times].sort((a, b) => {
+      // Helper function to convert time to minutes for comparison
+      const timeToMinutes = timeStr => {
+        const [time, period] = timeStr.split(' ');
+        const [hours, minutes] = time.split(':').map(Number);
+        let total = hours * 60 + minutes;
+        if (period === 'PM' && hours !== 12) total += 12 * 60;
+        if (period === 'AM' && hours === 12) total -= 12 * 60;
+        return total;
+      };
+
+      return timeToMinutes(a.time) - timeToMinutes(b.time);
+    });
+    for (let i = 0; i < alltime.length; i += 2) {
+      groupedTimes.push(alltime.slice(i, i + 2));
     }
 
     const nextTime = getNextTimeForHighlights(
