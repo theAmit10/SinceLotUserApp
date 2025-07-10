@@ -68,7 +68,7 @@ const CustomAlertForDeposit = ({
     // setAmount(defaultAmount);
     const defaultAt =
       Number.parseInt(defaultAmount) *
-      Number.parseInt(usercountry.countrycurrencyvaluecomparedtoinr);
+      Number.parseFloat(usercountry.countrycurrencyvaluecomparedtoinr);
     setAmount(defaultAt);
   }, [defaultAmount]);
 
