@@ -45,23 +45,24 @@ const Withdrawcrypto = () => {
   const submitHandler = async () => {
     if (!amountval) {
       Toast.show({type: 'error', text1: 'Enter Amount'});
-    }else if (isNaN(amountval)) {
-      Toast.show({type: 'error', text1: 'Invalid Amount',text2: 'Please enter valid amount'});
-    }
-    else if (parseFloat(amountval) < MIN_WITHDRAW_AMOUNT) {
+    } else if (isNaN(amountval)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Amount',
+        text2: 'Please enter valid amount',
+      });
+    } else if (parseFloat(amountval) < MIN_WITHDRAW_AMOUNT) {
       Toast.show({
         type: 'error',
         text1: `Minimum Amount to withdraw is ${MIN_WITHDRAW_AMOUNT}`,
       });
-    }
-    else if(parseFloat(user?.walletOne?.balance) < parseFloat(amountval)){
+    } else if (parseFloat(user?.walletOne?.balance) < parseFloat(amountval)) {
       Toast.show({
         type: 'error',
         text1: `Insufficent Balance`,
         text2: `You have insufficent balance in ${user?.walletOne?.walletName} wallet`,
       });
-    }
-     else if (!cryptoWalletAddress) {
+    } else if (!cryptoWalletAddress) {
       Toast.show({type: 'error', text1: 'Enter Crypto Wallet Address'});
     } else if (!networkType) {
       Toast.show({type: 'error', text1: 'Enter Network Type'});
@@ -282,6 +283,7 @@ const Withdrawcrypto = () => {
                         activeUnderlineColor="transparent"
                         cursorColor={COLORS.white}
                         placeholderTextColor={COLORS.black}
+                        placeholder="Enter Network Like ( BTC, ETH, USDT )"
                         style={{
                           backgroundColor: 'transparent',
                           fontFamily: FONT.Montserrat_Bold,
