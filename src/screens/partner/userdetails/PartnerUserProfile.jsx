@@ -42,27 +42,32 @@ const PartnerUserProfile = ({route}) => {
             style={{
               flex: 1,
             }}>
-            {item?.email && (
+            {/* {item?.email && (
               <>
                 <Text style={styles.subtitle}>Email</Text>
                 <GradientText style={styles.textStyleContent}>
                   {item?.email}
                 </GradientText>
               </>
-            )}
+            )} */}
 
-            {item?.contact != item?.userId && (
+            {/* {item?.contact != item?.userId && (
               <>
                 <Text style={styles.subtitle}>Phone</Text>
                 <GradientText style={styles.textStyleContent}>
                   {item?.contact}
                 </GradientText>
               </>
-            )}
+            )} */}
 
             <Text style={styles.subtitle}>Country</Text>
             <GradientText style={styles.textStyleContent}>
               {item?.country?.countryname}
+            </GradientText>
+
+            <Text style={styles.subtitle}>Currency</Text>
+            <GradientText style={styles.textStyleContent}>
+              {item?.country?.countrycurrencysymbol}
             </GradientText>
           </View>
         </LinearGradient>
