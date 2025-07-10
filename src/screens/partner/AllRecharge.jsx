@@ -428,7 +428,7 @@ const AllRecharge = () => {
     console.log('Yes pressed');
   };
 
-  function formatAmount(value) {
+  function formatNumber(value) {
     if (typeof value === 'string') {
       value = parseFloat(value); // Convert string to float if necessary
     }
@@ -506,7 +506,10 @@ const AllRecharge = () => {
                       paddingEnd: heightPercentageToDP(2),
                     }}>
                     <View style={styles.topContainer}>
-                      <View
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('PartnerUserProfile', {item})
+                        }
                         style={{
                           flex: 0.5,
                           display: 'flex',
@@ -515,7 +518,7 @@ const AllRecharge = () => {
                         }}>
                         <Text style={styles.titleRegular}>User ID</Text>
                         <Text style={styles.titleBold}>{item.userId}</Text>
-                      </View>
+                      </TouchableOpacity>
                       <View
                         style={{
                           flex: 1,
@@ -525,7 +528,8 @@ const AllRecharge = () => {
                         }}>
                         <Text style={styles.titleRegular}>Amount</Text>
                         <Text style={styles.titleBold} numberOfLines={1}>
-                          {item.convertedAmount} INR
+                          {formatNumber(calculatedAmount)}{' '}
+                          {usercountry.countrycurrencysymbol}
                         </Text>
                       </View>
                       {/* <View

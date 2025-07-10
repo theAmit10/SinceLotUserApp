@@ -34,54 +34,6 @@ import {getTimeAccordingToTimezone} from '../../SearchTime';
 import {COLORS, FONT} from '../../../../assets/constants';
 import Background from '../../../components/background/Background';
 
-const historyapidata = [
-  {
-    id: 1,
-    amount: '638383',
-    currency: 'INR',
-    date: 'Apr 19, 2024 05:36 PM',
-    time: '09:00 AM',
-    location: 'Japan',
-    number: '84',
-  },
-  {
-    id: 2,
-    amount: '8383',
-    currency: 'INR',
-    date: 'Apr 09, 2024 05:36 PM',
-    time: '01:00 AM',
-    location: 'Korea',
-    number: '84',
-  },
-  {
-    id: 3,
-    amount: '9638383',
-    currency: 'INR',
-    date: 'Apr 19, 2024 05:36 PM',
-    time: '09:00 AM',
-    location: 'Japan',
-    number: '84',
-  },
-  {
-    id: 4,
-    amount: '238383',
-    currency: 'INR',
-    date: 'Apr 19, 2024 05:36 PM',
-    time: '09:00 AM',
-    location: 'Japan',
-    number: '84',
-  },
-  {
-    id: 5,
-    amount: '138383',
-    currency: 'INR',
-    date: 'Apr 19, 2024 05:36 PM',
-    time: '09:00 AM',
-    location: 'Japan',
-    number: '84',
-  },
-];
-
 const UserPlayHistory = ({route}) => {
   const {item: userdata} = route.params;
   const navigation = useNavigation();
@@ -106,7 +58,7 @@ const UserPlayHistory = ({route}) => {
     userId: userdata.userId,
   });
 
-  console.log(JSON.stringify(historyapidatas?.playbets));
+  console.log(JSON.stringify(userdata));
 
   useFocusEffect(
     useCallback(() => {
@@ -379,7 +331,10 @@ const UserPlayHistory = ({route}) => {
                                       {formatAmount(
                                         calculateTotalAmount(item?.playnumbers),
                                       )}{' '}
-                                      {userdata?.country?.countrycurrencysymbol}
+                                      {
+                                        userdata?.currency
+                                          ?.countrycurrencysymbol
+                                      }
                                     </Text>
                                   </View>
 
@@ -401,7 +356,7 @@ const UserPlayHistory = ({route}) => {
                                             getDateTimeAccordingToUserTimezone(
                                               item?.lottime?.lottime,
                                               item?.lotdate?.lotdate,
-                                              userdata?.country?.timezone,
+                                              userdata?.currency?.timezone,
                                             ),
                                           )
                                         : ''}
@@ -686,7 +641,10 @@ const UserPlayHistory = ({route}) => {
                                       {formatAmount(
                                         calculateTotalAmount(item?.tickets),
                                       )}{' '}
-                                      {userdata?.country?.countrycurrencysymbol}
+                                      {
+                                        userdata?.currency
+                                          ?.countrycurrencysymbol
+                                      }
                                     </Text>
                                   </View>
 

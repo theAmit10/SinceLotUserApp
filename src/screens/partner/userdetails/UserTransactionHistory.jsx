@@ -35,6 +35,7 @@ const UserTransactionHistory = ({route}) => {
 
   console.log('Accesstoken :: ' + accesstoken);
   console.log('User ID :: ' + user.userId);
+  // console.log('User ID :: ' + JSON.stringify(userdata));
 
   const {
     data: historyapidatas,
@@ -42,10 +43,6 @@ const UserTransactionHistory = ({route}) => {
     isLoading,
     refetch,
   } = useGetHistoryQuery({accesstoken: accesstoken, userId: userdata.userId});
-
-  console.log('History isloading :: ' + isLoading);
-  console.log('History :: ' + JSON.stringify(error));
-  console.log('History data :: ' + JSON.stringify(historyapidatas));
 
   useFocusEffect(
     useCallback(() => {
@@ -260,7 +257,7 @@ const UserTransactionHistory = ({route}) => {
                                 }}
                                 numberOfLines={2}>
                                 {formatAmount(item.amount)}{' '}
-                                {userdata.country.countrycurrencysymbol}
+                                {userdata?.currency?.countrycurrencysymbol}
                               </Text>
                             </View>
 
