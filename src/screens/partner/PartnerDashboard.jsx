@@ -253,38 +253,41 @@ const PartnerDashboard = () => {
                 </TouchableOpacity>
 
                 {/** Recharge Method */}
-                {user && partner && partner.rechargeModule && (
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('RechargeMethod')}>
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={styles.paymentOption}>
-                      <View
-                        style={{
-                          flex: 1,
-                          gap: heightPercentageToDP(2),
-                        }}>
-                        <GradientText style={styles.textStyleContent}>
-                          Recharge Method
-                        </GradientText>
-                        <Text style={styles.subtitle}>
-                          Recharge Payment Methods{' '}
-                        </Text>
-                      </View>
+                {user &&
+                  partner &&
+                  partner.rechargeModule &&
+                  partner.rechargeStatus && (
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('RechargeMethod')}>
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={styles.paymentOption}>
+                        <View
+                          style={{
+                            flex: 1,
+                            gap: heightPercentageToDP(2),
+                          }}>
+                          <GradientText style={styles.textStyleContent}>
+                            Recharge Method
+                          </GradientText>
+                          <Text style={styles.subtitle}>
+                            Recharge Payment Methods{' '}
+                          </Text>
+                        </View>
 
-                      <View style={styles.iconContainer}>
-                        <FontAwesome6
-                          name={'money-check'}
-                          size={heightPercentageToDP(3)}
-                          color={COLORS.darkGray}
-                          style={styles.icon}
-                        />
-                      </View>
-                    </LinearGradient>
-                  </TouchableOpacity>
-                )}
+                        <View style={styles.iconContainer}>
+                          <FontAwesome6
+                            name={'money-check'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                            style={styles.icon}
+                          />
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
 
                 {/** All Profit Decrease */}
                 {user.parentParentPartnerId === 1000 && (
