@@ -1273,7 +1273,7 @@ const PlayArena = ({route}) => {
                         fontSize: heightPercentageToDP(2),
                         paddingStart: heightPercentageToDP(1),
                       }}>
-                      : {user.walletTwo.balance}
+                      : {user?.walletTwo?.balance?.toFixed(0)}
                     </Text>
                   </Text>
                 </View>
