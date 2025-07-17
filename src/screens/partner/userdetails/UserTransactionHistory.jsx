@@ -257,7 +257,7 @@ const UserTransactionHistory = ({route}) => {
                                 }}
                                 numberOfLines={2}>
                                 {formatAmount(item.amount)}{' '}
-                                {userdata?.currency?.countrycurrencysymbol}
+                                {item?.currency?.countrycurrencysymbol}
                               </Text>
                             </View>
 
