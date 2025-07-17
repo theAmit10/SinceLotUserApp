@@ -58,6 +58,7 @@ const UserPlayHistory = ({route}) => {
     userId: userdata.userId,
   });
 
+  console.log('User data from play history');
   console.log(JSON.stringify(userdata));
 
   useFocusEffect(
@@ -331,10 +332,7 @@ const UserPlayHistory = ({route}) => {
                                       {formatAmount(
                                         calculateTotalAmount(item?.playnumbers),
                                       )}{' '}
-                                      {
-                                        userdata?.currency
-                                          ?.countrycurrencysymbol
-                                      }
+                                      {item?.currency?.countrycurrencysymbol}
                                     </Text>
                                   </View>
 
@@ -356,7 +354,7 @@ const UserPlayHistory = ({route}) => {
                                             getDateTimeAccordingToUserTimezone(
                                               item?.lottime?.lottime,
                                               item?.lotdate?.lotdate,
-                                              userdata?.currency?.timezone,
+                                              item?.currency?.timezone,
                                             ),
                                           )
                                         : ''}
@@ -641,10 +639,7 @@ const UserPlayHistory = ({route}) => {
                                       {formatAmount(
                                         calculateTotalAmount(item?.tickets),
                                       )}{' '}
-                                      {
-                                        userdata?.currency
-                                          ?.countrycurrencysymbol
-                                      }
+                                      {item?.currency?.countrycurrencysymbol}
                                     </Text>
                                   </View>
 
