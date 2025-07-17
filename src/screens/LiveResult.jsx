@@ -562,52 +562,13 @@ const LiveResult = () => {
     const [isBlinking, setIsBlinking] = useState(false);
     const [shouldBlink, setShouldBlink] = useState(false);
 
-    // useEffect(() => {
-    //   if (!nextTime || !nextTime.time || !user?.country?.timezone) return;
-
-    //   const checkTimeDifference = () => {
-    //     const userTimezone = user.country.timezone;
-    //     const nextTimeInUserTZ = moment.tz(
-    //       nextTime.time,
-    //       'hh:mm A',
-    //       userTimezone,
-    //     );
-    //     const currentTimeInUserTZ = moment().tz(userTimezone);
-
-    //     // Get precise difference in seconds first
-    //     const differenceInSeconds = nextTimeInUserTZ.diff(
-    //       currentTimeInUserTZ,
-    //       'seconds',
-    //     );
-    //     const differenceInMinutes = differenceInSeconds / 60;
-
-    //     console.log('Precise Time Difference (minutes):', differenceInMinutes);
-
-    //     const timerinMinutes = timeItem.liveresulttimer || 10;
-    //     console.log('Timer in Minutes:', timerinMinutes);
-
-    //     // Calculate the exact threshold with buffer for the interval
-    //     const buffer = 10 / 60; // 10 second interval converted to minutes
-
-    //     setShouldBlink(
-    //       differenceInMinutes <= timerinMinutes + buffer &&
-    //         differenceInMinutes >= 0 - buffer,
-    //     );
-    //   };
-
-    //   checkTimeDifference();
-    //   const timer = setInterval(checkTimeDifference, 10000); // Check every 10s
-
-    //   return () => clearInterval(timer);
-    // }, [nextTime, user, timeItem.liveresulttimer]);
-
     useEffect(() => {
       if (!nextTime || !nextTime.time || !user?.country?.timezone) return;
 
       const checkTimeDifference = () => {
         const userTimezone = user.country.timezone;
         const nextTimeInUserTZ = moment.tz(
-          nextTime.time,
+          getTimeAccordingToTimezone(nextTime.time, user?.country?.timezone),
           'hh:mm A',
           userTimezone,
         );
@@ -654,12 +615,23 @@ const LiveResult = () => {
         onPress={() => navigationHandler(item, timeItem)}
         style={{
           borderColor:
-            timeItem.time === nextTime.time
+            getTimeAccordingToTimezone(
+              timeItem.time,
+              user?.country?.timezone,
+            ) ===
+            getTimeAccordingToTimezone(nextTime.time, user?.country?.timezone)
               ? isBlinking
                 ? 'transparent'
                 : COLORS.red
               : 'transparent',
-          borderWidth: timeItem.time === nextTime.time ? 3 : 3,
+          borderWidth:
+            getTimeAccordingToTimezone(
+              timeItem.time,
+              user?.country?.timezone,
+            ) ===
+            getTimeAccordingToTimezone(nextTime.time, user?.country?.timezone)
+              ? 3
+              : 3,
           borderRadius: heightPercentageToDP(2),
           overflow: 'hidden',
         }}>
@@ -762,7 +734,10 @@ const LiveResult = () => {
       const checkTimeDifference = () => {
         const userTimezone = user.country.timezone;
         const nextTimeInUserTZ = moment.tz(
-          nextTime.powertime,
+          getTimeAccordingToTimezone(
+            nextTime.powertime,
+            user?.country?.timezone,
+          ),
           'hh:mm A',
           userTimezone,
         );
@@ -809,12 +784,29 @@ const LiveResult = () => {
         onPress={() => navigationHandler(item, timeItem)}
         style={{
           borderColor:
-            timeItem.powertime === nextTime.powertime
+            getTimeAccordingToTimezone(
+              timeItem.powertime,
+              user?.country?.timezone,
+            ) ===
+            getTimeAccordingToTimezone(
+              nextTime.powertime,
+              user?.country?.timezone,
+            )
               ? isBlinking
                 ? 'transparent'
                 : COLORS.red
               : 'transparent',
-          borderWidth: timeItem.powertime === nextTime.powertime ? 3 : 3,
+          borderWidth:
+            getTimeAccordingToTimezone(
+              timeItem.powertime,
+              user?.country?.timezone,
+            ) ===
+            getTimeAccordingToTimezone(
+              nextTime.powertime,
+              user?.country?.timezone,
+            )
+              ? 3
+              : 3,
           borderRadius: heightPercentageToDP(2),
           overflow: 'hidden',
         }}>
@@ -1087,7 +1079,7 @@ const LiveResult = () => {
       const checkTimeDifference = () => {
         const userTimezone = user.country.timezone;
         const nextTimeInUserTZ = moment.tz(
-          nextTime.time,
+          getTimeAccordingToTimezone(nextTime.time, user?.country?.timezone),
           'hh:mm A',
           userTimezone,
         );
