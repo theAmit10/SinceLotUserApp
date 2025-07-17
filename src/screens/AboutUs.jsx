@@ -24,6 +24,7 @@ import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadAllAboutUs} from '../redux/actions/userAction';
+import MainBackgroundWithoutScrollview from '../components/background/MainBackgroundWithoutScrollview';
 
 const AboutUs = () => {
   const navigation = useNavigation();
@@ -47,99 +48,44 @@ const AboutUs = () => {
   }, [dispatch, focused]);
 
   useEffect(() => {
-    if(abouts)
-    {
+    if (abouts) {
       setFilteredData(abouts); // Update filteredData whenever locations change
     }
-   
   }, [abouts]);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Background />
-
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>About</GradientText>
-        <GradientText style={styles.textStyle}>Us</GradientText>
-      </View>
-
-      {/** Main Cointainer */}
-
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: heightPercentageToDP(70),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-             <View
-        style={{
-          height: heightPercentageToDP(70),
-          width: widthPercentageToDP(100),
-      
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
-        <View
-          style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
-
+    <MainBackgroundWithoutScrollview title={'About Us'}>
+      <View style={{flex: 1}}>
         {/** Content Container */}
 
         <View
           style={{
-            height: heightPercentageToDP(10),
-            margin: heightPercentageToDP(2),
+            height: heightPercentageToDP(7),
+            flexDirection: 'row',
+            backgroundColor: COLORS.white_s,
+            alignItems: 'center',
+            paddingHorizontal: heightPercentageToDP(2),
+            borderRadius: heightPercentageToDP(1),
+            marginTop: heightPercentageToDP(2),
           }}>
-          <View
+          <Fontisto
+            name={'search'}
+            size={heightPercentageToDP(3)}
+            color={COLORS.darkGray}
+          />
+          <TextInput
             style={{
-              height: heightPercentageToDP(7),
-              flexDirection: 'row',
-              backgroundColor: COLORS.white_s,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              marginTop: heightPercentageToDP(2),
-            }}>
-            <Fontisto
-              name={'search'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-            />
-            <TextInput
-              style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.Montserrat_Regular,
-                fontSize: heightPercentageToDP(2.5),
-              }}
-              placeholder="Search"
-              placeholderTextColor={COLORS.black}
-              label="Search"
-              onChangeText={handleSearch}
-            />
-          </View>
+              marginStart: heightPercentageToDP(1),
+              flex: 1,
+              fontFamily: FONT.Montserrat_Regular,
+              fontSize: heightPercentageToDP(2.5),
+              color: COLORS.black,
+            }}
+            placeholder="Search"
+            placeholderTextColor={COLORS.black}
+            label="Search"
+            onChangeText={handleSearch}
+          />
         </View>
 
         <View
@@ -150,69 +96,59 @@ const AboutUs = () => {
             <Loading />
           ) : (
             <ScrollView
-            contentContainerStyle={{ paddingBottom: heightPercentageToDP(10) }}
-            >
-              {
-                filteredData.map((item,index) => (
+              contentContainerStyle={{
+                paddingBottom: heightPercentageToDP(10),
+              }}>
+              {filteredData.map((item, index) => (
+                <View
+                  style={{
+                    ...styles.item,
+                    backgroundColor: COLORS.white_s,
+                    borderRadius: heightPercentageToDP(2),
+                  }}>
                   <View
                     style={{
-                      ...styles.item,
-                      backgroundColor: COLORS.white_s,
-                      borderRadius: heightPercentageToDP(2),
+                      backgroundColor:
+                        index % 2 === 0 ? COLORS.lightDarkGray : COLORS.grayBg,
+
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: heightPercentageToDP(1),
                     }}>
-                    <View
-                      style={{
-                        backgroundColor:
-                          index % 2 === 0
-                            ? COLORS.lightDarkGray
-                            : COLORS.grayBg,
-
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: heightPercentageToDP(1),
-                      }}>
-                      <Text
+                    <Text
                       selectable
-                        style={{
-                          fontFamily: FONT.Montserrat_Bold,
-                          fontSize: heightPercentageToDP(2),
-                          color: COLORS.black,
-                        }}>
-                        {item.aboutTitle}
-                      </Text>
-                    </View>
-
-                    <View
                       style={{
-                        alignItems: 'center',
-                        paddingHorizontal: heightPercentageToDP(1),
-                        paddingVertical: heightPercentageToDP(2),
+                        fontFamily: FONT.Montserrat_Bold,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
                       }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_Regular,
-                          fontSize: heightPercentageToDP(2),
-                          color: COLORS.black,
-                        }}
-                        selectable={true}
-                        >
-                        {item.aboutDescription}
-                      </Text>
-                    </View>
+                      {item.aboutTitle}
+                    </Text>
                   </View>
-                ))
-              }
+
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(1),
+                      paddingVertical: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}
+                      selectable={true}>
+                      {item.aboutDescription}
+                    </Text>
+                  </View>
+                </View>
+              ))}
             </ScrollView>
           )}
         </View>
-
-        {/** end */}
       </View>
-            </ImageBackground>
-            </View>
-
-     
-    </SafeAreaView>
+    </MainBackgroundWithoutScrollview>
   );
 };
 
@@ -249,7 +185,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
 });
-
 
 // import {
 //   FlatList,
@@ -332,7 +267,7 @@ const styles = StyleSheet.create({
 //         style={{
 //           height: heightPercentageToDP(70),
 //           width: widthPercentageToDP(100),
-      
+
 //           borderTopLeftRadius: heightPercentageToDP(5),
 //           borderTopRightRadius: heightPercentageToDP(5),
 //         }}>
@@ -474,7 +409,6 @@ const styles = StyleSheet.create({
 //             </ImageBackground>
 //             </View>
 
-     
 //     </SafeAreaView>
 //   );
 // };
