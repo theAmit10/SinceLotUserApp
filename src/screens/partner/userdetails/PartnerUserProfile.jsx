@@ -13,9 +13,7 @@ import {useSelector} from 'react-redux';
 const PartnerUserProfile = ({route}) => {
   const {item} = route.params;
   const {accesstoken, user, partner} = useSelector(state => state.user);
-  console.log('User Data :: ' + JSON.stringify(item));
 
-  console.log(item);
   const navigation = useNavigation();
   return (
     <MainBackgroundWithoutScrollview
@@ -109,7 +107,7 @@ const PartnerUserProfile = ({route}) => {
       </TouchableOpacity>
 
       {/*  PLAY HISTORY*/}
-      {partner.playHistoryPermission && (
+      {partner && partner?.playHistoryPermission && (
         <TouchableOpacity
           onPress={() => navigation.navigate('UserPlayHistory', {item})}>
           <LinearGradient
@@ -141,7 +139,7 @@ const PartnerUserProfile = ({route}) => {
       )}
 
       {/** ALL  TRANSACTION HISTORY*/}
-      {partner.transactionHistoryPermission && (
+      {partner && partner?.transactionHistoryPermission && (
         <TouchableOpacity
           onPress={() => navigation.navigate('UserTransactionHistory', {item})}>
           <LinearGradient
