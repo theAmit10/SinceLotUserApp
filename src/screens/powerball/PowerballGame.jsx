@@ -49,9 +49,17 @@ import {
 } from '../../redux/ticketSlice';
 import {loadProfile} from '../../redux/actions/userAction';
 
-const getCurrentDateInTimezone = timezone => {
-  return moment().tz(timezone).format('DD-MM-YYYY');
-};
+// const getCurrentDateInTimezone = timezone => {
+//   return moment().tz(timezone).format('DD-MM-YYYY');
+// };
+
+export function getCurrentDateInTimezone() {
+  // Get the current date in the user's timezone
+  const currentDate = moment.tz('Asia/Kolkata').format('DD-MM-YYYY');
+
+  // Return the formatted date
+  return currentDate;
+}
 
 const getMatchingPowerDate = (currentDate, powerDates) => {
   return powerDates.find(entry => entry.powerdate === currentDate) || null;
