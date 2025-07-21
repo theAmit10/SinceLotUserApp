@@ -34,6 +34,7 @@ import {loadProfile} from '../redux/actions/userAction';
 import {getTimeAccordingToTimezone} from './SearchTime';
 import moment from 'moment-timezone';
 import Toast from 'react-native-toast-message';
+import {extractMultiplerFromLocation} from '../helper/HelperFunction';
 
 const LiveResult = () => {
   const navigation = useNavigation();
@@ -102,10 +103,13 @@ const LiveResult = () => {
       const filtertype = [{_id: '123', maximumReturn: 'All'}]; // Default element
 
       data.locationData.forEach(item => {
-        const key = item.maximumReturn;
+        const key = extractMultiplerFromLocation(item.limit);
         if (!uniqueItems.has(key)) {
           uniqueItems.add(key);
-          filtertype.push({_id: item._id, maximumReturn: item.maximumReturn});
+          filtertype.push({
+            _id: item._id,
+            maximumReturn: extractMultiplerFromLocation(item.limit),
+          });
         }
       });
 
@@ -138,7 +142,7 @@ const LiveResult = () => {
       setFilteredData(sortedData);
     } else {
       const filtered = data?.locationData.filter(item =>
-        item.maximumReturn
+        extractMultiplerFromLocation(item.limit)
           .toLowerCase()
           .includes(itemf.maximumReturn.toLowerCase()),
       );
@@ -1153,7 +1157,7 @@ const LiveResult = () => {
                   textAlignVertical: 'center',
                   alignSelf: 'flex-end',
                 }}>
-                {item.maximumReturn} Win
+                {extractMultiplerFromLocation(item.limit)} Win
               </Text>
             </View>
           </LinearGradient>
