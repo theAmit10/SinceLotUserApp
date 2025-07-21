@@ -822,12 +822,34 @@ const PlayArena = ({route}) => {
     return stringValue;
   }
 
+  // const {
+  //   data: userplayhistory,
+  //   error: userplayhistoryError,
+  //   isLoading: userplayhistoryLoading,
+  //   refetch: userplayhistoryRefetch,
+  // } = useGetPlayHistoryQuery({accesstoken});
+
   const {
     data: userplayhistory,
     error: userplayhistoryError,
     isLoading: userplayhistoryLoading,
     refetch: userplayhistoryRefetch,
-  } = useGetPlayHistoryQuery({accesstoken});
+  } = useGetPlayHistoryQuery(
+    {
+      accesstoken,
+      userId: user.userId,
+      locationId: locationdata?._id,
+      timeId: timedata?._id,
+      dateId: currentDate?._id,
+    },
+    {
+      skip:
+        !accesstoken ||
+        locationdata === null ||
+        timedata === null ||
+        currentDate === null,
+    },
+  );
 
   const [playhistorydata, setPlayhistorydata] = useState([]);
   useEffect(() => {
@@ -941,7 +963,10 @@ const PlayArena = ({route}) => {
     return totalPlaynumbersCount <= limit;
   }
 
+  const [submitProgressBar, setSubmitProgressBar] = useState(false);
+
   const submitHandler = async () => {
+    setSubmitProgressBar(true);
     await userplayhistoryRefetch();
     if (sumObjectValues(inputValues) === 0) {
       Toast.show({
@@ -1049,6 +1074,8 @@ const PlayArena = ({route}) => {
         }
       }
     }
+
+    setSubmitProgressBar(false);
   };
 
   const [focusedInputId, setFocusedInputId] = useState(null);
@@ -1637,7 +1664,7 @@ const PlayArena = ({route}) => {
                       </GradientText>
                     </LinearGradient>
 
-                    {isPlayLoading ? (
+                    {isPlayLoading || submitProgressBar ? (
                       <View style={styles.loading}>
                         <Loading />
                       </View>

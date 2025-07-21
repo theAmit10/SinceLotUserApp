@@ -104,6 +104,17 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
+    // FOR GETTING USER HISTORY BASED UPON THE LOCATION , TIME AND DATE
+    getHistoryBasedUponLocTimeDate: builder.query({
+      query: ({accesstoken, userId, locationId, timeId, dateId}) => ({
+        url: `result/singleuserplayhistorylocationtimedate/${userId}/history/${locationId}/${timeId}/${dateId}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // FOR GETTING USERS HISTORY
     getHistory: builder.query({
       query: ({accesstoken, userId}) => ({
@@ -673,6 +684,6 @@ export const {
   useCreateSkrillAccountMutation,
   useDeleteSkrillAccountMutation,
   useCreateCryptoAccountMutation,
-
+  useGetHistoryBasedUponLocTimeDateQuery,
   useDeleteCryptoAccountMutation,
 } = sincelotUserApi;
