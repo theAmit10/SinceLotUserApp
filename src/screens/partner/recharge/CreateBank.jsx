@@ -351,7 +351,7 @@ const CreateBank = () => {
                         fontSize: heightPercentageToDP(2),
                         paddingStart: heightPercentageToDP(1),
                       }}>
-                      IFSC code
+                      Routing No. / IFSC code
                     </Text>
 
                     <LinearGradient
