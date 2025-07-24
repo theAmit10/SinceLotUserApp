@@ -524,10 +524,17 @@ const PowerballGame = ({route}) => {
       setShowAllSeclectedBalls(false);
     } catch (e) {
       console.log(e);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      if (e?.data?.message === 'Insufficient balance in walletTwo') {
+        Toast.show({
+          type: 'error',
+          text1: 'Insufficient balance',
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+        });
+      }
     }
   };
 
