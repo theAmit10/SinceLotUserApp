@@ -121,18 +121,20 @@ const processTicketData = (ticketArray, TICKET_COST, user) => {
         ? parseInt(multiplier.replace('X', ''), 10)
         : 1;
 
+    let mulCost = multiplierValue * user?.country?.multiplierprice;
+    mulCost += TICKET_COST;
+
     return {
       amount:
         multiplierValue === 1
           ? TICKET_COST * multiplierValue
-          : TICKET_COST + multiplierValue, // Multiply cost with multiplier
+          : TICKET_COST + multiplierValue * user?.country?.multiplierprice, // Multiply cost with multiplier
       convertedAmount:
         multiplierValue === 1
           ? TICKET_COST *
             multiplierValue *
             user?.country?.countrycurrencyvaluecomparedtoinr
-          : TICKET_COST +
-            multiplierValue * user?.country?.countrycurrencyvaluecomparedtoinr, // Generate a random converted amount
+          : mulCost * user?.country?.countrycurrencyvaluecomparedtoinr, // Generate a random converted amount
       multiplier: multiplierValue, // Store multiplier as a number
       usernumber: selectedNumbers, // Keep the selected numbers
     };
