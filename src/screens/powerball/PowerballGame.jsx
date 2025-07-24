@@ -108,7 +108,7 @@ const getMultiplierValues = (multiplierArray = []) => {
   return [...values, 'NA'];
 };
 
-const processTicketData = (ticketArray, TICKET_COST) => {
+const processTicketData = (ticketArray, TICKET_COST, user) => {
   if (!Array.isArray(ticketArray) || typeof TICKET_COST !== 'number') {
     console.error('Invalid input. Expected an array and a number.');
     return [];
@@ -122,8 +122,17 @@ const processTicketData = (ticketArray, TICKET_COST) => {
         : 1;
 
     return {
-      amount: TICKET_COST * multiplierValue, // Multiply cost with multiplier
-      convertedAmount: TICKET_COST * multiplierValue, // Generate a random converted amount
+      amount:
+        multiplierValue === 1
+          ? TICKET_COST * multiplierValue
+          : TICKET_COST + multiplierValue, // Multiply cost with multiplier
+      convertedAmount:
+        multiplierValue === 1
+          ? TICKET_COST *
+            multiplierValue *
+            user?.country?.countrycurrencyvaluecomparedtoinr
+          : TICKET_COST +
+            multiplierValue * user?.country?.countrycurrencyvaluecomparedtoinr, // Generate a random converted amount
       multiplier: multiplierValue, // Store multiplier as a number
       usernumber: selectedNumbers, // Keep the selected numbers
     };
@@ -492,7 +501,7 @@ const PowerballGame = ({route}) => {
         });
         return;
       }
-      const myticket = processTicketData(tickets, TICKET_COST);
+      const myticket = processTicketData(tickets, TICKET_COST, user);
       console.log('Mine ticket');
       console.log(myticket);
       const body = {
