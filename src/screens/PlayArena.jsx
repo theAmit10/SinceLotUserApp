@@ -159,7 +159,7 @@ const PlayArena = ({route}) => {
     // Multiply the two numbers
     const result = number1 * number2;
 
-    return result;
+    return result.toFixed(2);
   };
 
   console.log('FROM PLAYARENA :: ' + JSON.stringify(inputValues));
