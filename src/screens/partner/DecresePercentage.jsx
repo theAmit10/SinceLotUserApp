@@ -200,10 +200,10 @@ const DecresePercentage = ({route}) => {
                   />
 
                   <UpdatePartnerInput
-                    title="Reduced Percentage"
+                    title="New Percentage"
                     value={profitPercentage}
                     onChangeText={text => setProfitPercentage(text)} // Updates inputValue state
-                    placeholder="Enter reduced percentage"
+                    placeholder="Enter new reduced percentage"
                     keyboardType="numeric"
                   />
 
