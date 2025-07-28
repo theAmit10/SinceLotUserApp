@@ -26,6 +26,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllLocations} from '../redux/actions/locationAction';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import LinearGradient from 'react-native-linear-gradient';
+import {extractMultiplerFromLocation} from '../helper/HelperFunction';
 
 const Search = () => {
   const navigation = useNavigation();
@@ -204,7 +205,8 @@ const Search = () => {
                               fontFamily: FONT.Montserrat_Regular,
                               fontSize: heightPercentageToDP(2),
                             }}>
-                            {item.maximumReturn} Win
+                            {extractMultiplerFromLocation(item.maximumRange)}{' '}
+                            Win
                           </Text>
                         </View>
                       </LinearGradient>
