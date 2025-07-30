@@ -160,7 +160,7 @@ const Notification = () => {
                     selectable>
                     {item.description}
                   </Text>
-                  {item.userId && (
+                  {item.userId ? (
                     <Text
                       onPress={() =>
                         navigation.navigate('PartnerUserProfile', {item})
@@ -173,6 +173,20 @@ const Notification = () => {
                       }}
                       numberOfLines={1}>
                       User ID : {item.userId}
+                    </Text>
+                  ) : (
+                    <Text
+                      onPress={() =>
+                        navigation.navigate('PartnerUserProfile', {item})
+                      }
+                      style={{
+                        color: COLORS.black,
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        fontSize: heightPercentageToDP(2),
+                        alignSelf: 'flex-end',
+                      }}
+                      numberOfLines={1}>
+                      Admin
                     </Text>
                   )}
                 </View>
