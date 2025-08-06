@@ -48,7 +48,6 @@ const History = () => {
     refetch: refetchPaginated,
     isFetching: fetchingPaginated,
     isLoading: isInitialLoading,
-    refetch,
   } = useGetHistoryQuery(
     {accesstoken, userId: user.userId, page, limit},
     {refetchOnMountOrArgChange: true}, // Disable caching
@@ -466,7 +465,9 @@ const History = () => {
           )}
 
           {/* Show message when no data */}
-          {!isInitialLoading && partners.length === 0 && <NoDataFound />}
+          {!isInitialLoading && partners.length === 0 && (
+            <NoDataFound data={'No data found'} />
+          )}
         </View>
       </View>
     </MainBackgroundWithoutScrollview>
