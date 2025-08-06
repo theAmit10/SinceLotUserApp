@@ -117,15 +117,14 @@ export const sincelotUserApi = createApi({
 
     // FOR GETTING USERS HISTORY
     getHistory: builder.query({
-      query: ({accesstoken, userId}) => ({
-        url: 'user/getuserdeposit/?userid=' + userId,
+      query: ({accesstoken, userId, page, limit}) => ({
+        url: `user/getuserdeposit/?userid=${userId}&page=${page}&limit=${limit}`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
       }),
     }),
-
     // FOR CREATE A DEPOSIT REQUEST
     createDeposit: builder.mutation({
       query: ({accessToken, body}) => ({
