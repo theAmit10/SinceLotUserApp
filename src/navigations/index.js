@@ -91,6 +91,7 @@ import OtherDeposit from '../screens/payment/OtherDeposit';
 import AllOtherDepositPayment from '../screens/partner/recharge/AllOtherDepositPayment';
 import CreateOther from '../screens/partner/recharge/CreateOther';
 import WithdrawDashboard from '../screens/payment/WithdrawDashboard';
+import WithdrawOther from '../screens/payment/WithdrawOther';
 
 const Stack = createNativeStackNavigator();
 
@@ -130,6 +131,7 @@ const Main = () => {
           <Stack.Screen name="Notification" component={Notification} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} />
           <Stack.Screen name="AboutUs" component={AboutUs} />
+          <Stack.Screen name="WithdrawOther" component={WithdrawOther} />
           <Stack.Screen
             name="WithdrawDashboard"
             component={WithdrawDashboard}

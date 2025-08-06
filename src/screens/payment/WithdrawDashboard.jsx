@@ -12,7 +12,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
@@ -175,6 +175,28 @@ const WithdrawDashboard = () => {
                     </View>
                     <GradientTextWhite style={styles.textStyleContent}>
                       UPI
+                    </GradientTextWhite>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/** Other */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('WithdrawOther')}>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    style={styles.paymentOption}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                  >
+                    <View style={styles.iconContainer}>
+                      <MaterialCommunityIcons
+                        color={COLORS.black}
+                        name="contactless-payment-circle"
+                        size={heightPercentageToDP(4)}
+                      />
+                    </View>
+                    <GradientTextWhite style={styles.textStyleContent}>
+                      Other
                     </GradientTextWhite>
                   </LinearGradient>
                 </TouchableOpacity>
