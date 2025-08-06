@@ -473,10 +473,9 @@ export const sincelotUserApi = createApi({
       }),
     }),
 
-    // FOR GETTING USERS SINGLE USER PLAY HISTORY
     getSingleUserPlayHistory: builder.query({
-      query: ({accesstoken, userId}) => ({
-        url: 'result/singleuserplayhistory/' + userId,
+      query: ({accesstoken, userId, page, limit}) => ({
+        url: `result/singleuserplayhistory/${userId}?page=${page}&limit=${limit}`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
