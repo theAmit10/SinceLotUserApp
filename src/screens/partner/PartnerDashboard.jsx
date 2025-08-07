@@ -168,7 +168,7 @@ const PartnerDashboard = () => {
                           All Bussiness Partners
                         </GradientText>
                         <Text style={styles.subtitle}>
-                          List of all Partner data
+                          List of all bussiness partners data
                         </Text>
                       </View>
 
