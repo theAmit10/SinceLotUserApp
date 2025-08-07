@@ -96,9 +96,11 @@ const GameDescritptionDetails = ({route}) => {
                 margin: heightPercentageToDP(2),
               }}>
               <GradientTextWhite style={styles.textStyle}>
-                {locationdata.lotlocation}
+                {locationdata?.lotlocation}
               </GradientTextWhite>
-              <GradientTextWhite style={styles.textStyle}>Details</GradientTextWhite>
+              <GradientTextWhite style={styles.textStyle}>
+                Details
+              </GradientTextWhite>
 
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View
@@ -125,8 +127,7 @@ const GameDescritptionDetails = ({route}) => {
                         fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
                       }}
-                      selectable
-                      >
+                      selectable>
                       {locationdata?.locationTitle === ''
                         ? 'No Title Available'
                         : locationdata?.locationTitle}
@@ -152,8 +153,7 @@ const GameDescritptionDetails = ({route}) => {
                         fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
                       }}
-                      selectable
-                      >
+                      selectable>
                       {locationdata?.locationDescription === ''
                         ? 'No Description Available'
                         : locationdata?.locationDescription}
