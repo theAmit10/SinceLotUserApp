@@ -99,7 +99,7 @@ const PartnerDashboard = () => {
                 ...styles.textStyle,
                 paddingLeft: heightPercentageToDP(2),
               }}>
-              Partner
+              Bussiness Partners
             </GradientTextWhite>
 
             {/** Content Container */}
@@ -165,7 +165,7 @@ const PartnerDashboard = () => {
                           gap: heightPercentageToDP(2),
                         }}>
                         <GradientText style={styles.textStyleContent}>
-                          All Partner
+                          All Bussiness Partners
                         </GradientText>
                         <Text style={styles.subtitle}>
                           List of all Partner data
