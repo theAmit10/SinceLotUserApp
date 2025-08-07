@@ -219,7 +219,7 @@ const Setting = () => {
                         fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
                       }}>
-                      Partner
+                      Bussiness Partners
                     </Text>
 
                     <Ionicons
