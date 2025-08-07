@@ -1997,7 +1997,7 @@ const Home = () => {
                             fontFamily: FONT.Montserrat_Bold,
                             color: COLORS.black,
                           }}>
-                          {`\u00A0 Partner`}
+                          {`\u00A0   Bussiness`}
                         </GradientText>
                       </View>
                     </LinearGradient>
