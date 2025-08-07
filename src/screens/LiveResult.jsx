@@ -1148,7 +1148,7 @@ const LiveResult = () => {
                   color: isParentBlinking ? COLORS.red : COLORS.black,
                   fontFamily: FONT.Montserrat_SemiBold,
                   fontSize: heightPercentageToDP(2.5),
-                  opacity: isParentBlinking ? 0.5 : 1,
+                  opacity: isParentBlinking ? 1 : 1,
                 }}>
                 {item.name}
               </Text>
