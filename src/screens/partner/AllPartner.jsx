@@ -109,7 +109,7 @@ const AllPartner = () => {
 
   return (
     <MainBackgroundWithoutScrollview
-      title="All Partners"
+      title="All Bussiness Partners"
       showMenu={true}
       handlerPress={handlePressForMenu}>
       <View style={{flex: 1}}>
