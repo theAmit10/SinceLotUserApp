@@ -664,9 +664,10 @@ const LiveResult = () => {
               fontSize: heightPercentageToDP(1.8),
               textAlignVertical: 'center',
             }}>
-            {moment
+            {/* {moment
               .tz(timeItem.time, 'hh:mm A', user?.country?.timezone)
-              .format('hh:mm A')}
+              .format('hh:mm A')} */}
+            {getTimeAccordingToTimezone(timeItem.time, user?.country?.timezone)}
           </Text>
           <Text
             style={{
@@ -839,9 +840,13 @@ const LiveResult = () => {
               fontSize: heightPercentageToDP(1.8),
               textAlignVertical: 'center',
             }}>
-            {moment
+            {/* {moment
               .tz(timeItem.powertime, 'hh:mm A', user?.country?.timezone)
-              .format('hh:mm A')}
+              .format('hh:mm A')} */}
+            {getTimeAccordingToTimezone(
+              timeItem.powertime,
+              user?.country?.timezone,
+            )}
           </Text>
           <Text
             style={{
