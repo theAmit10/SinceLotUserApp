@@ -28,6 +28,11 @@ import {
   useGetSingleUserNotificationQuery,
 } from '../helper/Networkcall';
 import MainBackgroundWithoutScrollview from '../components/background/MainBackgroundWithoutScrollview';
+import moment from 'moment-timezone';
+
+function getDateTimeBasedOnTimezone(timezone, datetime) {
+  return moment.utc(datetime).tz(timezone).format('hh:mm A, MMMM DD YYYY');
+}
 
 const Notification = () => {
   const navigation = useNavigation();
@@ -175,6 +180,19 @@ const Notification = () => {
                       User ID : {item.userId}
                     </Text>
                   )}
+                  <Text
+                    style={{
+                      color: COLORS.black,
+                      fontFamily: FONT.Montserrat_SemiBold,
+                      fontSize: heightPercentageToDP(2),
+                      alignSelf: 'flex-end',
+                    }}
+                    numberOfLines={1}>
+                    {getDateTimeBasedOnTimezone(
+                      user?.country?.timezone,
+                      item.createdAt,
+                    )}
+                  </Text>
                 </View>
               )}
               onEndReached={loadMore}
