@@ -183,8 +183,8 @@ const Notification = () => {
                   <Text
                     style={{
                       color: COLORS.black,
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      fontSize: heightPercentageToDP(2),
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(1.5),
                       alignSelf: 'flex-end',
                     }}
                     numberOfLines={1}>
