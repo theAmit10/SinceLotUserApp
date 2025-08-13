@@ -24,7 +24,10 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import Loading from '../../components/helpercComponent/Loading';
 import {TextInput} from 'react-native-paper';
 import DocumentPicker from 'react-native-document-picker';
-import {useCreateWithdrawMutation} from '../../helper/Networkcall';
+import {
+  useCreateWithdrawForOtherMutation,
+  useCreateWithdrawMutation,
+} from '../../helper/Networkcall';
 import {canPlaceWithdraw} from './Withdrawpaypal';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 const WithdrawOther = () => {
@@ -72,7 +75,8 @@ const WithdrawOther = () => {
     }
   };
 
-  const [createWithdraw, {isLoading, error}] = useCreateWithdrawMutation();
+  const [createWithdraw, {isLoading, error}] =
+    useCreateWithdrawForOtherMutation();
   console.log('MOINEE:: ' + isLoading);
 
   const MIN_WITHDRAW_AMOUNT = 100;
