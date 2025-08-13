@@ -230,22 +230,34 @@ const Register = ({route}) => {
         });
         setProgressBar(true);
         try {
-          const {data} = await axios.post(
-            UrlHelper.REGISTER_API,
-            {
+          let body = {};
+
+          if (parentId) {
+            body = {
               name,
               email,
               password,
               devicetoken: userDeviceToken,
               role: 'user',
               country: route.params?.country._id,
+              parentId,
+            };
+          } else {
+            body = {
+              name,
+              email,
+              password,
+              devicetoken: userDeviceToken,
+              role: 'user',
+              country: route.params?.country._id,
+            };
+          }
+
+          const {data} = await axios.post(UrlHelper.REGISTER_API, body, {
+            headers: {
+              'Content-Type': 'application/json',
             },
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            },
-          );
+          });
 
           console.log('datat :: ' + data);
 
