@@ -250,5 +250,7 @@ const styles = StyleSheet.create({
   },
   signupButtonText: {
     color: COLORS.blue,
+    fontFamily: FONT.Montserrat_Bold,
+    fontSize: heightPercentageToDP(2),
   },
 });
