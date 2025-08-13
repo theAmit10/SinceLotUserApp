@@ -357,7 +357,8 @@ const SignUp = () => {
                     <Text
                       style={{
                         color: COLORS.blue,
-                        fontFamily: FONT.Montserrat_SemiBold,
+                        fontFamily: FONT.Montserrat_Bold,
+                        fontSize: heightPercentageToDP(2),
                       }}>
                       {' '}
                       Sign In

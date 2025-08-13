@@ -28,9 +28,9 @@ import Loading from './Loading';
 import {server, serverName} from '../../redux/store';
 
 const SelectCountry = ({route}) => {
-  const {signupwith} = route.params;
+  const {signupwith, fromScreen} = route.params;
 
-  console.log(signupwith)
+  console.log(signupwith);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -40,10 +40,9 @@ const SelectCountry = ({route}) => {
 
   console.log('Curriencies ::' + JSON.stringify(data));
 
-  const selectCountryHandler = (country) => {
-    navigation.navigate('Register', { country,signupwith });
+  const selectCountryHandler = country => {
+    navigation.navigate(fromScreen, {country, signupwith});
   };
-
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -56,9 +55,10 @@ const SelectCountry = ({route}) => {
           source={require('../../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-           height : Platform.OS === 'android'
-            ? heightPercentageToDP(85)
-            : heightPercentageToDP(80),
+            height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -66,9 +66,10 @@ const SelectCountry = ({route}) => {
           }}>
           <View
             style={{
-              height : Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              height:
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -117,7 +118,7 @@ const SelectCountry = ({route}) => {
                 data={data?.currencies}
                 renderItem={({item}) => (
                   <TouchableOpacity
-                  onPress={() => selectCountryHandler(item)}
+                    onPress={() => selectCountryHandler(item)}
                     style={{
                       height: heightPercentageToDP(7),
                       flexDirection: 'row',
