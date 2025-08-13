@@ -430,44 +430,6 @@ const Register = ({route}) => {
                       </View>
                     )}
 
-                    {/** Country container */}
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('SelectCountry', {
-                          fromScreen: 'Register',
-                          signupwith: signupwith,
-                        })
-                      }
-                      style={{
-                        height: heightPercentageToDP(7),
-                        flexDirection: 'row',
-                        backgroundColor: COLORS.white_s,
-                        alignItems: 'center',
-                        paddingHorizontal: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                        marginBottom: heightPercentageToDP(2),
-                      }}>
-                      <Entypo
-                        name={'location'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
-                      />
-                      <Text
-                        style={{
-                          marginStart: heightPercentageToDP(1),
-                          flex: 1,
-                          fontFamily: FONT.SF_PRO_REGULAR,
-                          color: COLORS.black,
-                        }}>
-                        {selectedCountry}
-                      </Text>
-                      <Entypo
-                        name={'chevron-with-circle-down'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
-                      />
-                    </TouchableOpacity>
-
                     {/** Password container */}
                     <View
                       style={{
@@ -541,6 +503,44 @@ const Register = ({route}) => {
                         color={COLORS.darkGray}
                       />
                     </View>
+
+                    {/** Country container */}
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('SelectCountry', {
+                          fromScreen: 'Register',
+                          signupwith: signupwith,
+                        })
+                      }
+                      style={{
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        marginBottom: heightPercentageToDP(2),
+                      }}>
+                      <Entypo
+                        name={'location'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.SF_PRO_REGULAR,
+                          color: COLORS.black,
+                        }}>
+                        {selectedCountry}
+                      </Text>
+                      <Entypo
+                        name={'chevron-with-circle-down'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </TouchableOpacity>
 
                     {/* PARTNER ID */}
 

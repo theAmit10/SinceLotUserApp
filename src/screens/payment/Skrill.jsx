@@ -153,7 +153,8 @@ const Skrill = () => {
       console.log('Error during deposit:', error);
       Toast.show({
         type: 'error',
-        text1: 'Something went wrong. Try again later.',
+        text1: 'Something went wrong.',
+        text2: 'Try again later.',
       });
       // if (error.response) {
       //   Toast.show({type: 'error', text1: error.response.data});
