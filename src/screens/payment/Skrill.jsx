@@ -151,16 +151,20 @@ const Skrill = () => {
       navigation.goBack();
     } catch (error) {
       console.log('Error during deposit:', error);
-      if (error.response) {
-        Toast.show({type: 'error', text1: error.response.data});
-      } else if (error.request) {
-        Toast.show({
-          type: 'error',
-          text1: 'Request was made, but no response was received',
-        });
-      } else {
-        Toast.show({type: 'error', text1: error.message});
-      }
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong. Try again later.',
+      });
+      // if (error.response) {
+      //   Toast.show({type: 'error', text1: error.response.data});
+      // } else if (error.request) {
+      //   Toast.show({
+      //     type: 'error',
+      //     text1: 'Request was made, but no response was received',
+      //   });
+      // } else {
+      //   Toast.show({type: 'error', text1: error.message});
+      // }
     }
   };
 
