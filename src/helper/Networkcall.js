@@ -28,6 +28,19 @@ export const sincelotUserApi = createApi({
         method: 'POST',
         headers: {
           Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+    }),
+
+    // FOR CREATE A WITHDRAW REQUEST
+    createWithdrawForOther: builder.mutation({
+      query: ({accessToken, body}) => ({
+        url: UrlHelper.WITHDRAW_PAYMENT_API,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'multipart/form-data',
         },
         body,
@@ -632,6 +645,7 @@ export const sincelotUserApi = createApi({
   }),
 });
 export const {
+  useCreateWithdrawForOtherMutation,
   useGetSingleUserNotificationQuery,
   useGetPendingUserRechargeCountQuery,
   useCreateOtherPaymentAccountMutation,
