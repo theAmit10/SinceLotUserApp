@@ -13,6 +13,7 @@
 		074D1B808A8B4722B78A78AE /* applogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 00FFBCD6490446F5988E193A /* applogo.png */; };
 		07E8AA3DAB6B4002BD060BD9 /* sincelogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 779B22062F7649B6995AE8F5 /* sincelogo.png */; };
 		096D06604AEE402C9FAAC651 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC098421A44144E6A865034B /* Montserrat-Regular.ttf */; };
+		0ECCF69EA2514A08B0D8AEC1 /* playbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A49EDD5D8DA448E88A4426E /* playbtn.png */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -39,7 +40,6 @@
 		F5C68438D52B4D75AC4BE9B5 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5C0CD35F25479A8FE429E4 /* Montserrat-SemiBold.ttf */; };
 		F723CADF2E70430A8EF29CAD /* Elephant.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F1B458E341A46BA8FF43DFC /* Elephant.ttf */; };
 		FB76C8E31E1F4DA28E025367 /* tlwbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C8E191CD58C24B35BD52FFAD /* tlwbg.jpg */; };
-		0ECCF69EA2514A08B0D8AEC1 /* playbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A49EDD5D8DA448E88A4426E /* playbtn.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +75,7 @@
 		624956F02C1206A6A7EAF73C /* Pods_SinceLotUser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SinceLotUser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DA158DF48A2B27B7C876AA6 /* Pods_SinceLotUser_SinceLotUserTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SinceLotUser_SinceLotUserTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		779B22062F7649B6995AE8F5 /* sincelogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = sincelogo.png; path = ../assets/image/sincelogo.png; sourceTree = "<group>"; };
+		7A49EDD5D8DA448E88A4426E /* playbtn.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = playbtn.png; path = ../assets/image/playbtn.png; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SinceLotUser/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8244E40274444AEC92F8FDF1 /* withdraw.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = withdraw.png; path = ../assets/image/withdraw.png; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-SinceLotUser-SinceLotUserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinceLotUser-SinceLotUserTests.release.xcconfig"; path = "Target Support Files/Pods-SinceLotUser-SinceLotUserTests/Pods-SinceLotUser-SinceLotUserTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -95,7 +96,6 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE73AE44A74B4B7A8EC6E8F1 /* ZCOOL-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ZCOOL-Regular.ttf"; path = "../assets/fonts/ZCOOL-Regular.ttf"; sourceTree = "<group>"; };
 		FC098421A44144E6A865034B /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
-		7A49EDD5D8DA448E88A4426E /* playbtn.png */ = {isa = PBXFileReference; name = "playbtn.png"; path = "../assets/image/playbtn.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -593,6 +593,7 @@
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-SinceLotUser.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
@@ -620,6 +621,7 @@
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-SinceLotUser.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = SinceLotUser/Info.plist;
@@ -720,7 +722,10 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -799,7 +804,10 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
