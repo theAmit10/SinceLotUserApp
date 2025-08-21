@@ -1,6 +1,7 @@
 import {
   ImageBackground,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -271,7 +272,7 @@ const Register = ({route}) => {
           setProgressBar(false);
           Toast.show({
             type: 'error',
-            text1: 'Something went wrong',
+            text1: error.response.data.message || 'Something went wrong',
           });
           console.log(error);
           console.log(error.response.data.message);
@@ -292,8 +293,8 @@ const Register = ({route}) => {
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
-        behavior="height"
-        keyboardVerticalOffset={-60}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? -150 : -60}>
         <LoginBackground />
 
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
