@@ -10,7 +10,6 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import LoginBackground from '../components/login/LoginBackground';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -37,16 +36,12 @@ const Setting = () => {
 
   const {user, accesstoken} = useSelector(state => state.user);
 
-  const {isLoading, error, data} = useGetAboutPartnerQuery({accesstoken});
-
   const [partner, setPartner] = useState(false);
   useEffect(() => {
     if (user && user.partnerStatus) {
       setPartner(true);
     }
   }, [user]);
-
-  const [searchData, setSearchData] = useState('');
 
   // Function to clear AsyncStorage data when the user logs out
   const clearAsyncStorage = async () => {
@@ -79,55 +74,6 @@ const Setting = () => {
       clearAsyncStorage();
     }, 1000);
   };
-
-  function getDateTimeInTimezone(dateString, timezone) {
-    // Parse the input date
-    const date = moment.tz(dateString, 'UTC');
-
-    // Convert the date to the specified timezone
-    const localDate = date.tz(timezone);
-
-    // Format the date and time as needed (e.g., 'YYYY-MM-DD HH:mm:ss')
-    return localDate.format('YYYY-MM-DD HH:mm:ss');
-  }
-
-  // Example usage
-  const dateString = '2024-10-24T06:44:16.416Z';
-  const timezone = 'Asia/Kolkata'; // Change this to any desired timezone
-
-  const result = getDateTimeInTimezone(dateString, timezone);
-  console.log('created at time');
-  console.log(result);
-
-  function convertUTCToIST12Hour(utcTime) {
-    // Create a moment object from the UTC time string
-    const momentObj = moment.utc(utcTime);
-
-    // Set the timezone to IST
-    momentObj.tz('Asia/Kolkata');
-
-    // Format the date and time in 12-hour format
-    const istDateTime = momentObj.format('YYYY-MM-DD h:mm:ss A');
-
-    return istDateTime;
-  }
-
-  // Example usage:
-  const utcTime = '2024-10-24T06:44:16.416Z';
-  const istDateTime = convertUTCToIST12Hour(utcTime);
-
-  console.log(istDateTime); // Output: 2024-10-24 12:14:16 AM
-
-  const getCurrentDate = () => {
-    return moment.tz('Asia/Kolkata').format('DD-MM-YYYY');
-  };
-
-  const getNextDate = () => {
-    return moment.tz('Asia/Kolkata').add(1, 'days').format('DD-MM-YYYY');
-  };
-
-  console.log('setting current date :: ', getCurrentDate());
-  console.log('setting next date : ', getNextDate());
 
   return (
     <SafeAreaView style={{flex: 1}}>
