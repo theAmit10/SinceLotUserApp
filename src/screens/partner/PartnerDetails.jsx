@@ -433,6 +433,7 @@ const styles = StyleSheet.create({
     gap: heightPercentageToDP(3),
     paddingStart: heightPercentageToDP(2),
     marginTop: heightPercentageToDP(2),
+    paddingEnd: heightPercentageToDP(2),
   },
   iconContainer: {
     backgroundColor: COLORS.white_s,
