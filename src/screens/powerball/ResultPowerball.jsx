@@ -129,6 +129,7 @@ const ResultPowerball = () => {
         setshowTime={setshowTime}
         backcase={forcase}
         setforcase={setforcase}
+        showTime={showTime}
       />
 
       {/** Main Cointainer */}

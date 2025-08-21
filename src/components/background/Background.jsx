@@ -22,6 +22,7 @@ const Background = ({
   setShowResult,
   setforcase,
   navigationBackHandler,
+  showTime,
 }) => {
   const navigation = useNavigation();
 
@@ -30,12 +31,14 @@ const Background = ({
     if (fromScreen === 'Home') {
       navigation.goBack();
     } else {
+      console.log('backcase', backcase);
       if (backcase === 'time') {
         navigation.goBack();
       } else if (backcase === 'result') {
         setShowResult(false);
         setshowTime(true);
         setTime(null);
+        setforcase('time');
       } else if (backcase === 'powerball') {
         navigationBackHandler();
       } else {
