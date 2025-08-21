@@ -315,7 +315,8 @@ const History = () => {
                             fontFamily: FONT.Montserrat_Regular,
                             color: COLORS.black,
                             fontSize: heightPercentageToDP(1.1),
-                          }}>
+                          }}
+                          numberOfLines={1}>
                           {item.paymentStatus}
                         </Text>
                       </View>
