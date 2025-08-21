@@ -1,5 +1,6 @@
 import {
   ImageBackground,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -310,31 +311,32 @@ const SignUp = () => {
                 {/** Password container */}
 
                 {/** Confirm Password container */}
-
-                <TouchableOpacity
-                  onPress={GoogleSingUp}
-                  style={{
-                    padding: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    alignItems: 'center',
-                    backgroundColor: COLORS.white_s,
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    gap: heightPercentageToDP(2),
-                  }}>
-                  <Text
+                {Platform.OS === 'android' ? (
+                  <TouchableOpacity
+                    onPress={GoogleSingUp}
                     style={{
-                      color: COLORS.black,
-                      fontFamily: FONT.Montserrat_Regular,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
+                      backgroundColor: COLORS.white_s,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      gap: heightPercentageToDP(2),
                     }}>
-                    Sign up with Google
-                  </Text>
-                  <Fontisto
-                    name={'google'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                    <Text
+                      style={{
+                        color: COLORS.black,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Sign up with Google
+                    </Text>
+                    <Fontisto
+                      name={'google'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
 
                 <View
                   style={{
