@@ -1,6 +1,7 @@
 import {
   ImageBackground,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -29,8 +30,8 @@ const MainBackgroundWithoutScrollview = ({
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
-        behavior="height"
-        keyboardVerticalOffset={-60}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? -150 : -60}>
         <Background />
         {/* Main Container */}
         <View style={{flex: 1, justifyContent: 'flex-end'}}>

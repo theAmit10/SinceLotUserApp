@@ -1,6 +1,7 @@
 import {
   ImageBackground,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -586,7 +587,10 @@ const PowerballGame = ({route}) => {
             source={require('../../../assets/image/tlwbg.jpg')}
             style={{
               width: '100%',
-              height: heightPercentageToDP(85),
+              height:
+                Platform.OS === 'ios'
+                  ? heightPercentageToDP(75)
+                  : heightPercentageToDP(85),
             }}
             imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -594,7 +598,10 @@ const PowerballGame = ({route}) => {
             }}>
             <View
               style={{
-                height: heightPercentageToDP(85),
+                height:
+                  Platform.OS === 'ios'
+                    ? heightPercentageToDP(75)
+                    : heightPercentageToDP(85),
                 width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),
@@ -694,7 +701,11 @@ const PowerballGame = ({route}) => {
                             disabled={tickets.length === 1}>
                             <AntDesign
                               name={'minuscircleo'}
-                              size={heightPercentageToDP(3)}
+                              size={
+                                Platform.OS === 'android'
+                                  ? heightPercentageToDP(3)
+                                  : heightPercentageToDP(2.5)
+                              }
                               color={COLORS.white_s}
                               style={styles.icon}
                             />
@@ -718,7 +729,11 @@ const PowerballGame = ({route}) => {
                           <TouchableOpacity onPress={addTicket}>
                             <AntDesign
                               name={'pluscircleo'}
-                              size={heightPercentageToDP(3)}
+                              size={
+                                Platform.OS === 'android'
+                                  ? heightPercentageToDP(3)
+                                  : heightPercentageToDP(2.5)
+                              }
                               color={COLORS.white_s}
                               style={styles.icon}
                             />
@@ -1475,7 +1490,10 @@ const styles = StyleSheet.create({
   },
   ticketOption: {
     flexDirection: 'column',
-    height: heightPercentageToDP(40),
+    height:
+      Platform.OS === 'android'
+        ? heightPercentageToDP(40)
+        : heightPercentageToDP(30),
     borderRadius: heightPercentageToDP(2),
     padding: heightPercentageToDP(1),
     marginTop: heightPercentageToDP(2),
