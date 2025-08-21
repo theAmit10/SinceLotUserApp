@@ -86,6 +86,7 @@ const Skrill = () => {
       const doc = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
         allowMultiSelection: true,
+        copyTo: 'documentDirectory',
       });
 
       if (doc) {

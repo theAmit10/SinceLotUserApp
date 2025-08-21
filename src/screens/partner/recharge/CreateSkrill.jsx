@@ -29,14 +29,6 @@ import axios from 'axios';
 import UrlHelper from '../../../helper/UrlHelper';
 import {useCreateSkrillAccountMutation} from '../../../helper/Networkcall';
 
-const upiapidata = [
-  {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
-  {name: 'Aman', upiid: '8876543210@ybl', id: '2'},
-  {name: 'Zasu', upiid: '7876543210@ybl', id: '3'},
-  {name: 'Masu', upiid: '1876543210@ybl', id: '4'},
-  {name: 'Kasu', upiid: '2876543210@ybl', id: '5'},
-];
-
 const CreateSkrill = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
